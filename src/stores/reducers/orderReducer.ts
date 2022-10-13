@@ -17,6 +17,7 @@ export const newOrderReducer = (state = {}, action) => {
       error: null,
     },
   };
+  return reducers[action.type] || { ...state };
 };
 
 export const myOrdersReducer = (state = { orders: [] }, action) => {
@@ -37,6 +38,7 @@ export const myOrdersReducer = (state = { orders: [] }, action) => {
       error: null,
     },
   };
+  return reducers[action.type] || { ...state };
 };
 
 export const allOrdersReducer = (state = { orders: [] }, action) => {
@@ -57,6 +59,7 @@ export const allOrdersReducer = (state = { orders: [] }, action) => {
       error: null,
     },
   };
+  return reducers[action.type] || { ...state };
 };
 
 export const orderReducer = (state = {}, action) => {
@@ -102,6 +105,7 @@ export const orderReducer = (state = {}, action) => {
       error: null,
     },
   };
+  return reducers[action.type] || { ...state };
 };
 
 export const orderDetailsReducer = (state = { order: {} }, action) => {
@@ -122,4 +126,5 @@ export const orderDetailsReducer = (state = { order: {} }, action) => {
       error: null,
     },
   };
+  return reducers[action.type] || { ...state };
 };
