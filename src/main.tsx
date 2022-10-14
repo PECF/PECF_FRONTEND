@@ -19,9 +19,9 @@ import  store  from "./stores/rootStore";
 
 
 
-ReactDOM.render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-  <Provider store={store}>
+  <Provider  store={store}>
     {/* <AlertProvider template={AlertTemplate} {...options}> */}
       <App />
     {/* </AlertProvider> */}
