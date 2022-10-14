@@ -7,7 +7,7 @@ export default function Home() {
   const [isLoading, setLoading] = useState(true);
   return (
     <>
-      <div>home</div>
+      <Box>home</Box>
     </>
   );
 }
