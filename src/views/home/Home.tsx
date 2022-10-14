@@ -5,7 +5,7 @@ import useEffect from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useAlert } from "react-alert";
 import { getProduct } from "../../stores/actions/productAction";
-import {clearErrors} from '../../stores/actions/orderActions'
+import { clearErrors } from "../../stores/actions/orderActions";
 
 export default function Home() {
   const dispatch = useDispatch();
