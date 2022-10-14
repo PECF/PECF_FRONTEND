@@ -18,6 +18,13 @@ import {
   profileReducer,
   userDetailsReducer,
   userReducer,
+  registerReducer,
+  loadUserReducer,
+  logoutReducer,
+  updatePasswordReducer,
+  resetPasswordReducer,
+  updateUserReducer,
+  deleteUserReducer,
 } from "./reducers/userReducer";
 
 import { cartReducer } from "./reducers/cartReducer";
@@ -49,6 +56,13 @@ const reducer = combineReducers({
   productReviews: productReviewsReducer,
   review: reviewReducer,
   deleteProduct: deleteProductReducer,
+  register: registerReducer,
+  loadUser: loadUserReducer,
+  logout: logoutReducer,
+  updatePassword: updatePasswordReducer,
+  resetPassword: resetPasswordReducer,
+  updateUser: updateUserReducer,
+  deleteUser: deleteUserReducer,
 });
 
 let initialState = {
