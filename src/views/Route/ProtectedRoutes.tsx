@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const Details = () => {
+const ProtectedRoutes = () => {
     <div></div>
 };
 
-export default Details;
+export default ProtectedRoutes;

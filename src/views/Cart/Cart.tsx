@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-const Details = () => {
+const Cart = () => {
     <div></div>
 };
 
-export default Details;
+export default Cart;
