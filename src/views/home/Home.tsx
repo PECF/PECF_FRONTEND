@@ -1,6 +1,4 @@
 import React, { Fragment, useState } from "react";
-import { Link } from "react-router-dom";
-import { Box } from "@chakra-ui/react";
 import useEffect from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProduct } from "../../stores/actions/productAction";
@@ -14,13 +12,9 @@ export default function Home() {
   // const [isLoading, setLoading] = useState(true);
 
   return (
-    <>
-      <Box>
-        <Box>
-          <h1>E-Commerce Name</h1>
-        </Box>
-        <Box></Box>
-      </Box>
-    </>
+    <Fragment>
+      <h1>E-Commerce Name</h1>
+    </Fragment>
+    
   );
 }
