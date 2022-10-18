@@ -1,6 +1,3 @@
-// path: ./src/stores/reducers/authReducer.ts
-// create authReducer with typescript, redux, react. All logic in function in other place, and not use switch case, use object
-
 import { IAuthState, IAuthActions } from "../../types/authTypes";
 
 const initialState: IAuthState = {
@@ -62,14 +59,7 @@ export const authReducer = (
       user: null,
       error: payload,
     }),
-    [IAuthActions.CLEAR_ERRORS]: () => ({
-      ...state,
-      error: "",
-    }),
-    DEFAULT: () => state,
   };
 
-  return handlers[action.type]
-    ? handlers[action.type](action.payload)
-    : handlers.DEFAULT();
+  return handlers[action.type] ? handlers[action.type](action.payload) : state;
 };

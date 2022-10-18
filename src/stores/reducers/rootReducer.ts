@@ -1,5 +1,5 @@
-import productsReducer from "./productsReducer";
-import { orderReducer } from "./orderReducer";
+import { productsReducer } from "./productsReducer";
+import { ordersReducer } from "./ordersReducer";
 import { cartReducer } from "./cartReducer";
 import { authReducer } from "./authReducer";
 import { combineReducers } from "redux";
@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   products: productsReducer,
   auth: authReducer,
-  order: orderReducer,
+  order: ordersReducer,
 });
 
 export default rootReducer;

@@ -1,56 +1,31 @@
-// path: ./src/stores/reducers/orderReducer.ts
-// create orderReducer with typescript, redux, react. All logic in function in other place, and not use switch case, use object
+// path: ./src/stores/reducers/ordersReducer.ts
+// create ordersReducer with typescript, redux, react. All logic in function in other place, and not use switch case, use object
 
-import { IOrderState, IOrderActions } from "../../types/orderTypes";
+import { IOrdersState, IOrdersActions } from "../../types/orderTypes";
 
-const initialState: IOrderState = {
-  order: null,
+const initialState: IOrdersState = {
   orders: [],
   loading: false,
   error: "",
 };
 
-export const orderReducer = (
+export const ordersReducer = (
   state = initialState,
-  action: IOrderActions
-): IOrderState => {
-  const handlers: Record<IOrderActions["type"], any> = {
-    [IOrderActions.CREATE_ORDER_REQUEST]: () => ({ ...state, loading: true }),
-    [IOrderActions.CREATE_ORDER_SUCCESS]: (payload: IOrderState["order"]) => ({
-      ...state,
-      loading: false,
-      order: payload,
-    }),
-    [IOrderActions.CREATE_ORDER_FAIL]: (payload: IOrderState["error"]) => ({
-      ...state,
-      loading: false,
-      error: payload,
-    }),
-    [IOrderActions.GET_ORDER_REQUEST]: () => ({ ...state, loading: true }),
-    [IOrderActions.GET_ORDER_SUCCESS]: (payload: IOrderState["order"]) => ({
-      ...state,
-      loading: false,
-      order: payload,
-    }),
-    [IOrderActions.GET_ORDER_FAIL]: (payload: IOrderState["error"]) => ({
-      ...state,
-      loading: false,
-      error: payload,
-    }),
-    [IOrderActions.GET_ORDERS_REQUEST]: () => ({ ...state, loading: true }),
-    [IOrderActions.GET_ORDERS_SUCCESS]: (payload: IOrderState["orders"]) => ({
+  action: IOrdersActions
+): IOrdersState => {
+  const handlers: Record<IOrdersActions["type"], any> = {
+    [IOrdersActions.FETCH_ORDERS]: () => ({ ...state, loading: true }),
+    [IOrdersActions.FETCH_ORDERS_SUCCESS]: (
+      payload: IOrdersState["orders"]
+    ) => ({
       ...state,
       loading: false,
       orders: payload,
     }),
-    [IOrderActions.GET_ORDERS_FAIL]: (payload: IOrderState["error"]) => ({
+    [IOrdersActions.FETCH_ORDERS_ERROR]: (payload: IOrdersState["error"]) => ({
       ...state,
       loading: false,
       error: payload,
-    }),
-    [IOrderActions.CLEAR_ERRORS]: () => ({
-      ...state,
-      error: "",
     }),
     DEFAULT: () => state,
   };
