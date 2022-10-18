@@ -8,7 +8,7 @@ export const login = (email, password) => async (dispatch) => {
     const config = { headers: { "Content-Type": "application/json" } };
 
     const { data } = await axios.post(
-      `/api/v1/login`, //REEMPLAZAR RUTA!
+      "http://localhost:3443/user/login",
       { email, password },
       config
     );
@@ -26,8 +26,11 @@ export const register = (userData) => async (dispatch) => {
 
     const config = { headers: { "Content-Type": "multipart/form-data" } };
 
-    const { data } = await axios.post(`/api/v1/register`, userData, config); //REEMPLAZAR RUTA!
-
+    const { data } = await axios.post(
+      "http://localhost:3443/user/register",
+      userData,
+      config
+    );
     dispatch({ type: "REGISTER_USER_SUCCESS", payload: data.user });
   } catch (error) {
     dispatch({
@@ -154,11 +157,26 @@ export const getAllUsers = () => async (dispatch) => {
   }
 };
 
-// get  User Details
-export const getUserDetails = (id) => async (dispatch) => {
+// get  User Admin Details
+export const getUserAdminDetails = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: "USER_ADMIN_DETAILS_REQUEST" });
+    const { data } = await axios.get(`/api/v1/admin/user/${id}`); //REEMPLAZAR RUTA
+
+    dispatch({ type: "USER_ADMIN_DETAILS_SUCCESS", payload: data.user });
+  } catch (error) {
+    dispatch({
+      type: "USER_ADMIN_DETAILS_FAIL",
+      payload: error.response.data.message,
+    });
+  }
+};
+
+//get user details
+export const getUserDetails = () => async (dispatch) => {
   try {
     dispatch({ type: "USER_DETAILS_REQUEST" });
-    const { data } = await axios.get(`/api/v1/admin/user/${id}`); //REEMPLAZAR RUTA
+    const { data } = await axios.get("http://localhost:3443/user/me");
 
     dispatch({ type: "USER_DETAILS_SUCCESS", payload: data.user });
   } catch (error) {

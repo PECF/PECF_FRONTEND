@@ -220,6 +220,30 @@ export const allUsersReducer = (state = { users: [] }, action) => {
   return reducers[action.type] || { ...state };
 };
 
+export const userAdminDetailsReducer = (state = { user: {} }, action) => {
+  const reducers = {
+    USER_ADMIN_DETAILS_REQUEST: {
+      ...state,
+      loading: true,
+    },
+    USER_ADMIN_DETAILS_SUCCESS: {
+      ...state,
+      loading: false,
+      user: action.payload,
+    },
+    USER_ADMIN_DETAILS_FAIL: {
+      ...state,
+      loading: false,
+      error: action.payload,
+    },
+    CLEAR_ERRORS: {
+      ...state,
+      error: null,
+    },
+  };
+  return reducers[action.type] || { ...state };
+};
+
 export const userDetailsReducer = (state = { user: {} }, action) => {
   const reducers = {
     USER_DETAILS_REQUEST: {

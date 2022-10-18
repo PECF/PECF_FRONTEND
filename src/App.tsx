@@ -1,13 +1,12 @@
 import React from "react";
-import Router from "./routes/router";
+// import Router from "./routes/router";
 import { Box } from "@chakra-ui/react";
-import NavBar from "./components/NavBar/NavBar";
+import NavBar from "./views/NavBar/Navbar";
 
 function App() {
   return (
     <Box>
       <NavBar />
-      <Router />
     </Box>
   );
 }
