@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Box } from "@chakra-ui/react";
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState(1);

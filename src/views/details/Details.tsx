@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Box } from "@chakra-ui/react";
 
-const Details = () => {};
-
-export default Details;
+export default function Details() {
+  return <Box>Details</Box>;
+}
