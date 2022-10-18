@@ -3,7 +3,7 @@ import "./App.css";
 import * as React from "react";
 import Router from "./routes/router";
 import { Box } from "@chakra-ui/react";
-import NavBar from "./components/NavBar/NavBar";
+import NavBar from "./Views/NavBar/Navbar";
 function App() {
   return (
     <Box>

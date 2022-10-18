@@ -64,7 +64,7 @@ function NavBar() {
           </Button>
         </ButtonGroup>
 
-        <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
+        <Modal isOpen={isOpen} onClose={onClose} size="md" >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Log In</ModalHeader>
@@ -90,7 +90,7 @@ function NavBar() {
           </ModalContent>
         </Modal>
 
-        <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
+        <Modal isOpen={isOpen} onClose={onClose} size="md" >
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>Sing in</ModalHeader>

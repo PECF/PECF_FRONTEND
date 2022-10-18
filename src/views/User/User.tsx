@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 const User = () => {
-    <div></div>
+    return (
+        <div>
+
+        </div>
+    )
 };
 
 export default User;
