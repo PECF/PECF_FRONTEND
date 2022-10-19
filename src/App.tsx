@@ -1,17 +1,15 @@
-import { AuthProvider } from "./routes/AuthProvider";
-import { BrowserRouter } from "react-router-dom";
-import { Routes } from "./routes/index";
+
 import React from "react";
+import { AppRoutes } from "./routes/Routes";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
-
-const App: React.FC = () => {
+export const App: React.FC = () => {
   return (
-    <BrowserRouter>
-      <AuthProvider>
-        <Routes />
-      </AuthProvider>
-    </BrowserRouter>
+    <>
+      <Header />  
+      <AppRoutes />
+      <Footer />
+    </>
   );
 };
-
-export default App;

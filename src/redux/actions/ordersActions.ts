@@ -1,7 +1,3 @@
-// path: ./src/stores/actions/ordersActions.ts
-// create ordersActions with typescript, redux, react. All logic in function in other place, and not use switch case, use object for a ecommerce
-// create ACTIONS for ordersReducer
-
 import { IOrdersActions, IOrdersState } from "../../types/orderTypes";
 
 export const fetchOrders = () => async (dispatch: any, getState: any) => {

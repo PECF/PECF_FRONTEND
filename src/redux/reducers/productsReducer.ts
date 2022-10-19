@@ -1,6 +1,3 @@
-// path: ./src/stores/reducers/productsReducer.ts
-// create productsReducer with typescript, redux, react. All logic in function in other place, and not use switch case, use object
-
 import { IProductsState, IProductsActions } from "../../types/productTypes";
 
 const initialState: IProductsState = {

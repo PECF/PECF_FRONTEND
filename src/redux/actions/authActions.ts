@@ -1,7 +1,3 @@
-// path: ./src/stores/actions/authActions.ts
-// create authActions with typescript, redux, react. All logic in function in other place, and not use switch case, use object for a ecommerce
-// create ACTIONS for authReducer
-
 import { IAuthActions, IAuthState } from "../../types/authTypes";
 
 export const loadUser = () => async (dispatch: any) => {

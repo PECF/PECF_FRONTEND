@@ -1,28 +1,25 @@
-// Path: src/routes/PrivateRoute.tsx
+// Path: src/routes/AdminRoute.tsx
 // Language: typescript jsx
 
 import React from "react";
 import { Navigate, Route, RouteProps } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-interface PrivateRouteProps extends RouteProps {
+interface AdminRouteProps extends RouteProps {
   element: React.ReactNode;
 }
 
-export const PrivateRoute: React.FC<PrivateRouteProps> = ({
-  element,
-  ...rest
-}) => {
+export const AdminRoute: React.FC<AdminRouteProps> = ({ element, ...rest }) => {
   const { currentUser } = useAuth();
 
   return (
     <Route
       {...rest}
       element={
-        currentUser ? (
+        currentUser && currentUser.role === "admin" ? (
           element
         ) : (
-          <Navigate to={{ pathname: "/login", state: { from: rest.path } }} />
+          <Navigate to={{ pathname: "/", state: { from: rest.path } }} />
         )
       }
     />

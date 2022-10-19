@@ -1,7 +1,4 @@
-// path: ./src/stores/reducers/ordersReducer.ts
-// create ordersReducer with typescript, redux, react. All logic in function in other place, and not use switch case, use object
-
-import { IOrdersState, IOrdersActions } from "../../types/orderTypes";
+import { IOrdersActions, IOrdersState } from "../../types/ordersTypes";
 
 const initialState: IOrdersState = {
   orders: [],

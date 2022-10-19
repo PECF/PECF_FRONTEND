@@ -1,8 +1,4 @@
-// path: ./src/stores/actions/productsActions.ts
-// create productsActions with typescript, redux, react. All logic in function in other place, and not use switch case, use object for a ecommerce
-// create ACTIONS for productsReducer
-
-import { IProductsActions, IProductsState } from "../../types/productTypes";
+import { IProductsActions } from "../../types/productTypes";
 
 export const getProducts =
   (keyword = "", currentPage = 1, price, category, rating = 0) =>
