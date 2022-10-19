@@ -9,6 +9,18 @@ import {
 } from "@chakra-ui/react";
 import * as React from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import {
+  followUs,
+  shoppingCategories,
+  usefulLinks,
+  menShopping,
+  womanShopping,
+  homePage,
+  aboutUs,
+  contactUs,
+  copyright,
+  kalu,
+} from "./constants";
 
 export const Footer = () => (
   <Container as="footer" role="contentinfo">
@@ -26,13 +38,13 @@ export const Footer = () => (
             color="subtle"
             textAlign="center"
           >
-            Follow Us
+            {followUs}
           </Text>
           <ButtonGroup variant="ghost">
             <IconButton
               as="a"
               href="#"
-              aria-label="Facebbok"
+              aria-label="Facebook"
               icon={<FaFacebook fontSize="1.25rem" />}
             />
             <IconButton
@@ -54,21 +66,21 @@ export const Footer = () => (
         <Stack direction="row" spacing="82">
           <Stack spacing="4" minW="36" flex="1">
             <Text fontSize="sm" fontWeight="semibold" color="subtle">
-              Shopping & Categories
+              {shoppingCategories}
             </Text>
             <Stack spacing="3" shouldWrapChildren>
-              <Button variant="link">Men's Shopping</Button>
-              <Button variant="link">Woman's Shopping</Button>
+              <Button variant="link">{menShopping}</Button>
+              <Button variant="link">{womanShopping}</Button>
             </Stack>
           </Stack>
           <Stack spacing="4" minW="36" flex="1">
             <Text fontSize="sm" fontWeight="semibold" color="subtle">
-              Useful Links
+              {usefulLinks}
             </Text>
             <Stack spacing="3" shouldWrapChildren>
-              <Button variant="link">HomePage</Button>
-              <Button variant="link">About Us</Button>
-              <Button variant="link">Contact Us</Button>
+              <Button variant="link">{homePage}</Button>
+              <Button variant="link">{aboutUs}</Button>
+              <Button variant="link">{contactUs}</Button>
             </Stack>
           </Stack>
         </Stack>
@@ -77,8 +89,7 @@ export const Footer = () => (
     <Divider />
     <Stack pt="8" pb="12" justify="center" align="center">
       <Text fontSize="sm" color="subtle" textAlign="center">
-        Copyright &copy; {new Date().getFullYear()} Kalú, Inc. All rights
-        reserved.
+        {copyright} &copy; {new Date().getFullYear()} {kalu}
       </Text>
     </Stack>
   </Container>
