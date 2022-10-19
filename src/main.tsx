@@ -1,28 +1,22 @@
 import React from "react";
-import { BrowserRouter } from "react-router-dom";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
+import { ChakraProvider } from "@chakra-ui/react";
 import { Provider } from "react-redux";
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./index.css";
-import { store } from "./stores/rootStore.ts";
-// import { positions, transitions, Provider as AlertProvider } from "react-alert";
-// import AlertTemplate from "react-alert-template-basic";
+import { store } from "./redux/rootStore";
+import { App } from "./App";
 
-// const options = {
-//   timeout: 5000,
-//   position: positions.BOTTOM_CENTER,
-//   transition: transitions.SCALE,
-// };
-
-const container = document.getElementById("root");
-const root = createRoot(container);
-
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 root.render(
-  <BrowserRouter>
+  <React.StrictMode>
     <Provider store={store}>
-      {/* <AlertProvider template={AlertTemplate} {...options}> */}
-      <App />
-      {/* </AlertProvider> */}
+      <ChakraProvider>
+        <Router>
+          <App />
+        </Router>
+      </ChakraProvider>
     </Provider>
-  </BrowserRouter>
+  </React.StrictMode>
 );
