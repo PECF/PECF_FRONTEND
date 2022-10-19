@@ -1,11 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-
-// import { useDispatch, useSelector } from "react-redux";
-// import { clearErrors, resetPassword } from "../../actions/userAction";
-// import { useAlert } from "react-alert";
-// import MetaData from "../layout/MetaData";
-// import LockOpenIcon from "@material-ui/icons/LockOpen";
-// import LockIcon from "@material-ui/icons/Lock";
 import {
   FormControl,
   FormLabel,
@@ -15,67 +8,100 @@ import {
   Text,
   Box,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 
-const ResetPassword = (/* { history, match } */) => {
-//   const dispatch = useDispatch();
-//   const alert = useAlert();
+import { RepeatIcon } from "@chakra-ui/icons";
 
-//   const { error, success, loading } = useSelector(
-//     (state) => state.forgotPassword
-//   );
+const ResetPassword = () => {
 
-//   const [password, setPassword] = useState("");
-//   const [confirmPassword, setConfirmPassword] = useState("");
+  const send = useToast();
 
-//   const resetPasswordSubmit = (e) => {
-//     e.preventDefault();
+  const [inputNew, setInputNew] = React.useState("");
+  const [inputNewAgain, setInputNewAgain] = React.useState("");
 
-//     const myForm = new FormData();
-
-//     myForm.set("password", password);
-//     myForm.set("confirmPassword", confirmPassword);
-
-//     dispatch(resetPassword(match.params.token, myForm));
-//   };
-
-//   useEffect(() => {
-//     if (error) {
-//       alert.error(error);
-//       dispatch(clearErrors());
-//     }
-
-//     if (success) {
-//       alert.success("Password Updated Successfully");
-
-//       history.push("/login");
-//     }
-//   }, [dispatch, error, alert, history, success]);
+  const handleChangeNew = (e: React.ChangeEvent<HTMLInputElement>) =>
+  setInputNew(e.target.value);
+  const handleChangeNewAgain = (e: React.ChangeEvent<HTMLInputElement>) =>
+  setInputNewAgain(e.target.value);
 
 
-  return (
-    <Box>
-
-    <Box m={5}>Logo</Box>
-    <FormControl isRequired >
-      <FormLabel fontSize={20}>Password Reset</FormLabel>
-      <Text fontSize={16} >Please enter your new password.</Text>
-      <Input type="password" required />
-      <Text fontSize={16} >Enter new password again.</Text>
-      <Input type="password" required />
-      <FormHelperText>Never share your passwords with anyone.</FormHelperText>
-      <Button
-            mt={4}
-            colorScheme='teal'
-            /* isLoading={props.isSubmitting} */
-            type='submit'
+    return (
+      <Box>
+        {/* <NavBar/>  !INSERTAR NAVBAR AQUI*/}
+        <Box>
+          <Box
+            mt={20}
+            maxW="100%"
+            bg={"whiteAlpha.100"}
+            borderWidth="2px"
+            borderRadius="lg"
+            overflow="hidden"
+            p={50}
+            boxShadow='lg'
           >
-            Reset!
-          </Button>
+            <FormControl isRequired>
+              <FormLabel fontSize={20}>Password Reset</FormLabel>
+              <Text mt={5} fontSize={16}>
+              Please enter your new password.
+              </Text>
+              <Input
+                mt={3}
+                onChange={handleChangeNew}
+                placeholder="Insert new password here"
+                value={inputNew}
+                type="password" 
+                required
+              />  
 
-    </FormControl>
- </Box>
-  );
-};
+              <Text mt={5} fontSize={16}>
+              Please enter your new password again.
+              </Text>
+              <Input
+                mt={3}
+                onChange={handleChangeNewAgain}
+                placeholder="Insert new password again"
+                value={inputNewAgain}
+                type="password" 
+                required
+              />  
+              <FormHelperText>
+              Please save your password safetly, never share them with anyone.
+              </FormHelperText>
+              <Button
+                leftIcon={<RepeatIcon />}
+                mt={10}
+                color={"whiteAlpha.900"}
+                bg={"blackAlpha.900"}
+                borderColor={"whiteAlpha"}
+                _hover={{ bg: "gray.300", color: "blackAlpha.900" }}
+                //habria que aplicar logica si encuentra el mail o no si no tira error
+                onClick={() =>
+                  send({
+                    title: "Your password has changed!",
+                    description: "Password was changed sucessfuly",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                }
+                /*  : send({
+                 title: "Ups, something went wrong!",
+                 description: "Please verify your password something went wrong",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                  }) */
+              >
+                Reset!
+              </Button>
+            </FormControl>
+          </Box>
+          {/* <Footer/> !INSERTAR FOOTER AQUI */ }
+        </Box>
+      </Box>
+    );
+  };
+
 
 export default ResetPassword;

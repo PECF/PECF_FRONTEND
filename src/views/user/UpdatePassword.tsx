@@ -1,9 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
-//import Loader from "../layout/Loader/Loader";
-//import { useDispatch, useSelector } from "react-redux";
-//import { clearErrors, updatePassword } from "../../actions/userAction";
-//import { useAlert } from "react-alert";
-//import { UPDATE_PASSWORD_RESET } from "../../constants/userConstants";
+import { useSelector } from "react-redux";
+
 import {
   FormControl,
   FormLabel,
@@ -13,76 +10,111 @@ import {
   Text,
   Box,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 
-const UpdatePassword = (/* { history } */) => {
-  //   const dispatch = useDispatch();
-  //   const alert = useAlert();
+import { RepeatIcon } from "@chakra-ui/icons";
 
-  //   const { error, isUpdated, loading } = useSelector((state) => state.profile);
+const UpdatePassword = () => {
+  const send = useToast();
 
-  //   const [oldPassword, setOldPassword] = useState("");
-  //   const [newPassword, setNewPassword] = useState("");
-  //   const [confirmPassword, setConfirmPassword] = useState("");
+  // const { error, isUpdated, loading } = useSelector((state) => state.profile);
 
-  //   const updatePasswordSubmit = (/* e */) => {
-  //     e.preventDefault();
+  const [oldPassword, setOldPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  //     const myForm = new FormData();
-
-  //     myForm.set("oldPassword", oldPassword);
-  //     myForm.set("newPassword", newPassword);
-  //     myForm.set("confirmPassword", confirmPassword);
-
-  //     dispatch(updatePassword(myForm));
-  //   };
-
-  //   useEffect(() => {
-  //     if (error) {
-  //       alert.error(error);
-  //       dispatch(clearErrors());
-  //     }
-
-  //     if (isUpdated) {
-  //       alert.success("Profile Updated Successfully");
-
-  //       history.push("/account");
-
-  //       dispatch({
-  //         type: UPDATE_PASSWORD_RESET,
-  //       });
-  //     }
-  //   }, [dispatch, error, alert, history, isUpdated]);
+  const handleChangeOld = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setOldPassword(e.target.value);
+  const handleChangeNew = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setNewPassword(e.target.value);
+  const handleChangeNewAgain = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setConfirmPassword(e.target.value);
 
   return (
     <Box>
-      <Box m={5}>Logo</Box>
+      {/* <NavBar/> */}
+      <Box
+        mt={20}
+        maxW="100%"
+        bg={"whiteAlpha.100"}
+        borderWidth="2px"
+        borderRadius="lg"
+        overflow="hidden"
+        p={50}
+        boxShadow="lg"
+      >
+          <FormControl isRequired>
+              <FormLabel fontSize={20}>Password Reset</FormLabel>
+              <Text mt={5} fontSize={16}>
+              Please enter your old password.
+              </Text>
+              <Input
+                mt={3}
+                onChange={handleChangeNew}
+                placeholder="Insert old password here"
+                value={oldPassword}
+                type="password" 
+                required
+              />  
+              <Text mt={5} fontSize={16}>
+              Please enter your new password.
+              </Text>
+              <Input
+                mt={3}
+                onChange={handleChangeNew}
+                placeholder="Insert new password here"
+                value={newPassword}
+                type="password" 
+                required
+              />  
+              <Text mt={5} fontSize={16}>
+              Please confirm your new password.
+              </Text>
+              <Input
+                mt={3}
+                onChange={handleChangeNew}
+                placeholder="Insert new password again"
+                value={confirmPassword}
+                type="password" 
+                required
+              />  
+          
+          <FormHelperText>
+          Please save your password safetly, never share them with anyone.
+          </FormHelperText>
 
-      <FormControl isRequired>
-        <FormLabel fontSize={20}>Update your Password</FormLabel>
+          <Button
+                leftIcon={<RepeatIcon />}
+                mt={10}
+                color={"whiteAlpha.900"}
+                bg={"blackAlpha.900"}
+                borderColor={"whiteAlpha"}
+                _hover={{ bg: "gray.300", color: "blackAlpha.900" }}
+                //habria que aplicar logica si encuentra el mail o no si no tira error
+                onClick={() =>
+                  send({
+                    title: "Your password has changed!",
+                    description: "Password was changed sucessfuly",
+                    status: "success",
+                    duration: 3000,
+                    isClosable: true,
+                  })
+                }
+                /*  : send({
+                 title: "Ups, something went wrong!",
+                 description: "Please verify your password something went wrong",
+                    status: "error",
+                    duration: 3000,
+                    isClosable: true,
+                  }) */
+              >
+                Update!
+              </Button>
 
-        <Text fontSize={16}>Please enter your old password.</Text>
-        <Input type="password" />
-        <Text fontSize={16}>Please enter your new password.</Text>
-        <Input type="password" />
-        <Text fontSize={16}>Please enter your new password.</Text>
-        <Input type="password" />
-
-        <Button
-          mt={4}
-          colorScheme="teal"
-          /* isLoading={props.isSubmitting} */
-          type="submit"
-        >
-          Update!
-        </Button>
-
-        <FormHelperText>
-          The team is never going to ask you for your private passwords please
-          keep them safe
-        </FormHelperText>
-      </FormControl>
-
+        </FormControl>
+      </Box>
+     {/*  <Footer/> */}
     </Box>
   );
 };

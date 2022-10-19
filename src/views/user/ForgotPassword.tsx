@@ -1,11 +1,4 @@
 import React, { Fragment, useState, useEffect } from "react";
-// import Loader from "../layout/Loader/Loader";
-// //importar iconos de mailing
-// import { useDispatch, useSelector } from "react-redux";
-// import { useAlert } from "react-alert"; //Habra que agregar react alert??
-// import MetaData from "../layout/MetaData";
-// import { forgotPassword } from "../../stores/actions/userAction";
-// import { clearErrors } from "../../stores/actions/productAction";
 import {
   FormControl,
   FormLabel,
@@ -15,59 +8,87 @@ import {
   Text,
   Box,
   Button,
+  useToast,
 } from "@chakra-ui/react";
 
+import { EmailIcon } from "@chakra-ui/icons";
+
 const ForgotPassword = () => {
-  //   const dispatch = useDispatch();
-  //   const alert = useAlert();
 
-  //   const { error, message, loading } = useSelector(
-  //     (state : any) => state.forgotPassword
-  //     );
+  const send = useToast();
 
-  //     const [email, setEmail] = useState("");
+  const [input, setInput] = React.useState("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setInput(e.target.value);
 
-  //     const forgotPasswordSubmit = (e : any) => {
-  //       e.preventDefault();
-  //       const myForm = new FormData();
 
-  //       myForm.set("email", email);
-  //       dispatch(forgotPassword(myForm));
-  //     };
-
-  // useEffect(() => {
-  //   if (error) {
-  //     alert.error(error);
-  //     dispatch(clearErrors());
-  //   }
-  //   if (message) {
-  //     alert.success(message);
-  //   }
-  // }, [dispatch, error, alert, message]);
-
-  //enviar email por body, guardo estado local y lo envio por accion? deberia devolver un objeto {status: true, response: info}
- // user not found, user found, envia mail al ususario, error que falle el back
+  // !insertar navbar y footer
+  //!enviar email por body, guardo estado local y lo envio por accion? deberia devolver un objeto {status: true, response: info}
+  // !user not found, user found, envia mail al ususario, error que falle el back
+  // blackAlpha.900 y gray.300
   return (
- <Box>
-
-    <Box m={5}>Logo</Box>
-    <FormControl isRequired >
-      <FormLabel fontSize={20}>Let's find your Password</FormLabel>
-      <Text fontSize={16} >Please enter your email to search for your account.</Text>
-      <Input type="email" />
-      <FormHelperText>Your Email is private, we'll never share your email.</FormHelperText>
-      <Button
-            mt={4}
-            colorScheme='teal'
-            /* isLoading={props.isSubmitting} */
-            type='submit'
-          >
-            Recover!
-          </Button>
-
-    </FormControl>
- </Box>
+    <Box>
+      {/* <NavBar/> */}
+      <Box>
+        <Box
+          mt={20}
+          maxW="100%"
+          bg={"whiteAlpha.100"}
+          borderWidth="2px"
+          borderRadius="lg"
+          overflow="hidden"
+          p={50}
+          boxShadow='lg'
+        >
+          <FormControl isRequired>
+            <FormLabel fontSize={20}>Let's find your Password</FormLabel>
+            <Text mt={5} fontSize={16}>
+              Please enter your email to search for your account.
+            </Text>
+            <Input
+              mt={5}
+              onChange={handleChange}
+              placeholder="example@pecf.com"
+              value={input}
+              type="email"
+            />  
+            <FormHelperText>
+              Your Email is private, we'll never share your email.
+            </FormHelperText>
+            <Button
+              leftIcon={<EmailIcon />}
+              mt={10}
+              color={"whiteAlpha.900"}
+              bg={"blackAlpha.900"}
+              borderColor={"whiteAlpha"}
+              _hover={{ bg: "gray.300", color: "blackAlpha.900" }}
+              //habria que aplicar logica si encuentra el mail o no si no tira error
+              onClick={() =>
+                send({
+                  title: "Email Sended!",
+                  description: "Your recovery email should arrive soon.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                })
+              }
+              /*  : send({
+               title: "Ups, something went wrong!",
+               description: "We couldn't find your email please verify or try another one",
+                  status: "error",
+                  duration: 3000,
+                  isClosable: true,
+                }) */
+            >
+              Recover!
+            </Button>
+          </FormControl>
+        </Box>
+        {/* <Footer/> */}
+      </Box>
+    </Box>
   );
 };
+/* }; */
 
 export default ForgotPassword;
