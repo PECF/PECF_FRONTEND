@@ -1,11 +1,17 @@
+import { CartState, CartActions } from '../../types/Cart';
+const cartInitialState: CartState = {
+  cartItems: [],
+  shippingInfo: []
+}
+
 export const cartReducer = (
-  state = { cartItems: [], shippingInfo: {} },
-  action
+  state = cartInitialState,
+  action: CartActions
 ) => {
   const reducers = {
     ADD_TO_CART: {
       ...state,
-      cartItems: [...state.cartItems, item],
+      cartItems: [...state.cartItems],
     },
     REMOVE_CART_ITEM: {
       ...state,

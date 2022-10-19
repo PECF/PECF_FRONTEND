@@ -1,6 +1,9 @@
 import axios from "axios";
+import { AppThunk } from "../rootStore";
+import { Order } from "../../types/orderCreate";
+import { errorHandler } from '../../types/errorHandler';
 
-export const createOrder = (order) => async (dispatch) => {
+export const createOrder = (order: Order) : AppThunk => async (dispatch) => {
   try {
     dispatch({ type: "CREATE_ORDER_REQUEST" });
 
@@ -15,12 +18,12 @@ export const createOrder = (order) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "CREATE_ORDER_FAIL",
-      payload: error.response.data.message,
+      payload: errorHandler
     });
   }
 };
 
-export const myOrders = () => async (dispatch) => {
+export const myOrders = () : AppThunk => async (dispatch) => {
   try {
     dispatch({ type: "MY_ORDERS_REQUEST" });
 
@@ -30,12 +33,12 @@ export const myOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "MY_ORDERS_FAIL",
-      payload: error.response.data.message,
+      payload: errorHandler
     });
   }
 };
 
-export const getAllOrders = () => async (dispatch) => {
+export const getAllOrders = (): AppThunk => async (dispatch) => {
   try {
     dispatch({ type: "ALL_ORDERS_REQUEST" });
 
@@ -45,12 +48,12 @@ export const getAllOrders = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "ALL_ORDERS_FAIL",
-      payload: error.response.data.message,
+      payload: errorHandler
     });
   }
 };
 
-export const updateOrder = (id, order) => async (dispatch) => {
+export const updateOrder = (id: number, order: Order): AppThunk => async (dispatch) => {
   try {
     dispatch({ type: "UPDATE_ORDER_REQUEST" });
 
@@ -69,12 +72,12 @@ export const updateOrder = (id, order) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "UPDATE_ORDER_FAIL",
-      payload: error.response.data.message,
+      payload: errorHandler
     });
   }
 };
 
-export const deleteOrder = (id) => async (dispatch) => {
+export const deleteOrder = (id: number): AppThunk => async (dispatch) => {
   try {
     dispatch({ type: "DELETE_ORDER_REQUEST" });
 
@@ -84,12 +87,12 @@ export const deleteOrder = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "DELETE_ORDER_FAIL",
-      payload: error.response.data.message,
+      payload: errorHandler
     });
   }
 };
 
-export const getOrderDetails = (id) => async (dispatch) => {
+export const getOrderDetails = (id: number): AppThunk => async (dispatch) => {
   try {
     dispatch({ type: "ORDER_DETAILS_REQUEST" });
 
@@ -99,11 +102,11 @@ export const getOrderDetails = (id) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: "ORDER_DETAILS_FAIL",
-      payload: error.response.data.message,
+      payload: errorHandler
     });
   }
 };
 
-export const clearErrors = () => async (dispatch) => {
+export const clearErrors = (): AppThunk => async (dispatch) => {
   dispatch({ type: "CLEAR_ERRORS" });
 };

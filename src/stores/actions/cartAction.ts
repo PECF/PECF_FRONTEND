@@ -1,6 +1,8 @@
 import axios from "axios";
+import { ShippingInfo } from "../../types/Cart";
+import { AppThunk } from "../rootStore";
 
-export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
+export const addItemsToCart = (id: number, quantity: number): AppThunk => async (dispatch, getState) => {
   const { data } = await axios.get(``); // FALTA LA RUTA!
 
   const item = {
@@ -27,7 +29,7 @@ export const addItemsToCart = (id, quantity) => async (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
-export const removeItemsFromCart = (id) => async (dispatch, getState) => {
+export const removeItemsFromCart = (id: number): AppThunk => async (dispatch, getState) => {
   dispatch({
     type: "REMOVE_CART_ITEM",
     payload: id,
@@ -36,7 +38,7 @@ export const removeItemsFromCart = (id) => async (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
-export const saveShippingInfo = (data) => async (dispatch) => {
+export const saveShippingInfo = (data: ShippingInfo) : AppThunk => async (dispatch) => {
   dispatch({
     type: "SAVE_SHIPPING_INFO",
     payload: data,

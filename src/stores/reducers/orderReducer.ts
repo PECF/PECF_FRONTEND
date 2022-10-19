@@ -1,11 +1,22 @@
-export const newOrderReducer = (state = {}, action) => {
+import { OrderCreateState, OrderCreateAction } from '../../types/orderCreate';
+import { MyOrderAction, MyOrderState } from '../../types/myOrder';
+import { OrderListAction, OrderListState } from '../../types/orderList';
+import { OrderDetailActions, OrderDetailState } from '../../types/orderDetail';
+import { orderUpdateState, OrderUpdateTypes } from '../../types/orderUpdate';
+
+const newOrderInitialState: OrderCreateState = {
+  loading: false,
+} 
+
+export const newOrderReducer = (state = newOrderInitialState, action: OrderCreateAction) => {
   const reducers = {
     CREATE_ORDER_REQUEST: {
       ...state,
-      loading: true,
+      loading: false,
     },
     CREATE_ORDER_SUCCESS: {
       loading: false,
+      success: true,
       order: action.payload,
     },
     CREATE_ORDER_FAIL: {
@@ -19,10 +30,14 @@ export const newOrderReducer = (state = {}, action) => {
   };
 };
 
-export const myOrdersReducer = (state = { orders: [] }, action) => {
+const myOrderInitialState: MyOrderState = {
+  loading: false
+}
+
+export const myOrdersReducer = (state = myOrderInitialState, action: MyOrderAction) => {
   const reducers = {
     MY_ORDER_REQUEST: {
-      loading: true,
+      loading: false,
     },
     MY_ORDER_SUCCESS: {
       loading: false,
@@ -39,7 +54,11 @@ export const myOrdersReducer = (state = { orders: [] }, action) => {
   };
 };
 
-export const allOrdersReducer = (state = { orders: [] }, action) => {
+const listOrderInitialState : OrderListState = {
+  loading: false,
+}
+
+export const allOrdersReducer = (state = listOrderInitialState, action: OrderListAction) => {
   const reducers = {
     ALL_ORDERS_REQUEST: {
       loading: true,
@@ -59,7 +78,11 @@ export const allOrdersReducer = (state = { orders: [] }, action) => {
   };
 };
 
-export const orderReducer = (state = {}, action) => {
+const orderUpdateInitialState: orderUpdateState = {
+  loading: false
+}
+
+export const orderReducer = (state = orderUpdateInitialState, action: OrderUpdateTypes) => {
   const reducers = {
     UPDATE_ORDER_REQUEST: {
       ...state,
@@ -104,8 +127,12 @@ export const orderReducer = (state = {}, action) => {
   };
 };
 
-export const orderDetailsReducer = (state = { order: {} }, action) => {
-  const request = {
+const orderDetailInitialState: OrderDetailState = {
+  loading: false
+}
+
+export const orderDetailsReducer = (state = orderDetailInitialState, action: OrderDetailActions) => {
+  const reducers = {
     ORDER_DETAILS_REQUEST: {
       loading: true,
     },

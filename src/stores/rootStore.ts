@@ -1,5 +1,5 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import thunk from "redux-thunk";
+import { createStore, combineReducers, applyMiddleware, Action} from "redux";
+import thunk, {ThunkAction, ThunkDispatch} from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import {
   newProductReducer,
@@ -10,6 +10,8 @@ import {
   productsReducer,
   reviewReducer,
 } from "./reducers/productReducer";
+
+import { ReduxState } from "../types/types";
 
 import {
   allUsersReducer,
@@ -27,6 +29,15 @@ import {
   orderDetailsReducer,
   orderReducer,
 } from "./reducers/orderReducer";
+
+export type AppDispatch = ThunkDispatch<ReduxState, unknown, Action<string>>;
+
+export type AppThunk = ThunkAction<
+  Promise<void>,
+  ReduxState,
+  unknown,
+  Action<string>
+>;
 
 const reducer = combineReducers({
   products: productsReducer,
