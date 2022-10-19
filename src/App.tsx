@@ -1,17 +1,15 @@
-import NavBar from "./Views/NavBar/Navbar";
-import { Box } from "@chakra-ui/react";
-import Router from "./routes/router";
-import * as React from "react";
-import "./App.css";
 
-function App() {
+import React from "react";
+import { AppRoutes } from "./routes/Routes";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+
+export const App: React.FC = () => {
   return (
-    <Box>
-      <NavBar />
-      <div className="App"></div>;
-      <Router />
-    </Box>
+    <>
+      <Header />  
+      <AppRoutes />
+      <Footer />
+    </>
   );
-}
-
-export default App;
+};

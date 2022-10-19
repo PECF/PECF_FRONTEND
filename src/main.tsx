@@ -1,30 +1,22 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import { BrowserRouter } from "react-router-dom";
-import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
-import store from "./stores/rootStore";
-import ReactDOM from "react-dom";
-import * as React from "react";
-import App from "./App";
-import "./index.css";
+import { store } from "./redux/rootStore";
+import { App } from "./App";
 
-
-
-const el = document.getElementById('root')
-if (el === null) throw new Error('Root container missing in index.html')
-
-
-const root = ReactDOM.createRoot(el)
-
-
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider>
+        <Router>
           <App />
-        </ChakraProvider>
-      </Provider>
-    </BrowserRouter>
+        </Router>
+      </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );
