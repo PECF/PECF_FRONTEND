@@ -1,8 +1,13 @@
 import React from "react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
+
 import {
   Box,
   InputGroup,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
   InputRightElement,
   Input,
   Container,
@@ -11,7 +16,6 @@ import {
   Heading,
   Button,
   Flex,
-  Text,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -21,10 +25,19 @@ import {
   FormControl,
   ModalBody,
   ModalCloseButton,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverHeader,
+  PopoverBody,
+  PopoverFooter,
+  PopoverArrow,
+  Portal,
+  PopoverCloseButton,
 } from "@chakra-ui/react";
 import { useDisclosure } from "@chakra-ui/react";
 
-function NavBar() {
+export default function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -32,12 +45,11 @@ function NavBar() {
       <Flex
         minWidth="max-content"
         alignItems="center"
-        gap="90"
+        gap="20"
         justify="space-between"
-        ml={-10}
       >
         <Box p="2">
-          <Heading size="md">Logo</Heading>
+          <Heading size="md"> KALÚ</Heading>
         </Box>
         <InputGroup>
           <InputRightElement
@@ -46,54 +58,102 @@ function NavBar() {
           />
           <Input
             placeholder="Search..."
-            width="md"
+            width="sm"
             flex={100}
             variant="filled"
           />
         </InputGroup>
-
         <Spacer />
+        <Menu>
+          <MenuButton
+            as={Button}
+            rightIcon={<ChevronDownIcon />}
+            variant="link"
+            gap="8"
+            border="none"
+            color="blackAlpha.900"
+          >
+            Pages
+          </MenuButton>
+          <MenuList>
+            <MenuItem>Download</MenuItem>
+            <MenuItem>Create a Copy</MenuItem>
+            <MenuItem>Mark as Draft</MenuItem>
+          </MenuList>
+        </Menu>
+        <Menu>
+          <MenuButton
+            as={Button}
+            rightIcon={<ChevronDownIcon ml="10" />}
+            variant="link"
+            border="none"
+            color="blackAlpha.900"
+            gap="10"
+            marginX="-5"
+          >
+            Features
+          </MenuButton>
+          <MenuList>
+            <MenuItem>Download</MenuItem>
+            <MenuItem>Create a Copy</MenuItem>
+            <MenuItem>Mark as Draft</MenuItem>
+          </MenuList>
+        </Menu>
 
-        <ButtonGroup gap="1">
-          <Button colorScheme="teal" variant="outline" onClick={onOpen}>
+        <ButtonGroup gap="">
+          <Popover>
+            <PopoverTrigger>
+              <Button colorScheme="blackAlpha.900" variant="outline">
+                Log in
+              </Button>
+            </PopoverTrigger>
+            <Portal>
+              <PopoverContent>
+                <PopoverArrow />
+                <PopoverHeader>Log In</PopoverHeader>
+                <PopoverCloseButton />
+                <PopoverBody>
+                  <FormControl>
+                    <FormLabel>Enter your email</FormLabel>
+                    <Input placeholder="email@example.com" />
+                  </FormControl>
+
+                  <FormControl mt={4}>
+                    <FormLabel>Password</FormLabel>
+                    <Input type="password" />
+                  </FormControl>
+                </PopoverBody>
+                <PopoverFooter>
+                  <Button variant="link" color="blackAlpha.900" border="none">
+                    Forgot your password?
+                  </Button>
+                  <Button
+                    colorScheme="blue"
+                    mr={3}
+                    onClick={onClose}
+                    ml="5"
+                    backgroundColor="blackAlpha.900"
+                  >
+                    Log In
+                  </Button>
+                </PopoverFooter>
+              </PopoverContent>
+            </Portal>
+          </Popover>
+
+          <Button
+            colorScheme="blackAlpha.900"
+            variant="outline"
+            onClick={onOpen}
+          >
             Sign Up
-          </Button>
-
-          <Button colorScheme="teal" variant="outline" onClick={onOpen}>
-            Log in
           </Button>
         </ButtonGroup>
 
         <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Log In</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Enter your email</FormLabel>
-                <Input placeholder="email@example.com" />
-              </FormControl>
-
-              <FormControl mt={4}>
-                <FormLabel>Password</FormLabel>
-                <Input type="password" />
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button variant="ghost">Forgot your password?</Button>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Log In
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-
-        <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Sing in</ModalHeader>
+            <ModalHeader>Sing up</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
               <FormControl>
@@ -113,20 +173,21 @@ function NavBar() {
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost">Forgot your password?</Button>
-              <Button colorScheme="blue" mr={3} onClick={onClose}>
-                Log In
+              <Button variant="ghost" border="none">
+                Forgot your password?
+              </Button>
+              <Button
+                colorScheme="blue"
+                mr={3}
+                onClick={onClose}
+                backgroundColor="blackAlpha.900"
+              >
+                Sing In
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
-
-        <Button colorScheme="teal" size="md" padding="5" width="60">
-          Cart
-        </Button>
       </Flex>
     </Container>
   );
 }
-
-export default NavBar;
