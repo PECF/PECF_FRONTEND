@@ -1,9 +1,8 @@
-import React, { Fragment, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   FormControl,
   FormLabel,
   Input,
-  FormErrorMessage,
   FormHelperText,
   Text,
   Box,
@@ -40,8 +39,8 @@ const ForgotPassword = () => {
           p={50}
           boxShadow='lg'
         >
-          <FormControl isRequired>
-            <FormLabel fontSize={20}>Let's find your Password</FormLabel>
+          <FormControl isRequired>  
+            <FormLabel fontSize={20}>Let&apos;s find your Password</FormLabel>  
             <Text mt={5} fontSize={16}>
               Please enter your email to search for your account.
             </Text>
@@ -53,7 +52,7 @@ const ForgotPassword = () => {
               type="email"
             />  
             <FormHelperText>
-              Your Email is private, we'll never share your email.
+              Your Email is private, we&apos;ll never share your email.
             </FormHelperText>
             <Button
               leftIcon={<EmailIcon />}

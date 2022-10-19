@@ -1,11 +1,10 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState } from "react";
+//import { useSelector } from "react-redux";
 
 import {
   FormControl,
   FormLabel,
   Input,
-  FormErrorMessage,
   FormHelperText,
   Text,
   Box,
@@ -28,7 +27,7 @@ const UpdatePassword = () => {
     setOldPassword(e.target.value);
   const handleChangeNew = (e: React.ChangeEvent<HTMLInputElement>) =>
     setNewPassword(e.target.value);
-  const handleChangeNewAgain = (e: React.ChangeEvent<HTMLInputElement>) =>
+  const handleConfirm = (e: React.ChangeEvent<HTMLInputElement>) =>
     setConfirmPassword(e.target.value);
 
   return (
@@ -51,7 +50,7 @@ const UpdatePassword = () => {
               </Text>
               <Input
                 mt={3}
-                onChange={handleChangeNew}
+                onChange={handleChangeOld}
                 placeholder="Insert old password here"
                 value={oldPassword}
                 type="password" 
@@ -73,7 +72,7 @@ const UpdatePassword = () => {
               </Text>
               <Input
                 mt={3}
-                onChange={handleChangeNew}
+                onChange={handleConfirm}
                 placeholder="Insert new password again"
                 value={confirmPassword}
                 type="password" 
