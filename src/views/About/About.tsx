@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-const Details = () => {
-    return (
+export default function About(){
+    return(
         <div>
-
+            
         </div>
     )
-};
+}
 
-export default Details;

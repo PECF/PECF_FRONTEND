@@ -1,9 +1,15 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
 
-function App() {
-  return <div className="App"></div>;
-}
+import React from "react";
+import { AppRoutes } from "./routes/Routes";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
 
-export default App;
+export const App: React.FC = () => {
+  return (
+    <>
+      <Header />  
+      <AppRoutes />
+      <Footer />
+    </>
+  );
+};
