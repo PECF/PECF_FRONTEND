@@ -15,31 +15,12 @@ import {
   Heading,
   Button,
   Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  FormLabel,
-  FormControl,
-  ModalBody,
-  ModalCloseButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  Portal,
-  PopoverCloseButton,
 } from "@chakra-ui/react";
 import Cart from "./Cart";
-import { useDisclosure } from "@chakra-ui/react";
+import Login from "./Login";
+import SingUp from "./SingUp";
 
 export default function NavBar() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   return (
     <Container maxWidth="100%">
       <Flex
@@ -101,92 +82,10 @@ export default function NavBar() {
         </Menu>
 
         <ButtonGroup gap="">
-          <Popover>
-            <PopoverTrigger>
-              <Button colorScheme="blackAlpha.900" variant="outline">
-                Log in
-              </Button>
-            </PopoverTrigger>
-            <Portal>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverHeader>Log In</PopoverHeader>
-                <PopoverCloseButton />
-                <PopoverBody>
-                  <FormControl>
-                    <FormLabel>Enter your email</FormLabel>
-                    <Input placeholder="email@example.com" />
-                  </FormControl>
+          <Login />
 
-                  <FormControl mt={4}>
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" />
-                  </FormControl>
-                </PopoverBody>
-                <PopoverFooter>
-                  <Button variant="link" color="blackAlpha.900" border="none">
-                    Forgot your password?
-                  </Button>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onClose}
-                    ml="5"
-                    backgroundColor="blackAlpha.900"
-                  >
-                    Log In
-                  </Button>
-                </PopoverFooter>
-              </PopoverContent>
-            </Portal>
-          </Popover>
-
-          <Button
-            colorScheme="blackAlpha.900"
-            variant="outline"
-            onClick={onOpen}
-          >
-            Sign Up
-          </Button>
+          <SingUp />
         </ButtonGroup>
-
-        <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Sing up</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Enter your email</FormLabel>
-                <Input placeholder="email@example.com" />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Enter your full Name</FormLabel>
-                <Input placeholder="Juan Perez" />
-              </FormControl>
-
-              <FormControl mt={4}>
-                <FormLabel>Password</FormLabel>
-                <Input type="password" />
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button variant="ghost" border="none">
-                Forgot your password?
-              </Button>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={onClose}
-                backgroundColor="blackAlpha.900"
-              >
-                Sing In
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
 
         <Cart />
       </Flex>
