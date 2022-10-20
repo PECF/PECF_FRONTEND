@@ -1,6 +1,5 @@
 import React from "react";
 import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
-
 import {
   Box,
   InputGroup,
@@ -35,6 +34,7 @@ import {
   Portal,
   PopoverCloseButton,
 } from "@chakra-ui/react";
+import Cart from "./Cart";
 import { useDisclosure } from "@chakra-ui/react";
 
 export default function NavBar() {
@@ -44,14 +44,14 @@ export default function NavBar() {
     <Container maxWidth="100%">
       <Flex
         minWidth="max-content"
-        alignItems="center"
-        gap="20"
+        alingItems="center"
+        gap="10"
         justify="space-between"
       >
         <Box p="2">
           <Heading size="md"> KALÚ</Heading>
         </Box>
-        <InputGroup>
+        <InputGroup gap="2">
           <InputRightElement
             // eslint-disable-next-line react/no-children-prop
             children={<SearchIcon color="gray.300" cursor="pointer" />}
@@ -89,7 +89,7 @@ export default function NavBar() {
             border="none"
             color="blackAlpha.900"
             gap="10"
-            marginX="-5"
+            marginX="0"
           >
             Features
           </MenuButton>
@@ -187,6 +187,8 @@ export default function NavBar() {
             </ModalFooter>
           </ModalContent>
         </Modal>
+
+        <Cart />
       </Flex>
     </Container>
   );

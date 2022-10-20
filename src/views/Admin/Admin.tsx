@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import ProductsDashboard from "./ProductsDashboard";
+import CreateProduct from "./CreateProduct";
 
 const Admin = () => {
-    <div></div>
+  <div>
+    <ProductsDashboard />
+    <CreateProduct />
+  </div>;
 };
 
 export default Admin;
