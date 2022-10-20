@@ -5,7 +5,7 @@ import { StarIcon } from "@chakra-ui/icons";
 export const Card = () => {
   return (
     <Box
-      w="15rem"
+      w="14.5rem"
       h="18rem"
       rounded="20px"
       boxShadow="sm"
@@ -15,7 +15,7 @@ export const Card = () => {
       bgSize="cover"
       bgRepeat="no-repeat"
       display="flex"
-      margin={"1%"}>
+      margin={"10%"}>
       <Box h="100%" w="100%" p={5} display="flex" flexDirection="column">
         <Box display="flex" flexDir="column">
           <Stack isInline align="center">
@@ -29,7 +29,7 @@ export const Card = () => {
           </Stack>
         </Box>
         <Spacer />
-        <Box>
+        <Box display={'flex'} flexDir='column' alignItems={'center'}>
           <Text
             as="h2"
             fontWeight="semibold"
@@ -51,9 +51,7 @@ export const Card = () => {
                 ))}
               <StarIcon color="grey" />
             </Box>
-            <Text color="white" as="h3" fontSize="l" fontWeight="semibold">
-              Reviews
-            </Text>
+            
           </Stack>
         </Box>
       </Box>

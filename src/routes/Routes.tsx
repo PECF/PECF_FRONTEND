@@ -2,11 +2,11 @@
 // Language: typescript jsx
 // "react-router-dom": "^6.4.1", NO USING SWITCH
 
-import React from "react";
 import { Route, Routes } from "react-router-dom";
-import { PrivateRoute } from "./PrivateRoute";
-import { AdminRoute } from "./AdminRoute";
 import { Home } from "../pages/Home";
+import React from "react";
+// import { PrivateRoute } from "./PrivateRoute";
+// import { AdminRoute } from "./AdminRoute";
 // import { Login } from "../pages/Login";
 // import { Register } from "../pages/Register";
 // import { ForgotPassword } from "../pages/ForgotPassword";
