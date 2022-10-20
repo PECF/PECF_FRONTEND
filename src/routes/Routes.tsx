@@ -30,14 +30,14 @@ export const AppRoutes: React.FC = () => {
   );
 };
 
-// import { AdminDashboard } from "../pages/AdminDashboard";
-// import { ChangePassword } from "../pages/ChangePassword";
-// import { ManageProducts } from "../pages/ManageProducts";
-// import { TermsOfService } from "../pages/TermsOfService";
-// import { ResetPassword } from "../pages/ResetPassword";
-// import { SearchResults } from "../pages/SearchResults";
-// import { PrivacyPolicy } from "../pages/PrivacyPolicy";
-// import { PageNotFound } from "../pages/PageNotFound";
+// import { AdminDashboard } from "../pages/AdminDashboard"; // esta
+// import { ChangePassword } from "../pages/ChangePassword"; // esta
+// import { ManageProducts } from "../pages/ManageProducts"; // esta
+// import { TermsOfService } from "../pages/TermsOfService"; //  Thomas ? 
+// import { ResetPassword } from "../pages/ResetPassword";  // esta
+// import { SearchResults } from "../pages/SearchResults";  // esta en duda!
+// import { PrivacyPolicy } from "../pages/PrivacyPolicy";  // esta
+// import { PageNotFound } from "../pages/PageNotFound";  // esta
 // import { ReturnPolicy } from "../pages/ReturnPolicy";
 // import { ManageOrders } from "../pages/ManageOrders";
 // import { EditProduct } from "../pages/EditProduct";
