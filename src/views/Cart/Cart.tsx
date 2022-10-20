@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Details = () => {
+const Cart = () => {
     return (
         <div>
 
@@ -8,4 +8,4 @@ const Details = () => {
     )
 };
 
-export default Details;
+export default Cart;

@@ -1,28 +1,24 @@
 import React from "react";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { ChakraProvider } from "@chakra-ui/react";
 import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
-import store from "./stores/rootStore.ts";
-// import { positions, transitions, Provider as AlertProvider } from "react-alert";
-// import AlertTemplate from "react-alert-template-basic";
+import * as ReactDOM from "react-dom/client";
+import store from "./stores/rootStore";
 
-// const options = {
-//   timeout: 5000,
-//   position: positions.BOTTOM_CENTER,
-//   transition: transitions.SCALE,
-// };
+const el = document.getElementById('root')
+if (el === null) throw new Error('Root container missing in index.html')
 
-const container = document.getElementById("root");
-const root = createRoot(container);
+const root = ReactDOM.createRoot(el)
 
 root.render(
   <BrowserRouter>
     <Provider store={store}>
-      {/* <AlertProvider template={AlertTemplate} {...options}> */}
-      <App />
-      {/* </AlertProvider> */}
+      <ChakraProvider>
+        <App />
+      </ChakraProvider>
     </Provider>
   </BrowserRouter>
 );
