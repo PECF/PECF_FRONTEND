@@ -1,7 +1,7 @@
 import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
+import { Card } from "../components/Card";
 import Slider from "react-slick";
 import React from "react";
-import { Card } from "../components/Card";
 import {
   Box,
   Container,
@@ -9,6 +9,7 @@ import {
   Flex,
   IconButton,
   useBreakpointValue,
+  Spinner,
 } from "@chakra-ui/react";
 
 const settings = {
@@ -23,107 +24,165 @@ const settings = {
   slidesToScroll: 1,
 };
 
-export function Home() {
-  // As we have used custom buttons, we need a reference variable to
-  // change the state
+import { useRecoveryData } from "../hooks/useRecoveryData";
+export const Home = () => {
+  const { loading, products, error } = useRecoveryData("products");
+
   const [slider, setSlider] = React.useState<Slider | null>(null);
-
-  // These are the breakpoints which changes the position of the
-  // buttons as the screen size changes
+  const side = useBreakpointValue({ base: "10px", md: "20px" });
   const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "10px" });
-
-  // These are the images used in the slide
-  const cards = [
-    "https://images.unsplash.com/photo-1612852098516-55d01c75769a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-  ];
 
   return (
-    <Container ml={0} minWidth="100vw" minHeight="lg">
-      <Flex
-        minWidth="max-content"
-        width={"100%"}
-        alignItems="center"
-        justifyContent={"center"}>
-        <Heading mt="20px">Welcome to KALÚ Web Page</Heading>
+    
+    {loading ? (
+
+      <Flex w="100%" h="100vh" justifyContent="center" alignItems="center">
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+        />
       </Flex>
-      <Box
-        alignSelf={"center"}
-        height={"400px"}
-        width={"container"}
-        p="20px"
-        position={"relative"}
-        overflow={"hidden"}>
-        {/* CSS files for react-slick */}
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
-        {/* Left Icon */}
-        <IconButton
-          aria-label="left-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          left={side}
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          bgColor="teal.500"
-          onClick={() => slider?.slickPrev()}>
-          <BiLeftArrowAlt />
-        </IconButton>
-        {/* Right Icon */}
-        <IconButton
-          aria-label="right-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          right={side}
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          bgColor="teal.500"
-          onClick={() => slider?.slickNext()}>
-          <BiRightArrowAlt />
-        </IconButton>
-        {/* Slider */}
-        <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {cards.map((url, index) => (
-            <Box
-              key={index}
-              height={"45vh"}
-              position="relative"
-              backgroundPosition="center"
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundImage={`url(${url})`}
-            />
+    ) : (
+      <Container maxW="container.xl" mt="20px">
+        <Heading as="h1" size="xl" mb="20px">
+          Products
+        </Heading>
+        <Slider ref={(slider) => setSlider(slider)} {...settings}>
+          {products.map((product) => (
+            <Box key={product.id}>
+              <Card product={product} />
+            </Box>
           ))}
         </Slider>
-      </Box>
-      <Flex
-        minWidth="max-content"
-        width={"100%"}
-        alignItems="center"
-        justifyContent={"center"}>
-        <Heading mt="20px">Recomended For You</Heading>
-      </Flex>
-      <Flex justify="center" maxW={"100%"} wrap="wrap">
-        {Array(10)
-          .fill("")
-          .map((_, i) => (
-            <Card key={i} />
-          ))}
-      </Flex>
-    </Container>
-  );
-}
+        <Flex
+          position="absolute"
+          top={top}
+          left={side}
+          zIndex="1"
+          onClick={() => slider?.slickPrev()}
+        >
+          <IconButton
+            aria-label="Previous"
+            icon={<BiLeftArrowAlt />}
+            size="lg"
+            colorScheme="blue"
+          />
+        </Flex>
+        <Flex
+          position="absolute"
+          top={top}
+          right={side}
+          
+    
+// const keyword = match.params.keyword;
+
+// const pageNumber = match.params.pageNumber || "1";
+
+// const dispatch = useDispatch<AppDispatch>();
+
+// const { products, loading, error, page, pages } = useSelector(
+//   (state: ReduxState) => state.productList
+// );
+
+// useEffect(() => {
+//   dispatch(listProducts(keyword, pageNumber));
+// }, [dispatch, keyword, pageNumber]);
+
+//   const [slider, setSlider] = React.useState<Slider | null>(null);
+
+//   const top = useBreakpointValue({ base: "90%", md: "50%" });
+//   const side = useBreakpointValue({ base: "30%", md: "10px" });
+
+//   const { products } = useSelector((state: RootState) => state.products);
+
+//   return (
+//     <Container ml={0} minWidth="100vw" minHeight="lg">
+//       <Flex
+//         minWidth="max-content"
+//         width={"100%"}
+//         alignItems="center"
+//         justifyContent={"center"}>
+//         <Heading mt="20px">Welcome to KALÚ Web Page</Heading>
+//       </Flex>
+//       <Box
+//         alignSelf={"center"}
+//         height={"400px"}
+//         width={"container"}
+//         p="20px"
+//         position={"relative"}
+//         overflow={"hidden"}>
+//         {/* CSS files for react-slick */}
+//         <link
+//           rel="stylesheet"
+//           type="text/css"
+//           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
+//         />
+//         <link
+//           rel="stylesheet"
+//           type="text/css"
+//           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
+//         />
+//         {/* Left Icon */}
+//         <IconButton
+//           aria-label="left-arrow"
+//           colorScheme="messenger"
+//           borderRadius="full"
+//           position="absolute"
+//           left={side}
+//           top={top}
+//           transform={"translate(0%, -50%)"}
+//           zIndex={2}
+//           bgColor="teal.500"
+//           onClick={() => slider?.slickPrev()}>
+//           <BiLeftArrowAlt />
+//         </IconButton>
+//         {/* Right Icon */}
+//         <IconButton
+//           aria-label="right-arrow"
+//           colorScheme="messenger"
+//           borderRadius="full"
+//           position="absolute"
+//           right={side}
+//           top={top}
+//           transform={"translate(0%, -50%)"}
+//           zIndex={2}
+//           bgColor="teal.500"
+//           onClick={() => slider?.slickNext()}>
+//           <BiRightArrowAlt />
+//         </IconButton>
+//         {/* Slider */}
+//         <Slider {...settings} ref={(slider) => setSlider(slider)}>
+//           {products.map((product, index) => (
+//             <Box
+//               key={index}
+//               height={"45vh"}
+//               position="
+//               relative"
+//               backgroundPosition="center"
+//               backgroundRepeat="no-repeat"
+//               backgroundSize="cover"
+//               backgroundImage={`url(${product.image})`}
+//             />
+//           ))}
+//         </Slider>
+//       </Box>
+//       <Flex
+//         minWidth="max-content"
+//         width={"100%"}
+//         alignItems="center"
+//         justifyContent={"center"}>
+//         <Heading mt="20px">Recomended For You</Heading>
+//       </Flex>
+//       <Flex justify="center" maxW={"100%"} wrap="wrap">
+//         {Array(10)
+//           .fill("")
+//           .map((_, i) => (
+//             <Card key={i} />
+//           ))}
+//       </Flex>
+//     </Container>
+//   );
+// };

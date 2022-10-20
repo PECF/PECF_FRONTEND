@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-//import { useSelector } from "react-redux";
-
+import React from "react";
 import {
   FormControl,
   FormLabel,
@@ -14,48 +12,34 @@ import {
 
 import { RepeatIcon } from "@chakra-ui/icons";
 
-const UpdatePassword = () => {
+const ResetPassword = () => {
+
   const send = useToast();
 
-  // const { error, isUpdated, loading } = useSelector((state) => state.profile);
+  const [inputNew, setInputNew] = React.useState("");
+  const [inputNewAgain, setInputNewAgain] = React.useState("");
 
-  const [oldPassword, setOldPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
-  const handleChangeOld = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setOldPassword(e.target.value);
   const handleChangeNew = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setNewPassword(e.target.value);
-  const handleConfirm = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setConfirmPassword(e.target.value);
+  setInputNew(e.target.value);
+  const handleChangeNewAgain = (e: React.ChangeEvent<HTMLInputElement>) =>
+  setInputNewAgain(e.target.value);
 
-  return (
-    <Box>
-      {/* <NavBar/> */}
-      <Box
-        mt={20}
-        maxW="100%"
-        bg={"whiteAlpha.100"}
-        borderWidth="2px"
-        borderRadius="lg"
-        overflow="hidden"
-        p={50}
-        boxShadow="lg"
-      >
-          <FormControl isRequired>
+
+    return (
+      <Box>
+        <Box>
+          <Box
+            mt={20}
+            maxW="100%"
+            bg={"whiteAlpha.100"}
+            borderWidth="2px"
+            borderRadius="lg"
+            overflow="hidden"
+            p={50}
+            boxShadow='lg'
+          >
+            <FormControl isRequired>
               <FormLabel fontSize={20}>Password Reset</FormLabel>
-              <Text mt={5} fontSize={16}>
-              Please enter your old password.
-              </Text>
-              <Input
-                mt={3}
-                onChange={handleChangeOld}
-                placeholder="Insert old password here"
-                value={oldPassword}
-                type="password" 
-                required
-              />  
               <Text mt={5} fontSize={16}>
               Please enter your new password.
               </Text>
@@ -63,27 +47,26 @@ const UpdatePassword = () => {
                 mt={3}
                 onChange={handleChangeNew}
                 placeholder="Insert new password here"
-                value={newPassword}
+                value={inputNew}
                 type="password" 
                 required
               />  
+
               <Text mt={5} fontSize={16}>
-              Please confirm your new password.
+              Please enter your new password again.
               </Text>
               <Input
                 mt={3}
-                onChange={handleConfirm}
+                onChange={handleChangeNewAgain}
                 placeholder="Insert new password again"
-                value={confirmPassword}
+                value={inputNewAgain}
                 type="password" 
                 required
               />  
-          
-          <FormHelperText>
-          Please save your password safetly, never share them with anyone.
-          </FormHelperText>
-
-          <Button
+              <FormHelperText>
+              Please save your password safetly, never share them with anyone.
+              </FormHelperText>
+              <Button
                 leftIcon={<RepeatIcon />}
                 mt={10}
                 color={"whiteAlpha.900"}
@@ -108,14 +91,14 @@ const UpdatePassword = () => {
                     isClosable: true,
                   }) */
               >
-                Update!
+                Reset!
               </Button>
-
-        </FormControl>
+            </FormControl>
+          </Box>
+        </Box>
       </Box>
-     {/*  <Footer/> */}
-    </Box>
-  );
-};
+    );
+  };
 
-export default UpdatePassword;
+
+export default ResetPassword;

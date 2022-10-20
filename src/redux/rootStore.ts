@@ -1,7 +1,7 @@
 import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { createStore, applyMiddleware, Action } from "redux";
-import rootReducer from "./reducers/rootReducer";
+import rootReducer from "./rootReducer";
 import { ReduxState } from "../types/reduxTypes";
 const initialState = {};
 

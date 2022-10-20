@@ -66,3 +66,5 @@ export const clearCart = (): AppThunk => async (dispatch) => {
 
   localStorage.removeItem("cartItems");
 };
+
+

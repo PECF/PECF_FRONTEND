@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
 import { AdminRoute } from "./AdminRoute";
 import { Home } from "../pages/Home";
+import { UpdatePassword } from "../pages/user/UpdatePassword";
 // import { Login } from "../pages/Login";
 // import { Register } from "../pages/Register";
 // import { ForgotPassword } from "../pages/ForgotPassword";
@@ -17,7 +18,8 @@ import { Home } from "../pages/Home";
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<UpdatePassword />} />
+
       {/* <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -42,6 +44,8 @@ export const AppRoutes: React.FC = () => {
 // import { EditProfile } from "../pages/EditProfile";
 // import { Redirect, Route } from "react-router-dom";
 // import { useAuth } from "../contexts/AuthContext";
+// import UpdatePassword from "../views/user/UpdatePassword";
+// import { getProducts } from "../redux/actions/productsActions";
 // import { AddProduct } from "../pages/AddProduct";
 // import { Categories } from "../pages/Categories";
 // import { EditOrder } from "../pages/EditOrder";
