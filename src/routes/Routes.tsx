@@ -7,6 +7,7 @@ import { Route, Routes } from "react-router-dom";
 import { PrivateRoute } from "./PrivateRoute";
 import { AdminRoute } from "./AdminRoute";
 import { Home } from "../pages/Home";
+import  TermnsOfService  from "../pages/TermnsOfService"
 // import { Login } from "../pages/Login";
 // import { Register } from "../pages/Register";
 // import { ForgotPassword } from "../pages/ForgotPassword";
@@ -18,6 +19,8 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/termsofservice" element={<TermnsOfService />} />
+
       {/* <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
