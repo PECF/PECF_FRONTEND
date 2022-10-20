@@ -4,6 +4,7 @@ import {
   Container,
   Divider,
   IconButton,
+  Input,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -20,6 +21,7 @@ import {
   contactUs,
   copyright,
   kalu,
+  newsletter,
 } from "./constants";
 
 export const Footer = () => (
@@ -86,6 +88,23 @@ export const Footer = () => (
         </Stack>
       </Stack>
     </Stack>
+    <Stack justify="center" align="center" spacing="4">
+      <Text fontSize="xl" fontWeight="semibold" color="subtle">
+        {newsletter}
+      </Text>
+      <Stack
+        justify="center"
+        spacing="4"
+        direction={{ base: "column", sm: "row" }}
+        maxW={{ lg: "360px" }}
+      >
+        <Input placeholder="Enter your email" type="email" required />
+        <Button type="submit" flexShrink={0}>
+          Subscribe
+        </Button>
+      </Stack>
+    </Stack>
+
     <Divider />
     <Stack pt="8" pb="12" justify="center" align="center">
       <Text fontSize="sm" color="subtle" textAlign="center">
