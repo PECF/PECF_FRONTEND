@@ -1,78 +1,93 @@
-import React, { Fragment, useState, useEffect } from "react";
-import Loader from "../layout/Loader/Loader";
-//importar iconos de mailing
-import { useDispatch, useSelector } from "react-redux";
-import { useAlert } from "react-alert"; //Habra que agregar react alert??
-import MetaData from "../layout/MetaData"; 
-import { forgotPassword } from "../../stores/actions/userAction";
-import { clearErrors } from "../../stores/actions/productAction";
+import React, { useState, useEffect } from "react";
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  FormHelperText,
+  Text,
+  Box,
+  Button,
+  useToast,
+} from "@chakra-ui/react";
+
+import { EmailIcon } from "@chakra-ui/icons";
 
 const ForgotPassword = () => {
-  const dispatch = useDispatch();
-  const alert = useAlert();
-  
-  const { error, message, loading } = useSelector(
-    (state : any) => state.forgotPassword
-    );
-    
-    const [email, setEmail] = useState("");
-    
-    const forgotPasswordSubmit = (e : any) => {
-      e.preventDefault();
-      const myForm = new FormData();
-      
-      myForm.set("email", email);
-      dispatch(forgotPassword(myForm));
-    };
-    
-useEffect(() => {
-  if (error) {
-    alert.error(error);
-    dispatch(clearErrors());
-  }
-  if (message) {
-    alert.success(message);
-  }
-}, [dispatch, error, alert, message]);
 
-return (
-  <Fragment>
-    {loading ? (
-      <Loader />
-    ) : (
-      <Fragment>
-        <MetaData title="Forgot Password" />
-        <div >
-          <div >
-            <h2 >Forgot Password</h2>
+  const send = useToast();
 
-            <form
-              onSubmit={forgotPasswordSubmit}
+  const [input, setInput] = React.useState("");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setInput(e.target.value);
+
+
+  // !insertar navbar y footer
+  //!enviar email por body, guardo estado local y lo envio por accion? deberia devolver un objeto {status: true, response: info}
+  // !user not found, user found, envia mail al ususario, error que falle el back
+  // blackAlpha.900 y gray.300
+  return (
+    <Box>
+      {/* <NavBar/> */}
+      <Box>
+        <Box
+          mt={20}
+          maxW="100%"
+          bg={"whiteAlpha.100"}
+          borderWidth="2px"
+          borderRadius="lg"
+          overflow="hidden"
+          p={50}
+          boxShadow='lg'
+        >
+          <FormControl isRequired>  
+            <FormLabel fontSize={20}>Let&apos;s find your Password</FormLabel>  
+            <Text mt={5} fontSize={16}>
+              Please enter your email to search for your account.
+            </Text>
+            <Input
+              mt={5}
+              onChange={handleChange}
+              placeholder="example@pecf.com"
+              value={input}
+              type="email"
+            />  
+            <FormHelperText>
+              Your Email is private, we&apos;ll never share your email.
+            </FormHelperText>
+            <Button
+              leftIcon={<EmailIcon />}
+              mt={10}
+              color={"whiteAlpha.900"}
+              bg={"blackAlpha.900"}
+              borderColor={"whiteAlpha"}
+              _hover={{ bg: "gray.300", color: "blackAlpha.900" }}
+              //habria que aplicar logica si encuentra el mail o no si no tira error
+              onClick={() =>
+                send({
+                  title: "Email Sended!",
+                  description: "Your recovery email should arrive soon.",
+                  status: "success",
+                  duration: 3000,
+                  isClosable: true,
+                })
+              }
+              /*  : send({
+               title: "Ups, something went wrong!",
+               description: "We couldn't find your email please verify or try another one",
+                  status: "error",
+                  duration: 3000,
+                  isClosable: true,
+                }) */
             >
-              <div >
-                {/* INSERTAR ICONO DE MAILING */}
-                <input
-                  type="email"
-                  placeholder="Email"
-                  required
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </div>
-
-              <input
-                type="submit"
-                value="Send"
-                className="forgotPasswordBtn"
-              />
-            </form>
-          </div>
-        </div>
-      </Fragment>
-    )}
-  </Fragment>
-);
+              Recover!
+            </Button>
+          </FormControl>
+        </Box>
+        {/* <Footer/> */}
+      </Box>
+    </Box>
+  );
 };
+/* }; */
 
 export default ForgotPassword;
