@@ -1,45 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap");
-:root {
-  --RichBlackFOGRA29: #001219;
-  --RichBlackFOGRA39: #090e10;
-  --SpecialBlack110: #030708;
-  --DarkJungleGreen: #0e1b1e;
-  --Viridian: #548164;
-  --LaurelGreen: #b8cc9a;
-  --BabyPowder: #fafbf8;
-  --ParadisePink: #ef476f;
-  --OrangeYellowCrayola: #ffd166;
-  --CaribbeanGreen: #06d6a0;
-  --BlueNCS: #118ab2;
-  --MidnightGreenEagleGreen: #073b4c;
-  --WinterSky: #ff006e;
-  --BlueViolet: #8338ec;
-  --GreenLizard: #a1ec36;
-  --PrincetonOrange: #ed7d37;
-  --DeepPink: #ed378d;
-  --MediumSpringGreen: #36ec97;
-  --AmaranthRed: #d90429;
-  --DavysGrey: #495057;
-  --button_primary: var(--RichBlackFOGRA39);
-  --button_secondary: var(--DarkJungleGreen);
-  --button_tertiary: var(--BabyPowder);
-  --background_primary: var(--RichBlackFOGRA29);
-  --background_secondary: var(--RichBlackFOGRA39);
-  --background_tertiary: var(--SpecialBlack110);
-  --background_quaternary: var(--BabyPowder);
-  --text_primary: var(--SpecialBlack110);
-  --text_secondary: var(--BabyPowder);
-  --text-error: var(--AmaranthRed);
-}
-p,
-a:link,
-a:visited,
-a:active {
-  text-decoration: none;
-  list-style: none;
-  color: var(--text_secondary);
-}
 
 #root {
   margin: 0;
@@ -49,12 +9,4 @@ a:active {
   -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   overflow: hidden;
   overflow-y: auto;
-}
-code {
-  font-family: "Fira Code", monospace;
-}
-.Link {
-  display: flex;
-  width: 100%;
-  justify-content: center;
 }

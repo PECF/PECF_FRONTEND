@@ -1,155 +1,264 @@
-// path: src/types/ordersTypes.ts
+import { Cart, ShippingAddress } from "./cartTypes";
+
 export interface Order {
-  _id: string;
-  shippingInfo: ShippingInfo;
-  user: string;
-  orderItems: OrderItem[];
-  paymentInfo: PaymentInfo;
-  paidAt: string;
+  orderItems: Cart[];
+  shippingAddress: ShippingAddress;
+  paymentMethod: string;
   itemsPrice: number;
   taxPrice: number;
   shippingPrice: number;
   totalPrice: number;
-  orderStatus: string;
-  deliveredAt: string;
+}
+
+export interface OrderCreate extends Order {
+  _id: string;
+  user: string;
+}
+
+export interface OrderCreateState {
+  loading: boolean;
+  order?: OrderCreate;
+  success?: boolean;
+  error?: any;
+}
+export enum OrderCreateActionTypes {
+  ORDER_CREATE_REQUEST = "ORDER_CREATE_REQUEST",
+  ORDER_CREATE_SUCCESS = "ORDER_CREATE_SUCCESS",
+  ORDER_CREATE_FAILURE = "ORDER_CREATE_FAILURE",
+}
+
+export interface OrderCreateRequestAction {
+  type: OrderCreateActionTypes.ORDER_CREATE_REQUEST;
+}
+
+export interface OrderCreateSuccessAction {
+  type: OrderCreateActionTypes.ORDER_CREATE_SUCCESS;
+  payload: OrderCreate;
+}
+
+export interface OrderCreateFailureAction {
+  type: OrderCreateActionTypes.ORDER_CREATE_FAILURE;
+  payload: any;
+}
+
+export type OrderCreateAction =
+  | OrderCreateRequestAction
+  | OrderCreateSuccessAction
+  | OrderCreateFailureAction;
+
+export interface OrderDeliverState {
+  loading?: boolean;
+  success?: boolean;
+  error?: any;
+}
+
+export enum OrderDeliverActionTypes {
+  ORDER_DELIVER_REQUEST = "ORDER_DELIVER_REQUEST",
+  ORDER_DELIVER_SUCCESS = "ORDER_DELIVER_SUCCESS",
+  ORDER_DELIVER_FAILURE = "ORDER_DELIVER_FAILURE",
+  ORDER_DELIVER_RESET = "ORDER_DELIVER_RESET",
+}
+
+export interface OrderDeliverRequestAction {
+  type: OrderDeliverActionTypes.ORDER_DELIVER_REQUEST;
+}
+
+export interface OrderDeliverSuccessAction {
+  type: OrderDeliverActionTypes.ORDER_DELIVER_SUCCESS;
+}
+
+export interface OrderDeliverFailureAction {
+  type: OrderDeliverActionTypes.ORDER_DELIVER_FAILURE;
+  payload: any;
+}
+
+export interface OrderDeliverResetAction {
+  type: OrderDeliverActionTypes.ORDER_DELIVER_RESET;
+}
+
+export type OrderDeliverAction =
+  | OrderDeliverRequestAction
+  | OrderDeliverSuccessAction
+  | OrderDeliverFailureAction
+  | OrderDeliverResetAction;
+
+export interface OrderDetails extends Order {
+  _id: string;
+  user: {
+    _id: string;
+    name: string;
+    email: string;
+  };
+  isPaid: boolean;
+  isDelivered: boolean;
+  paidAt?: string;
+  deliveredAt?: string;
+  paymentResult?: PaymentResult;
+}
+
+export interface OrderDetailsState {
+  loading: boolean;
+  order?: OrderDetails;
+  error?: any;
+}
+
+export enum OrderDetailsActionTypes {
+  ORDER_DETAILS_REQUEST = "ORDER_DETAILS_REQUEST",
+  ORDER_DETAILS_SUCCESS = "ORDER_DETAILS_SUCCESS",
+  ORDER_DETAILS_FAILURE = "ORDER_DETAILS_FAILURE",
+}
+
+export interface OrderDetailsRequestAction {
+  type: OrderDetailsActionTypes.ORDER_DETAILS_REQUEST;
+}
+
+export interface OrderDetailsSuccessAction {
+  type: OrderDetailsActionTypes.ORDER_DETAILS_SUCCESS;
+  payload: OrderDetails;
+}
+
+export interface OrderDetailsFailureAction {
+  type: OrderDetailsActionTypes.ORDER_DETAILS_FAILURE;
+  payload: any;
+}
+
+export type OrderDetailsAction =
+  | OrderDetailsRequestAction
+  | OrderDetailsSuccessAction
+  | OrderDetailsFailureAction;
+
+export interface OrderList extends Order {
+  _id: string;
+  user: {
+    _id: string;
+    name: string;
+  };
+  isPaid: boolean;
+  isDelivered: boolean;
+  paidAt?: string;
+  deliveredAt?: string;
   createdAt: string;
+  paymentResult?: PaymentResult;
 }
 
-export interface ShippingInfo {
-  address: string;
-  city: string;
-  phoneNo: string;
-  postalCode: string;
-  country: string;
+export interface OrderListState {
+  orders: OrderList[];
+  loading: boolean;
+  error?: any;
 }
 
-export interface OrderItem {
-  name: string;
-  quantity: number;
-  image: string;
-  price: number;
-  product: string;
+export enum OrderListActionTypes {
+  ORDER_LIST_REQUEST = "ORDER_LIST_REQUEST",
+  ORDER_LIST_SUCCESS = "ORDER_LIST_SUCCESS",
+  ORDER_LIST_FAILURE = "ORDER_LIST_FAILURE",
 }
 
-export interface PaymentInfo {
+export interface OrderListRequestAction {
+  type: OrderListActionTypes.ORDER_LIST_REQUEST;
+}
+
+export interface OrderListSuccessAction {
+  type: OrderListActionTypes.ORDER_LIST_SUCCESS;
+  payload: OrderList[];
+}
+
+export interface OrderListFailureAction {
+  type: OrderListActionTypes.ORDER_LIST_FAILURE;
+  payload: any;
+}
+
+export type OrderListAction =
+  | OrderListRequestAction
+  | OrderListSuccessAction
+  | OrderListFailureAction;
+
+export interface OrderListMy extends Order {
+  _id: string;
+  user: string;
+  isPaid: boolean;
+  isDelivered: boolean;
+  paidAt?: string;
+  deliveredAt?: string;
+  createdAt: string;
+  paymentResult?: PaymentResult;
+}
+
+export interface OrderListMyState {
+  orders?: OrderListMy[]; // TODO: Check this, made orders optional for now
+  loading: boolean;
+  error?: any;
+}
+
+export enum OrderListMyActionTypes {
+  ORDER_LIST_MY_REQUEST = "ORDER_LIST_MY_REQUEST",
+  ORDER_LIST_MY_SUCCESS = "ORDER_LIST_MY_SUCCESS",
+  ORDER_LIST_MY_FAILURE = "ORDER_LIST_MY_FAILURE",
+  ORDER_LIST_MY_RESET = "ORDER_LIST_MY_RESET",
+}
+
+export interface OrderListMyRequestAction {
+  type: OrderListMyActionTypes.ORDER_LIST_MY_REQUEST;
+}
+
+export interface OrderListMySuccessAction {
+  type: OrderListMyActionTypes.ORDER_LIST_MY_SUCCESS;
+  payload: OrderListMy[];
+}
+
+export interface OrderListMyFailureAction {
+  type: OrderListMyActionTypes.ORDER_LIST_MY_FAILURE;
+  payload: any;
+}
+
+export interface OrderListMyResetAction {
+  type: OrderListMyActionTypes.ORDER_LIST_MY_RESET;
+}
+
+export type OrderListMyAction =
+  | OrderListMyRequestAction
+  | OrderListMySuccessAction
+  | OrderListMyFailureAction
+  | OrderListMyResetAction;
+
+export interface OrderPayState {
+  loading?: boolean;
+  success?: boolean;
+  error?: any;
+}
+
+export enum OrderPayActionTypes {
+  ORDER_PAY_REQUEST = "ORDER_PAY_REQUEST",
+  ORDER_PAY_SUCCESS = "ORDER_PAY_SUCCESS",
+  ORDER_PAY_FAILURE = "ORDER_PAY_FAILURE",
+  ORDER_PAY_RESET = "ORDER_PAY_RESET",
+}
+
+export interface OrderPayRequestAction {
+  type: OrderPayActionTypes.ORDER_PAY_REQUEST;
+}
+
+export interface OrderPaySuccessAction {
+  type: OrderPayActionTypes.ORDER_PAY_SUCCESS;
+}
+
+export interface OrderPayFailureAction {
+  type: OrderPayActionTypes.ORDER_PAY_FAILURE;
+  payload: any;
+}
+
+export interface OrderPayResetAction {
+  type: OrderPayActionTypes.ORDER_PAY_RESET;
+}
+
+export type OrderPayAction =
+  | OrderPayRequestAction
+  | OrderPaySuccessAction
+  | OrderPayFailureAction
+  | OrderPayResetAction;
+
+export interface PaymentResult {
   id: string;
   status: string;
+  update_time: string;
+  payer: { email_address: string };
 }
-
-export interface IOrderState {
-  orders: Order[];
-  order: Order | null;
-  loading: boolean;
-  error: string;
-}
-
-export enum IOrderActionTypes {
-  CREATE_ORDER_REQUEST = "CREATE_ORDER_REQUEST",
-  CREATE_ORDER_SUCCESS = "CREATE_ORDER_SUCCESS",
-  CREATE_ORDER_FAIL = "CREATE_ORDER_FAIL",
-  GET_ORDER_REQUEST = "GET_ORDER_REQUEST",
-  GET_ORDER_SUCCESS = "GET_ORDER_SUCCESS",
-  GET_ORDER_FAIL = "GET_ORDER_FAIL",
-  GET_ORDERS_REQUEST = "GET_ORDERS_REQUEST",
-  GET_ORDERS_SUCCESS = "GET_ORDERS_SUCCESS",
-  GET_ORDERS_FAIL = "GET_ORDERS_FAIL",
-  UPDATE_ORDER_REQUEST = "UPDATE_ORDER_REQUEST",
-  UPDATE_ORDER_SUCCESS = "UPDATE_ORDER_SUCCESS",
-  UPDATE_ORDER_FAIL = "UPDATE_ORDER_FAIL",
-  DELETE_ORDER_REQUEST = "DELETE_ORDER_REQUEST",
-  DELETE_ORDER_SUCCESS = "DELETE_ORDER_SUCCESS",
-  DELETE_ORDER_FAIL = "DELETE_ORDER_FAIL",
-  CLEAR_ERRORS = "CLEAR_ERRORS",
-}
-
-export interface createOrderRequest {
-  type: IOrderActionTypes.CREATE_ORDER_REQUEST;
-}
-
-export interface createOrderSuccess {
-  type: IOrderActionTypes.CREATE_ORDER_SUCCESS;
-  payload: IOrderState["order"];
-}
-
-export interface createOrderFail {
-  type: IOrderActionTypes.CREATE_ORDER_FAIL;
-  payload: IOrderState["error"];
-}
-
-export interface getOrderRequest {
-  type: IOrderActionTypes.GET_ORDER_REQUEST;
-}
-
-export interface getOrderSuccess {
-  type: IOrderActionTypes.GET_ORDER_SUCCESS;
-  payload: IOrderState["order"];
-}
-
-export interface getOrderFail {
-  type: IOrderActionTypes.GET_ORDER_FAIL;
-  payload: IOrderState["error"];
-}
-
-export interface getOrdersRequest {
-  type: IOrderActionTypes.GET_ORDERS_REQUEST;
-}
-
-export interface getOrdersSuccess {
-  type: IOrderActionTypes.GET_ORDERS_SUCCESS;
-  payload: IOrderState["orders"];
-}
-
-export interface getOrdersFail {
-  type: IOrderActionTypes.GET_ORDERS_FAIL;
-  payload: IOrderState["error"];
-}
-
-export interface updateOrderRequest {
-  type: IOrderActionTypes.UPDATE_ORDER_REQUEST;
-}
-
-export interface updateOrderSuccess {
-  type: IOrderActionTypes.UPDATE_ORDER_SUCCESS;
-  payload: IOrderState["order"];
-}
-
-export interface updateOrderFail {
-  type: IOrderActionTypes.UPDATE_ORDER_FAIL;
-  payload: IOrderState["error"];
-}
-
-export interface deleteOrderRequest {
-  type: IOrderActionTypes.DELETE_ORDER_REQUEST;
-}
-
-export interface deleteOrderSuccess {
-  type: IOrderActionTypes.DELETE_ORDER_SUCCESS;
-  payload: IOrderState["order"];
-}
-
-export interface deleteOrderFail {
-  type: IOrderActionTypes.DELETE_ORDER_FAIL;
-  payload: IOrderState["error"];
-}
-
-export interface clearErrors {
-  type: IOrderActionTypes.CLEAR_ERRORS;
-}
-
-export type IOrderAction =
-  | createOrderRequest
-  | createOrderSuccess
-  | createOrderFail
-  | getOrderRequest
-  | getOrderSuccess
-  | getOrderFail
-  | getOrdersRequest
-  | getOrdersSuccess
-  | getOrdersFail
-  | updateOrderRequest
-  | updateOrderSuccess
-  | updateOrderFail
-  | deleteOrderRequest
-  | deleteOrderSuccess
-  | deleteOrderFail
-  | clearErrors;

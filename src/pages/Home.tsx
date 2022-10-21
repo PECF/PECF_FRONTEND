@@ -1,7 +1,20 @@
-import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
-import { Card } from "../components/Card";
+import {
+  BiLeftArrowAlt,
+  BiRightArrowAlt,
+  BiRightArrow,
+  BiLeftArrow,
+} from "react-icons/bi";
 import Slider from "react-slick";
 import React from "react";
+import { Card } from "../components/Card";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import SliderCard from "../components/SliderCard";
+import { useRecoveryData } from "../hooks/useRecoveryData";
+import getRandomInt from "../commonFunction/getRandomInt";
+import products from "../constant/ProductsTest";
+import { FirstSlider, SecondSlider } from "../constant/Home";
+
 import {
   Box,
   Container,
@@ -9,180 +22,218 @@ import {
   Flex,
   IconButton,
   useBreakpointValue,
-  Spinner,
 } from "@chakra-ui/react";
 
-const settings = {
-  dots: true,
-  arrows: false,
-  fade: true,
-  infinite: true,
-  autoplay: true,
-  speed: 500,
-  autoplaySpeed: 5000,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
+export function Home() {
+  // As we have used custom buttons, we need a reference variable to
+  // change the state
 
-import { useRecoveryData } from "../hooks/useRecoveryData";
-export const Home = () => {
-  const { loading, products, error } = useRecoveryData("products");
+  // const { error, products, loading } = useRecoveryData("products");
 
   const [slider, setSlider] = React.useState<Slider | null>(null);
-  const side = useBreakpointValue({ base: "10px", md: "20px" });
+  const [slider2, setSlider2] = React.useState<Slider | null>(null);
+  const [slider3, setSlider3] = React.useState<Slider | null>(null);
+  // These are the breakpoints which changes the position of the
+  // buttons as the screen size changes
   const top = useBreakpointValue({ base: "90%", md: "50%" });
+  const side = useBreakpointValue({ base: "30%", md: "5px" });
+
+  // These are the images used in the slide1
+  const Baner = [
+    "https://st.depositphotos.com/64696058/60658/i/450/depositphotos_606584616-stock-photo-dawn-mid-august-morning-daybreaks.jpg",
+    "https://pbs.twimg.com/media/BvlTVuGIEAAxZcw?format=jpg&name=small",
+    "https://i.blogs.es/ca0bd0/photographer-1st-kelvinyuen-3/450_1000.jpg",
+  ];
 
   return (
-    
-    {loading ? (
-
-      <Flex w="100%" h="100vh" justifyContent="center" alignItems="center">
-        <Spinner
-          thickness="4px"
-          speed="0.65s"
-          emptyColor="gray.200"
-          color="blue.500"
-          size="xl"
-        />
+    <Container
+      p={"10"}
+      bgColor="lightgray"
+      ml={0}
+      maxWidth="100vw"
+      minHeight="lg">
+      <Flex
+        minWidth="max-content"
+        width={"100%"}
+        alignItems="center"
+        justifyContent={"center"}>
+        <Heading mt="20px">Welcome to KALÚ Web Page</Heading>
       </Flex>
-    ) : (
-      <Container maxW="container.xl" mt="20px">
-        <Heading as="h1" size="xl" mb="20px">
-          Products
-        </Heading>
-        <Slider ref={(slider) => setSlider(slider)} {...settings}>
-          {products.map((product) => (
-            <Box key={product.id}>
-              <Card product={product} />
-            </Box>
-          ))}
-        </Slider>
-        <Flex
-          position="absolute"
-          top={top}
-          left={side}
-          zIndex="1"
-          onClick={() => slider?.slickPrev()}
-        >
+
+      <Flex
+        maxWidth={"90%"}
+        mt={"10px"}
+        flexDir={"column"}
+        flexWrap="wrap"
+        maxH={"50vh"}
+        justifyItems="center">
+        <Box
+          overflow={"hidden"}
+          position={"relative"}
+          padding="0"
+          maxWidth="40%">
           <IconButton
-            aria-label="Previous"
-            icon={<BiLeftArrowAlt />}
-            size="lg"
-            colorScheme="blue"
-          />
-        </Flex>
-        <Flex
-          position="absolute"
-          top={top}
-          right={side}
-          
-    
-// const keyword = match.params.keyword;
+            aria-label="left-arrow"
+            colorScheme="messenger"
+            borderRadius="full"
+            position="absolute"
+            left={side}
+            top={top}
+            transform={"translate(0%, -50%)"}
+            zIndex={2}
+            bgColor="teal.500"
+            onClick={() => slider?.slickPrev()}>
+            <BiLeftArrow />
+          </IconButton>
 
-// const pageNumber = match.params.pageNumber || "1";
+          <IconButton
+            aria-label="right-arrow"
+            colorScheme="messenger"
+            borderRadius="full"
+            position="absolute"
+            right={side}
+            top={top}
+            transform={"translate(0%, -50%)"}
+            zIndex={2}
+            bgColor="teal.500"
+            onClick={() => slider?.slickNext()}>
+            <BiRightArrow />
+          </IconButton>
 
-// const dispatch = useDispatch<AppDispatch>();
+          <Slider {...FirstSlider} ref={(slider) => setSlider(slider)}>
+            {Baner.map((img, index) => (
+              <SliderCard image={`${img}`} key={index} />
+            ))}
+          </Slider>
+        </Box>
+        <Box
+          width={"35%"}
+          height={"25vh"}
+          bgSize="cover"
+          bgImg={
+            "https://media.istockphoto.com/photos/mens-suits-on-hangers-in-different-colors-picture-id887360960?k=20&m=887360960&s=612x612&w=0&h=N0k2yX9noV6kNgpmKbcSXaLOl2x8Mbt_lyppAmfhNcA="
+          }></Box>
+        <Box
+          width={"35%"}
+          height={"25vh"}
+          bgSize="cover"
+          bgImg="https://media.istockphoto.com/photos/polka-dot-summer-brown-dress-suede-wedge-sandals-eco-straw-tote-bag-picture-id1208148708?k=20&m=1208148708&s=612x612&w=0&h=rjZiAPCOpwREiTET21lTP3wM30BUqAG9PjocC-euJ98="></Box>
+        <Box
+          width={"35%"}
+          height={"25vh"}
+          bgSize="cover"
+          bgImg="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzorsnZK_FNGOBVuxZT95bfnOhtQ1bPCU8kxlumfHi9g_NCZlFCvR81o3JcTZ59Ndr__o&usqp=CAU"></Box>
+        <Box
+          width={"35%"}
+          height={"25vh"}
+          bgSize="cover"
+          bgImg="https://img.freepik.com/free-photo/workplace-business-modern-male-accessories-laptop-black-background_155003-3944.jpg?w=2000"></Box>
+      </Flex>
 
-// const { products, loading, error, page, pages } = useSelector(
-//   (state: ReduxState) => state.productList
-// );
+      {products.length > 0 && (
+        <>
+          <Flex
+            flexDir={"column"}
+            alignItems="center"
+            bgColor={"whiteAlpha.800"}
+            borderRadius="20px"
+            m={"2rem"}>
+            <Heading>For Sale</Heading>
+            <Box
+              overflow={"hidden"}
+              position={"relative"}
+              alignSelf={"center"}
+              marginTop="10px"
+              width="100%">
+              <IconButton
+                aria-label="left-arrow"
+                colorScheme="messenger"
+                borderRadius="full"
+                position="absolute"
+                left={side}
+                top={top}
+                transform={"translate(0%, -50%)"}
+                zIndex={2}
+                bgColor="teal.500"
+                onClick={() => slider2?.slickPrev()}>
+                <BiLeftArrow />
+              </IconButton>
+              <IconButton
+                aria-label="right-arrow"
+                colorScheme="messenger"
+                borderRadius="full"
+                position="absolute"
+                right={side}
+                top={top}
+                transform={"translate(0%, -50%)"}
+                zIndex={2}
+                bgColor="teal.500"
+                onClick={() => slider2?.slickNext()}>
+                <BiRightArrow />
+              </IconButton>
 
-// useEffect(() => {
-//   dispatch(listProducts(keyword, pageNumber));
-// }, [dispatch, keyword, pageNumber]);
+              <Slider {...SecondSlider} ref={(slider) => setSlider2(slider)}>
+                {Array(products.length)
+                  .fill("")
+                  .map((_, i) => (
+                    <Card key={i} />
+                  ))}
+              </Slider>
+            </Box>
+          </Flex>
+          <Flex
+            flexDir={"column"}
+            alignItems="center"
+            bgColor={"whiteAlpha.800"}
+            borderRadius="20px"
+            m={"2rem"}>
+            <Heading>Recomended for You:</Heading>
 
-//   const [slider, setSlider] = React.useState<Slider | null>(null);
+            <Box
+              overflow={"hidden"}
+              position={"relative"}
+              alignSelf={"center"}
+              marginTop="10px"
+              width="100%">
+              <IconButton
+                aria-label="left-arrow"
+                colorScheme="messenger"
+                borderRadius="full"
+                position="absolute"
+                left={side}
+                top={top}
+                transform={"translate(0%, -50%)"}
+                zIndex={2}
+                bgColor="teal.500"
+                onClick={() => slider3?.slickPrev()}>
+                <BiLeftArrow />
+              </IconButton>
 
-//   const top = useBreakpointValue({ base: "90%", md: "50%" });
-//   const side = useBreakpointValue({ base: "30%", md: "10px" });
+              <IconButton
+                aria-label="right-arrow"
+                colorScheme="messenger"
+                borderRadius="full"
+                position="absolute"
+                right={side}
+                top={top}
+                transform={"translate(0%, -50%)"}
+                zIndex={2}
+                bgColor="teal.500"
+                onClick={() => slider3?.slickNext()}>
+                <BiRightArrow />
+              </IconButton>
 
-//   const { products } = useSelector((state: RootState) => state.products);
-
-//   return (
-//     <Container ml={0} minWidth="100vw" minHeight="lg">
-//       <Flex
-//         minWidth="max-content"
-//         width={"100%"}
-//         alignItems="center"
-//         justifyContent={"center"}>
-//         <Heading mt="20px">Welcome to KALÚ Web Page</Heading>
-//       </Flex>
-//       <Box
-//         alignSelf={"center"}
-//         height={"400px"}
-//         width={"container"}
-//         p="20px"
-//         position={"relative"}
-//         overflow={"hidden"}>
-//         {/* CSS files for react-slick */}
-//         <link
-//           rel="stylesheet"
-//           type="text/css"
-//           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-//         />
-//         <link
-//           rel="stylesheet"
-//           type="text/css"
-//           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-//         />
-//         {/* Left Icon */}
-//         <IconButton
-//           aria-label="left-arrow"
-//           colorScheme="messenger"
-//           borderRadius="full"
-//           position="absolute"
-//           left={side}
-//           top={top}
-//           transform={"translate(0%, -50%)"}
-//           zIndex={2}
-//           bgColor="teal.500"
-//           onClick={() => slider?.slickPrev()}>
-//           <BiLeftArrowAlt />
-//         </IconButton>
-//         {/* Right Icon */}
-//         <IconButton
-//           aria-label="right-arrow"
-//           colorScheme="messenger"
-//           borderRadius="full"
-//           position="absolute"
-//           right={side}
-//           top={top}
-//           transform={"translate(0%, -50%)"}
-//           zIndex={2}
-//           bgColor="teal.500"
-//           onClick={() => slider?.slickNext()}>
-//           <BiRightArrowAlt />
-//         </IconButton>
-//         {/* Slider */}
-//         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-//           {products.map((product, index) => (
-//             <Box
-//               key={index}
-//               height={"45vh"}
-//               position="
-//               relative"
-//               backgroundPosition="center"
-//               backgroundRepeat="no-repeat"
-//               backgroundSize="cover"
-//               backgroundImage={`url(${product.image})`}
-//             />
-//           ))}
-//         </Slider>
-//       </Box>
-//       <Flex
-//         minWidth="max-content"
-//         width={"100%"}
-//         alignItems="center"
-//         justifyContent={"center"}>
-//         <Heading mt="20px">Recomended For You</Heading>
-//       </Flex>
-//       <Flex justify="center" maxW={"100%"} wrap="wrap">
-//         {Array(10)
-//           .fill("")
-//           .map((_, i) => (
-//             <Card key={i} />
-//           ))}
-//       </Flex>
-//     </Container>
-//   );
-// };
+              <Slider {...SecondSlider} ref={(slider) => setSlider3(slider)}>
+                {Array(12)
+                  .fill("")
+                  .map((_, i) => (
+                    <Card key={i} />
+                  ))}
+              </Slider>
+            </Box>
+          </Flex>
+        </>
+      )}
+    </Container>
+  );
+}

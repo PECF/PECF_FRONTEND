@@ -12,8 +12,7 @@ import {
 
 import { EmailIcon } from "@chakra-ui/icons";
 
-const ForgotPassword = () => {
-
+export const ForgotPassword = () => {
   const send = useToast();
 
   const [input, setInput] = React.useState("");
@@ -21,10 +20,7 @@ const ForgotPassword = () => {
     setInput(e.target.value);
 
 
-  // !insertar navbar y footer
-  //!enviar email por body, guardo estado local y lo envio por accion? deberia devolver un objeto {status: true, response: info}
-  // !user not found, user found, envia mail al ususario, error que falle el back
-  // blackAlpha.900 y gray.300
+    
   return (
     <Box>
       {/* <NavBar/> */}
@@ -37,10 +33,9 @@ const ForgotPassword = () => {
           borderRadius="lg"
           overflow="hidden"
           p={50}
-          boxShadow='lg'
-        >
-          <FormControl isRequired>  
-            <FormLabel fontSize={20}>Let&apos;s find your Password</FormLabel>  
+          boxShadow="lg">
+          <FormControl isRequired>
+            <FormLabel fontSize={20}>Let&apos;s find your Password</FormLabel>
             <Text mt={5} fontSize={16}>
               Please enter your email to search for your account.
             </Text>
@@ -50,7 +45,7 @@ const ForgotPassword = () => {
               placeholder="example@pecf.com"
               value={input}
               type="email"
-            />  
+            />
             <FormHelperText>
               Your Email is private, we&apos;ll never share your email.
             </FormHelperText>
@@ -89,5 +84,3 @@ const ForgotPassword = () => {
   );
 };
 /* }; */
-
-export default ForgotPassword;

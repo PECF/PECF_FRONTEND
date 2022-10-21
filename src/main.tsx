@@ -16,12 +16,12 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    {/* <Provider store={store}> */}
-    <ChakraProvider>
-      <Router>
-        <App />
-      </Router>
-    </ChakraProvider>
-    {/* </Provider> */}
+    <Provider store={store}>
+      <ChakraProvider>
+        <Router>
+          <App />
+        </Router>
+      </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );

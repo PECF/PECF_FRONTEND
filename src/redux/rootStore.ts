@@ -1,9 +1,8 @@
 import thunk, { ThunkAction, ThunkDispatch } from "redux-thunk";
-import { composeWithDevTools } from "redux-devtools-extension";
-import { createStore, applyMiddleware, Action } from "redux";
-import rootReducer from "./rootReducer";
+import { initialState, rootReducer } from "./rootReducer";
+import { configureStore } from "@reduxjs/toolkit";
 import { ReduxState } from "../types/reduxTypes";
-const initialState = {};
+import { Action } from "redux";
 
 const middleware = [thunk];
 
@@ -16,8 +15,9 @@ export type AppThunk = ThunkAction<
   Action<string>
 >;
 
-export const store = createStore(
-  rootReducer,
-  initialState,
-  composeWithDevTools(applyMiddleware(...middleware))
-);
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware,
+  // devTools: process.env.NODE_ENV !== "production",
+  preloadedState: initialState,
+});

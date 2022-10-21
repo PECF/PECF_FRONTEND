@@ -1,212 +1,240 @@
-import { IProductActionTypes } from "../../types/productsTypes";
-import { AppThunk } from "../../../rootStore";
-import { IProduct } from "../../types/productTypes";
+import {
+  ProductDetailsActionTypes,
+  ProductListActionTypes,
+  ProductCreateActionTypes,
+  ProductCreateReviewActionTypes,
+  ProductDeleteActionTypes,
+  ProductUpdateActionTypes,
+  TemporaryProduct,
+  ProductTopActionTypes,
+} from "../../types/productsTypes";
 import axios from "axios";
+import { AppThunk } from "../rootStore";
+import { errorHandler } from "./errorHandler";
 
-export const getProducts = (): AppThunk => async (dispatch) => {
-  try {
-    dispatch({ type: IProductActionTypes.GET_PRODUCTS_REQUEST });
-    const { data } = await axios.get("/product/all");
-    dispatch({
-      type: IProductActionTypes.GET_PRODUCTS_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: IProductActionTypes.GET_PRODUCTS_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
-
-export const getProductDetails =
-  (id: string): AppThunk =>
+/**
+ * List Products action creator
+ * Actions related to listing all products
+ */
+export const listProducts =
+  (keyword = "", pageNumber = ""): AppThunk =>
   async (dispatch) => {
     try {
-      dispatch({ type: IProductActionTypes.GET_PRODUCT_DETAILS_REQUEST });
-      const { data } = await axios.get(`/product/${id}`);
+      dispatch({ type: ProductListActionTypes.PRODUCT_LIST_REQUEST });
 
-      dispatch({
-        type: IProductActionTypes.GET_PRODUCT_DETAILS_SUCCESS,
-        payload: data.product,
-      });
-    } catch (error) {
-      console.log(error);
-      // dispatch({
-      //   type: IProductActionTypes.GET_PRODUCT_DETAILS_FAIL,
-      //   payload: error.response.data.message,
-      // });
-    }
-  };
-
-export const newReview =
-  (reviewData: IProduct): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: IProductActionTypes.NEW_REVIEW_REQUEST });
-
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      };
-
-      const { data } = await axios.put(`/api/v1/review`, reviewData, config);
-
-      dispatch({
-        type: IProductActionTypes.NEW_REVIEW_SUCCESS,
-        payload: data.success,
-      });
-    } catch (error) {
-      dispatch({
-        type: IProductActionTypes.NEW_REVIEW_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
-
-export const getAdminProducts = (): AppThunk => async (dispatch) => {
-  try {
-    dispatch({ type: IProductActionTypes.GET_ADMIN_PRODUCTS_REQUEST });
-
-    const { data } = await axios.get(`/api/v1/admin/products`);
-
-    dispatch({
-      type: IProductActionTypes.GET_ADMIN_PRODUCTS_SUCCESS,
-      payload: data.products,
-    });
-  } catch (error) {
-    dispatch({
-      type: IProductActionTypes.GET_ADMIN_PRODUCTS_FAIL,
-      payload: error.response.data.message,
-    });
-  }
-};
-
-export const deleteProduct =
-  (id: string): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: IProductActionTypes.DELETE_PRODUCT_REQUEST });
-
-      const { data } = await axios.delete(`/api/v1/admin/product/${id}`);
-
-      dispatch({
-        type: IProductActionTypes.DELETE_PRODUCT_SUCCESS,
-        payload: data.success,
-      });
-    } catch (error) {
-      dispatch({
-        type: IProductActionTypes.DELETE_PRODUCT_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
-
-export const newProduct =
-  (productData: IProduct): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: IProductActionTypes.NEW_PRODUCT_REQUEST });
-
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
-      const { data } = await axios.post(
-        `/api/v1/admin/product/new`,
-        productData,
-        config
+      const { data } = await axios.get(
+        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
       );
 
       dispatch({
-        type: IProductActionTypes.NEW_PRODUCT_SUCCESS,
+        type: ProductListActionTypes.PRODUCT_LIST_SUCCESS,
         payload: data,
       });
     } catch (error) {
       dispatch({
-        type: IProductActionTypes.NEW_PRODUCT_FAIL,
-        payload: error.response.data.message,
+        type: ProductListActionTypes.PRODUCT_LIST_FAILURE,
+        payload: errorHandler(error),
       });
     }
   };
 
-export const updateProduct =
-  (id: string, productData: IProduct): AppThunk =>
+/**
+ * List Product Details action creator
+ * Actions related to details of a specific product
+ */
+export const listProductDetails =
+  (id: string): AppThunk =>
   async (dispatch) => {
     try {
-      dispatch({ type: IProductActionTypes.UPDATE_PRODUCT_REQUEST });
+      dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST });
 
+      const { data } = await axios.get(`/api/products/${id}`);
+
+      dispatch({
+        type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ProductDetailsActionTypes.PRODUCT_DETAILS_FAILURE,
+        payload: errorHandler(error),
+      });
+    }
+  };
+
+/**
+ * Action used to delete a product
+ */
+export const deleteProduct =
+  (id: string): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ProductDeleteActionTypes.PRODUCT_DELETE_REQUEST,
+      });
+
+      // Get user info from the userLogin object (from getState)
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      // Axios config
       const config = {
         headers: {
-          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+
+      await axios.delete(`/api/products/${id}`, config);
+
+      dispatch({
+        type: ProductDeleteActionTypes.PRODUCT_DELETE_SUCCESS,
+      });
+    } catch (error) {
+      dispatch({
+        type: ProductDeleteActionTypes.PRODUCT_DELETE_FAILURE,
+        payload: errorHandler(error),
+      });
+    }
+  };
+
+/**
+ * Action used to create a product
+ */
+export const createProduct = (): AppThunk => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: ProductCreateActionTypes.PRODUCT_CREATE_REQUEST,
+    });
+
+    // Get user info from the userLogin object (from getState)
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    // Axios config
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
+    };
+
+    const { data } = await axios.post(`/api/products`, {}, config);
+
+    dispatch({
+      type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ProductCreateActionTypes.PRODUCT_CREATE_FAILURE,
+      payload: errorHandler(error),
+    });
+  }
+};
+
+/**
+ * Action used to update a product
+ */
+export const updateProduct =
+  (product: TemporaryProduct): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST,
+      });
+
+      // Get user info from the userLogin object (from getState)
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      // Axios config
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo?.token}`,
         },
       };
 
       const { data } = await axios.put(
-        `/api/v1/admin/product/${id}`,
-        productData,
+        `/api/products/${product._id}`,
+        product,
         config
       );
 
       dispatch({
-        type: IProductActionTypes.UPDATE_PRODUCT_SUCCESS,
-        payload: data.success,
+        type: ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS,
+        payload: data,
       });
+
+      //TODO: Look into this issue from 78. Added this to fix the bug where an updated product was not showing new data in the form
+      dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS });
     } catch (error) {
       dispatch({
-        type: IProductActionTypes.UPDATE_PRODUCT_FAIL,
-        payload: error.response.data.message,
+        type: ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE,
+        payload: errorHandler(error),
       });
     }
   };
 
-export const getProductReviews =
-  (id: string): AppThunk =>
-  async (dispatch) => {
+/**
+ * Action used to create a new product review
+ */
+export const createProductReview =
+  (productId: string, review: { rating: number; comment: string }): AppThunk =>
+  async (dispatch, getState) => {
     try {
-      dispatch({ type: IProductActionTypes.GET_REVIEWS_REQUEST });
+      dispatch({
+        type: ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_REQUEST,
+      });
 
-      const { data } = await axios.get(`/api/v1/reviews?id=${id}`);
+      // Get user info from the userLogin object (from getState)
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      // Axios config
+      const config = {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${userInfo?.token}`,
+        },
+      };
+
+      await axios.post(`/api/products/${productId}/reviews`, review, config);
 
       dispatch({
-        type: IProductActionTypes.GET_REVIEWS_SUCCESS,
-        payload: data.reviews,
+        type: ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_SUCCESS,
       });
+
+      dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS });
     } catch (error) {
       dispatch({
-        type: IProductActionTypes.GET_REVIEWS_FAIL,
-        payload: error.response.data.message,
+        type: ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_FAILURE,
+        payload: errorHandler(error),
       });
     }
   };
 
-export const deleteReview =
-  (id: string, productId: string): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: IProductActionTypes.DELETE_REVIEW_REQUEST });
+/**
+ * List Top Products action creator
+ * Actions related to listing all top products
+ */
+export const listTopProducts = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch({ type: ProductTopActionTypes.PRODUCT_TOP_REQUEST });
 
-      const { data } = await axios.delete(
-        `/api/v1/reviews?id=${id}&productId=${productId}`
-      );
+    const { data } = await axios.get(`/api/products/top`);
 
-      dispatch({
-        type: IProductActionTypes.DELETE_REVIEW_SUCCESS,
-        payload: data.success,
-      });
-    } catch (error) {
-      dispatch({
-        type: IProductActionTypes.DELETE_REVIEW_FAIL,
-        payload: error.response.data.message,
-      });
-    }
-  };
-
-export const clearErrors = (): AppThunk => async (dispatch) => {
-  dispatch({
-    type: IProductActionTypes.CLEAR_ERRORS,
-  });
+    dispatch({
+      type: ProductTopActionTypes.PRODUCT_TOP_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ProductTopActionTypes.PRODUCT_TOP_FAILURE,
+      payload: errorHandler(error),
+    });
+  }
 };
