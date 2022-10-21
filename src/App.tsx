@@ -7,9 +7,11 @@ import { useLoad } from "./hooks/useLoad";
 export const App: React.FC = () => {
   useLoad();
   return (
-    <Container overflow="hidden" minWidth={"90vw"} maxWidth="100vw" m={0} p={0}>
+    <Container overflow="hidden" maxWidth="auto" m={0} p={0}>
       <Header />
-      <AppRoutes />
+      <Container overflow="hidden" minWidth="90vw" m={30} p={30} >
+        <AppRoutes />
+      </Container>
       <Footer />
     </Container>
   );

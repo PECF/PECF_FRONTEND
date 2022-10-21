@@ -37,6 +37,7 @@ export const AppRoutes: React.FC = () => {
       ) : (
         <Route path="/createproduct" element={<Navigate to="/" />} />
       )} */}
+
       <Route path="/createproduct" element={<CreateProduct />} />
 
       {/* {user && user.role === "admin" ? (

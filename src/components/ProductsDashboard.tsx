@@ -59,7 +59,7 @@ export function ProductsDashboard() {
             </Tr>
           </Thead>
           <Tbody>
-            {products.map((el, index) => {
+            {products.map((el: any, index: any) => {
               return (
                 <Tr key={index}>
                   <Td>{el.name}</Td>
@@ -71,7 +71,7 @@ export function ProductsDashboard() {
                   <Td>{el.price}</Td>
                   <Td>{el.stock}</Td>
                   <Td>
-                    <Switch  id="isChecked" defaultChecked />
+                    <Switch id="isChecked" isChecked={el.visibility} />
                   </Td>
                 </Tr>
               );
