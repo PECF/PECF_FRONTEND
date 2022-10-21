@@ -14,8 +14,9 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "types": ["react/next", "react-dom/next"]
   },
-  "include": ["src"],
+  "include": ["src", "../PECF_BACKEND/src/routes/ProductsTest.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
