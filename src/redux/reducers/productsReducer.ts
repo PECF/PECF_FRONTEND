@@ -1,236 +1,212 @@
-import { IProductsState, IProductsActions } from "../../types/productTypes";
+import {
+  ProductCreateAction,
+  ProductCreateActionTypes,
+  ProductCreateReviewAction,
+  ProductCreateReviewActionTypes,
+  ProductCreateReviewState,
+  ProductCreateState,
+  ProductDeleteAction,
+  ProductDeleteActionTypes,
+  ProductDeleteState,
+  ProductUpdateAction,
+  ProductUpdateActionTypes,
+  ProductUpdateState,
+  ProductTopAction,
+  ProductTopActionTypes,
+  ProductTopState,
+  ProductListAction,
+  ProductListActionTypes,
+  ProductListState,
+  ProductDetailsAction,
+  ProductDetailsActionTypes,
+  ProductDetailsState,
+} from "../../types/productsTypes";
 
-const initialState: IProductsState = {
+const initialProductListState: ProductListState = {
   products: [],
   loading: false,
-  error: "",
 };
 
-export const productsReducer = (
-  state = initialState,
-  action: IProductsActions
-): IProductsState => {
-  const handlers: Record<IProductsActions["type"], any> = {
-    [IProductsActions.FETCH_PRODUCTS]: () => ({ ...state, loading: true }),
-    [IProductsActions.FETCH_PRODUCTS_SUCCESS]: (
-      payload: IProductsState["products"]
-    ) => ({
-      ...state,
-      loading: false,
-      products: payload,
-    }),
-    [IProductsActions.FETCH_PRODUCTS_ERROR]: (
-      payload: IProductsState["error"]
-    ) => ({
-      ...state,
-      loading: false,
-      error: payload,
-    }),
-    DEFAULT: () => state,
-  };
-
-  return handlers[action.type]
-    ? handlers[action.type](action.payload)
-    : handlers.DEFAULT();
+/**
+ * Reducer used for fetching the full list of products
+ */
+export const productListReducer = (
+  state: ProductListState = initialProductListState,
+  action: ProductListAction
+) => {
+  switch (action.type) {
+    case ProductListActionTypes.PRODUCT_LIST_REQUEST:
+      return { loading: true, products: initialProductListState.products };
+    case ProductListActionTypes.PRODUCT_LIST_SUCCESS:
+      return {
+        loading: initialProductListState.loading,
+        products: action.payload.products,
+        pages: action.payload.pages,
+        page: action.payload.page,
+      };
+    case ProductListActionTypes.PRODUCT_LIST_FAILURE:
+      return {
+        loading: false,
+        error: action.payload,
+        products: initialProductListState.products,
+      };
+    default:
+      return state;
+  }
 };
 
-// export const productsReducer = (state = { products: [] }, action) => {
-//   const reducers = {
-//     ALL_PRODUCT_REQUEST: {
-//       loading: true,
-//       products: [],
-//     },
-//     ADMIN_PRODUCT_REQUEST: {
-//       loading: true,
-//       products: [],
-//     },
-//     ALL_PRODUCT_SUCCESS: {
-//       loading: false,
-//       products: action.payload.products,
-//       productsCount: action.payload.productsCount,
-//       resultPerPage: action.payload.resultPerPage,
-//       filteredProductsCount: action.payload.filteredProductsCount,
-//     },
-//     ADMIN_PRODUCT_SUCCESS: {
-//       loading: false,
-//       products: action.payload,
-//     },
-//     ALL_PRODUCT_FAIL: {
-//       loading: false,
-//       error: action.payload,
-//     },
-//     ADMIN_PRODUCT_FAIL: {
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+const initialProductDetailsState: ProductDetailsState = {
+  loading: false,
+};
 
-// export const newProductReducer = (state = { product: {} }, action) => {
-//   const reducers = {
-//     NEW_PRODUCT_REQUEST: {
-//       ...state,
-//       loading: true,
-//     },
-//     NEW_PRODUCT_SUCCESS: {
-//       loading: false,
-//       success: action.payload.success,
-//       product: action.payload.product,
-//     },
-//     NEW_PRODUCT_FAIL: {
-//       ...state,
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+/**
+ * Reducer used for fetching details about a product
+ */
+export const productDetailsReducer = (
+  state: ProductDetailsState = initialProductDetailsState,
+  action: ProductDetailsAction
+) => {
+  switch (action.type) {
+    case ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST:
+      return { loading: true, product: initialProductDetailsState.product };
+    case ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS:
+      return { loading: false, product: action.payload };
+    case ProductDetailsActionTypes.PRODUCT_DETAILS_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
-// export const productReducer = (state = {}, action) => {
-//   const reducers = {
-//     UPDATE_PRODUCT_REQUEST: {
-//       ...state,
-//       loading: true,
-//     },
-//     UPDATE_PRODUCT_SUCCESS: {
-//       ...state,
-//       loading: false,
-//       isUpdated: action.payload,
-//     },
-//     UPDATE_PRODUCT_FAIL: {
-//       ...state,
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+const initialProductDeleteState: ProductDeleteState = {
+  loading: false,
+};
 
-// export const deleteProductReducer = (state = {}, action) => {
-//   const reducers = {
-//     DELETE_PRODUCT_REQUEST: {
-//       ...state,
-//       loading: true,
-//     },
-//     DELETE_PRODUCT_SUCCESS: {
-//       ...state,
-//       loading: false,
-//       isDeleted: action.payload,
-//     },
-//     DELETE_PRODUCT_FAIL: {
-//       ...state,
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+/**
+ * Reducer used for deleting a product
+ */
+export const productDeleteReducer = (
+  state: ProductDeleteState = initialProductDeleteState,
+  action: ProductDeleteAction
+) => {
+  switch (action.type) {
+    case ProductDeleteActionTypes.PRODUCT_DELETE_REQUEST:
+      return { loading: true };
+    case ProductDeleteActionTypes.PRODUCT_DELETE_SUCCESS:
+      return { loading: false, success: true };
+    case ProductDeleteActionTypes.PRODUCT_DELETE_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
-// export const productDetailsReducer = (state = { product: {} }, action) => {
-//   const reducers = {
-//     PRODUCT_DETAILS_REQUEST: {
-//       loading: true,
-//       ...state,
-//     },
-//     PRODUCT_DETAILS_SUCCESS: {
-//       loading: false,
-//       product: action.payload,
-//     },
-//     PRODUCT_DETAILS_FAIL: {
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+const initialProductCreateState: ProductCreateState = {
+  loading: false,
+};
 
-// export const newReviewReducer = (state = {}, action) => {
-//   const reducers = {
-//     NEW_REVIEW_REQUEST: {
-//       ...state,
-//       loading: true,
-//     },
-//     NEW_REVIEW_SUCCESS: {
-//       loading: false,
-//       success: action.payload,
-//     },
-//     NEW_REVIEW_FAIL: {
-//       ...state,
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+/**
+ * Reducer used for creating a new product
+ */
+export const productCreateReducer = (
+  state: ProductCreateState = initialProductCreateState,
+  action: ProductCreateAction
+) => {
+  switch (action.type) {
+    case ProductCreateActionTypes.PRODUCT_CREATE_REQUEST:
+      return { loading: true };
+    case ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS:
+      return { loading: false, success: true, product: action.payload };
+    case ProductCreateActionTypes.PRODUCT_CREATE_FAILURE:
+      return { loading: false, error: action.payload };
+    case ProductCreateActionTypes.PRODUCT_CREATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
 
-// export const productReviewsReducer = (state = { reviews: [] }, action) => {
-//   const reducers = {
-//     ALL_REVIEW_REQUEST: {
-//       ...state,
-//       loading: true,
-//     },
-//     ALL_REVIEW_SUCCESS: {
-//       loading: false,
-//       reviews: action.payload,
-//     },
-//     ALL_REVIEW_FAIL: {
-//       ...state,
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+const initialProductUpdateState: ProductUpdateState = {
+  loading: false,
+};
 
-// export const reviewReducer = (state = {}, action) => {
-//   const reducers = {
-//     DELETE_REVIEW_REQUEST: {
-//       ...state,
-//       loading: true,
-//     },
-//     DELETE_REVIEW_SUCCESS: {
-//       ...state,
-//       loading: false,
-//       isDeleted: action.payload,
-//     },
-//     DELETE_REVIEW_FAIL: {
-//       ...state,
-//       loading: false,
-//       error: action.payload,
-//     },
-//     CLEAR_ERRORS: {
-//       ...state,
-//       error: null,
-//     },
-//   };
-//   return reducers[action.type] || { ...state };
-// };
+/**
+ * Reducer used for updating a product's details
+ */
+export const productUpdateReducer = (
+  state: ProductUpdateState = initialProductUpdateState,
+  action: ProductUpdateAction
+) => {
+  switch (action.type) {
+    case ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST:
+      return { loading: true };
+    case ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS:
+      return { loading: false, success: true, product: action.payload };
+    case ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE:
+      return { loading: false, error: action.payload };
+    case ProductUpdateActionTypes.PRODUCT_UPDATE_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+const initialProductCreateReviewState: ProductCreateReviewState = {
+  loading: false,
+};
+
+/**
+ * Reducer used for creating a review for a product
+ */
+export const productCreateReviewReducer = (
+  state: ProductCreateReviewState = initialProductCreateReviewState,
+  action: ProductCreateReviewAction
+) => {
+  switch (action.type) {
+    case ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_REQUEST:
+      return { loading: true };
+    case ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_SUCCESS:
+      return {
+        loading: initialProductCreateReviewState.loading,
+        success: true,
+      };
+    case ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_FAILURE:
+      return {
+        error: action.payload,
+      };
+    case ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_RESET:
+      return {};
+    default:
+      return state;
+  }
+};
+
+const initialProductTopRatedState: ProductTopState = {
+  loading: false,
+  products: [],
+};
+
+/**
+ * Reducer used for fetching the top rated products
+ */
+export const productTopRatedReducer = (
+  state: ProductTopState = initialProductTopRatedState,
+  action: ProductTopAction
+) => {
+  switch (action.type) {
+    case ProductTopActionTypes.PRODUCT_TOP_REQUEST:
+      return { loading: true, products: [] };
+    case ProductTopActionTypes.PRODUCT_TOP_SUCCESS:
+      return {
+        loading: false,
+        products: action.payload,
+      };
+    case ProductTopActionTypes.PRODUCT_TOP_FAILURE:
+      return {
+        products: [],
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};

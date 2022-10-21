@@ -1,187 +1,182 @@
-import React from "react";
-import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
-
 import {
   Box,
-  InputGroup,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  InputRightElement,
-  Input,
-  Container,
-  Spacer,
-  ButtonGroup,
-  Heading,
-  Button,
   Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  FormLabel,
-  FormControl,
-  ModalBody,
-  ModalCloseButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  Portal,
-  PopoverCloseButton,
+  Text,
+  IconButton,
+  Button,
+  Stack,
+  Collapse,
+  useColorModeValue,
+  useBreakpointValue,
+  useDisclosure,
+  Input,
+  InputGroup,
+  Avatar,
+  InputRightElement,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
+import { User } from "../types/authTypes";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import Cart from "./Cart";
+import Login from "./Login";
+import SingUp from "./SingUp";
+import { Container } from "@chakra-ui/react";
+import { getUserDetails, logout } from "../redux/actions/authActions";
+import { AppDispatch } from "../redux/rootStore";
+import { Link } from "react-router-dom";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export function Header() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure();
+
+  const isMobile = useBreakpointValue({
+    base: true,
+    md: false,
+  });
+  const { userInfo } = useRecoveryData("userLogin");
+  const { user } = useRecoveryData("userDetails");
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (userInfo) {
+      dispatch(getUserDetails());
+    }
+  }, [dispatch, userInfo]);
+
+  //create a collapse from avatar for logout
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
 
   return (
-    <Container maxWidth="100%">
+    <Container
+      maxW="full"
+      bg={useColorModeValue("white", "gray.800")}
+      color={useColorModeValue("gray.600", "white")}
+      px={4}
+      py={4}
+      shadow="md"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      zIndex={1000}>
       <Flex
-        minWidth="max-content"
-        alignItems="center"
-        gap="20"
-        justify="space-between">
-        <Box p="2">
-          <Heading size="md"> KALÚ</Heading>
-        </Box>
-        <InputGroup>
-          <InputRightElement
-            // eslint-disable-next-line react/no-children-prop
-            children={<SearchIcon color="gray.300" cursor="pointer" />}
-          />
-          <Input
-            placeholder="Search..."
-            width="sm"
-            flex={100}
-            variant="filled"
-          />
-        </InputGroup>
-        <Spacer />
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-            variant="link"
-            gap="8"
-            border="none"
-            color="blackAlpha.900">
-            Pages
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-            <MenuItem>Create a Copy</MenuItem>
-            <MenuItem>Mark as Draft</MenuItem>
-          </MenuList>
-        </Menu>
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon ml="10" />}
-            variant="link"
-            border="none"
-            color="blackAlpha.900"
-            gap="10"
-            marginX="-5">
-            Features
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-            <MenuItem>Create a Copy</MenuItem>
-            <MenuItem>Mark as Draft</MenuItem>
-          </MenuList>
-        </Menu>
+        minWidth="100%"
+        alignItems={"center"}
+        gap="10"
+        justifyContent={"space-between"}>
+        <IconButton
+          size={"md"}
+          icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+          aria-label={"Open Menu"}
+          display={{ md: "none" }}
+          onClick={onToggle}
+        />
 
-        <ButtonGroup gap="">
-          <Popover>
-            <PopoverTrigger>
-              <Button colorScheme="blackAlpha.900" variant="outline">
-                Log in
-              </Button>
-            </PopoverTrigger>
-            <Portal>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverHeader>Log In</PopoverHeader>
-                <PopoverCloseButton />
-                <PopoverBody>
-                  <FormControl>
-                    <FormLabel>Enter your email</FormLabel>
-                    <Input placeholder="email@example.com" />
-                  </FormControl>
+        <Text
+          fontSize="2xl"
+          fontWeight="bold"
+          letterSpacing={"wide"}
+          color={useColorModeValue("gray.800", "white")}
+          as={Link}
+          to={"/"}>
+          Kalú
+        </Text>
 
-                  <FormControl mt={4}>
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" />
-                  </FormControl>
-                </PopoverBody>
-                <PopoverFooter>
-                  <Button variant="link" color="blackAlpha.900" border="none">
-                    Forgot your password?
-                  </Button>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onClose}
-                    ml="5"
-                    backgroundColor="blackAlpha.900">
-                    Log In
-                  </Button>
-                </PopoverFooter>
-              </PopoverContent>
-            </Portal>
-          </Popover>
+        {!isMobile && (
+          <>
+            <Box>
+              <InputGroup gap="2">
+                <InputRightElement
+                  children={<SearchIcon color="gray.300" cursor="pointer" />}
+                />
+                <Input
+                  placeholder="Search..."
+                  width="3xl"
+                  flex={100}
+                  variant="filled"
+                />
+              </InputGroup>
+            </Box>
+            <Stack
+              direction={"row"}
+              spacing={6}
+              alignItems={"center"}
+              justifyContent={"center"}>
+              {user ? (
+                <>
+                  <Text fontSize="md" fontWeight="bold" letterSpacing={"wide"}>
+                    {user.name}
+                  </Text>
+                  <Avatar
+                    size="sm"
+                    name={user.name}
+                    src={user.avatar}
+                    onClick={handleClick}
+                  />
+                  <Collapse in={show} animateOpacity>
+                    <Button
+                      variant="ghost"
+                      colorScheme="red"
+                      onClick={() => {
+                        dispatch(logout());
+                      }}>
+                      Logout
+                    </Button>
+                  </Collapse>
+                </>
+              ) : (
+                <>
+                  <Login />
+                  <SingUp />
+                </>
+              )}
 
-          <Button
-            colorScheme="blackAlpha.900"
-            variant="outline"
-            onClick={onOpen}>
-            Sign Up
-          </Button>
-        </ButtonGroup>
-
-        <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Sing up</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Enter your email</FormLabel>
-                <Input placeholder="email@example.com" />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Enter your full Name</FormLabel>
-                <Input placeholder="Juan Perez" />
-              </FormControl>
-
-              <FormControl mt={4}>
-                <FormLabel>Password</FormLabel>
-                <Input type="password" />
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button variant="ghost" border="none">
-                Forgot your password?
-              </Button>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={onClose}
-                backgroundColor="blackAlpha.900">
-                Sing In
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+              <Cart />
+            </Stack>
+          </>
+        )}
       </Flex>
+
+      <Collapse in={isOpen} animateOpacity>
+        <Stack
+          bg={useColorModeValue("white", "gray.800")}
+          p={4}
+          display={{ md: "none" }}>
+          <Stack direction={"row"} spacing={4}>
+            <Button
+              w={"full"}
+              variant={"outline"}
+              bg={useColorModeValue("white", "gray.900")}
+              _hover={{ bg: "gray.50" }}>
+              Home
+            </Button>
+            <Button
+              w={"full"}
+              variant={"outline"}
+              bg={useColorModeValue("white", "gray.900")}
+              _hover={{ bg: "gray.50" }}>
+              Products
+            </Button>
+            <Button
+              w={"full"}
+              variant={"outline"}
+              bg={useColorModeValue("white", "gray.900")}
+              _hover={{ bg: "gray.50" }}>
+              About
+            </Button>
+            <Button
+              w={"full"}
+              variant={"outline"}
+              bg={useColorModeValue("white", "gray.900")}
+              _hover={{ bg: "gray.50" }}>
+              Contact
+            </Button>
+          </Stack>
+        </Stack>
+      </Collapse>
     </Container>
   );
 }
