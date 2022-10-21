@@ -11,61 +11,61 @@ import {
  const ReturnPolicy = () => {
     return (
       <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
-         <NavBar/> 
-         <Box marginTop={"10"} w="full" bg="blue.700" px="100px" py="40px">
-          <Flex justifyContent="space-between" alignItems="center" pb="30px">
-            <Heading fontSize={44} ml={"180"} letterSpacing="3px" color="whiteAlpha.900">
-              Políticas de devolución de tus compras
-            </Heading>
-          </Flex>
-        </Box>
-      <Flex>
-      <Box
-      mt={20}
-      ml={"450"}
-      maxW="500"
-      bg={"whiteAlpha.100"}
-      borderWidth="2px"
-      borderRadius="lg"
-      overflow="hidden"
-      p={50}
-      boxShadow='lg'>
-          <Box>
-            <Text fontSize={26} color="blackAlpha.900" pb="20px">
-            Los productos pueden devolverse gratis, sin importar el motivo.
-            </Text>
-            <Text fontSize={35} color="blackAlpha.900" pb="20px">
-            ¿Cuáles son los requisitos para devolver un producto?
-            </Text>
-            <Text fontSize={20}>
-              -No han pasado más de 30 días de realizada la compra.<br/>
-              -El producto debe estar sin marcas de mal uso y tal cual lo recibiste.<br/>
-              -Debe tener sus accesorios, manuales y etiquetas.<br/>
-              -Si es un celular, notebook, tablet o smartwatch, debe estar desbloqueado, sin claves que impidan su uso.<br/>
-              -Si un producto tiene un problema o esta incompleto, cuando lo devuelvas y lo revisemos, debe estar en las mismas condiciones que describas al reclamar.
-            </Text>
-        <Box pt={5}>
-          <Text fontSize={30}>  
-          ¿Puedo cambiar un producto?
-          </Text> 
-          <Text fontSize={20}>
-          Si bien no podemos cambiar un producto que compraste, podés solicitar la devolución y recuperar tu dinero para comprar lo que quieras.<br/> En caso de tener un reclamo abierto, puedes acordar con el vendedor la posibilidad de reemplazar el producto. 
-          </Text>
-          <Text pt={5} fontSize={30}>
-            ¿Cuándo y dónde me reembolsan el dinero de la devolución?
-          </Text>
-          <Text fontSize={20}>
-          Para más información sobre el reembolso después de devolver un producto,<br/> 
-          <Link color='teal.500' href='/#'>
-          podés consultar cuándo y dónde recibirás tu dinero según el medio que usaste para pagar.
-          </Link>
-          </Text>
-        </Box>
-          </Box>
-      </Box>
-      </Flex>
-          {/* <Footer/>  */}
-      </Box>
+      <NavBar/> 
+      <Box marginTop={"10"} w="full" bg="blue.700" px="100px" py="40px">
+       <Flex justifyContent="space-between" alignItems="center" pb="30px">
+         <Heading fontSize={44} ml={"180"} letterSpacing="3px" color="whiteAlpha.900">
+           Return policies for your purchases
+         </Heading>
+       </Flex>
+     </Box>
+   <Flex>
+   <Box
+   mt={20}
+   ml={"450"}
+   maxW="500"
+   bg={"whiteAlpha.100"}
+   borderWidth="2px"
+   borderRadius="lg"
+   overflow="hidden"
+   p={50}
+   boxShadow='lg'>
+       <Box>
+         <Text fontSize={26} color="blackAlpha.900" pb="20px">
+           Products can be returned free of charge, regardless of the reason..
+         </Text>
+         <Text fontSize={35} color="blackAlpha.900" pb="20px">
+           What are the requirements to return a product?
+         </Text>
+         <Text fontSize={20}>
+           -Not more than 30 days have passed since the purchase was made.<br/>
+           -The product must be without marks of misuse and as received.<br/>
+           -It must have its accessories, manuals and labels.<br/>
+           -If it is a cell phone, notebook, tablet or smartwatch, it must be unlocked, without passwords that prevent its use.<br/>
+           -If a product has a problem or is incomplete, when you return it and we review it, it must be in the same condition as you describe when claiming.
+         </Text>
+     <Box pt={5}>
+       <Text fontSize={30}>  
+         Can I change a product?
+       </Text> 
+       <Text fontSize={20}>
+         Although we cannot change a product you bought, you can request a return and get your money back to buy what you want.<br/> In case you have an open claim, you can agree with the seller the possibility of replacing the product.
+       </Text>
+       <Text pt={5} fontSize={30}>
+         When and where do I get my return money refunded?
+       </Text>
+       <Text fontSize={20}>
+       For more information on refund after returning a product,<br/>
+       <Link color='teal.500' href='/#'>
+       you can check when and where you will receive your money according to the means you used to pay.
+       </Link>
+       </Text>
+     </Box>
+       </Box>
+   </Box>
+   </Flex>
+       {/* <Footer/>   */}
+   </Box>
     );
   };
 export default ReturnPolicy;
