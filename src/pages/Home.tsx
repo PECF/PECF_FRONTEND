@@ -44,6 +44,7 @@ export function Home() {
 
   return (
     <Container
+      className="HomeCont"
       p={"10"}
       bgColor="lightgray"
       ml={0}
