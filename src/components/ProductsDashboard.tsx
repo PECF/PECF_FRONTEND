@@ -19,37 +19,12 @@ import {
   TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
-export default function Dashboard() {
-  const PRODUCTS = [
-    {
-      name: "Yerba Cruz de Malta",
-      Category: "Yerbas",
-      Price: "$456",
-      Stock: 10,
-      hidden: "Visible",
-    },
-    {
-      name: "Termo Stanley",
-      Category: "Termos",
-      Price: "$12,500",
-      Stock: 8,
-      hidden: "Visible",
-    },
-    {
-      name: "Remera loquesea",
-      Category: "Remeras",
-      Price: "$500",
-      Stock: 12,
-      hidden: "Hidden",
-    },
-    {
-      name: "Zapatillas Adidas",
-      Category: "Zapatillas",
-      Price: "$5000",
-      Stock: 3,
-      hidden: "Visible",
-    },
-  ];
+
+import { useRecoveryData } from "../hooks/useRecoveryData";
+export function ProductsDashboard() {
+  const { products } = useRecoveryData("productList");
+  console.log(products);
+
   return (
     <Box>
       <Flex alignItems="center">
@@ -84,19 +59,19 @@ export default function Dashboard() {
             </Tr>
           </Thead>
           <Tbody>
-            {PRODUCTS.map((el) => {
+            {products.map((el, index) => {
               return (
-                <Tr key={product.name}>
+                <Tr key={index}>
                   <Td>{el.name}</Td>
                   <Td>
                     <Tag colorScheme="blackAlpha" variant="solid">
-                      {el.Category}
+                      {el.category}
                     </Tag>
                   </Td>
-                  <Td>{el.Price}</Td>
-                  <Td>{el.Stock}</Td>
+                  <Td>{el.price}</Td>
+                  <Td>{el.stock}</Td>
                   <Td>
-                    <Switch id="isChecked" defaultChecked />
+                    <Switch  id="isChecked" defaultChecked />
                   </Td>
                 </Tr>
               );
