@@ -9,6 +9,7 @@ const contactUs = "contactUs";
 const copyright = "copyright";
 const kalu = "Kalú, Inc. All rights reserved.";
 const newsletter = "Subscribe to our newsletter";
+const subscribe = "Subscribe";
 
 export {
   followUs,
@@ -22,4 +23,5 @@ export {
   copyright,
   kalu,
   newsletter,
+  subscribe,
 };
