@@ -1,7 +1,7 @@
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/rootStore";
-import { useEffect } from "react";
 import { listProducts } from "../redux/actions/productsActions";
+import { AppDispatch } from "../redux/rootStore";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 export const useLoad = () => {
   const dispatch = useDispatch<AppDispatch>();

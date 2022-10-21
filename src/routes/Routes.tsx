@@ -12,14 +12,14 @@ import { ForgotPassword } from "../pages/user/ForgotPassword";
 // import { Admin } from "../pages/Admin";
 import { NotFound } from "../pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
+import { CreateProduct } from "../components/CreateProduct";
 
 export const AppRoutes: React.FC = () => {
   const userDetails = useSelector((state: any) => state.userDetails);
   const { user } = userDetails;
-  console.log(user);
 
   //redirect if logged in to home
-
+  console.log(user && user.role);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -32,6 +32,17 @@ export const AppRoutes: React.FC = () => {
       ) : (
         <Route path="/forgotpassword" element={<Navigate to="/" />} />
       )}
+      {/* {user && user.role === "admin" ? (
+        <Route path="/createproduct" element={<CreateProduct />} />
+      ) : (
+        <Route path="/createproduct" element={<Navigate to="/" />} />
+      )} */}
+      <Route path="/createproduct" element={<CreateProduct />} />
+
+      {/* {user && user.role === "admin" ? (
+      ) : (
+        <Route path="/createproduct" element={<Navigate to="/" />} />
+      )} */}
 
       {/* <PrivateRoute path="/update-profile" element={<UpdateProfile />} />
       <AdminRoute path="/admin" element={<Admin />} />  */}

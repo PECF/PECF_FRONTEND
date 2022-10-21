@@ -16,27 +16,24 @@ import { errorHandler } from "./errorHandler";
  * List Products action creator
  * Actions related to listing all products
  */
-export const listProducts =
-  (keyword = "", pageNumber = ""): AppThunk =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: ProductListActionTypes.PRODUCT_LIST_REQUEST });
+export const listProducts = (): AppThunk => async (dispatch) => {
+  try {
+    dispatch({ type: ProductListActionTypes.PRODUCT_LIST_REQUEST });
 
-      const { data } = await axios.get(
-        `/api/products?keyword=${keyword}&pageNumber=${pageNumber}`
-      );
+    const { data } = await axios.get(`/product/all`);
 
-      dispatch({
-        type: ProductListActionTypes.PRODUCT_LIST_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: ProductListActionTypes.PRODUCT_LIST_FAILURE,
-        payload: errorHandler(error),
-      });
-    }
-  };
+    console.log(data);
+    dispatch({
+      type: ProductListActionTypes.PRODUCT_LIST_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: ProductListActionTypes.PRODUCT_LIST_FAILURE,
+      payload: errorHandler(error),
+    });
+  }
+};
 
 /**
  * List Product Details action creator
@@ -101,37 +98,48 @@ export const deleteProduct =
 /**
  * Action used to create a product
  */
-export const createProduct = (): AppThunk => async (dispatch, getState) => {
-  try {
-    dispatch({
-      type: ProductCreateActionTypes.PRODUCT_CREATE_REQUEST,
-    });
+export const createProduct =
+  ({ name, category, price, stock, description }: any): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({
+        type: ProductCreateActionTypes.PRODUCT_CREATE_REQUEST,
+      });
 
-    // Get user info from the userLogin object (from getState)
-    const {
-      userLogin: { userInfo },
-    } = getState();
+      // Get user info from the userLogin object (from getState)
+      const {
+        userLogin: { userInfo },
+      } = getState();
 
-    // Axios config
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo?.token}`,
-      },
-    };
+      // Axios config
+      const config = {
+        headers: {
+          Authorization: `${userInfo}`,
+        },
+      };
+      const product = {
+        name,
+        category,
+        price,
+        stock,
+        description,
+      };
 
-    const { data } = await axios.post(`/api/products`, {}, config);
+      const { data } = await axios.post(`/admin/product/new`, product, config);
 
-    dispatch({
-      type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,
-      payload: data,
-    });
-  } catch (error) {
-    dispatch({
-      type: ProductCreateActionTypes.PRODUCT_CREATE_FAILURE,
-      payload: errorHandler(error),
-    });
-  }
-};
+      console.log(data);
+      
+      dispatch({
+        type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error) {
+      dispatch({
+        type: ProductCreateActionTypes.PRODUCT_CREATE_FAILURE,
+        payload: errorHandler(error),
+      });
+    }
+  };
 
 /**
  * Action used to update a product

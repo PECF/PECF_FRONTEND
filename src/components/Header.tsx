@@ -25,6 +25,7 @@ import { Container } from "@chakra-ui/react";
 import { getUserDetails, logout } from "../redux/actions/authActions";
 import { AppDispatch } from "../redux/rootStore";
 import { Link } from "react-router-dom";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export function Header() {
   const { isOpen, onToggle } = useDisclosure();
@@ -33,11 +34,8 @@ export function Header() {
     base: true,
     md: false,
   });
-  const userLogin = useSelector((state: any) => state.userLogin);
-  const userDetails = useSelector((state: any) => state.userDetails);
-  const { userInfo }: { loading: boolean; error: Error; userInfo: User } =
-    userLogin;
-  const { user } = userDetails;
+  const { userInfo } = useRecoveryData("userLogin");
+  const { user } = useRecoveryData("userDetails");
 
   const dispatch = useDispatch<AppDispatch>();
 

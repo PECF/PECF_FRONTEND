@@ -14,7 +14,7 @@ export const SecondSlider = {
   infinite: true,
   speed: 300,
 
-  slidesToShow: 5,
+  slidesToShow: 4,
   centerMode: true,
   centerPadding: "10px",
   slidesToScroll: 1,
@@ -25,15 +25,20 @@ export const SecondSlider = {
     {
       breakpoint: 1300,
       settings: {
+        centerMode: true,
+        centerPadding: "10px",
         slidesToShow: 3,
         slidesToScroll: 1,
         infinite: true,
-        dots: true,
+        dots: false,
       },
     },
     {
       breakpoint: 990,
       settings: {
+        centerMode: true,
+        centerPadding: "10px",
+        dots: false,
         slidesToShow: 2,
         slidesToScroll: 1,
         initialSlide: 2,
@@ -42,6 +47,7 @@ export const SecondSlider = {
     {
       breakpoint: 670,
       settings: {
+        dots: false,
         slidesToShow: 1,
         slidesToScroll: 1,
       },

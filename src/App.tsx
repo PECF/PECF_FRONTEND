@@ -5,7 +5,7 @@ import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { useLoad } from "./hooks/useLoad";
 export const App: React.FC = () => {
-  // useLoad();
+  useLoad();
   return (
     <Container overflow="hidden" minWidth={"90vw"} maxWidth="100vw" m={0} p={0}>
       <Header />
