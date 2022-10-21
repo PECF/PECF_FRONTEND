@@ -1,27 +1,24 @@
-import { BrowserRouter as Router } from "react-router-dom";
-import { ChakraProvider } from "@chakra-ui/react";
-import { store } from "./redux/rootStore";
-import ReactDOM from "react-dom/client";
-import { Provider } from "react-redux";
-import "./assets/styles/css/index.css";
-import { App } from "./App";
 import React from "react";
-import axios from "axios";
+import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import { ChakraProvider } from "@chakra-ui/react";
+import { createRoot } from "react-dom/client";
+import App from "./App";
+import "./index.css";
+import * as ReactDOM from "react-dom/client";
+import store from "./stores/rootStore";
 
-axios.defaults.baseURL = "http://127.0.0.1:3443";
+const el = document.getElementById('root')
+if (el === null) throw new Error('Root container missing in index.html')
 
-const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
+const root = ReactDOM.createRoot(el)
 
 root.render(
-  <React.StrictMode>
+  <BrowserRouter>
     <Provider store={store}>
       <ChakraProvider>
-        <Router>
-          <App />
-        </Router>
+        <App />
       </ChakraProvider>
     </Provider>
-  </React.StrictMode>
+  </BrowserRouter>
 );
