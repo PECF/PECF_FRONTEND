@@ -1,33 +1,27 @@
-import * as React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter } from "react-router-dom";
-import { Provider } from "react-redux";
-import { createRoot } from "react-dom/client";
-import App from "./App";
-import "./index.css";
-import store from "./stores/rootStore";
+import { BrowserRouter as Router } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
+import { store } from "./redux/rootStore";
+import ReactDOM from "react-dom/client";
+import { Provider } from "react-redux";
+import "./assets/styles/css/index.css";
+import { App } from "./App";
+import React from "react";
+import axios from "axios";
 
-import { createStore } from "redux";
+axios.defaults.baseURL = "http://127.0.0.1:3443";
 
-// import { positions, transitions, Provider as AlertProvider } from "react-alert";
-// import AlertTemplate from "react-alert-template-basic";
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
 
-// const options = {
-//   timeout: 5000,
-//   position: positions.BOTTOM_CENTER,
-//   transition: transitions.SCALE,
-// };
-
-ReactDOM.createRoot(document.getElementById("root")).render(
-  <BrowserRouter>
+root.render(
+  <React.StrictMode>
     <Provider store={store}>
       <ChakraProvider>
-        {/* <AlertProvider template={AlertTemplate} {...options}> */}
-        <App />
-        {/* </AlertProvider> */}
+        <Router>
+          <App />
+        </Router>
       </ChakraProvider>
     </Provider>
-  </BrowserRouter>,
-  document.getElementById("root")
+  </React.StrictMode>
 );

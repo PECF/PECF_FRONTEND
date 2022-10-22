@@ -1,17 +1,20 @@
-import { useState } from "react";
-import "./App.css";
-import * as React from "react";
-import Router from "./routes/router";
-import { Box } from "@chakra-ui/react";
-import NavBar from "./components/NavBar/NavBar";
-function App() {
+import React from "react";
+import { Container } from "@chakra-ui/react";
+import { AppRoutes } from "./routes/Routes";
+import { Header } from "./components/Header";
+import { Footer } from "./components/Footer";
+import { useLoad } from "./hooks/useLoad";
+import { useAuth } from "./hooks/useAuth";
+export const App: React.FC = () => {
+  useLoad();
+  useAuth();
   return (
-    <Box>
-      <NavBar />
-      <div className="App"></div>;
-      <Router />
-    </Box>
+    <Container overflow="hidden" maxWidth="auto" m={0} p={0}>
+      <Header />
+      <Container overflow="hidden" maxWidth="auto" mt="55">
+        <AppRoutes />
+      </Container>
+      <Footer />
+    </Container>
   );
-}
-
-export default App;
+};
