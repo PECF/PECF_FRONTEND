@@ -4,12 +4,14 @@ import { AppRoutes } from "./routes/Routes";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
 import { useLoad } from "./hooks/useLoad";
+import { useAuth } from "./hooks/useAuth";
 export const App: React.FC = () => {
   useLoad();
+  useAuth();
   return (
-    <Container overflow="hidden" maxWidth="100vw" m={0} p={0}>
+    <Container overflow="hidden" maxWidth="auto" m={0} p={0}>
       <Header />
-      <Container overflow="hidden" minWidth="100vw"  pt='9vh' pl={0} >
+      <Container overflow="hidden" maxWidth="auto" mt="55">
         <AppRoutes />
       </Container>
       <Footer />

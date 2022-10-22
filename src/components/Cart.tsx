@@ -1,5 +1,5 @@
 import React from "react";
-import { DragHandleIcon } from "@chakra-ui/icons";
+import { FiShoppingCart } from "react-icons/fi";
 import {
   Box,
   Drawer,
@@ -37,7 +37,7 @@ export default function Cart() {
       <Button
         ref={btnRef}
         onClick={onOpen}
-        leftIcon={<DragHandleIcon />}
+        leftIcon={<FiShoppingCart />}
         colorScheme="teal"
         p="5"
         variant="solid">

@@ -18,6 +18,8 @@ import {
   UserUpdateActionTypes,
   UserUpdateState,
   UserUpdateAction,
+  UserForgotPasswordActionTypes,
+  UserForgotPassword,
 } from "../../types/authTypes";
 
 export const userLoginReducer = (
@@ -45,6 +47,19 @@ export const userRegisterReducer = (state = {}, action: any) => {
     case UserRegisterActionTypes.USER_REGISTER_SUCCESS:
       return { loading: false, userInfo: action.payload };
     case UserRegisterActionTypes.USER_REGISTER_FAILURE:
+      return { loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const userForgotPasswordReducer = (state = {}, action: any) => {
+  switch (action.type) {
+    case UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_REQUEST:
+      return { loading: true };
+    case UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_SUCCESS:
+      return { loading: false, userInfo: action.payload };
+    case UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_FAILURE:
       return { loading: false, error: action.payload };
     default:
       return state;
@@ -136,12 +151,12 @@ export const userDeleteReducer = (
   }
 };
 
-const userUpdateInitialState: UserUpdateState = {
+const UserForgotPasswordInitialState: UserForgotPassword = {
   loading: false,
 };
 
 export const userUpdateReducer = (
-  state: UserUpdateState = userUpdateInitialState,
+  state: UserForgotPassword = UserForgotPasswordInitialState,
   action: UserUpdateAction
 ) => {
   switch (action.type) {

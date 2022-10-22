@@ -7,6 +7,7 @@ import {
   UserRegisterActionTypes,
   UserDetailsActionTypes,
   UserUpdateProfileActionTypes,
+  UserForgotPasswordActionTypes,
 } from "../../types/authTypes";
 import axios from "axios";
 import { AppThunk } from "../rootStore";
@@ -22,7 +23,14 @@ export const login =
         type: UserLoginActionTypes.USER_LOGIN_REQUEST,
       });
 
-      const { data } = await axios.post("/user/login", { email, password });
+      const { data } = await axios.post(
+        "/user/login",
+        { email, password },
+        {
+          withCredentials: true,
+        }
+      );
+
       dispatch({
         type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
         payload: data["token"],
@@ -75,6 +83,34 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     localStorage.removeItem("userInfo");
   }
 };
+
+export const forgotPassword =
+  (email: string): AppThunk =>
+  async (dispatch) => {
+    try {
+      dispatch({
+        type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_REQUEST,
+      });
+
+      const { data } = await axios.post(
+        "/user/forgotpassword",
+        { email },
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_SUCCESS,
+        payload: data["message"],
+      });
+    } catch (error) {
+      dispatch({
+        type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_FAILURE,
+        payload: errorHandler(error),
+      });
+    }
+  };
 
 /**
  * Action used to register a user and immediately log in
@@ -135,19 +171,25 @@ export const getUserDetails = (): AppThunk => async (dispatch, getState) => {
       userLogin: { userInfo },
     } = getState();
 
-    // Axios config
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `${userInfo}`,
-      },
-    };
-    const { data } = await axios.get(`/user/me`, config);
+    if (userInfo) {
+      // Axios config
+      const config = {
+        withCredentials: true,
 
-    dispatch({
-      type: UserDetailsActionTypes.USER_DETAILS_SUCCESS,
-      payload: data.user,
-    });
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${userInfo}`,
+        },
+      };
+
+      const { data } = await axios.get("/user/me", config);
+
+      dispatch({
+        type: UserDetailsActionTypes.USER_DETAILS_SUCCESS,
+        payload: data.user,
+      });
+    }
+    // Save user info to local storage
   } catch (error) {
     dispatch({
       type: UserDetailsActionTypes.USER_DETAILS_FAILURE,
@@ -167,12 +209,10 @@ export const updateUserProfile =
         type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST,
       });
 
-      // Get user info from the userLogin object (from getState)
       const {
         userLogin: { userInfo },
       } = getState();
 
-      // Axios config
       const config = {
         headers: {
           "Content-Type": "application/json",

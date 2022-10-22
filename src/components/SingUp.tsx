@@ -19,11 +19,15 @@ export default function SingUp() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   return (
     <Box>
-      <Button colorScheme="blackAlpha.900" variant="outline" onClick={onOpen}>
+      <Button
+        mr={3}
+        colorScheme="teal"
+        backgroundColor="blackAlpha.900"
+        onClick={onOpen}>
         Sign Up
       </Button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
+      <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Sing up</ModalHeader>

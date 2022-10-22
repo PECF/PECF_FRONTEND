@@ -13,13 +13,11 @@ import { ForgotPassword } from "../pages/user/ForgotPassword";
 import { NotFound } from "../pages/NotFound";
 import { useDispatch, useSelector } from "react-redux";
 import { CreateProduct } from "../components/CreateProduct";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export const AppRoutes: React.FC = () => {
-  const userDetails = useSelector((state: any) => state.userDetails);
-  const { user } = userDetails;
+  const { userInfo } = useRecoveryData("userLogin");
 
-  //redirect if logged in to home
-  console.log(user && user.role);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
@@ -27,11 +25,12 @@ export const AppRoutes: React.FC = () => {
       {/* <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />*/}
 
-      {!user ? (
+      {!userInfo ? (
         <Route path="/forgotpassword" element={<ForgotPassword />} />
       ) : (
         <Route path="/forgotpassword" element={<Navigate to="/" />} />
       )}
+
       {/* {user && user.role === "admin" ? (
         <Route path="/createproduct" element={<CreateProduct />} />
       ) : (

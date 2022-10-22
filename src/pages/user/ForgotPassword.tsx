@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FormControl,
   FormLabel,
@@ -6,81 +6,102 @@ import {
   FormHelperText,
   Text,
   Box,
+  Container,
   Button,
   useToast,
+  Grid,
+  Spacer,
 } from "@chakra-ui/react";
-
 import { EmailIcon } from "@chakra-ui/icons";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/rootStore";
+import { forgotPassword } from "../../redux/actions/authActions";
+import { useRecoveryData } from "../../hooks/useRecoveryData";
+import { emailRegex } from "../../constant/Regex";
 
 export const ForgotPassword = () => {
   const send = useToast();
 
-  const [input, setInput] = React.useState("");
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setInput(e.target.value);
+  const [email, setEmail] = useState("");
 
+  const dispatch = useDispatch<AppDispatch>();
 
-    
+  const { error, userInfo } = useRecoveryData("userForgotPassword");
+
+  const handleSubmit = () => {
+    if (emailRegex.test(email)) {
+      dispatch(forgotPassword(email));
+    } else {
+      send({
+        title: "Invalid email",
+        description: "Please enter a valid email",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
+    useEffect(() => {
+      if (error) {
+        send({
+          title: "Error",
+          description: error,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      if (userInfo) {
+        send({
+          title: "Success",
+          description: userInfo,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }, [error, userInfo]);
+  };
+
   return (
-    <Box>
-      {/* <NavBar/> */}
-      <Box>
-        <Box
-          mt={20}
-          maxW="100%"
-          bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
-          overflow="hidden"
-          p={50}
-          boxShadow="lg">
-          <FormControl isRequired>
-            <FormLabel fontSize={20}>Let&apos;s find your Password</FormLabel>
-            <Text mt={5} fontSize={16}>
-              Please enter your email to search for your account.
-            </Text>
-            <Input
-              mt={5}
-              onChange={handleChange}
-              placeholder="example@pecf.com"
-              value={input}
-              type="email"
-            />
-            <FormHelperText>
-              Your Email is private, we&apos;ll never share your email.
-            </FormHelperText>
+    <Container>
+      <Box
+        mt={20}
+        maxW="100%"
+        bg={"whiteAlpha.100"}
+        borderWidth="2px"
+        borderRadius="lg"
+        overflow="hidden"
+        p={50}
+        boxShadow="lg">
+        <FormControl isRequired>
+          <FormLabel fontSize={20}>Let&apos;s find your Password</FormLabel>
+          <Text mt={5} fontSize={16}>
+            Please enter your email to search for your account.
+          </Text>
+          <Input
+            mt={5}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="email@example.com"
+            value={email}
+            type="email"
+          />
+          <FormHelperText>
+            Your Email is private, we&apos;ll never share your email.
+          </FormHelperText>
+          <Grid mt={5} templateColumns="repeat(2, 1fr)" gap={6}>
+            <Spacer />
             <Button
               leftIcon={<EmailIcon />}
               mt={10}
-              color={"whiteAlpha.900"}
-              bg={"blackAlpha.900"}
-              borderColor={"whiteAlpha"}
-              _hover={{ bg: "gray.300", color: "blackAlpha.900" }}
-              //habria que aplicar logica si encuentra el mail o no si no tira error
-              onClick={() =>
-                send({
-                  title: "Email Sended!",
-                  description: "Your recovery email should arrive soon.",
-                  status: "success",
-                  duration: 3000,
-                  isClosable: true,
-                })
-              }
-              /*  : send({
-               title: "Ups, something went wrong!",
-               description: "We couldn't find your email please verify or try another one",
-                  status: "error",
-                  duration: 3000,
-                  isClosable: true,
-                }) */
-            >
+              colorScheme="teal"
+              backgroundColor="blackAlpha.900"
+              onClick={handleSubmit}>
               Recover!
             </Button>
-          </FormControl>
-        </Box>
-        {/* <Footer/> */}
+          </Grid>
+        </FormControl>
       </Box>
-    </Box>
+    </Container>
   );
 };
-/* }; */

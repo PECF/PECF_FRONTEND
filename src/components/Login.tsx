@@ -1,5 +1,5 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { login } from "../redux/actions/authActions";
 import { AppDispatch } from "../redux/rootStore";
@@ -16,76 +16,114 @@ import {
   FormLabel,
   Box,
   ModalFooter,
+  Grid,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
+import { emailRegex, passwordRegex } from "../constant/Regex";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 
-const Login = () => {
+export const Login = () => {
+  const send = useToast();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    dispatch(login(email, password));
+  const { error, userInfo } = useRecoveryData("userLogin");
+  const handleSubmit = () => {
+    if (emailRegex.test(email)) {
+      dispatch(login(email, password));
+    } else {
+      send({
+        title: "Invalid email",
+        description: "Please enter a valid email",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+
+    useEffect(() => {
+      if (error) {
+        send({
+          title: "Error",
+          description: error,
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+      if (userInfo) {
+        send({
+          title: "Success",
+          description: userInfo,
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    }, [error, userInfo]);
   };
 
   return (
     <Box>
-      <Button colorScheme="blackAlpha.900" variant="outline" onClick={onOpen}>
-        Log in
+      <Button
+        mr={3}
+        colorScheme="teal"
+        backgroundColor="blackAlpha.900"
+        onClick={onOpen}>
+        Log In
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Log In</ModalHeader>
           <ModalCloseButton />
-          <ModalBody pb={6}>
+          <ModalBody>
             <FormControl>
-              <FormLabel>Email address</FormLabel>
+              <FormLabel>Email</FormLabel>
               <Input
                 type="email"
-                placeholder="email@example.com"
-                value={email}
+                placeholder="Enter your email"
                 onChange={(e) => setEmail(e.target.value)}
               />
-            </FormControl>
-
-            <FormControl mt={4}>
-              <FormLabel>Password</FormLabel>
+              <FormLabel mt={3}>Password</FormLabel>
               <Input
                 type="password"
-                placeholder="Enter password"
-                value={password}
+                placeholder="Enter your password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              variant="ghost"
-              border="none"
-              as={Link}
-              to="/forgotpassword"
-              onClick={onClose}>
-              Forgot your password?
-            </Button>
+            <Grid
+              templateColumns="3fr 1fr"
+              gap={6}
+              alignItems="center"
+              justifyContent="center">
+              <Button
+                variant="ghost"
+                border="none"
+                as={Link}
+                to="/forgotpassword"
+                onClick={onClose}>
+                Forgot your password?
+              </Button>
 
-            <Button
-              type="submit"
-              mr={3}
-              colorScheme="teal"
-              backgroundColor="blackAlpha.900"
-              onClick={submitHandler}>
-              Log In
-            </Button>
+              <Button
+                mr={3}
+                colorScheme="teal"
+                backgroundColor="blackAlpha.900"
+                onClick={handleSubmit}>
+                Log In
+              </Button>
+            </Grid>
           </ModalFooter>
         </ModalContent>
       </Modal>
     </Box>
   );
 };
-
-export default Login;

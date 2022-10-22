@@ -25,6 +25,7 @@ import {
   UserListState,
   UserUpdateState,
   UserUpdateProfileState,
+  UserForgotPassword,
 } from "./authTypes";
 
 export interface ReduxState {
@@ -49,4 +50,5 @@ export interface ReduxState {
   productUpdate: ProductUpdateState;
   productCreateReview: ProductCreateReviewState;
   productTopRated: ProductTopState;
+  userForgotPassword: UserForgotPassword;
 }

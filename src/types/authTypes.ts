@@ -119,7 +119,7 @@ export type UserListAction =
   | UserListResetAction;
 
 export interface UserLoginState {
-  userInfo?: TokenUser;
+  userInfo?: TokenUser | null | boolean;
   loading?: boolean;
   error?: any;
 }
@@ -279,3 +279,33 @@ export interface UserRegisterFailureAction {
   type: UserRegisterActionTypes.USER_REGISTER_FAILURE;
   payload: any;
 }
+
+export interface UserForgotPassword {
+  email?: string;
+  loading?: boolean;
+  error?: any;
+}
+
+export enum UserForgotPasswordActionTypes {
+  USER_FORGOT_PASSWORD_REQUEST = "USER_FORGOT_PASSWORD_REQUEST",
+  USER_FORGOT_PASSWORD_SUCCESS = "USER_FORGOT_PASSWORD_SUCCESS",
+  USER_FORGOT_PASSWORD_FAILURE = "USER_FORGOT_PASSWORD_FAILURE",
+}
+
+export interface UserForgotPasswordRequestAction {
+  type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_REQUEST;
+}
+
+export interface UserForgotPasswordSuccessAction {
+  type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_SUCCESS;
+}
+
+export interface UserForgotPasswordFailureAction {
+  type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_FAILURE;
+  payload: any;
+}
+
+export type UserForgotPasswordAction =
+  | UserForgotPasswordRequestAction
+  | UserForgotPasswordSuccessAction
+  | UserForgotPasswordFailureAction;
