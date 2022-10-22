@@ -16,56 +16,52 @@ import {
   FormLabel,
   Box,
   ModalFooter,
-  Grid,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { emailRegex, passwordRegex } from "../constant/Regex";
+import { emailRegex } from "../constant/Regex";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export const Login = () => {
-  const send = useToast();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { error } = useRecoveryData("userLogin");
+  const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
+  const [email, setEmail] = useState("");
+  const send = useToast();
 
-  const { error, userInfo } = useRecoveryData("userLogin");
   const handleSubmit = () => {
     if (emailRegex.test(email)) {
       dispatch(login(email, password));
+      send({
+        title: "Success",
+        description: "You have successfully logged in",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
     } else {
       send({
-        title: "Invalid email",
-        description: "Please enter a valid email",
+        title: "Invalid email or password",
+        description: "Please enter a valid email or password",
         status: "error",
-        duration: 5000,
+        duration: 3000,
         isClosable: true,
       });
     }
-
-    useEffect(() => {
-      if (error) {
-        send({
-          title: "Error",
-          description: error,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-      if (userInfo) {
-        send({
-          title: "Success",
-          description: userInfo,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    }, [error, userInfo]);
   };
+
+  useEffect(() => {
+    if (error) {
+      send({
+        title: "Error",
+        description: error,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [error]);
 
   return (
     <Box>
@@ -82,45 +78,30 @@ export const Login = () => {
           <ModalHeader>Log In</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <FormControl>
-              <FormLabel>Email</FormLabel>
+            <FormControl id="email">
+              <FormLabel>Email address</FormLabel>
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Enter email"
                 onChange={(e) => setEmail(e.target.value)}
               />
-              <FormLabel mt={3}>Password</FormLabel>
+            </FormControl>
+            <FormControl id="password">
+              <FormLabel>Password</FormLabel>
               <Input
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Enter password"
                 onChange={(e) => setPassword(e.target.value)}
               />
             </FormControl>
           </ModalBody>
-
           <ModalFooter>
-            <Grid
-              templateColumns="3fr 1fr"
-              gap={6}
-              alignItems="center"
-              justifyContent="center">
-              <Button
-                variant="ghost"
-                border="none"
-                as={Link}
-                to="/forgotpassword"
-                onClick={onClose}>
-                Forgot your password?
-              </Button>
-
-              <Button
-                mr={3}
-                colorScheme="teal"
-                backgroundColor="blackAlpha.900"
-                onClick={handleSubmit}>
-                Log In
-              </Button>
-            </Grid>
+            <Button colorScheme="teal" mr={3}>
+              <Link to="/forgotpassword">Forgot Password</Link>
+            </Button>
+            <Button colorScheme="teal" mr={3} onClick={handleSubmit}>
+              Log In
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

@@ -122,6 +122,7 @@ export interface UserLoginState {
   userInfo?: TokenUser | null | boolean;
   loading?: boolean;
   error?: any;
+  isLogged?: boolean;
 }
 
 export enum UserLoginActionTypes {

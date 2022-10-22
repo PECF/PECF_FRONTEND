@@ -28,13 +28,23 @@ export const userLoginReducer = (
 ) => {
   switch (action.type) {
     case UserLoginActionTypes.USER_LOGIN_REQUEST:
-      return { loading: true, error: false, userInfo: false };
+      return { loading: true, error: false, userInfo: false, isLogged: false };
     case UserLoginActionTypes.USER_LOGIN_SUCCESS:
-      return { loading: false, userInfo: action.payload, error: false };
+      return {
+        loading: false,
+        userInfo: action.payload,
+        error: false,
+        isLogged: true,
+      };
     case UserLoginActionTypes.USER_LOGIN_FAILURE:
-      return { loading: false, error: action.payload, userInfo: false };
+      return {
+        loading: false,
+        error: action.payload,
+        userInfo: false,
+        isLogged: false,
+      };
     case UserLoginActionTypes.USER_LOGOUT:
-      return { loading: false, error: false, userInfo: false };
+      return { loading: false, error: false, userInfo: false, isLogged: false };
     default:
       return state;
   }
