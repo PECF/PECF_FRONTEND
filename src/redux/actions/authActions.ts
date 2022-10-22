@@ -31,6 +31,7 @@ export const login =
         }
       );
 
+      console.log(data["token"]);
       dispatch({
         type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
         payload: data["token"],
@@ -74,6 +75,8 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     await axios.get("/user/logout", config);
 
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("cartItems");
+    localStorage.removeItem("shippingAddress");
   } catch (error) {
     dispatch({
       type: UserLoginActionTypes.USER_LOGIN_FAILURE,
@@ -132,11 +135,12 @@ export const register =
       };
 
       const { data } = await axios.post(
-        "/api/users",
+        "/user/register",
         { name, email, password },
         config
       );
 
+      console.log(data);
       dispatch({
         type: UserRegisterActionTypes.USER_REGISTER_SUCCESS,
         payload: data,

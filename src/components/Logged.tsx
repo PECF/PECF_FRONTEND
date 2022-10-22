@@ -1,45 +1,30 @@
-import { Login } from "./Login";
-import SingUp from "./SingUp";
-import Cart from "./Cart";
-
-import { useSelector, useDispatch } from "react-redux";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 import { logout } from "../redux/actions/authActions";
+import { IoBagCheckOutline } from "react-icons/io5";
+import { AppDispatch } from "../redux/rootStore";
+import { CgProfile } from "react-icons/cg";
+import { MdLogout } from "react-icons/md";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
+import { SingUp } from "./SingUp";
+import { Login } from "./Login";
+import Cart from "./Cart";
+import React from "react";
 
 import {
   Box,
   Flex,
   Text,
-  IconButton,
   Button,
-  Stack,
-  Collapse,
   useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
   Menu,
   MenuList,
-  Spacer,
-  InputGroup,
   Avatar,
   MenuButton,
-  InputRightElement,
   MenuItem,
   Grid,
 } from "@chakra-ui/react";
 
-import {
-  HamburgerIcon,
-  CloseIcon,
-  SearchIcon,
-  ChevronDownIcon,
-} from "@chakra-ui/icons";
-import { useRecoveryData } from "../hooks/useRecoveryData";
-import { AppDispatch } from "../redux/rootStore";
-import React, { useEffect } from "react";
-import { MdLogout } from "react-icons/md";
-import { IoBagCheckOutline } from "react-icons/io5";
-import { CgProfile } from "react-icons/cg";
 export function Logged() {
   const { userInfo } = useRecoveryData("userLogin");
   const { user } = useRecoveryData("userDetails");
@@ -111,30 +96,4 @@ export function Logged() {
       )}
     </Box>
   );
-}
-{
-  /* if (!userInfo) {
-    return (
-      <>
-        <Login />
-        <SingUp />
-      </>
-    );
-  } else {
-    return (
-      <>
-        <Cart />
-        <Avatar size="sm" />
-        <Text>{userInfo.name}</Text>
-        <Button
-        // onClick={() => {
-        //   dispatch(logout());
-        // }}
-        >
-          Logout
-        </Button>
-      </>
-    );
-  }
-} */
 }

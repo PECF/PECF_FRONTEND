@@ -96,10 +96,14 @@ export const Login = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" mr={3}>
+            <Button colorScheme="teal" backgroundColor="blackAlpha.900" mr={3}>
               <Link to="/forgotpassword">Forgot Password</Link>
             </Button>
-            <Button colorScheme="teal" mr={3} onClick={handleSubmit}>
+            <Button
+              colorScheme="teal"
+              backgroundColor="blackAlpha.900"
+              mr={3}
+              onClick={handleSubmit}>
               Log In
             </Button>
           </ModalFooter>
