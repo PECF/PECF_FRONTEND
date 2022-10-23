@@ -17,7 +17,6 @@ import { errorHandler } from "./errorHandler";
  * Actions related to listing all products
  */
 
-
 export const listProducts =
   (keyword = "", pageNumber = ""): AppThunk =>
   async (dispatch) => {

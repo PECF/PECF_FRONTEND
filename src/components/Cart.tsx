@@ -26,11 +26,38 @@ import { useDisclosure } from "@chakra-ui/react";
 export default function Cart() {
   const btnRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  async function payCartProducts() {
+    const carryProductsToMap = CARRYPRODUCTS.map((product) => {
+      const nuevoElemento = {
+        title: product.name,
+        unit_price: product.price,
+        quantity: product.quantity,
+        id: product.id,
+      };
+      return nuevoElemento;
+    });
+    const response = await fetch(
+      "https://api.mercadopago.com/checkout/preferences",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168",  //Aca va el token individual luego del bearer: token individual
+        },
+        body: JSON.stringify({
+          items: carryProductsToMap,
+        }),
+      }
+    );
+    const data = await response.json();
+    console.log(data);
+    window.open(data.init_point, "_blank");
+  }
 
   const CARRYPRODUCTS = [
-    { name: "remera 1", price: 1000 },
-    { name: "remera 2", price: 550 },
-    { name: "remera 3", price: 4800 },
+    { id: 1, name: "remera 1", price: 1000, quantity: 1 },
+    { id: 2, name: "remera 2", price: 550, quantity: 1 },
+    { id: 3, name: "remera 3", price: 4800, quantity: 1 },
   ];
   return (
     <Box>
@@ -40,14 +67,16 @@ export default function Cart() {
         leftIcon={<FiShoppingCart />}
         colorScheme="teal"
         p="5"
-        variant="solid">
+        variant="solid"
+      >
         Cart
       </Button>
       <Drawer
         isOpen={isOpen}
         placement="right"
         onClose={onClose}
-        finalFocusRef={btnRef}>
+        finalFocusRef={btnRef}
+      >
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -102,7 +131,9 @@ export default function Cart() {
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="teal">Buy</Button>
+            <Button colorScheme="teal" onClick={payCartProducts}>
+              Buy
+            </Button>
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
