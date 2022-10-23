@@ -1,19 +1,19 @@
 import {
-  PasswordUser,
-  User,
+  UserForgotPasswordActionTypes,
+  UserUpdateProfileActionTypes,
+  UserRegisterActionTypes,
+  UserDetailsActionTypes,
   UserDeleteActionTypes,
   UserUpdateActionTypes,
   UserLoginActionTypes,
-  UserRegisterActionTypes,
-  UserDetailsActionTypes,
-  UserUpdateProfileActionTypes,
-  UserForgotPasswordActionTypes,
+  PasswordUser,
+  User,
 } from "../../types/authTypes";
-import axios from "axios";
-import { AppThunk } from "../rootStore";
-import { errorHandler } from "./errorHandler";
 import { OrderListMyActionTypes } from "../../types/ordersTypes";
 import { UserListActionTypes } from "../../types/authTypes";
+import { errorHandler } from "./errorHandler";
+import { AppThunk } from "../rootStore";
+import axios from "axios";
 
 export const login =
   (email: string, password: string): AppThunk =>
@@ -47,9 +47,6 @@ export const login =
     }
   };
 
-/**
- * Action used to log out a user
- */
 export const logout = (): AppThunk => async (dispatch, getState) => {
   try {
     const {
@@ -115,10 +112,6 @@ export const forgotPassword =
     }
   };
 
-/**
- * Action used to register a user and immediately log in
- * the user after registration
- */
 export const register =
   (name: string, email: string, password: string): AppThunk =>
   async (dispatch) => {
@@ -127,7 +120,6 @@ export const register =
         type: UserRegisterActionTypes.USER_REGISTER_REQUEST,
       });
 
-      // Axios config
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -140,20 +132,12 @@ export const register =
         config
       );
 
-      console.log(data);
       dispatch({
         type: UserRegisterActionTypes.USER_REGISTER_SUCCESS,
-        payload: data,
+        payload: data["token"],
       });
 
-      // Log user in immediately after registration
-      dispatch({
-        type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
-        payload: data,
-      });
-
-      // Save user info to local storage
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      dispatch(login(email, password));
     } catch (error) {
       dispatch({
         type: UserRegisterActionTypes.USER_REGISTER_FAILURE,

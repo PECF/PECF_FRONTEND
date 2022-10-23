@@ -63,17 +63,13 @@ export function Logged() {
               </Flex>
             </MenuButton>
             <MenuList>
-              <MenuItem>
+              <MenuItem as={Link} to={"/profile"}>
                 <CgProfile />
-                <Text ml="2" as={Link} to={"/profile"}>
-                  Profile
-                </Text>
+                <Text ml="2">Profile</Text>
               </MenuItem>
-              <MenuItem>
+              <MenuItem as={Link} to={"/orders"}>
                 <IoBagCheckOutline />
-                <Text ml="2" as={Link} to={"/orders"}>
-                  Orders
-                </Text>
+                <Text ml="2">Orders</Text>
               </MenuItem>
               <MenuItem onClick={logoutHandler}>
                 <MdLogout />
