@@ -1,17 +1,7 @@
 import React from "react";
-import { Header } from "../components/Header";
-import {
-  Box,
-  Button,
-  Center,
-  Flex,
-  Heading,
-  Input,
-  Container,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Heading, Text, VStack } from "@chakra-ui/react";
 
-const termsOfService = () => {
+export const TermsOfService: React.FC = () => {
   return (
     <VStack>
       <Box
@@ -29,7 +19,7 @@ const termsOfService = () => {
           <Heading mt={10} mb={10} as="h3" size="md">
             Resumen de términos y condiciones
           </Heading>
-          <Container mt={19} >
+          <Text mt={19} align={"justify"}>
             PECF es una compañía de tecnología que ofrece servicios vinculados
             principalmente al comercio electrónico y a los pagos digitales. El
             Marketplace es una plataforma de comercio electrónico donde las
@@ -47,11 +37,11 @@ const termsOfService = () => {
             casos, podremos cobrar una tarifa por el uso de los servicios que
             integran el ecosistema de PECF, que la Persona Usuaria se compromete
             a pagar.
-          </Container>
+          </Text>
           <Heading mt={10} mb={10} as="h3" size="lg">
             Términos y Condiciones
           </Heading>
-          <Container>
+          <Text align={"justify"}>
             Términos y Condiciones Estos términos y condiciones y los anexos que
             explican los servicios de PECF (de ahora en más: “Términos y
             Condiciones”) regulan la relación entre PECF y las personas que usan
@@ -67,11 +57,11 @@ const termsOfService = () => {
             tengan obligaciones pendientes con PECF o con otras Personas
             Usuarias, podrán finalizar la relación con PECF cancelando su
             cuenta.
-          </Container>
+          </Text>
           <Heading mt={10} mb={10} as="h3" size="lg">
             Capacidad
           </Heading>
-          <Container>
+          <Text align={"justify"}>
             Podrán usar nuestros servicios las personas mayores de edad que
             tengan capacidad legal para contratar. Los menores de edad, a partir
             de los 13 años, sólo podrán utilizar su cuenta con autorización del
@@ -82,11 +72,11 @@ const termsOfService = () => {
             PECF en representación de una empresa deberá tener capacidad para
             contratar a nombre de ella. Además, para poder usar la cuenta, la
             Persona Usuaria debe encontrarse activa.
-          </Container>
+          </Text>
           <Heading mt={10} mb={10} as="h3" size="lg">
             Registro y Cuenta
           </Heading>
-          <Container>
+          <Text align={"justify"}>
             Quien quiera usar nuestros servicios, deberá completar el formulario
             de registro con los datos que le sean requeridos. Al completarlo, se
             compromete a hacerlo de manera exacta, precisa y verdadera y a
@@ -114,20 +104,20 @@ const termsOfService = () => {
             consideramos que ese accionar puede perjudicar al resto de las
             personas que usan el Sitio o a PECF, más allá de las sanciones que
             pudieran corresponder.
-          </Container>
+          </Text>
           <Heading mt={10} mb={10} as="h3" size="lg">
             Privacidad de Datos
           </Heading>
-          <Container>
+          <Text align={"justify"}>
             En PECF hacemos un uso responsable de la información personal,
             protegiendo la privacidad de las Personas Usuarias que nos confiaron
             sus datos y tomando las medidas necesarias para garantizar la
             seguridad en PECF.
-          </Container>
+          </Text>
           <Heading mt={10} mb={10} as="h3" size="lg">
             Propiedad Intelectual
           </Heading>
-          <Container>
+          <Text align={"justify"}>
             PECF y/o sus sociedades relacionadas son propietarias de todos los
             derechos de propiedad intelectual sobre sus sitios, todo su
             contenido, servicios, productos, marcas, nombres comerciales, logos,
@@ -164,11 +154,10 @@ const termsOfService = () => {
             total o parcialmente, sancionar al usuario conforme a lo previsto en
             estos Términos y Condiciones y ejercer las acciones extrajudiciales
             y/o judiciales correspondientes.
-          </Container>
+          </Text>
         </Box>
       </Box>
     </VStack>
   );
 };
 
-export default termsOfService;
