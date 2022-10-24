@@ -77,14 +77,16 @@ import useEffect from "react";
 import { logout } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
+import { CreateProduct } from "../../components/CreateProduct";
 export function Profile() {
   const { user } = useRecoveryData("userDetails");
 
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProductsDashboard, setShowProductsDashboard] = useState(false);
   const [showOrdersDashboard, setShowOrdersDashboard] = useState(false);
+  const [showCreateProduct, setShowCreateProduct] = useState(false);
 
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
@@ -240,7 +242,6 @@ export function Profile() {
               color={useColorModeValue("gray.600", "gray.400")}
               onClick={() => {
                 setShowEditProfile(!showEditProfile);
-                setShow(!show);
               }}>
               <Flex align="center">
                 <Icon as={FiUser} w={5} h={5} />
@@ -270,7 +271,6 @@ export function Profile() {
               color={useColorModeValue("gray.600", "gray.400")}
               onClick={() => {
                 setShowProductsDashboard(!showProductsDashboard);
-                setShow(!show);
               }}>
               <Flex align="center">
                 <Icon as={FiShoppingBag} w={5} h={5} />
@@ -338,7 +338,6 @@ export function Profile() {
                   color={useColorModeValue("gray.600", "gray.400")}
                   onClick={() => {
                     setShowProductsDashboard(!showProductsDashboard);
-                    setShow(!show);
                   }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
@@ -354,8 +353,24 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   onClick={() => {
+                    setShowCreateProduct(!showCreateProduct);
+                  }}>
+                  <Flex align="center">
+                    <Icon as={FiShoppingCart} w={5} h={5} />
+                    <Text ml={4} fontSize="sm">
+                      Create Product
+                    </Text>
+                  </Flex>
+                  <Icon as={FaAngleDoubleRight} w={5} h={5} />
+                </Flex>
+
+                <Flex
+                  mt={2}
+                  justify="space-between"
+                  align="center"
+                  color={useColorModeValue("gray.600", "gray.400")}
+                  onClick={() => {
                     setShowOrdersDashboard(!showOrdersDashboard);
-                    setShow(!show);
                   }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
@@ -420,6 +435,7 @@ export function Profile() {
         {showEditProfile && <EditProfile />}
         {showProductsDashboard && <ProductsDashboard />}
         {showOrdersDashboard && <OrdersDashboard />}
+        {showCreateProduct && <CreateProduct />}
       </Flex>
     </Container>
   );

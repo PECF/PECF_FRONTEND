@@ -1,8 +1,6 @@
 import React from "react";
-import { Box, Badge, Text, Stack, Spacer, IconButton } from "@chakra-ui/react";
+import { Box, Badge, Text, Stack, Spacer } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
-import { FiEye } from "react-icons/fi";
-import { Link } from "react-router-dom";
 
 export const Card = ({ product }: any) => {
   return (
@@ -16,7 +14,6 @@ export const Card = ({ product }: any) => {
       bgSize="cover"
       bgRepeat="no-repeat"
       display="flex"
-      margin={"5%"}
       role="group">
       <Box
         h="100%"
@@ -46,38 +43,37 @@ export const Card = ({ product }: any) => {
           </Stack>
         </Box>
         <Spacer />
-        <IconButton
-          aria-label="View"
-          rounded={"full"}
-          width="fit-content"
-          position={"relative"}
-          top="10%"
-          as={Link}
-          to="">
-          <FiEye />
-        </IconButton>
+
         <Spacer />
         <Box display={"flex"} flexDir="column" alignItems={"center"}>
           <Text
+            color="black"
+            fontWeight="semibold"
+            fontSize="l"
+            backgroundColor={"white"}
+            borderRadius="2xl"
+            p={"5px"}>
+            ${product.price}
+          </Text>
+          <Text
             as="h2"
+            backgroundColor={"white"}
+            borderRadius="2xl"
+            p={"5px"}
             fontWeight="semibold"
             fontSize="sm"
             my={2}
             textTransform="uppercase"
-            color="white">
+            color="black">
             {product.name}
           </Text>
           <Stack isInline justify="space-between">
-            <Text color="white" fontWeight="semibold" fontSize="l">
-              ${product.price}
-            </Text>
             <Box as="span">
               {Array(product.rating)
                 .fill("")
                 .map((_, i) => (
                   <StarIcon color="teal.500" key={i} />
                 ))}
-              <StarIcon color="grey" />
             </Box>
           </Stack>
         </Box>
