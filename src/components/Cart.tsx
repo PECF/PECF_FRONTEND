@@ -36,7 +36,7 @@ export default function Cart() {
     const carryProductsToMap = cartItems.map((element: any) => {
       const newProduct = {
         title: element.product.name,
-        description: element.product.description,
+        unit_price: element.product.price,
         price: element.product.price,
         quantity: element.quantity,
         id: element.product._id,
@@ -44,24 +44,24 @@ export default function Cart() {
       return newProduct;
     });
 
-    console.log(carryProductsToMap);
-    // const response = await fetch(
-    //   "https://api.mercadopago.com/checkout/preferences",
-    //   {
-    //     method: "POST",
-    //     headers: {
-    //       Authorization:
-    //         "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
-    //     },
-    //     body: JSON.stringify({
-    //       items: carryProductsToMap,
-    //     }),
-    //   }
-    // );
+    const response = await fetch(
+      "https://api.mercadopago.com/checkout/preferences",
+      {
+        method: "POST",
+        headers: {
+          Authorization:
+            "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
+        },
+        body: JSON.stringify({
+          items: carryProductsToMap,
+        }),
+      }
+    );
 
-    // const data = await response.json();
+    const data = await response.json();
+    console.log(data);
 
-    // window.open(data.init_point, "_blank");
+    window.open(data.init_point, "_blank");
   }
 
   return (

@@ -1,17 +1,7 @@
-import {
-  Stack,
-  Flex,
-  Button,
-  Text,
-  VStack,
-  Image,
-  useBreakpointValue,
-  Box,
-  IconButton,
-} from "@chakra-ui/react";
+import { Flex, useBreakpointValue, Box, IconButton } from "@chakra-ui/react";
 
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
-import React, { useState } from "react";
+import React from "react";
 import Slider from "react-slick";
 
 const settings = {

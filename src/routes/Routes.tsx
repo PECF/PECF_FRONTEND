@@ -13,6 +13,7 @@ import { ForgotPassword } from "../pages/user/ForgotPassword";
 import { NotFound } from "../pages/NotFound";
 import { CreateProduct } from "../components/CreateProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { Profile } from "../pages/user/profile";
 // import AuthContext from "../contexts/authContext";
 export const AppRoutes: React.FC = () => {
   return (
@@ -21,6 +22,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="forgot-password" element={<ForgotPassword />} />
       <Route path="refund" element={<Refund />} />
       <Route path="create-product" element={<CreateProduct />} />
+      <Route path="profile" element={<Profile children={undefined} />} />
       {/* <PrivateRoute path="update-password" element={<UpdatePassword />} />
       <PrivateRoute path="update-profile" element={<UpdateProfile />} />
       <AdminRoute path="admin" element={<Admin />} /> */}

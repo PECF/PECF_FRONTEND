@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box, Badge, Text, Stack, Spacer, IconButton } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { FiEye } from "react-icons/fi";
