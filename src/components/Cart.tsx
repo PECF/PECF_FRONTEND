@@ -66,7 +66,7 @@ export default function Cart() {
 
   return (
     <Box>
-      <Button onClick={onOpen} colorScheme="teal" variant="solid">
+      <Button onClick={onOpen} colorScheme="teal" variant="solid" size="md">
         <FiShoppingCart />
         <Text ml="2"> Cart </Text>
       </Button>

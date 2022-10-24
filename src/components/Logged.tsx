@@ -1,5 +1,7 @@
+import { useColorMode, useColorModeValue } from "@chakra-ui/color-mode";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { logout } from "../redux/actions/authActions";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { AppDispatch } from "../redux/rootStore";
 import { CgProfile } from "react-icons/cg";
@@ -24,7 +26,13 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+//add change dark mode
+
 export function Logged() {
+  const { colorMode, toggleColorMode } = useColorMode();
+  const text = useColorModeValue("dark", "light");
+  const SwitchIcon = useColorModeValue(MoonIcon, SunIcon);
+
   const { user } = useRecoveryData("userDetails");
   const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();

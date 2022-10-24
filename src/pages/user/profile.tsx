@@ -52,8 +52,7 @@ export function Profile() {
       minH="100vh">
       <Flex
         direction={{ base: "column", md: "row" }}
-        maxW="container.xl"
-        mx="auto"
+        
         py={10}>
         <Box
           w={{ base: "full", md: "1/3" }}

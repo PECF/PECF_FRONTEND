@@ -1,12 +1,21 @@
-import { Flex, Text, useColorModeValue } from "@chakra-ui/react";
+import {
+  Flex,
+  Text,
+  Button,
+  useColorMode,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import { companyName } from "../constant/general";
 import { Container } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { SearchBar } from "./SearchBar";
 import { Logged } from "./Logged";
+import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import React from "react";
 
 export function Header() {
+  const { toggleColorMode } = useColorMode();
+  const text = useColorModeValue("Dark", "Light");
   return (
     <Container
       maxW="full"
@@ -21,7 +30,8 @@ export function Header() {
       right={0}
       zIndex={1000}>
       <Flex
-        minWidth="100%"
+        maxW="container.xl"
+        mx="auto"
         alignItems={"center"}
         gap="10"
         justifyContent={"space-between"}>
@@ -37,6 +47,26 @@ export function Header() {
         </Text>
         <SearchBar />
         <Logged />
+        {/* <Button
+          leftIcon={<SwitchIcon />}
+          colorScheme="teal"
+          variant="outline"
+          size="sm"
+          mr={2}
+          onClick={toggleColorMode}>
+          {text}
+        </Button> */}
+
+        <Button
+          leftIcon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+          colorScheme="teal"
+          variant="outline"
+          size="md"
+          pl={6}
+          pr={6}
+          onClick={toggleColorMode}>
+          {text}
+        </Button>
       </Flex>
     </Container>
   );
