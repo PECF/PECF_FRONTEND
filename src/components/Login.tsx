@@ -97,8 +97,14 @@ export const Login = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" backgroundColor="blackAlpha.900" mr={3}>
-              <Link to="/forgotpassword">Forgot Password</Link>
+            <Button
+              as={Link}
+              to={"/forgot-password"}
+              colorScheme="teal"
+              backgroundColor="blackAlpha.900"
+              mr={3}
+              onClick={onClose}>
+              Forgot Password
             </Button>
             <Button
               colorScheme="teal"
