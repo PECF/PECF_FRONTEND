@@ -71,10 +71,7 @@ export function SingUp() {
 
   return (
     <Box>
-      <Button
-        colorScheme="teal"
-        backgroundColor="blackAlpha.900"
-        onClick={onOpen}>
+      <Button colorScheme="teal" variant="solid" onClick={onOpen}>
         Sing Up
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -113,7 +110,7 @@ export function SingUp() {
           <ModalFooter>
             <Button
               colorScheme="teal"
-              backgroundColor="blackAlpha.900"
+              variant="solid"
               mr={3}
               onClick={handleSubmit}>
               Sing Up

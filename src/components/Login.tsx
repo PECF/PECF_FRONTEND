@@ -18,6 +18,7 @@ import {
   ModalFooter,
   useDisclosure,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { emailRegex } from "../constant/Regex";
 import { useRecoveryData } from "../hooks/useRecoveryData";
@@ -66,11 +67,7 @@ export const Login = () => {
 
   return (
     <Box>
-      <Button
-        mr={3}
-        colorScheme="teal"
-        backgroundColor="blackAlpha.900"
-        onClick={onOpen}>
+      <Button mr={3} colorScheme="teal" variant="solid" onClick={onOpen}>
         Log In
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="md">
@@ -101,14 +98,14 @@ export const Login = () => {
               as={Link}
               to={"/forgot-password"}
               colorScheme="teal"
-              backgroundColor="blackAlpha.900"
+              variant="solid"
               mr={3}
               onClick={onClose}>
               Forgot Password
             </Button>
             <Button
               colorScheme="teal"
-              backgroundColor="blackAlpha.900"
+              variant="solid"
               mr={3}
               onClick={submitHandler}>
               Log In

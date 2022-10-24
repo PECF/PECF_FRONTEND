@@ -70,11 +70,35 @@ import { Link } from "react-router-dom";
 import { EditProfile } from "./editProfile";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { ProductsDashboard } from "../../components/ProductsDashboard";
+import { OrdersDashboard } from "../../components/OrdersDashboard";
+
+import useEffect from "react";
+
+import { logout } from "../../redux/actions/authActions";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/rootStore";
 export function Profile() {
   const { user } = useRecoveryData("userDetails");
 
+  const [show, setShow] = useState(false);
+
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showProductsDashboard, setShowProductsDashboard] = useState(false);
+  const [showOrdersDashboard, setShowOrdersDashboard] = useState(false);
+
+  const dispatch = useDispatch<AppDispatch>();
+  const send = useToast();
+
+  const logoutHandler = () => {
+    dispatch(logout());
+    send({
+      title: "Success",
+      description: "You are logged out",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
 
   return (
     <Container
@@ -87,7 +111,7 @@ export function Profile() {
         shadow={{ md: "xl" }}
         rounded={{ md: "lg" }}>
         <Box
-          w={{ base: "30%", md: "1/3" }}
+          w={{ base: "100%", md: "20%" }}
           bg={useColorModeValue("white", "gray.800")}
           overflow="hidden">
           <Flex
@@ -214,7 +238,10 @@ export function Profile() {
               justify="space-between"
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
-              onClick={() => setShowEditProfile(!showEditProfile)}>
+              onClick={() => {
+                setShowEditProfile(!showEditProfile);
+                setShow(!show);
+              }}>
               <Flex align="center">
                 <Icon as={FiUser} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -240,7 +267,11 @@ export function Profile() {
               mt={2}
               justify="space-between"
               align="center"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              onClick={() => {
+                setShowProductsDashboard(!showProductsDashboard);
+                setShow(!show);
+              }}>
               <Flex align="center">
                 <Icon as={FiShoppingBag} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -266,7 +297,10 @@ export function Profile() {
               mt={2}
               justify="space-between"
               align="center"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              onClick={() => {
+                logoutHandler();
+              }}>
               <Flex align="center">
                 <Icon as={FiLogOut} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -302,9 +336,10 @@ export function Profile() {
                   justify="space-between"
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
-                  onClick={() =>
-                    setShowProductsDashboard(!showProductsDashboard)
-                  }>
+                  onClick={() => {
+                    setShowProductsDashboard(!showProductsDashboard);
+                    setShow(!show);
+                  }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -317,7 +352,11 @@ export function Profile() {
                   mt={2}
                   justify="space-between"
                   align="center"
-                  color={useColorModeValue("gray.600", "gray.400")}>
+                  color={useColorModeValue("gray.600", "gray.400")}
+                  onClick={() => {
+                    setShowOrdersDashboard(!showOrdersDashboard);
+                    setShow(!show);
+                  }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -380,6 +419,7 @@ export function Profile() {
 
         {showEditProfile && <EditProfile />}
         {showProductsDashboard && <ProductsDashboard />}
+        {showOrdersDashboard && <OrdersDashboard />}
       </Flex>
     </Container>
   );

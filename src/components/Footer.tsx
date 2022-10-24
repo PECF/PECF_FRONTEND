@@ -33,7 +33,7 @@ import {
   termsOfService,
   lawEnforcement,
 } from "../constant/Footer";
-import "./footer.css";
+// import "./footer.css";
 
 // import AppStoreBadge from "@/components/AppStoreBadge";
 // import PlayStoreBadge from "@/components/PlayStoreBadge";
@@ -77,11 +77,9 @@ const SocialButton = ({
   );
 };
 
-export function FooterDos() {
+export function Footer() {
   return (
-    <Box
-      //   bg={useColorModeValue("gray.100", "gray.900")}
-      color={useColorModeValue("gray.700", "gray.200")}>
+    <Box color={useColorModeValue("gray.700", "gray.200")}>
       <Container as={Stack} maxW={"6xl"} py={10}>
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={"flex-start"}>
@@ -119,14 +117,13 @@ export function FooterDos() {
                 }}
               />
               <IconButton
-                bg={useColorModeValue("green.400", "green.800")}
-                color={useColorModeValue("white", "gray.800")}
-                _hover={{
-                  bg: "green.600",
-                }}
-                aria-label="Subscribe"
-                icon={<BiMailSend />}
-              />
+                colorScheme="teal"
+                variant="solid"
+                aria-label="Subscribe">
+                <BiMailSend
+                  color={useColorModeValue("blackAlpha.100", "gray.800")}
+                />
+              </IconButton>
             </Stack>
           </Stack>
 
@@ -150,7 +147,10 @@ export function FooterDos() {
           spacing={4}
           justify={{ md: "space-around" }}
           align={{ md: "center" }}>
-          <Text fontSize="sm" color="blackAlpha.800" textAlign="center">
+          <Text
+            fontSize="sm"
+            color={useColorModeValue("gray.700", "gray.200")}
+            textAlign="center">
             {copyright} &copy; {new Date().getFullYear()} {kalu}
           </Text>
           <Stack direction={"row"} spacing={6}>

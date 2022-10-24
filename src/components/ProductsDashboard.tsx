@@ -26,7 +26,7 @@ export function ProductsDashboard() {
   console.log(products);
 
   return (
-    <Box>
+    <Box w="100%" mt={6}>
       <Flex alignItems="center">
         <Heading size="lg" padding="10">
           Products Dashboard
