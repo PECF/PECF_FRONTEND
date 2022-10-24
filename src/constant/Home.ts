@@ -14,7 +14,7 @@ export const SecondSlider = {
   infinite: true,
   speed: 300,
 
-  slidesToShow: 4,
+  slidesToShow: 5,
   centerMode: true,
   centerPadding: "10px",
   slidesToScroll: 1,
@@ -23,32 +23,34 @@ export const SecondSlider = {
 
   responsive: [
     {
-      breakpoint: 1300,
+      breakpoint: 1400,
       settings: {
         centerMode: true,
         centerPadding: "10px",
-        slidesToShow: 3,
+        slidesToShow: 4,
         slidesToScroll: 1,
         infinite: true,
         dots: false,
       },
     },
     {
-      breakpoint: 990,
+      breakpoint: 1100,
       settings: {
         centerMode: true,
         centerPadding: "10px",
         dots: false,
-        slidesToShow: 2,
+        slidesToShow: 3,
         slidesToScroll: 1,
         initialSlide: 2,
       },
     },
     {
-      breakpoint: 670,
+      breakpoint: 850,
       settings: {
         dots: false,
-        slidesToShow: 1,
+        centerMode: true,
+        centerPadding: "10px",
+        slidesToShow: 2,
         slidesToScroll: 1,
       },
     },

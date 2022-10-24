@@ -3,8 +3,29 @@ import React from "react";
 import { useColorModeValue, Container } from "@chakra-ui/react";
 import { Carousel } from "../components/carouselProducts";
 import { Banner } from "../components/Banner";
+import { Categories } from '../components/Categories';
+
 export function Home() {
-  // These are the images used in the slide1
+
+  return (
+    <Container
+      maxW="100%"
+      display="flex"
+      flexDir="column"
+      justifyContent="center"
+      color={useColorModeValue("grey.100", "grey.800")}
+      bg={useColorModeValue("gray.100", "grey.800")}
+      alignItems="center"
+      mt="1.5rem"
+      mb="1rem">
+      <Banner />
+      <Carousel text='Based on your latest searches' name='productList'/>
+      <Carousel text='For Sale' name='productList'/>
+      <Categories />
+    </Container>
+  );
+}
+
 
   // return (
   //   <Container
@@ -333,20 +354,4 @@ export function Home() {
   //   </Container>
   // );
 
-  return (
-    <Container
-      maxW="90%"
-      display="flex"
-      flexDir="column"
-      justifyContent="center"
-      color={useColorModeValue("blackAlpha", "gray.800")}
-      bg={useColorModeValue("whiteAlpha", "white")}
-      alignItems="center"
-      border={useColorModeValue("2px solid #e2e8f0", "1px solid #2d3748")}
-      mt="1.5rem"
-      mb="1rem">
-      <Banner />
-      <Carousel />
-    </Container>
-  );
-}
+ 

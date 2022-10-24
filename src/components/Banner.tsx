@@ -1,8 +1,9 @@
-import { Flex, useBreakpointValue, Box, IconButton } from "@chakra-ui/react";
-
+import {Flex,useBreakpointValue,Box,IconButton}from "@chakra-ui/react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
-import React from "react";
 import Slider from "react-slick";
+import React from "react";
+
+
 
 const settings = {
   dots: true,
@@ -15,6 +16,8 @@ const settings = {
   slidesToShow: 1,
   slidesToScroll: 1,
 };
+
+
 export function Banner() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
@@ -28,10 +31,10 @@ export function Banner() {
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={"full"} h={"30vh"}>
+    <Flex w={"full"} h={"30vh"} mb='10rem' mt={'5rem'}>
       <Box
         position={"relative"}
-        height={"30vh"}
+        height={"50vh"}
         width={"full"}
         overflow={"hidden"}>
         <link
