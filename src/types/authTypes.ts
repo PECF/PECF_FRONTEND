@@ -3,6 +3,7 @@ export interface User {
   name: string;
   email: string;
   isAdmin: boolean;
+  actualCart?: any;
 }
 
 export interface TokenUser extends User {

@@ -1,9 +1,17 @@
 export interface Cart {
-  product: string;
+  _id: string;
+  user: string;
+  createdAt: string;
+  description: string;
+  image: {
+    url: string;
+  }[];
   name: string;
-  image: string;
+  numReviews: number;
   price: number;
-  countInStock: number;
+  rating: number;
+  stock: number;
+  visibility: boolean;
   qty: number;
 }
 
@@ -25,6 +33,23 @@ export enum CartActionTypes {
   CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
   CART_SAVE_SHIPPING_ADDRESS = "CART_SAVE_SHIPPING_ADDRESS",
   CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD",
+  CART_UPDATE_REQUEST = "CART_UPDATE_REQUEST",
+  CART_UPDATE_SUCCESS = "CART_UPDATE_SUCCESS",
+  CART_UPDATE_FAIL = "CART_UPDATE_FAIL",
+}
+
+export interface CartUpdateRequestAction {
+  type: CartActionTypes.CART_UPDATE_REQUEST;
+}
+
+export interface CartUpdateSuccessAction {
+  type: CartActionTypes.CART_UPDATE_SUCCESS;
+  payload: Cart;
+}
+
+export interface CartUpdateFailAction {
+  type: CartActionTypes.CART_UPDATE_FAIL;
+  payload: string;
 }
 
 export interface CartAddItemAction {
@@ -51,4 +76,7 @@ export type CartAction =
   | CartAddItemAction
   | CartRemoveItemAction
   | CartSaveShippingAddressAction
-  | CartSavePaymentMethodAction;
+  | CartSavePaymentMethodAction
+  | CartUpdateRequestAction
+  | CartUpdateSuccessAction
+  | CartUpdateFailAction;

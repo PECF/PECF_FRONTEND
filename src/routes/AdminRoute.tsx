@@ -3,7 +3,7 @@
 
 import React from "react";
 import { Navigate, Route, RouteProps } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
+import { useAuth } from "../contexts/authContext";
 
 interface AdminRouteProps extends RouteProps {
   element: React.ReactNode;

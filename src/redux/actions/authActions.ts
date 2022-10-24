@@ -14,6 +14,7 @@ import { UserListActionTypes } from "../../types/authTypes";
 import { errorHandler } from "./errorHandler";
 import { AppThunk } from "../rootStore";
 import axios from "axios";
+import { updateCart } from "./cartActions";
 
 export const login =
   (email: string, password: string): AppThunk =>
@@ -31,7 +32,6 @@ export const login =
         }
       );
 
-      console.log(data["token"]);
       dispatch({
         type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
         payload: data["token"],
@@ -39,6 +39,10 @@ export const login =
 
       // Save user info to local storage
       localStorage.setItem("userInfo", JSON.stringify(data["token"]));
+
+      // Get user details
+      dispatch(getUserDetails());
+      dispatch(updateCart());
     } catch (error) {
       dispatch({
         type: UserLoginActionTypes.USER_LOGIN_FAILURE,
@@ -58,6 +62,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
         "Content-Type": "application/json",
         Authorization: `${userInfo}`,
       },
+      withCredentials: true,
     };
     dispatch({
       type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
@@ -74,6 +79,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("cartItems");
     localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("userDetails");
   } catch (error) {
     dispatch({
       type: UserLoginActionTypes.USER_LOGIN_FAILURE,
@@ -81,6 +87,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     });
   } finally {
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("userDetails");
   }
 };
 
@@ -176,6 +183,9 @@ export const getUserDetails = (): AppThunk => async (dispatch, getState) => {
         type: UserDetailsActionTypes.USER_DETAILS_SUCCESS,
         payload: data.user,
       });
+
+      // Save user info to local storage
+      localStorage.setItem("userDetails", JSON.stringify(data.user));
     }
     // Save user info to local storage
   } catch (error) {

@@ -76,10 +76,8 @@ export const userForgotPasswordReducer = (state = {}, action: any) => {
   }
 };
 
-const initialUserDetailsState: UserDetailsState = { loading: false };
-
 export const userDetailsReducer = (
-  state: UserDetailsState = initialUserDetailsState,
+  state: UserDetailsState = {},
   action: UserDetailsAction
 ) => {
   switch (action.type) {

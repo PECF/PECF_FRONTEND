@@ -11,42 +11,53 @@ import { ForgotPassword } from "../pages/user/ForgotPassword";
 // import { UpdateProfile } from "../pages/UpdateProfile";
 // import { Admin } from "../pages/Admin";
 import { NotFound } from "../pages/NotFound";
-import { useDispatch, useSelector } from "react-redux";
 import { CreateProduct } from "../components/CreateProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-
+// import AuthContext from "../contexts/authContext";
 export const AppRoutes: React.FC = () => {
-  const { userInfo } = useRecoveryData("userLogin");
-
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-
-      {/* <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />*/}
-
-      {!userInfo ? (
-        <Route path="/forgotpassword" element={<ForgotPassword />} />
-      ) : (
-        <Route path="/forgotpassword" element={<Navigate to="/" />} />
-      )}
-
-      {/* {user && user.role === "admin" ? (
-        <Route path="/createproduct" element={<CreateProduct />} />
-      ) : (
-        <Route path="/createproduct" element={<Navigate to="/" />} />
-      )} */}
-
-      <Route path="/createproduct" element={<CreateProduct />} />
-
-      {/* {user && user.role === "admin" ? (
-      ) : (
-        <Route path="/createproduct" element={<Navigate to="/" />} />
-      )} */}
-
-      {/* <PrivateRoute path="/update-profile" element={<UpdateProfile />} />
-      <AdminRoute path="/admin" element={<Admin />} />  */}
+      <Route path="forgot-password" element={<ForgotPassword />} />
+      <Route path="refund" element={<Refund />} />
+      <Route path="create-product" element={<CreateProduct />} />
+      {/* <PrivateRoute path="update-password" element={<UpdatePassword />} />
+      <PrivateRoute path="update-profile" element={<UpdateProfile />} />
+      <AdminRoute path="admin" element={<Admin />} /> */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
+
+// return (
+//   <Routes>
+//     <Route path="/" element={<Home />} />
+
+//     {/* <Route path="/login" element={<Login />} />
+//     <Route path="/register" element={<Register />} />*/}
+
+//     {!userInfo ? (
+//       <Route path="/forgotpassword" element={<ForgotPassword />} />
+//     ) : (
+//       <Route path="/forgotpassword" element={<Navigate to="/" />} />
+//     )}
+
+//     {/* {user && user.role === "admin" ? (
+//       <Route path="/createproduct" element={<CreateProduct />} />
+//     ) : (
+//       <Route path="/createproduct" element={<Navigate to="/" />} />
+//     )} */}
+
+//     <Route path="/createproduct" element={<CreateProduct />} />
+
+//     {/* {user && user.role === "admin" ? (
+//     ) : (
+//       <Route path="/createproduct" element={<Navigate to="/" />} />
+//     )} */}
+
+//     {/* <PrivateRoute path="/update-profile" element={<UpdateProfile />} />
+//     <AdminRoute path="/admin" element={<Admin />} />  */}
+//     <Route path="*" element={<NotFound />} />
+//   </Routes>
+// );
+// };
