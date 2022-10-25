@@ -19,9 +19,9 @@ export function Home() {
       mt="1.5rem"
       mb="1rem">
       <Banner />
+      <Categories />
       <Carousel text='Based on your latest searches' name='productList'/>
       <Carousel text='For Sale' name='productList'/>
-      <Categories />
     </Container>
   );
 }

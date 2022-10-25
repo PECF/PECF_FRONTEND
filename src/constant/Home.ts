@@ -11,7 +11,7 @@ export const FirstSlider = {
 };
 export const SecondSlider = {
   dots: true,
-  infinite: true,
+  infinite: false,
   speed: 300,
 
   slidesToShow: 5.9,
