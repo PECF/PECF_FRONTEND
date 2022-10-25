@@ -1,14 +1,15 @@
 import { useRecoveryData } from "../../hooks/useRecoveryData";
-import React, { useState, FormEvent } from "react";
+import React, { useState, FormEvent, SetStateAction } from "react";
+import { createProduct } from "../../redux/actions/productsActions";
 import {
   useToast,
   Button,
-  Flex,
   FormControl,
   FormLabel,
   Input,
   useColorModeValue,
   useDisclosure,
+  Flex,
   VStack,
   Modal,
   ModalOverlay,
@@ -18,9 +19,11 @@ import {
   ModalCloseButton,
   ModalFooter,
   Heading,
+  Avatar,
   Grid,
   Box,
 } from "@chakra-ui/react";
+
 export function EditProfile() {
   const { user } = useRecoveryData("userDetails");
 
@@ -34,6 +37,9 @@ export function EditProfile() {
   const [country, setCountry] = useState(user?.country);
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [avatar, setAvatar] = useState(user?.avatar.url);
+  const [avatarPreview, setAvatarPreview] = useState(user?.avatar.url);
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -87,6 +93,18 @@ export function EditProfile() {
       setLoading(false);
     }
   };
+  const updateProfileDataChange = (e: any) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setAvatarPreview(reader.result);
+        setAvatar(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
 
   return (
     <Box
@@ -104,143 +122,82 @@ export function EditProfile() {
           align="center"
           px={6}
           py={4}
-          bg={useColorModeValue("gray.50", "gray.900")}>
-          <Heading fontSize="xl">Edit Profile</Heading>
+          bg={useColorModeValue("gray.50", "gray.800")}
+          borderBottomWidth="1px">
+          <Heading
+            size="lg"
+            fontWeight="bold"
+            color={useColorModeValue("gray.900", "white")}>
+            Edit Profile
+          </Heading>
         </Flex>
 
-        <Grid
-          templateColumns={{ base: "1fr", md: "1fr 1fr" }}
-          gap={6}
-          px={6}
-          py={4}>
-          <FormControl id="name">
-            <FormLabel>Name</FormLabel>
-            <Input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </FormControl>
+        <Box w={{ base: "100%", md: "100%" }}>
+          <VStack align="stretch" spacing={0}>
+            <Box p={6}>
+              <Flex
+                justify="center"
+                align="center"
+                direction="column"
+                py={12}
+                px={6}
+                bg={useColorModeValue("gray.50", "gray.900")}>
+                <Avatar size="2xl" src={avatarPreview} mb={4} pos="relative" />
 
-          <FormControl id="email" mt={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </FormControl>
+                <Button colorScheme="blue" size="sm" onClick={onOpen}>
+                  Change Avatar
+                </Button>
 
-          <FormControl id="phone" mt={4}>
-            <FormLabel>Phone</FormLabel>
-            <Input
-              type="text"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-            />
-          </FormControl>
+                <Modal isOpen={isOpen} onClose={onClose}>
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Change Photo</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <FormControl id="image">
+                        <FormLabel>Image</FormLabel>
+                        <Input
+                          type="file"
+                          name="avatar"
+                          accept="image/*"
+                          onChange={updateProfileDataChange}
+                        />
+                      </FormControl>
+                    </ModalBody>
 
-          <FormControl id="address" mt={4}>
-            <FormLabel>Address</FormLabel>
-            <Input
-              type="text"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
-          </FormControl>
+                    <ModalFooter>
+                      <Button colorScheme="blue" mr={3} onClick={onClose}>
+                        Save
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          onClose();
+                          setAvatar(user?.avatar.url);
+                          setAvatarPreview(user?.avatar.url);
+                        }}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
+              </Flex>
+            </Box>
 
-          <FormControl id="city" mt={4}>
-            <FormLabel>City</FormLabel>
-            <Input
-              type="text"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="state" mt={4}>
-            <FormLabel>State</FormLabel>
-            <Input
-              type="text"
-              value={state}
-              onChange={(e) => setState(e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="zip" mt={4}>
-            <FormLabel>Zip</FormLabel>
-            <Input
-              type="text"
-              value={zip}
-              onChange={(e) => setZip(e.target.value)}
-            />
-          </FormControl>
-
-          <FormControl id="country" mt={4}>
-            <FormLabel>Country</FormLabel>
-            <Input
-              type="text"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-            />
-          </FormControl>
-        </Grid>
-        <VStack align="center" spacing={0}>
-          <Button
-            colorScheme="teal"
-            variant="solid"
-            size="lg"
-            fontSize="md"
-            mt={6}
-            mb={6}
-            mx={6}
-            width="lg"
-            onClick={onOpen}>
-            Update Profile
-          </Button>
-
-          <Modal isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Update Profile</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <FormControl>
-                  <FormLabel>Password</FormLabel>
+            <Box p={6}>
+              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+                <FormControl id="name">
+                  <FormLabel>Name</FormLabel>
                   <Input
-                    placeholder="Enter your password"
-                    type="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    type="text"
+                    name="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                   />
                 </FormControl>
-
-                <FormControl mt={4}>
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input
-                    placeholder="Confirm your password"
-                    type="password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                  />
-                </FormControl>
-              </ModalBody>
-
-              <ModalFooter>
-                <Button
-                  colorScheme="teal"
-                  variant="solid"
-                  mr={3}
-                  onClick={onClose}>
-                  Close
-                </Button>
-                <Button type="submit" colorScheme="teal" variant="solid">
-                  Update Profile
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-        </VStack>
+              </Grid>
+            </Box>
+          </VStack>
+        </Box>
       </VStack>
     </Box>
   );

@@ -35,8 +35,9 @@ export function Carousel({ text, name }: any) {
       transform="translate(-50%)"
       borderRadius="20px"
       width="90%"
-      mb="5rem"
-      mt="5rem">
+      mb="3rem"
+      // mt="5rem"
+    >
       <Heading
         ml={"1rem"}
         width={"100%"}

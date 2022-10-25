@@ -1,4 +1,10 @@
-import { Flex, useBreakpointValue, Box, IconButton } from "@chakra-ui/react";
+import {
+  Flex,
+  useBreakpointValue,
+  Box,
+  IconButton,
+  Image,
+} from "@chakra-ui/react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import Slider from "react-slick";
 import React from "react";
@@ -26,10 +32,10 @@ export function Banner() {
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={"full"} h={"30vh"} mb="10rem" mt={"5rem"}>
+    <Flex w={"full"} h={"25vh"} mb="5rem" mt={"1rem"}>
       <Box
         position={"relative"}
-        height={"50vh"}
+        height={"30vh"}
         width={"full"}
         overflow={"hidden"}>
         <link
@@ -70,15 +76,12 @@ export function Banner() {
         </IconButton>
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {cards.map((url, index) => (
-            <Box
+            <Image
               key={index}
-              height={"2xl"}
-              width={"full"}
-              position="relative"
-              backgroundPosition="center"
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundImage={`url(${url})`}
+              src={url}
+              alt="banner"
+              width="100%"
+              height="100%"
             />
           ))}
         </Slider>
