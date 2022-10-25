@@ -1,5 +1,5 @@
 import React from "react";
-import { Container } from "@chakra-ui/react";
+import { Container, useColorModeValue } from "@chakra-ui/react";
 import { AppRoutes } from "./routes/Routes";
 import { Header } from "./components/Header";
 import { Footer } from "./components/Footer";
@@ -9,9 +9,14 @@ export const App: React.FC = () => {
   return (
     <Container overflow="hidden" maxWidth="auto" m={0} p={0}>
       <Header />
-      {/* <Container overflow="hidden" maxWidth="auto" minWidth={"100%"} mt="55"> */}
-      <AppRoutes />
-      {/* </Container> */}
+      <Container
+        maxW="container.xxl"
+        bg={useColorModeValue("gray.100", "gray.900")}
+        minH="100vh"
+        mt="5vh"
+        shadow={"xl"}>
+        <AppRoutes />
+      </Container>
       <Footer />
     </Container>
   );

@@ -16,20 +16,44 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Profile } from "../pages/user/profile";
 // import AuthContext from "../contexts/authContext";
 export const AppRoutes: React.FC = () => {
+  const { user } = useRecoveryData("userDetails");
+  console.log(user);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="forgot-password" element={<ForgotPassword />} />
-      <Route path="refund" element={<Refund />} />
-      <Route path="create-product" element={<CreateProduct />} />
-      <Route path="profile" element={<Profile children={undefined} />} />
-      {/* <PrivateRoute path="update-password" element={<UpdatePassword />} />
-      <PrivateRoute path="update-profile" element={<UpdateProfile />} />
-      <AdminRoute path="admin" element={<Admin />} /> */}
+      <Route path="/refund" element={<Refund />} />
+      {!user?.role ? (
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+      ) : (
+        <Route path="/forgot-password" element={<Navigate to="/" />} />
+      )}
+      {user?.role ? (
+        <Route path="/profile" element={<Profile />} />
+      ) : (
+        <Route path="/profile" element={<Navigate to="/" />} />
+      )}
+
+      {/* {user?.role === "admin" ? (
+        <Route path="/create-product" element={<CreateProduct />} />
+      ) : (
+        <Route path="/create-product" element={<Navigate to="/" />} />
+      )} */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
+
+//   return (
+//     <Routes>
+//       <Route path="/" element={<Home />} />
+//       <Route path="forgot-password" element={<ForgotPassword />} />
+//       <Route path="refund" element={<Refund />} />
+//       <Route path="create-product" element={<CreateProduct />} />
+//       <Route path="profile" element={<Profile />} />
+//       <Route path="*" element={<NotFound />} />
+//     </Routes>
+//   );
+// };
 
 // return (
 //   <Routes>

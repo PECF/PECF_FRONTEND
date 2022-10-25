@@ -26,13 +26,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
-//add change dark mode
-
 export function Logged() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  const text = useColorModeValue("dark", "light");
-  const SwitchIcon = useColorModeValue(MoonIcon, SunIcon);
-
   const { user } = useRecoveryData("userDetails");
   const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();
@@ -48,7 +42,6 @@ export function Logged() {
       isClosable: true,
     });
   };
-
   return (
     <Box>
       <Flex gap={6} alignItems="center" justifyContent="center">
