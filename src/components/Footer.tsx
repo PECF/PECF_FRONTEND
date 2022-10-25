@@ -1,84 +1,171 @@
+import React, { ReactNode } from "react";
 import {
-  Button,
-  ButtonGroup,
+  Box,
   Container,
-  Divider,
-  IconButton,
   Stack,
+  SimpleGrid,
   Text,
+  Link,
+  VisuallyHidden,
+  chakra,
+  useColorModeValue,
+  Input,
+  IconButton,
 } from "@chakra-ui/react";
-import * as React from "react";
-import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
+import { BiMailSend } from "react-icons/bi";
+import {
+  aboutUs,
+  contactUs,
+  copyright,
+  kalu,
+  newsletter,
+  blog,
+  careers,
+  company,
+  support,
+  helpCenter,
+  safetyCenter,
+  communityGuidelines,
+  legal,
+  cookiesPolicy,
+  privacyPolicy,
+  termsOfService,
+  lawEnforcement,
+} from "../constant/Footer";
+// import "./footer.css";
 
+// import AppStoreBadge from "@/components/AppStoreBadge";
+// import PlayStoreBadge from "@/components/PlayStoreBadge";
 
-export const Footer = () => (
-  <Container as="footer" role="contentinfo">
-    <Stack
-      spacing="8"
-      direction={{ base: "column", md: "row" }}
-      justify="space-between"
-      py={{ base: "12", md: "16" }}>
-      <Stack spacing="8">
-        <Stack spacing="4" minW="36" flex="1">
+const ListHeader = ({ children }: { children: ReactNode }) => {
+  return (
+    <Text fontWeight={"500"} fontSize={"lg"} mb={2}>
+      {children}
+    </Text>
+  );
+};
+
+const SocialButton = ({
+  children,
+  label,
+  href,
+}: {
+  children: ReactNode;
+  label: string;
+  href: string;
+}) => {
+  return (
+    <chakra.button
+      bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+      rounded={"full"}
+      w={8}
+      h={8}
+      cursor={"pointer"}
+      as={"a"}
+      href={href}
+      display={"inline-flex"}
+      alignItems={"center"}
+      justifyContent={"center"}
+      transition={"background 0.3s ease"}
+      _hover={{
+        bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
+      }}>
+      <VisuallyHidden>{label}</VisuallyHidden>
+      {children}
+    </chakra.button>
+  );
+};
+
+export function Footer() {
+  return (
+    <Box color={useColorModeValue("gray.700", "gray.200")}>
+      <Container as={Stack} maxW={"6xl"} py={10}>
+        <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
+          <Stack align={"flex-start"}>
+            <ListHeader>{company}</ListHeader>
+            <Link href={"#"}>{aboutUs}</Link>
+            <Link href={"#"}>{blog}</Link>
+            <Link href={"#"}>{careers}</Link>
+            <Link href={"#"}>{contactUs}</Link>
+          </Stack>
+
+          <Stack align={"flex-start"}>
+            <ListHeader>{support}</ListHeader>
+            <Link href={"#"}>{helpCenter}</Link>
+            <Link href={"#"}>{safetyCenter}</Link>
+            <Link href={"#"}>{communityGuidelines}</Link>
+          </Stack>
+
+          <Stack align={"flex-start"}>
+            <ListHeader>{legal}</ListHeader>
+            <Link href={"#"}>{cookiesPolicy}</Link>
+            <Link href={"#"}>{privacyPolicy}</Link>
+            <Link href={"#"}>{termsOfService}</Link>
+            <Link href={"#"}>{lawEnforcement}</Link>
+          </Stack>
+
+          <Stack align={"flex-start"}>
+            <ListHeader>{newsletter}</ListHeader>
+            <Stack direction={"row"}>
+              <Input
+                placeholder={"Your email address"}
+                bg={useColorModeValue("blackAlpha.100", "whiteAlpha.100")}
+                border={0}
+                _focus={{
+                  bg: "whiteAlpha.300",
+                }}
+              />
+              <IconButton
+                colorScheme="teal"
+                variant="solid"
+                aria-label="Subscribe">
+                <BiMailSend
+                  color={useColorModeValue("blackAlpha.100", "gray.800")}
+                />
+              </IconButton>
+            </Stack>
+          </Stack>
+
+          {/* <Stack align={"flex-start"}>
+            <ListHeader>Install App</ListHeader>
+            <AppStoreBadge />
+            <PlayStoreBadge />
+          </Stack> */}
+        </SimpleGrid>
+      </Container>
+
+      <Box
+        borderTopWidth={1}
+        borderStyle={"solid"}
+        borderColor={useColorModeValue("gray.200", "gray.700")}>
+        <Container
+          as={Stack}
+          maxW={"6xl"}
+          py={4}
+          direction={{ base: "column", md: "row" }}
+          spacing={4}
+          justify={{ md: "space-around" }}
+          align={{ md: "center" }}>
           <Text
             fontSize="sm"
-            fontWeight="semibold"
-            color="subtle"
+            color={useColorModeValue("gray.700", "gray.200")}
             textAlign="center">
-            Follow Us
+            {copyright} &copy; {new Date().getFullYear()} {kalu}
           </Text>
-          <ButtonGroup variant="ghost">
-            <IconButton
-              as="a"
-              href="#"
-              aria-label="Facebook"
-              icon={<FaFacebook fontSize="1.25rem" />}
-            />
-            <IconButton
-              as="a"
-              href="#"
-              aria-label="Instagram"
-              icon={<FaInstagram fontSize="1.25rem" />}
-            />
-            <IconButton
-              as="a"
-              href="#"
-              aria-label="Twitter"
-              icon={<FaTwitter fontSize="1.25rem" />}
-            />
-          </ButtonGroup>
-        </Stack>
-      </Stack>
-      <Stack spacing={{ base: "6", md: "8" }} align="start">
-        <Stack direction="row" spacing="82">
-          <Stack spacing="4" minW="36" flex="1">
-            <Text fontSize="sm" fontWeight="semibold" color="subtle">
-              Shopping & Categories
-            </Text>
-            <Stack spacing="3" shouldWrapChildren>
-              <Button variant="link">Men Shopping</Button>
-              <Button variant="link">Woman Shopping</Button>
-            </Stack>
+          <Stack direction={"row"} spacing={6}>
+            <SocialButton label={"Instagram"} href={"#"}>
+              <FaInstagram />
+            </SocialButton>
+            <SocialButton label={"Facebook"} href={"#"}>
+              <FaFacebook />
+            </SocialButton>
+            <SocialButton label={"YouTube"} href={"#"}>
+              <FaYoutube />
+            </SocialButton>
           </Stack>
-          <Stack spacing="4" minW="36" flex="1">
-            <Text fontSize="sm" fontWeight="semibold" color="subtle">
-              Useful Links
-            </Text>
-            <Stack spacing="3" shouldWrapChildren>
-              <Button variant="link">HomePage</Button>
-              <Button variant="link">About Us</Button>
-              <Button variant="link">Contact Us</Button>
-            </Stack>
-          </Stack>
-        </Stack>
-      </Stack>
-    </Stack>
-    <Divider />
-    <Stack pt="8" pb="12" justify="center" align="center">
-      <Text fontSize="sm" color="subtle" textAlign="center">
-        Copyright &copy; {new Date().getFullYear()} Kalú, Inc. All rights
-        reserved.
-      </Text>
-    </Stack>
-  </Container>
-);
+        </Container>
+      </Box>
+    </Box>
+  );
+}

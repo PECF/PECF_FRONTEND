@@ -1,95 +1,313 @@
-export interface IUser {
+export interface User {
   _id: string;
   name: string;
   email: string;
-  role: string;
-  avatar: {
-    public_id: string;
-    url: string;
-  };
-  createdAt: string;
+  isAdmin: boolean;
+  actualCart?: any;
 }
 
-export interface IAuthState {
-  user: IUser | null;
-  isAuthenticated: boolean;
+export interface TokenUser extends User {
+  token: string;
+}
+
+export interface PasswordUser extends User {
+  password: string;
+}
+
+export interface UserDeleteState {
+  success?: boolean;
+  loading?: boolean;
+  error?: any;
+}
+
+export enum UserDeleteActionTypes {
+  USER_DELETE_REQUEST = "USER_DELETE_REQUEST",
+  USER_DELETE_SUCCESS = "USER_DELETE_SUCCESS",
+  USER_DELETE_FAILURE = "USER_DELETE_FAILURE",
+}
+
+export interface UserDeleteRequestAction {
+  type: UserDeleteActionTypes.USER_DELETE_REQUEST;
+}
+
+export interface UserDeleteSuccessAction {
+  type: UserDeleteActionTypes.USER_DELETE_SUCCESS;
+}
+
+export interface UserDeleteFailureAction {
+  type: UserDeleteActionTypes.USER_DELETE_FAILURE;
+  payload: any;
+}
+
+export type UserDeleteAction =
+  | UserDeleteRequestAction
+  | UserDeleteSuccessAction
+  | UserDeleteFailureAction;
+
+export interface UserDetailsState {
+  user?: User;
+  loading?: boolean;
+  error?: any;
+}
+
+export enum UserDetailsActionTypes {
+  USER_DETAILS_REQUEST = "USER_DETAILS_REQUEST",
+  USER_DETAILS_SUCCESS = "USER_DETAILS_SUCCESS",
+  USER_DETAILS_FAILURE = "USER_DETAILS_FAILURE",
+  USER_DETAILS_RESET = "USER_DETAILS_RESET",
+}
+
+export interface UserDetailsRequestAction {
+  type: UserDetailsActionTypes.USER_DETAILS_REQUEST;
+}
+
+export interface UserDetailsSuccessAction {
+  type: UserDetailsActionTypes.USER_DETAILS_SUCCESS;
+  payload: User;
+}
+
+export interface UserDetailsFailureAction {
+  type: UserDetailsActionTypes.USER_DETAILS_FAILURE;
+  payload: any;
+}
+
+export interface UserDetailsResetAction {
+  type: UserDetailsActionTypes.USER_DETAILS_RESET;
+  payload: any;
+}
+
+export type UserDetailsAction =
+  | UserDetailsRequestAction
+  | UserDetailsSuccessAction
+  | UserDetailsFailureAction
+  | UserDetailsResetAction;
+
+export interface UserListState {
+  users: User[];
   loading: boolean;
-  error: string;
+  error?: any;
 }
 
-export enum IAuthActionTypes {
-  LOAD_USER_REQUEST = "LOAD_USER_REQUEST",
-  LOAD_USER_SUCCESS = "LOAD_USER_SUCCESS",
-  LOAD_USER_FAIL = "LOAD_USER_FAIL",
-  LOGIN_REQUEST = "LOGIN_REQUEST",
-  LOGIN_SUCCESS = "LOGIN_SUCCESS",
-  LOGIN_FAIL = "LOGIN_FAIL",
-  LOGOUT_SUCCESS = "LOGOUT_SUCCESS",
-  REGISTER_REQUEST = "REGISTER_REQUEST",
-  REGISTER_SUCCESS = "REGISTER_SUCCESS",
-  REGISTER_FAIL = "REGISTER_FAIL",
-  CLEAR_ERRORS = "CLEAR_ERRORS",
+export enum UserListActionTypes {
+  USER_LIST_REQUEST = "USER_LIST_REQUEST",
+  USER_LIST_SUCCESS = "USER_LIST_SUCCESS",
+  USER_LIST_FAILURE = "USER_LIST_FAILURE",
+  USER_LIST_RESET = "USER_LIST_RESET",
 }
 
-export interface loadUserRequest {
-  type: IAuthActionTypes.LOAD_USER_REQUEST;
+export interface UserListRequestAction {
+  type: UserListActionTypes.USER_LIST_REQUEST;
 }
 
-export interface loadUserSuccess {
-  type: IAuthActionTypes.LOAD_USER_SUCCESS;
-  payload: IAuthState["user"];
+export interface UserListSuccessAction {
+  type: UserListActionTypes.USER_LIST_SUCCESS;
+  payload: User[];
 }
 
-export interface loadUserFail {
-  type: IAuthActionTypes.LOAD_USER_FAIL;
-  payload: IAuthState["error"];
+export interface UserListFailureAction {
+  type: UserListActionTypes.USER_LIST_FAILURE;
+  payload: any;
 }
 
-export interface loginRequest {
-  type: IAuthActionTypes.LOGIN_REQUEST;
+export interface UserListResetAction {
+  type: UserListActionTypes.USER_LIST_RESET;
 }
 
-export interface loginSuccess {
-  type: IAuthActionTypes.LOGIN_SUCCESS;
-  payload: IAuthState["user"];
+export type UserListAction =
+  | UserListRequestAction
+  | UserListSuccessAction
+  | UserListFailureAction
+  | UserListResetAction;
+
+export interface UserLoginState {
+  userInfo?: TokenUser | null | boolean;
+  loading?: boolean;
+  error?: any;
+  isLogged?: boolean;
 }
 
-export interface loginFail {
-  type: IAuthActionTypes.LOGIN_FAIL;
-  payload: IAuthState["error"];
+export enum UserLoginActionTypes {
+  USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST",
+  USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS",
+  USER_LOGIN_FAILURE = "USER_LOGIN_FAILURE",
+  USER_LOGOUT = "USER_LOGOUT",
 }
 
-export interface logoutSuccess {
-  type: IAuthActionTypes.LOGOUT_SUCCESS;
+export interface UserLoginRequestAction {
+  type: UserLoginActionTypes.USER_LOGIN_REQUEST;
 }
 
-export interface registerRequest {
-  type: IAuthActionTypes.REGISTER_REQUEST;
+export interface UserLoginSuccessAction {
+  type: UserLoginActionTypes.USER_LOGIN_SUCCESS;
+  payload: TokenUser;
 }
 
-export interface registerSuccess {
-  type: IAuthActionTypes.REGISTER_SUCCESS;
-  payload: IAuthState["user"];
+export interface UserLoginFailureAction {
+  type: UserLoginActionTypes.USER_LOGIN_FAILURE;
+  payload: any;
 }
 
-export interface registerFail {
-  type: IAuthActionTypes.REGISTER_FAIL;
-  payload: IAuthState["error"];
+export interface UserLogoutAction {
+  type: UserLoginActionTypes.USER_LOGOUT;
 }
 
-export interface clearErrors {
-  type: IAuthActionTypes.CLEAR_ERRORS;
+export type UserLoginAction =
+  | UserLoginRequestAction
+  | UserLoginSuccessAction
+  | UserLoginFailureAction
+  | UserLogoutAction;
+
+export interface UserRegisterState {
+  userInfo?: TokenUser;
+  loading?: boolean;
+  error?: any;
 }
 
-export type IAuthActions =
-  | loadUserRequest
-  | loadUserSuccess
-  | loadUserFail
-  | loginRequest
-  | loginSuccess
-  | loginFail
-  | logoutSuccess
-  | registerRequest
-  | registerSuccess
-  | registerFail
-  | clearErrors;
+export enum UserRegisterActionTypes {
+  USER_REGISTER_REQUEST = "USER_REGISTER_REQUEST",
+  USER_REGISTER_SUCCESS = "USER_REGISTER_SUCCESS",
+  USER_REGISTER_FAILURE = "USER_REGISTER_FAILURE",
+}
+
+export interface UserRegisterRequestAction {
+  type: UserRegisterActionTypes.USER_REGISTER_REQUEST;
+}
+
+export interface UserRegisterSuccessAction {
+  type: UserRegisterActionTypes.USER_REGISTER_SUCCESS;
+  payload: TokenUser;
+}
+
+export interface UserRegisterFailureAction {
+  type: UserRegisterActionTypes.USER_REGISTER_FAILURE;
+  payload: any;
+}
+
+export type UserRegisterAction =
+  | UserRegisterRequestAction
+  | UserRegisterSuccessAction
+  | UserRegisterFailureAction;
+
+export interface UserUpdateState {
+  loading?: boolean;
+  success?: boolean;
+  error?: any;
+}
+
+export enum UserUpdateActionTypes {
+  USER_UPDATE_REQUEST = "USER_UPDATE_REQUEST",
+  USER_UPDATE_SUCCESS = "USER_UPDATE_SUCCESS",
+  USER_UPDATE_FAILURE = "USER_UPDATE_FAILURE",
+  USER_UPDATE_RESET = "USER_UPDATE_RESET",
+}
+
+export interface UserUpdateRequestAction {
+  type: UserUpdateActionTypes.USER_UPDATE_REQUEST;
+}
+
+export interface UserUpdateSuccessAction {
+  type: UserUpdateActionTypes.USER_UPDATE_SUCCESS;
+}
+
+export interface UserUpdateFailureAction {
+  type: UserUpdateActionTypes.USER_UPDATE_FAILURE;
+  payload: any;
+}
+
+export interface UserUpdateResetAction {
+  type: UserUpdateActionTypes.USER_UPDATE_RESET;
+}
+
+export type UserUpdateAction =
+  | UserUpdateRequestAction
+  | UserUpdateSuccessAction
+  | UserUpdateFailureAction
+  | UserUpdateResetAction;
+
+export interface UserUpdateProfileState {
+  userInfo?: TokenUser;
+  loading?: boolean;
+  success?: boolean;
+  error?: any;
+}
+
+export enum UserUpdateProfileActionTypes {
+  USER_UPDATE_PROFILE_REQUEST = "USER_UPDATE_PROFILE_REQUEST",
+  USER_UPDATE_PROFILE_SUCCESS = "USER_UPDATE_PROFILE_SUCCESS",
+  USER_UPDATE_PROFILE_FAILURE = "USER_UPDATE_PROFILE_FAILURE",
+  USER_UPDATE_PROFILE_RESET = "USER_UPDATE_PROFILE_RESET",
+}
+
+export interface UserUpdateProfileRequestAction {
+  type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST;
+}
+
+export interface UserUpdateProfileSuccessAction {
+  type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS;
+  payload: TokenUser;
+}
+
+export interface UserUpdateProfileFailureAction {
+  type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE;
+  payload: any;
+}
+
+export interface UserUpdateProfileResetAction {
+  type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_RESET;
+}
+
+export type UserUpdateProfileAction =
+  | UserUpdateProfileRequestAction
+  | UserUpdateProfileSuccessAction
+  | UserUpdateProfileFailureAction
+  | UserUpdateProfileResetAction;
+
+export interface UserRegisterState {
+  userInfo?: TokenUser;
+  loading?: boolean;
+  error?: any;
+}
+
+export interface UserRegisterRequestAction {
+  type: UserRegisterActionTypes.USER_REGISTER_REQUEST;
+}
+
+export interface UserRegisterSuccessAction {
+  type: UserRegisterActionTypes.USER_REGISTER_SUCCESS;
+  payload: TokenUser;
+}
+
+export interface UserRegisterFailureAction {
+  type: UserRegisterActionTypes.USER_REGISTER_FAILURE;
+  payload: any;
+}
+
+export interface UserForgotPassword {
+  email?: string;
+  loading?: boolean;
+  error?: any;
+}
+
+export enum UserForgotPasswordActionTypes {
+  USER_FORGOT_PASSWORD_REQUEST = "USER_FORGOT_PASSWORD_REQUEST",
+  USER_FORGOT_PASSWORD_SUCCESS = "USER_FORGOT_PASSWORD_SUCCESS",
+  USER_FORGOT_PASSWORD_FAILURE = "USER_FORGOT_PASSWORD_FAILURE",
+}
+
+export interface UserForgotPasswordRequestAction {
+  type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_REQUEST;
+}
+
+export interface UserForgotPasswordSuccessAction {
+  type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_SUCCESS;
+}
+
+export interface UserForgotPasswordFailureAction {
+  type: UserForgotPasswordActionTypes.USER_FORGOT_PASSWORD_FAILURE;
+  payload: any;
+}
+
+export type UserForgotPasswordAction =
+  | UserForgotPasswordRequestAction
+  | UserForgotPasswordSuccessAction
+  | UserForgotPasswordFailureAction;

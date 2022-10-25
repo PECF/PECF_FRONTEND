@@ -1,22 +1,38 @@
 import React from "react";
-import { Box, Badge, Text, Stack, Spacer } from "@chakra-ui/react";
+import { Box, Badge, Text, Stack, Spacer,} from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
-export const Card = () => {
+
+export const Card = ({ product }: any) => {
   return (
     <Box
-      w="15rem"
-      h="18rem"
+      w="12.5rem"
+      h="16rem"
       rounded="20px"
-      boxShadow="sm"
+      boxShadow="xs"
       bg="lightgrey"
-      bgImage='"https://assets.hongkiat.com/uploads/minimalist-dekstop-wallpapers/4k/preview/07.jpg?3"'
-      overflow="hidden"
+      bgImage={product.image[0].url}
       bgSize="cover"
       bgRepeat="no-repeat"
       display="flex"
-      margin={"1%"}>
-      <Box h="100%" w="100%" p={5} display="flex" flexDirection="column">
+      
+      role="group">
+      <Box
+        h="100%"
+        w="100%"
+        p={5}
+        display="flex"
+        flexDirection="column"
+        visibility={"hidden"}
+        opacity="0"
+        justifyContent="center"
+        alignItems={"center"}
+        _groupHover={{
+          transition: "ease",
+          visibility: "visible",
+          opacity: "0.9",
+        }}
+        transition={"visibility 0.8s linear 0.2s"}>
         <Box display="flex" flexDir="column">
           <Stack isInline align="center">
             <Badge variant="solid" colorScheme="teal" rounded="full" px={2}>
@@ -29,31 +45,36 @@ export const Card = () => {
           </Stack>
         </Box>
         <Spacer />
-        <Box>
+        
+        <Spacer />
+        <Box display={"flex"} flexDir="column" alignItems={"center"}>
+            <Text color="black" fontWeight="semibold" fontSize="l" backgroundColor={'white'}
+            borderRadius='2xl'
+            p={'5px'}>
+              ${product.price}
+            </Text>
           <Text
             as="h2"
+            backgroundColor={'white'}
+            borderRadius='2xl'
+            p={'5px'}
             fontWeight="semibold"
             fontSize="sm"
             my={2}
+            textAlign='center'
             textTransform="uppercase"
-            color="white">
-            Product Name
+            color="black">
+            {product.name}
           </Text>
           <Stack isInline justify="space-between">
-            <Text color="white" fontWeight="semibold" fontSize="l">
-              $Price
-            </Text>
             <Box as="span">
-              {Array(4)
+              {Array(product.rating)
                 .fill("")
                 .map((_, i) => (
                   <StarIcon color="teal.500" key={i} />
                 ))}
-              <StarIcon color="grey" />
+              
             </Box>
-            <Text color="white" as="h3" fontSize="l" fontWeight="semibold">
-              Reviews
-            </Text>
           </Stack>
         </Box>
       </Box>

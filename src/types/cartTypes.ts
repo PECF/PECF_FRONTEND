@@ -1,61 +1,82 @@
-export interface ICartItem {
-  product: string;
+export interface Cart {
+  _id: string;
+  user: string;
+  createdAt: string;
+  description: string;
+  image: {
+    url: string;
+  }[];
   name: string;
+  numReviews: number;
   price: number;
-  image: string;
+  rating: number;
   stock: number;
-  quantity: number;
+  visibility: boolean;
+  qty: number;
 }
 
-export interface IShippingInfo {
+export interface ShippingAddress {
   address: string;
   city: string;
-  phoneNo: string;
   postalCode: string;
   country: string;
 }
 
-export interface ICartState {
-  cartItems: ICartItem[];
-  shippingInfo: IShippingInfo;
-  paymentMethod: string;
+export interface CartState {
+  cartItems: Cart[];
+  shippingAddress?: ShippingAddress;
+  paymentMethod?: string;
 }
 
-export enum ICartActionTypes {
-  ADD_TO_CART = "ADD_TO_CART",
-  REMOVE_CART_ITEM = "REMOVE_CART_ITEM",
-  SAVE_SHIPPING_INFO = "SAVE_SHIPPING_INFO",
-  SAVE_PAYMENT_METHOD = "SAVE_PAYMENT_METHOD",
-  CLEAR_CART = "CLEAR_CART",
+export enum CartActionTypes {
+  CART_ADD_ITEM = "CART_ADD_ITEM",
+  CART_REMOVE_ITEM = "CART_REMOVE_ITEM",
+  CART_SAVE_SHIPPING_ADDRESS = "CART_SAVE_SHIPPING_ADDRESS",
+  CART_SAVE_PAYMENT_METHOD = "CART_SAVE_PAYMENT_METHOD",
+  CART_UPDATE_REQUEST = "CART_UPDATE_REQUEST",
+  CART_UPDATE_SUCCESS = "CART_UPDATE_SUCCESS",
+  CART_UPDATE_FAIL = "CART_UPDATE_FAIL",
 }
 
-export interface addToCart {
-  type: ICartActionTypes.ADD_TO_CART;
-  payload: ICartItem;
+export interface CartUpdateRequestAction {
+  type: CartActionTypes.CART_UPDATE_REQUEST;
 }
 
-export interface removeCartItem {
-  type: ICartActionTypes.REMOVE_CART_ITEM;
+export interface CartUpdateSuccessAction {
+  type: CartActionTypes.CART_UPDATE_SUCCESS;
+  payload: Cart;
+}
+
+export interface CartUpdateFailAction {
+  type: CartActionTypes.CART_UPDATE_FAIL;
   payload: string;
 }
 
-export interface saveShippingInfo {
-  type: ICartActionTypes.SAVE_SHIPPING_INFO;
-  payload: IShippingInfo;
+export interface CartAddItemAction {
+  type: CartActionTypes.CART_ADD_ITEM;
+  payload: Cart;
 }
 
-export interface savePaymentMethod {
-  type: ICartActionTypes.SAVE_PAYMENT_METHOD;
+export interface CartRemoveItemAction {
+  type: CartActionTypes.CART_REMOVE_ITEM;
   payload: string;
 }
 
-export interface clearCart {
-  type: ICartActionTypes.CLEAR_CART;
+export interface CartSaveShippingAddressAction {
+  type: CartActionTypes.CART_SAVE_SHIPPING_ADDRESS;
+  payload: ShippingAddress;
 }
 
-export type ICartAction =
-  | addToCart
-  | removeCartItem
-  | saveShippingInfo
-  | savePaymentMethod
-  | clearCart;
+export interface CartSavePaymentMethodAction {
+  type: CartActionTypes.CART_SAVE_PAYMENT_METHOD;
+  payload: string;
+}
+
+export type CartAction =
+  | CartAddItemAction
+  | CartRemoveItemAction
+  | CartSaveShippingAddressAction
+  | CartSavePaymentMethodAction
+  | CartUpdateRequestAction
+  | CartUpdateSuccessAction
+  | CartUpdateFailAction;

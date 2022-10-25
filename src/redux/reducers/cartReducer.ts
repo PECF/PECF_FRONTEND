@@ -1,57 +1,54 @@
-import {
-  ICartState,
-  ICartAction,
-  ICartActionTypes,
-} from "../../types/cartTypes";
+import { CartAction, CartActionTypes, CartState } from "../../types/cartTypes";
 
-const cartInitialState: ICartState = {
-  cartItems: localStorage.getItem("cartItems")
-    ? JSON.parse(localStorage.getItem("cartItems") || "")
-    : [],
-  shippingInfo: localStorage.getItem("shippingInfo")
-    ? JSON.parse(localStorage.getItem("shippingInfo") || "")
-    : {},
-  paymentMethod: localStorage.getItem("paymentMethod")
-    ? JSON.parse(localStorage.getItem("paymentMethod") || "")
-    : {},
+const cartInitialState: CartState = {
+  cartItems: [],
 };
 
+/**
+ * Reducer used to add item to cart, remove item from cart, save shipping address, and save payment method
+ */
+
 export const cartReducer = (
-  state: ICartState = cartInitialState,
-  action: ICartAction
+  state: CartState = cartInitialState,
+  action: CartAction
 ) => {
-  const handlers = {
-    [ICartActionTypes.ADD_TO_CART]: (payload: ICartState["cartItems"]) => ({
-      ...state,
-      cartItems: payload,
-    }),
-    [ICartActionTypes.REMOVE_CART_ITEM]: (
-      payload: ICartState["cartItems"]
-    ) => ({
-      ...state,
-      cartItems: payload,
-    }),
-    [ICartActionTypes.SAVE_SHIPPING_INFO]: (
-      payload: ICartState["shippingInfo"]
-    ) => ({
-      ...state,
-      shippingInfo: payload,
-    }),
-    [ICartActionTypes.SAVE_PAYMENT_METHOD]: (
-      payload: ICartState["paymentMethod"]
-    ) => ({
-      ...state,
-      paymentMethod: payload,
-    }),
-    [ICartActionTypes.CLEAR_CART]: () => ({
-      ...state,
-      cartItems: [],
-    }),
+  switch (action.type) {
+    case CartActionTypes.CART_UPDATE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case CartActionTypes.CART_UPDATE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        cartItems: action.payload,
+      };
 
-    DEFAULT: () => state,
-  };
+    case CartActionTypes.CART_ADD_ITEM:
+      return {
+        ...state,
+        cartItems: [action.payload],
+      };
 
-  return handlers[action.type]
-    ? handlers[action.type](action.payload)
-    : handlers.DEFAULT();
+    // case CartActionTypes.CART_REMOVE_ITEM:
+    //   return {
+    //     ...state,
+    //     cartItems: state.cartItems.filter(
+    //       (item) => item.product !== action.payload
+    //     ),
+    //   };
+    // case CartActionTypes.CART_SAVE_SHIPPING_ADDRESS:
+    //   return {
+    //     ...state,
+    //     shippingAddress: action.payload,
+    //   };
+    // case CartActionTypes.CART_SAVE_PAYMENT_METHOD:
+    //   return {
+    //     ...state,
+    //     paymentMethod: action.payload,
+    //   };
+    default:
+      return state;
+  }
 };

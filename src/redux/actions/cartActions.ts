@@ -1,35 +1,57 @@
-import { ICartActionTypes } from "../types/cartTypes";
-import { AppThunk } from "../../../rootStore";
-import { IShippingInfo } from "../../types/cartTypes";
+import axios from "axios";
+import { CartActionTypes, ShippingAddress } from "../../types/cartTypes";
+import { AppThunk } from "../rootStore";
+import { errorHandler } from "./errorHandler";
 
-export const addToCart =
-  (id: string, quantity: number): AppThunk =>
-  async (dispatch, getState) => {
-    const { data } = await axios.get(`/api/v1/product/${id}`);
+/**
+ * Add to cart action creator
+ * Actions related to adding products to the cart
+ */
 
+export const updateCart = (): AppThunk => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CartActionTypes.CART_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    if (userInfo) {
+      // Axios config
+      const config = {
+        withCredentials: true,
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${userInfo}`,
+        },
+      };
+
+      const { data } = await axios.get("/user/cart", config);
+
+      dispatch({
+        type: CartActionTypes.CART_UPDATE_SUCCESS,
+        payload: data.cart,
+      });
+      localStorage.setItem("cartItems", JSON.stringify(data.cart));
+    }
+  } catch (error) {
     dispatch({
-      type: ICartActionTypes.ADD_TO_CART,
-      payload: {
-        product: data.product._id,
-        name: data.product.name,
-        price: data.product.price,
-        image: data.product.images[0].url,
-        stock: data.product.stock,
-        quantity,
-      },
+      type: CartActionTypes.CART_UPDATE_FAIL,
+      payload: errorHandler(error),
     });
+  }
+};
 
-    localStorage.setItem(
-      "cartItems",
-      JSON.stringify(getState().cart.cartItems)
-    );
-  };
-
-export const removeCartItem =
+/**
+ * Remove item from cart action creator
+ * Actions related to removing an item from cart
+ */
+export const removeFromCart =
   (id: string): AppThunk =>
   async (dispatch, getState) => {
     dispatch({
-      type: ICartActionTypes.REMOVE_CART_ITEM,
+      type: CartActionTypes.CART_REMOVE_ITEM,
       payload: id,
     });
 
@@ -39,30 +61,31 @@ export const removeCartItem =
     );
   };
 
-export const saveShippingInfo =
-  (data: IShippingInfo): AppThunk =>
+/**
+ * Save shipping address action creator
+ * Actions related to saving a shipping address
+ */
+export const saveShippingAddress =
+  (data: ShippingAddress): AppThunk =>
   async (dispatch) => {
     dispatch({
-      type: ICartActionTypes.SAVE_SHIPPING_INFO,
+      type: CartActionTypes.CART_SAVE_SHIPPING_ADDRESS,
       payload: data,
     });
-
-    localStorage.setItem("shippingInfo", JSON.stringify(data));
+    localStorage.setItem("shippingAddress", JSON.stringify(data));
   };
 
+/**
+ * Save payment method action creator
+ * Actions related to saving a method method
+ */
 export const savePaymentMethod =
-  (data: string): AppThunk =>
+  (paymentMethod: string): AppThunk =>
   async (dispatch) => {
     dispatch({
-      type: ICartActionTypes.SAVE_PAYMENT_METHOD,
-      payload: data,
+      type: CartActionTypes.CART_SAVE_PAYMENT_METHOD,
+      payload: paymentMethod,
     });
+
+    localStorage.setItem("paymentMethod", JSON.stringify(paymentMethod));
   };
-
-export const clearCart = (): AppThunk => async (dispatch) => {
-  dispatch({
-    type: ICartActionTypes.CLEAR_CART,
-  });
-
-  localStorage.removeItem("cartItems");
-};

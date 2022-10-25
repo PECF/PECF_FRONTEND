@@ -1,129 +1,357 @@
-import { BiLeftArrowAlt, BiRightArrowAlt } from "react-icons/bi";
-import Slider from "react-slick";
 import React from "react";
-import { Card } from "../components/Card";
-import {
-  Box,
-  Container,
-  Heading,
-  Flex,
-  IconButton,
-  useBreakpointValue,
-} from "@chakra-ui/react";
 
-const settings = {
-  dots: true,
-  arrows: false,
-  fade: true,
-  infinite: true,
-  autoplay: true,
-  speed: 500,
-  autoplaySpeed: 5000,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
+import { useColorModeValue, Container } from "@chakra-ui/react";
+import { Carousel } from "../components/carouselProducts";
+import { Banner } from "../components/Banner";
+import { Categories } from '../components/Categories';
 
 export function Home() {
-  // As we have used custom buttons, we need a reference variable to
-  // change the state
-  const [slider, setSlider] = React.useState<Slider | null>(null);
-
-  // These are the breakpoints which changes the position of the
-  // buttons as the screen size changes
-  const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "10px" });
-
-  // These are the images used in the slide
-  const cards = [
-    "https://images.unsplash.com/photo-1612852098516-55d01c75769a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-  ];
 
   return (
-    <Container ml={0} minWidth="100vw" minHeight="lg">
-      <Flex
-        minWidth="max-content"
-        width={"100%"}
-        alignItems="center"
-        justifyContent={"center"}>
-        <Heading mt="20px">Welcome to KALÚ Web Page</Heading>
-      </Flex>
-      <Box
-        alignSelf={"center"}
-        height={"400px"}
-        width={"container"}
-        p="20px"
-        position={"relative"}
-        overflow={"hidden"}>
-        {/* CSS files for react-slick */}
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
-        {/* Left Icon */}
-        <IconButton
-          aria-label="left-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          left={side}
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          bgColor="teal.500"
-          onClick={() => slider?.slickPrev()}>
-          <BiLeftArrowAlt />
-        </IconButton>
-        {/* Right Icon */}
-        <IconButton
-          aria-label="right-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          right={side}
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          bgColor="teal.500"
-          onClick={() => slider?.slickNext()}>
-          <BiRightArrowAlt />
-        </IconButton>
-        {/* Slider */}
-        <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {cards.map((url, index) => (
-            <Box
-              key={index}
-              height={"45vh"}
-              position="relative"
-              backgroundPosition="center"
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundImage={`url(${url})`}
-            />
-          ))}
-        </Slider>
-      </Box>
-      <Flex
-        minWidth="max-content"
-        width={"100%"}
-        alignItems="center"
-        justifyContent={"center"}>
-        <Heading mt="20px">Recomended For You</Heading>
-      </Flex>
-      <Flex justify="center" maxW={"100%"} wrap="wrap">
-        {Array(10)
-          .fill("")
-          .map((_, i) => (
-            <Card key={i} />
-          ))}
-      </Flex>
+    <Container
+      maxW="100%"
+      display="flex"
+      flexDir="column"
+      justifyContent="center"
+      color={useColorModeValue("grey.100", "grey.800")}
+      bg={useColorModeValue("gray.100", "grey.800")}
+      alignItems="center"
+      mt="1.5rem"
+      mb="1rem">
+      <Banner />
+      <Categories />
+      <Carousel text='Based on your latest searches' name='productList'/>
+      <Carousel text='For Sale' name='productList'/>
     </Container>
   );
 }
+
+
+  // return (
+  //   <Container
+  //     p={"10"}
+  //     bgColor="lightgray"
+  //     ml={0}
+  //     maxWidth="100vw"
+  //     minHeight="lg">
+  //     {/* <Flex
+  //       minWidth="max-content"
+  //       width={"100%"}
+  //       alignItems="center"
+  //       justifyContent={"center"}>
+  //       <Heading mt="20px">Welcome to KALÚ Web Page</Heading>
+  //     </Flex> */}
+
+  //     <Flex
+  //       maxWidth={"90%"}
+  //       mt={"10px"}
+  //       flexDir={"column"}
+  //       flexWrap="wrap"
+  //       maxH={"50vh"}
+  //       justifyItems="center">
+  //       <Box
+  //         overflow={"hidden"}
+  //         position={"relative"}
+  //         padding="0"
+  //         maxWidth="40%">
+  //         <IconButton
+  //           aria-label="left-arrow"
+  //           colorScheme="messenger"
+  //           borderRadius="full"
+  //           position="absolute"
+  //           left={side}
+  //           top={top}
+  //           transform={"translate(0%, -50%)"}
+  //           zIndex={2}
+  //           bgColor="teal.500"
+  //           onClick={() => slider?.slickPrev()}>
+  //           <BiLeftArrow />
+  //         </IconButton>
+
+  //         <IconButton
+  //           aria-label="right-arrow"
+  //           colorScheme="messenger"
+  //           borderRadius="full"
+  //           position="absolute"
+  //           right={side}
+  //           top={top}
+  //           transform={"translate(0%, -50%)"}
+  //           zIndex={2}
+  //           bgColor="teal.500"
+  //           onClick={() => slider?.slickNext()}>
+  //           <BiRightArrow />
+  //         </IconButton>
+
+  //         <Slider {...FirstSlider} ref={(slider) => setSlider(slider)}>
+  //           {/* products[0].image[0].url */}
+  //           {products.map((product: any, index: number) => {
+  //             return (
+  //               <SliderCard image={`${product.image[0].url}`} key={index} />
+  //             );
+  //           })}
+  //         </Slider>
+  //       </Box>
+  //       <Box
+  //         role={"group"}
+  //         width={"35%"}
+  //         height={"25vh"}
+  //         bgSize="cover"
+  //         display={"flex"}
+  //         justifyContent="center"
+  //         alignItems={"center"}
+  //         bgImg={
+  //           "https://media.istockphoto.com/photos/mens-suits-on-hangers-in-different-colors-picture-id887360960?k=20&m=887360960&s=612x612&w=0&h=N0k2yX9noV6kNgpmKbcSXaLOl2x8Mbt_lyppAmfhNcA="
+  //         }>
+  //         <Box
+  //           visibility={"hidden"}
+  //           backgroundColor="gray.300"
+  //           opacity={"0"}
+  //           boxSize={"100%"}
+  //           display={"flex"}
+  //           flexDir="column"
+  //           justifyContent="center"
+  //           alignItems={"center"}
+  //           _groupHover={{
+  //             visibility: "visible",
+  //             opacity: "0.7",
+  //           }}>
+  //           <Text as="b" color={"black"} _hover={{ opacity: 1 }}>
+  //             Men Clothes
+  //           </Text>
+  //           <Button
+  //             as={Link}
+  //             to={""}
+  //             _hover={{ opacity: 1, backgroundColor: "white" }}
+  //             variant={"outline"}>
+  //             See more
+  //           </Button>
+  //         </Box>
+  //       </Box>
+  //       <Box
+  //         role={"group"}
+  //         width={"35%"}
+  //         height={"25vh"}
+  //         bgSize="cover"
+  //         display={"flex"}
+  //         justifyContent="center"
+  //         alignItems={"center"}
+  //         bgImg="https://media.istockphoto.com/photos/polka-dot-summer-brown-dress-suede-wedge-sandals-eco-straw-tote-bag-picture-id1208148708?k=20&m=1208148708&s=612x612&w=0&h=rjZiAPCOpwREiTET21lTP3wM30BUqAG9PjocC-euJ98=">
+  //         <Box
+  //           visibility={"hidden"}
+  //           backgroundColor="gray.300"
+  //           opacity={"0"}
+  //           boxSize={"100%"}
+  //           display={"flex"}
+  //           flexDir="column"
+  //           justifyContent="center"
+  //           alignItems={"center"}
+  //           _groupHover={{
+  //             visibility: "visible",
+  //             opacity: "0.7",
+  //           }}>
+  //           <Text as="b" color={"black"} _hover={{ opacity: 1 }}>
+  //             Women Clothes
+  //           </Text>
+  //           <Button
+  //             as={Link}
+  //             to={""}
+  //             _hover={{ opacity: 1, backgroundColor: "white" }}
+  //             variant={"outline"}>
+  //             See More
+  //           </Button>
+  //         </Box>
+  //       </Box>
+  //       <Box
+  //         role={"group"}
+  //         width={"35%"}
+  //         height={"25vh"}
+  //         bgSize="cover"
+  //         display={"flex"}
+  //         justifyContent="center"
+  //         alignItems={"center"}
+  //         bgImg="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzorsnZK_FNGOBVuxZT95bfnOhtQ1bPCU8kxlumfHi9g_NCZlFCvR81o3JcTZ59Ndr__o&usqp=CAU">
+  //         <Box
+  //           visibility={"hidden"}
+  //           backgroundColor="gray.300"
+  //           opacity={"0"}
+  //           boxSize={"100%"}
+  //           display={"flex"}
+  //           flexDir="column"
+  //           justifyContent="center"
+  //           alignItems={"center"}
+  //           _groupHover={{
+  //             visibility: "visible",
+  //             opacity: "0.7",
+  //           }}>
+  //           <Text as="b" color={"black"} _hover={{ opacity: 1 }}>
+  //             Child Clothes
+  //           </Text>
+  //           <Button
+  //             as={Link}
+  //             to={""}
+  //             _hover={{ opacity: 1, backgroundColor: "white" }}
+  //             variant={"outline"}>
+  //             See more
+  //           </Button>
+  //         </Box>
+  //       </Box>
+  //       <Box
+  //         role={"group"}
+  //         width={"35%"}
+  //         height={"25vh"}
+  //         bgSize="cover"
+  //         display={"flex"}
+  //         justifyContent="center"
+  //         alignItems={"center"}
+  //         bgImg="https://img.freepik.com/free-photo/workplace-business-modern-male-accessories-laptop-black-background_155003-3944.jpg?w=2000">
+  //         <Box
+  //           visibility={"hidden"}
+  //           backgroundColor="gray.300"
+  //           opacity={"0"}
+  //           boxSize={"100%"}
+  //           display={"flex"}
+  //           flexDir="column"
+  //           justifyContent="center"
+  //           alignItems={"center"}
+  //           _groupHover={{
+  //             visibility: "visible",
+  //             opacity: "0.7",
+  //           }}>
+  //           <Text as="b" color={"black"} _hover={{ opacity: 1 }}>
+  //             Accesories
+  //           </Text>
+  //           <Button
+  //             as={Link}
+  //             to={""}
+  //             _hover={{ opacity: 1, backgroundColor: "white" }}
+  //             variant={"outline"}>
+  //             See more
+  //           </Button>
+  //         </Box>
+  //       </Box>
+  //     </Flex>
+
+  //     <Flex
+  //       flexDir={"column"}
+  //       alignItems="center"
+  //       justifyContent={"center"}
+  //       position={"relative"}
+  //       left="50%"
+  //       transform="translate(-50%)"
+  //       bgColor={"whiteAlpha.800"}
+  //       borderRadius="20px"
+  //       width="80%"
+  //       mb="5rem"
+  //       mt="5rem">
+  //       <Heading>For Sale</Heading>
+
+  //       <Box
+  //         overflow={"hidden"}
+  //         position={"relative"}
+  //         alignSelf={"center"}
+  //         marginTop="10px"
+  //         width="100%">
+  //         <IconButton
+  //           aria-label="left-arrow"
+  //           colorScheme="messenger"
+  //           borderRadius="full"
+  //           position="absolute"
+  //           left={side}
+  //           top={top}
+  //           transform={"translate(0%, -50%)"}
+  //           zIndex={2}
+  //           bgColor="teal.500"
+  //           onClick={() => slider2?.slickPrev()}>
+  //           <BiLeftArrow />
+  //         </IconButton>
+
+  //         <IconButton
+  //           aria-label="right-arrow"
+  //           colorScheme="messenger"
+  //           borderRadius="full"
+  //           position="absolute"
+  //           right={side}
+  //           top={top}
+  //           transform={"translate(0%, -50%)"}
+  //           zIndex={2}
+  //           bgColor="teal.500"
+  //           onClick={() => slider2?.slickNext()}>
+  //           <BiRightArrow />
+  //         </IconButton>
+
+  //         <Slider {...SecondSlider} ref={(slider) => setSlider2(slider)}>
+  //           {products.map((product: any, index: any) => (
+  //             <Card key={index} product={product} />
+  //           ))}
+  //         </Slider>
+  //       </Box>
+  //     </Flex>
+
+  //     <Flex
+  //       flexDir={"column"}
+  //       alignItems="center"
+  //       justifyContent={"center"}
+  //       position={"relative"}
+  //       left="50%"
+  //       transform="translate(-50%)"
+  //       bgColor={"whiteAlpha.800"}
+  //       borderRadius="20px"
+  //       width="80%">
+  //       <Heading
+  //         width={"100%"}
+  //         fontWeight="normal"
+  //         mt="1rem"
+  //         ml="2rem"
+  //         textAlign={"start"}
+  //         fontSize={"x-large"}
+  //         height={"fit-content"}>
+  //         Recomended for You:
+  //       </Heading>
+
+  //       <Box
+  //         overflow={"hidden"}
+  //         position={"relative"}
+  //         alignSelf={"center"}
+  //         display="flex"
+  //         flexDir={"column"}
+  //         justifyContent="center"
+  //         width="100%">
+  //         <IconButton
+  //           aria-label="left-arrow"
+  //           colorScheme="messenger"
+  //           borderRadius="full"
+  //           position="absolute"
+  //           left={side}
+  //           top={top}
+  //           transform={"translate(0%, -50%)"}
+  //           zIndex={2}
+  //           bgColor="teal.500"
+  //           onClick={() => slider3?.slickPrev()}>
+  //           <BiLeftArrow />
+  //         </IconButton>
+
+  //         <IconButton
+  //           aria-label="right-arrow"
+  //           colorScheme="messenger"
+  //           borderRadius="full"
+  //           position="absolute"
+  //           right={side}
+  //           top={top}
+  //           transform={"translate(0%, -50%)"}
+  //           zIndex={2}
+  //           bgColor="teal.500"
+  //           onClick={() => slider3?.slickNext()}>
+  //           <BiRightArrow />
+  //         </IconButton>
+
+  //         <Slider {...SecondSlider} ref={(slider) => setSlider3(slider)}>
+  //           {products.map((product: any, index: any) => (
+  //             <Card key={index} product={product} />
+  //           ))}
+  //         </Slider>
+  //       </Box>
+  //     </Flex>
+  //   </Container>
+  // );
+
+ 

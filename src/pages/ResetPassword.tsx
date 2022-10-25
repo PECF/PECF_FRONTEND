@@ -8,39 +8,12 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { useAuth } from "../contexts/AuthContext";
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
-import { useToast } from "@chakra-ui/react";
 
 export const ResetPassword: React.FC = () => {
-  const { register, handleSubmit, errors } = useForm();
-  const { resetPassword } = useAuth();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const history = useHistory();
-  const toast = useToast();
 
-  const onSubmit = async (data: any) => {
-    try {
-      setError("");
-      setLoading(true);
-      await resetPassword(data.email);
-      toast({
-        title: "Password reset email sent.",
-        description: "Check your inbox for further instructions.",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-      history.push("/");
-    } catch {
-      setError("Failed to reset password");
-    }
-
-    setLoading(false);
-  };
 
   return (
     <Center h="100vh">

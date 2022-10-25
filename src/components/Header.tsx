@@ -1,186 +1,72 @@
-import React from "react";
-import { SearchIcon, ChevronDownIcon } from "@chakra-ui/icons";
-
 import {
-  Box,
-  InputGroup,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  InputRightElement,
-  Input,
-  Container,
-  Spacer,
-  ButtonGroup,
-  Heading,
-  Button,
   Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  FormLabel,
-  FormControl,
-  ModalBody,
-  ModalCloseButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  Portal,
-  PopoverCloseButton,
+  Text,
+  Button,
+  useColorMode,
+  useColorModeValue,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
+import { companyName } from "../constant/general";
+import { Container } from "@chakra-ui/react";
+import { Link } from "react-router-dom";
+import { SearchBar } from "./SearchBar";
+import { Logged } from "./Logged";
+import { BsMoonFill, BsSunFill } from "react-icons/bs";
+import React from "react";
 
 export function Header() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { toggleColorMode } = useColorMode();
+  const text = useColorModeValue("Dark", "Light");
   return (
-    <Container maxWidth="100%">
+    <Container
+      maxW="full"
+      bg={useColorModeValue("white", "gray.800")}
+      color={useColorModeValue("gray.600", "white")}
+      px={4}
+      py={4}
+      shadow="md"
+      position="fixed"
+      top={0}
+      left={0}
+      right={0}
+      zIndex={1000}>
       <Flex
-        minWidth="max-content"
-        alignItems="center"
-        gap="20"
-        justify="space-between">
-        <Box p="2">
-          <Heading size="md"> KALÚ</Heading>
-        </Box>
-        <InputGroup>
-          <InputRightElement
-            // eslint-disable-next-line react/no-children-prop
-            children={<SearchIcon color="gray.300" cursor="pointer" />}
-          />
-          <Input
-            placeholder="Search..."
-            width="sm"
-            flex={100}
-            variant="filled"
-          />
-        </InputGroup>
-        <Spacer />
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon />}
-            variant="link"
-            gap="8"
-            border="none"
-            color="blackAlpha.900">
-            Pages
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-            <MenuItem>Create a Copy</MenuItem>
-            <MenuItem>Mark as Draft</MenuItem>
-          </MenuList>
-        </Menu>
-        <Menu>
-          <MenuButton
-            as={Button}
-            rightIcon={<ChevronDownIcon ml="10" />}
-            variant="link"
-            border="none"
-            color="blackAlpha.900"
-            gap="10"
-            marginX="-5">
-            Features
-          </MenuButton>
-          <MenuList>
-            <MenuItem>Download</MenuItem>
-            <MenuItem>Create a Copy</MenuItem>
-            <MenuItem>Mark as Draft</MenuItem>
-          </MenuList>
-        </Menu>
+        maxW="container.xl"
+        mx="auto"
+        alignItems={"center"}
+        gap="10"
+        justifyContent={"space-between"}>
+        <Text
+          fontSize="3xl"
+          fontWeight="bold"
+          letterSpacing={"wide"}
+          color={useColorModeValue("gray.800", "white")}
+          as={Link}
+          ml={10}
+          to={"/"}>
+          {companyName}
+        </Text>
+        <SearchBar />
+        <Logged />
+        {/* <Button
+          leftIcon={<SwitchIcon />}
+          colorScheme="teal"
+          variant="outline"
+          size="sm"
+          mr={2}
+          onClick={toggleColorMode}>
+          {text}
+        </Button> */}
 
-        <ButtonGroup gap="">
-          <Popover>
-            <PopoverTrigger>
-              <Button colorScheme="blackAlpha.900" variant="outline">
-                Log in
-              </Button>
-            </PopoverTrigger>
-            <Portal>
-              <PopoverContent>
-                <PopoverArrow />
-                <PopoverHeader>Log In</PopoverHeader>
-                <PopoverCloseButton />
-                <PopoverBody>
-                  <FormControl>
-                    <FormLabel>Enter your email</FormLabel>
-                    <Input placeholder="email@example.com" />
-                  </FormControl>
-
-                  <FormControl mt={4}>
-                    <FormLabel>Password</FormLabel>
-                    <Input type="password" />
-                  </FormControl>
-                </PopoverBody>
-                <PopoverFooter>
-                  <Button variant="link" color="blackAlpha.900" border="none">
-                    Forgot your password?
-                  </Button>
-                  <Button
-                    colorScheme="blue"
-                    mr={3}
-                    onClick={onClose}
-                    ml="5"
-                    backgroundColor="blackAlpha.900">
-                    Log In
-                  </Button>
-                </PopoverFooter>
-              </PopoverContent>
-            </Portal>
-          </Popover>
-
-          <Button
-            colorScheme="blackAlpha.900"
-            variant="outline"
-            onClick={onOpen}>
-            Sign Up
-          </Button>
-        </ButtonGroup>
-
-        <Modal isOpen={isOpen} onClose={onClose} size="md" gap={10}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Sing up</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl>
-                <FormLabel>Enter your email</FormLabel>
-                <Input placeholder="email@example.com" />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Enter your full Name</FormLabel>
-                <Input placeholder="Juan Perez" />
-              </FormControl>
-
-              <FormControl mt={4}>
-                <FormLabel>Password</FormLabel>
-                <Input type="password" />
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button variant="ghost" border="none">
-                Forgot your password?
-              </Button>
-              <Button
-                colorScheme="blue"
-                mr={3}
-                onClick={onClose}
-                backgroundColor="blackAlpha.900">
-                Sing In
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+        <Button
+          leftIcon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+          colorScheme="teal"
+          variant="outline"
+          size="md"
+          pl={6}
+          pr={6}
+          onClick={toggleColorMode}>
+          {text}
+        </Button>
       </Flex>
     </Container>
   );
