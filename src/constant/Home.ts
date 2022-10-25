@@ -14,45 +14,51 @@ export const SecondSlider = {
   infinite: true,
   speed: 300,
 
-  slidesToShow: 5,
-  centerMode: true,
-  centerPadding: "10px",
+  slidesToShow: 5.9,
+  
+  
   slidesToScroll: 1,
 
   initialSlide: 3,
 
   responsive: [
+    
     {
-      breakpoint: 1400,
+      breakpoint: 1360,
       settings: {
-        centerMode: true,
-        centerPadding: "10px",
+        
+        
+        dots: false,
         slidesToShow: 4,
-        slidesToScroll: 1,
-        infinite: true,
-        dots: false,
-      },
-    },
-    {
-      breakpoint: 1100,
-      settings: {
-        centerMode: true,
-        centerPadding: "10px",
-        dots: false,
-        slidesToShow: 3,
         slidesToScroll: 1,
         initialSlide: 2,
       },
     },
     {
-      breakpoint: 850,
+      breakpoint: 1030,
       settings: {
         dots: false,
-        centerMode: true,
-        centerPadding: "10px",
+        slidesToShow: 3,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 800,
+      settings: {
+        dots: false,
         slidesToShow: 2,
         slidesToScroll: 1,
       },
     },
+    {
+      breakpoint: 600,
+      settings: {
+        dots: false,
+        centerMode: true,
+        slidesToShow: 0.9,
+        slidesToScroll: 1,
+      },
+    },
+  
   ],
 };

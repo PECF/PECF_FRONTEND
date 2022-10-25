@@ -6,10 +6,10 @@ import { StarIcon } from "@chakra-ui/icons";
 export const Card = ({ product }: any) => {
   return (
     <Box
-      w="14.5rem"
-      h="18rem"
+      w="12.5rem"
+      h="16rem"
       rounded="20px"
-      boxShadow="sm"
+      boxShadow="xs"
       bg="lightgrey"
       bgImage={product.image[0].url}
       bgSize="cover"
@@ -61,6 +61,7 @@ export const Card = ({ product }: any) => {
             fontWeight="semibold"
             fontSize="sm"
             my={2}
+            textAlign='center'
             textTransform="uppercase"
             color="black">
             {product.name}
