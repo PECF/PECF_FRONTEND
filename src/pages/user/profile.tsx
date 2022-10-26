@@ -91,7 +91,7 @@ export function Profile() {
     send({
       title: "Success",
       description: "You are logged out",
-      status: "success",
+      status: "warning",
       duration: 3000,
       isClosable: true,
     });

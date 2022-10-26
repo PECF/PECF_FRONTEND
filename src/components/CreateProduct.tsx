@@ -1,11 +1,15 @@
-import React, { FormEvent, useEffect, useState } from "react";
+import React, { FormEvent, SetStateAction, useEffect, useState } from "react";
 import {
   Box,
   FormControl,
   FormLabel,
   Input,
+  VStack,
+  Flex,
   SimpleGrid,
   Button,
+  Heading,
+  useColorModeValue,
   Textarea,
 } from "@chakra-ui/react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,9 +21,9 @@ export function CreateProduct() {
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
-  const [image, setImage] = useState("");
   const [stock, setStock] = useState("");
-
+  const [images, setImages] = useState<string[]>([]);
+  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
@@ -35,120 +39,153 @@ export function CreateProduct() {
     );
   };
 
-  useLoad();
+  const createProductImagesChange = (e: {
+    target: { files: Iterable<unknown> | ArrayLike<unknown> };
+  }) => {
+    const files = Array.from(e.target.files);
+    setImagesPreview([]);
+    setImages([]);
+    files.forEach((file: any) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (reader.readyState === 2) {
+          setImagesPreview((oldArray) => [
+            ...oldArray,
+            reader.result as string,
+          ]);
+          setImages((oldArray) => [...oldArray, reader.result as string]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+  };
 
   return (
-    <>
-      <Box
-        as="form"
-        w="100%"
-        maxW="full"
-        mx="auto"
-        mt={30}
-        p={5}
-        borderWidth="1px"
-        borderRadius="lg"
-        boxShadow="lg">
-        <SimpleGrid columns={2} spacing={5}>
-          <Box mt={25}>
-            <FormControl>
+    <Box
+      as="form"
+      w="full"
+      mt={8}
+      maxW="full"
+      mx="auto"
+      bg={useColorModeValue("white", "gray.700")}
+      overflow="hidden"
+      onSubmit={submitHandler}>
+      <VStack align="stretch" spacing={0}>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.800")}
+          borderBottomWidth="1px">
+          <Heading
+            size="lg"
+            fontWeight="bold"
+            color={useColorModeValue("gray.900", "white")}>
+            Create Product
+          </Heading>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
+          <SimpleGrid columns={2} spacing={4} w="full">
+            <FormControl id="name" isRequired>
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                variant="filled"
               />
             </FormControl>
-            <FormControl mt={4}>
+            <FormControl id="category" isRequired>
               <FormLabel>Category</FormLabel>
               <Input
                 type="text"
-                placeholder="Enter category"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                variant="filled"
               />
             </FormControl>
-
-            <FormControl mt={4}>
+          </SimpleGrid>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
+          <SimpleGrid columns={2} spacing={4} w="full">
+            <FormControl id="price" isRequired>
               <FormLabel>Price</FormLabel>
               <Input
                 type="number"
-                placeholder="Enter price"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
-                variant="filled"
               />
             </FormControl>
-            {/* <FormControl mt={4}>
-          <FormLabel>Image</FormLabel>
-          <Input
-            type="text"
-            placeholder="Enter image"
-            value={image}
-            onChange={(e) => setImage(e.target.value)}
-          />
-        </FormControl> */}
-            <FormControl mt={4}>
+            <FormControl id="stock" isRequired>
               <FormLabel>Stock</FormLabel>
               <Input
                 type="number"
-                placeholder="Enter stock"
                 value={stock}
                 onChange={(e) => setStock(e.target.value)}
-                variant="filled"
               />
             </FormControl>
-
-            {/* <FormControl isRequired>
-          <FormLabel>Product Name</FormLabel>
-          <Input placeholder="Adidas Airforce" variant="filled" />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Product Category</FormLabel>
-          <Input placeholder="Shoes" variant="filled" />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Product Price</FormLabel>
-          <Input placeholder="$7800" variant="filled" />
-        </FormControl>
-        <FormControl isRequired>
-          <FormLabel>Product Stock</FormLabel>
-          <Input placeholder="15" variant="filled" />
-        </FormControl> */}
-          </Box>
-
-          <Box>
-            {/* <FormLabel>Product Description</FormLabel>
-        <Textarea
-          placeholder="Enter a description of the product"
-          size="sm"
-          variant="filled"
-          resize="none"
-        /> */}
-            <FormControl mt={4}>
-              <FormLabel>Description</FormLabel>
-              <Textarea
-                placeholder="Enter description"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                variant="filled"
-              />
-            </FormControl>
-
-            <Button
-              colorScheme="teal"
-              mr={3}
-              backgroundColor="blackAlpha.900"
-              mt="10"
-              onClick={submitHandler}>
-              Create Product
-            </Button>
-          </Box>
-        </SimpleGrid>
-      </Box>
-    </>
+          </SimpleGrid>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
+          <FormControl id="description" isRequired>
+            <FormLabel>Description</FormLabel>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </FormControl>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
+          <FormControl id="images" isRequired>
+            <FormLabel>Images</FormLabel>
+            <Input
+              type="file"
+              name="images"
+              multiple
+              onChange={createProductImagesChange}
+            />
+          </FormControl>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
+          <Button type="submit" colorScheme="teal" mr={3}>
+            Create
+          </Button>
+        </Flex>
+      </VStack>
+    </Box>
   );
 }
+
+
+
+
+          

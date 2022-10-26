@@ -1,6 +1,5 @@
 import { useRecoveryData } from "../../hooks/useRecoveryData";
-import React, { useState, FormEvent, SetStateAction } from "react";
-import { createProduct } from "../../redux/actions/productsActions";
+import React, { useState, FormEvent } from "react";
 import {
   useToast,
   Button,
