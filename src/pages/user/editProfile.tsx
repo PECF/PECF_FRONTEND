@@ -43,6 +43,11 @@ export function EditProfile() {
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onClose: onClose2,
+  } = useDisclosure();
 
   const [loading, setLoading] = useState(false);
 
@@ -144,7 +149,11 @@ export function EditProfile() {
                 bg={useColorModeValue("gray.50", "gray.900")}>
                 <Avatar size="2xl" src={avatarPreview} mb={4} pos="relative" />
 
-                <Button colorScheme="blue" size="sm" onClick={onOpen}>
+                <Button
+                  colorScheme="teal"
+                  variant="solid"
+                  size="sm"
+                  onClick={onOpen}>
                   Change Avatar
                 </Button>
 
@@ -166,16 +175,22 @@ export function EditProfile() {
                     </ModalBody>
 
                     <ModalFooter>
-                      <Button colorScheme="blue" mr={3} onClick={onClose}>
-                        Save
-                      </Button>
                       <Button
+                        colorScheme="teal"
+                        variant="ghost"
                         onClick={() => {
                           onClose();
                           setAvatar(user?.avatar.url);
                           setAvatarPreview(user?.avatar.url);
                         }}>
                         Cancel
+                      </Button>
+                      <Button
+                        colorScheme="teal"
+                        variant="solid"
+                        mr={3}
+                        onClick={onClose}>
+                        Save
                       </Button>
                     </ModalFooter>
                   </ModalContent>
@@ -184,9 +199,9 @@ export function EditProfile() {
             </Box>
 
             <Box p={6}>
-              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+              <Grid templateColumns="repeat(1, 1fr)" gap={6}>
                 <FormControl id="name">
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Full Name</FormLabel>
                   <Input
                     type="text"
                     name="name"
@@ -194,6 +209,141 @@ export function EditProfile() {
                     onChange={(e) => setName(e.target.value)}
                   />
                 </FormControl>
+
+                <FormControl id="email">
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </FormControl>
+
+                <FormControl id="phone">
+                  <FormLabel>Phone</FormLabel>
+                  <Input
+                    type="text"
+                    name="phone"
+                    value={phone || "+1 234 567 890"}
+                    onChange={(e) => setPhone(e.target.value)}
+                  />
+                </FormControl>
+
+                <FormControl id="address">
+                  <FormLabel>Address</FormLabel>
+                  <Input
+                    type="text"
+                    name="address"
+                    value={address || "1234 Main St"}
+                    onChange={(e) => setAddress(e.target.value)}
+                  />
+                </FormControl>
+
+                <Grid
+                  templateColumns={{
+                    base: "repeat(1, 1fr)",
+                    md: "repeat(2, 1fr)",
+                  }}
+                  gap={6}>
+                  <FormControl id="city">
+                    <FormLabel>City</FormLabel>
+                    <Input
+                      type="text"
+                      name="city"
+                      value={city || "New York"}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  </FormControl>
+
+                  <FormControl id="state">
+                    <FormLabel>State</FormLabel>
+                    <Input
+                      type="text"
+                      name="state"
+                      value={state || "NY"}
+                      onChange={(e) => setState(e.target.value)}
+                    />
+                  </FormControl>
+
+                  <FormControl id="zip">
+                    <FormLabel>Zip</FormLabel>
+                    <Input
+                      type="text"
+                      name="zip"
+                      value={zip || "10001"}
+                      onChange={(e) => setZip(e.target.value)}
+                    />
+                  </FormControl>
+
+                  <FormControl id="country">
+                    <FormLabel>Country</FormLabel>
+                    <Input
+                      type="text"
+                      name="country"
+                      value={country || "USA"}
+                      onChange={(e) => setCountry(e.target.value)}
+                    />
+                  </FormControl>
+                </Grid>
+
+                <Button colorScheme="teal" variant="solid" onClick={onOpen2}>
+                  Update Profile
+                </Button>
+
+                <Modal isOpen={isOpen2} onClose={onClose2}>
+                  <ModalOverlay />
+                  <ModalContent>
+                    <ModalHeader>Confirm your password to continue</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                      <Grid
+                        templateColumns={{
+                          base: "repeat(1, 1fr)",
+                          md: "repeat(1, 1fr)",
+                        }}
+                        gap={6}>
+                        <FormControl id="password">
+                          <FormLabel>Password</FormLabel>
+                          <Input
+                            type="password"
+                            name="password"
+                            onChange={(e) => setPassword(e.target.value)}
+                          />
+                        </FormControl>
+
+                        <FormControl>
+                          <FormLabel>Confirm Password</FormLabel>
+                          <Input
+                            type="password"
+                            name="confirmPassword"
+                            onChange={(e) => setConfirmPassword(e.target.value)}
+                          />
+                        </FormControl>
+                      </Grid>
+                    </ModalBody>
+
+                    <ModalFooter>
+                      <Button
+                        colorScheme="teal"
+                        variant="ghost"
+                        onClick={() => {
+                          onClose2();
+                          setPassword("");
+                        }}>
+                        Cancel
+                      </Button>
+                      <Button
+                        colorScheme="teal"
+                        variant="solid"
+                        mr={3}
+                        onClick={onClose2}
+                        type="submit">
+                        Save
+                      </Button>
+                    </ModalFooter>
+                  </ModalContent>
+                </Modal>
               </Grid>
             </Box>
           </VStack>
