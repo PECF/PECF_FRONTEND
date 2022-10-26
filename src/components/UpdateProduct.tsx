@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import {
   Box,
@@ -12,12 +12,17 @@ import {
 } from "@chakra-ui/react";
 export function UpdateProduct() {
   const { products } = useRecoveryData("productList");
+  const [selectedProduct, setSelectedProduct] = useState({});
 
   return (
-    <Box>
+    <Box mt={20}>
       <Select placeholder="Select option">
         {products.map((product) => (
-          <option key={product.id} value={product.id}>
+          <option
+            key={product._id}
+            value={product._id}
+            onClick={() => setSelectedProduct(product)}
+          >
             {product.name}
           </option>
         ))}
@@ -29,9 +34,9 @@ export function UpdateProduct() {
             <FormLabel>Name</FormLabel>
             <Input
               type="text"
-              default={products.name}
+              default={selectedProduct?.name}
               placeholder="Enter name"
-              value={name}
+              value={selectedProduct?.name}
               onChange={(e) => setName(e.target.value)}
               variant="filled"
             />
@@ -40,9 +45,9 @@ export function UpdateProduct() {
             <FormLabel>Category</FormLabel>
             <Input
               type="text"
-              default={products.category}
               placeholder="Enter category"
-              value={category}
+              default={selectedProduct?.category}
+              value={selectedProduct?.category}
               onChange={(e) => setCategory(e.target.value)}
               variant="filled"
             />
@@ -52,9 +57,9 @@ export function UpdateProduct() {
             <FormLabel>Price</FormLabel>
             <Input
               type="number"
-              default={products.price}
+              default={selectedProduct?.price}
               placeholder="Enter price"
-              value={price}
+              value={selectedProduct?.price}
               onChange={(e) => setPrice(e.target.value)}
               variant="filled"
             />
@@ -64,9 +69,9 @@ export function UpdateProduct() {
             <FormLabel>Stock</FormLabel>
             <Input
               type="number"
-              default={products.stock}
+              default={selectedProduct?.stock}
               placeholder="Enter stock"
-              value={stock}
+              value={selectedProduct?.stock}
               onChange={(e) => setStock(e.target.value)}
               variant="filled"
             />
@@ -78,8 +83,8 @@ export function UpdateProduct() {
             <FormLabel>Description</FormLabel>
             <Textarea
               placeholder="Enter description"
-              default={products.description}
-              value={description}
+              default={selectedProduct?.description}
+              value={selectedProduct?.description}
               onChange={(e) => setDescription(e.target.value)}
               variant="filled"
             />
@@ -90,7 +95,7 @@ export function UpdateProduct() {
             mr={3}
             backgroundColor="blackAlpha.900"
             mt="10"
-            onClick={submitHandler}
+            // onClick={submitHandler}
           >
             Update Product
           </Button>
