@@ -14,6 +14,7 @@ import { NotFound } from "../pages/NotFound";
 import { CreateProduct } from "../components/CreateProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Profile } from "../pages/user/profile";
+import  ProductDetail  from "../pages/ProductDetail"
 // import AuthContext from "../contexts/authContext";
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
@@ -21,6 +22,7 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/productDetail" element={<ProductDetail/>} /> 
       <Route path="/refund" element={<Refund />} />
       {!user?.role ? (
         <Route path="/forgot-password" element={<ForgotPassword />} />
