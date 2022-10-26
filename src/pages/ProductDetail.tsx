@@ -25,7 +25,7 @@ import { CarouselDetailProducts } from "../components/carouselDetailProduct";
 export default function ProductDetail() {
 
   const { products } = useRecoveryData("productList") 
-
+  const product = products[0]
   return (
     <Center>
       <VStack
@@ -42,12 +42,16 @@ export default function ProductDetail() {
                   fontWeight={400}
                   fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
                 >
-                  Automatic Watch
+                  {product?.name}
                 </Heading>
                 </Box>
-                
+
                 <CarouselDetailProducts
-                  array = {products[0]?.image}/>
+                  product={product}
+                />
+                
+                {/* <CarouselDetailProducts
+                  array = {products[0]?.image}/> */}
               {/*    rounded={"md"}
                 alt={"product image"}
 
@@ -75,14 +79,18 @@ export default function ProductDetail() {
                     fontSize={{ base: "-moz-initial", sm:"xl", lg:"2xl"}}
                     fontWeight={"300"} align={'justify'}
                   >
-                    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed
-                    diam nonumy eirmod tempor invidunt ut labore
+                    {product?.description}
                   </Text>
                   <Text align={'justify'} fontSize={"lg"}>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad
-                    aliquid amet at delectus doloribus dolorum expedita hic,
-                    ipsum maxime modi nam officiis porro, quae, quisquam quos
-                    reprehenderit velit? Natus, totam.
+                    <Badge
+                      borderRadius="full"
+                      px="2"
+                      colorScheme="teal"
+                      fontSize={"lg"}
+                    >
+                      {product?.category}
+                    </Badge>
+
                   </Text>
                 </Stack>
                 <Box>
@@ -116,7 +124,7 @@ export default function ProductDetail() {
                   fontWeight={300}
                   fontSize={"2xl"}
                 >
-                  $350.00 USD
+                  {product?.price}€
                 </Text>
 
               <Button
