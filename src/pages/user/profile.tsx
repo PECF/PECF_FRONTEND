@@ -81,12 +81,7 @@ import { CreateProduct } from "../../components/CreateProduct";
 export function Profile() {
   const { user } = useRecoveryData("userDetails");
 
-  // const [show, setShow] = useState(false);
-
-  const [showEditProfile, setShowEditProfile] = useState(false);
-  const [showProductsDashboard, setShowProductsDashboard] = useState(false);
-  const [showOrdersDashboard, setShowOrdersDashboard] = useState(false);
-  const [showCreateProduct, setShowCreateProduct] = useState(false);
+  const [show, setShow] = useState(1);
 
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
@@ -96,7 +91,7 @@ export function Profile() {
     send({
       title: "Success",
       description: "You are logged out",
-      status: "success",
+      status: "warning",
       duration: 3000,
       isClosable: true,
     });
@@ -235,13 +230,14 @@ export function Profile() {
               color={useColorModeValue("gray.600", "gray.400")}>
               Account
             </Text>
+
             <Flex
               mt={2}
               justify="space-between"
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               onClick={() => {
-                setShowEditProfile(!showEditProfile);
+                setShow(1);
               }}>
               <Flex align="center">
                 <Icon as={FiUser} w={5} h={5} />
@@ -251,6 +247,7 @@ export function Profile() {
               </Flex>
               <Icon as={FaAngleDoubleRight} w={5} h={5} />
             </Flex>
+
             <Flex
               mt={2}
               justify="space-between"
@@ -264,13 +261,14 @@ export function Profile() {
               </Flex>
               <Icon as={FaAngleDoubleRight} w={5} h={5} />
             </Flex>
+
             <Flex
               mt={2}
               justify="space-between"
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               onClick={() => {
-                setShowProductsDashboard(!showProductsDashboard);
+                setShow(3);
               }}>
               <Flex align="center">
                 <Icon as={FiShoppingBag} w={5} h={5} />
@@ -280,11 +278,15 @@ export function Profile() {
               </Flex>
               <Icon as={FaAngleDoubleRight} w={5} h={5} />
             </Flex>
+
             <Flex
               mt={2}
               justify="space-between"
               align="center"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              onClick={() => {
+                setShow(4);
+              }}>
               <Flex align="center">
                 <Icon as={FiCreditCard} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -322,7 +324,10 @@ export function Profile() {
                   mt={2}
                   justify="space-between"
                   align="center"
-                  color={useColorModeValue("gray.600", "gray.400")}>
+                  color={useColorModeValue("gray.600", "gray.400")}
+                  onClick={() => {
+                    setShow(5);
+                  }}>
                   <Flex align="center">
                     <Icon as={FiUsers} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -337,7 +342,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   onClick={() => {
-                    setShowProductsDashboard(!showProductsDashboard);
+                    setShow(6);
                   }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
@@ -353,7 +358,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   onClick={() => {
-                    setShowCreateProduct(!showCreateProduct);
+                    setShow(7);
                   }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
@@ -370,7 +375,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   onClick={() => {
-                    setShowOrdersDashboard(!showOrdersDashboard);
+                    setShow(8);
                   }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
@@ -387,14 +392,20 @@ export function Profile() {
               fontSize="sm"
               fontWeight="semibold"
               color={useColorModeValue("gray.600", "gray.400")}
-              mt={6}>
+              mt={6}
+              onClick={() => {
+                setShow(9);
+              }}>
               Support
             </Text>
             <Flex
               mt={2}
               justify="space-between"
               align="center"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              onClick={() => {
+                setShow(10);
+              }}>
               <Flex align="center">
                 <Icon as={FiHelpCircle} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -407,7 +418,10 @@ export function Profile() {
               mt={2}
               justify="space-between"
               align="center"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              onClick={() => {
+                setShow(11);
+              }}>
               <Flex align="center">
                 <Icon as={FiMail} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -420,7 +434,10 @@ export function Profile() {
               mt={2}
               justify="space-between"
               align="center"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              onClick={() => {
+                setShow(12);
+              }}>
               <Flex align="center">
                 <Icon as={FiPhone} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -432,10 +449,10 @@ export function Profile() {
           </Box>
         </Box>
 
-        {showEditProfile && <EditProfile />}
-        {showProductsDashboard && <ProductsDashboard />}
-        {showOrdersDashboard && <OrdersDashboard />}
-        {showCreateProduct && <CreateProduct />}
+        {show === 1 && <EditProfile />}
+        {show === 6 && <ProductsDashboard />}
+        {show === 7 && <CreateProduct />}
+        {show === 8 && <OrdersDashboard />}
       </Flex>
     </Container>
   );
