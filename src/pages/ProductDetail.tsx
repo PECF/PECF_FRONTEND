@@ -3,115 +3,89 @@ import {
   Box,
   Stack,
   Text,
-  Image,
   VStack,
   Button,
   Heading,
   SimpleGrid,
-  StackDivider,
   useColorModeValue,
   List,
   ListItem,
-  HStack,
   Center,
   Badge,
+  HStack,
+  Grid,
 } from "@chakra-ui/react";
+import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { CarouselDetailProducts } from "../components/carouselDetailProduct";
 
 
-
-export default function ProductDetail({ product }: any) {
-
+export default function ProductDetail() {
+  const { products } = useRecoveryData("productList");
+  const product = products[0];
   return (
     <Center>
-      <VStack
-        mt={10}
-        maxW="5xl"
-        bg={"whiteAlpha.100"}
-        p={5}
-      >
-        <Stack >
+      <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
+        <Stack>
           <Stack>
-            <Box as={"header"}>
-              <Heading
-                fontWeight={400}
-                fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
-              >
-                {product?.name || "Product Name"}
-              </Heading>
-            </Box>
-
-            {/* <CarouselDetailProducts
-              product={product}
-            /> */}
-
-          </Stack>
-          <VStack spacing={{ base: 6, md: 10 }}
-            p={5}>
-            <Stack
-              spacing={{ base: 3, sm: 5 }}
-              direction={"column"}
-              divider={
-                <StackDivider
-                  borderColor={useColorModeValue("gray.200", "gray.600")}
-                />
-              }
-            >
-              <Stack spacing={{ base: 4, sm: 6 }}>
-                <Text
-                  color={useColorModeValue("gray.500", "gray.400")}
-                  fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
-                  fontWeight={"300"} align={'justify'}
+            <Stack as={"header"}  >
+              <Grid spacing={""} templateColumns={{base: "repeat(2,1fr)"}}>
+                <Heading 
+                  fontWeight={400}
+                  fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
                 >
-                  {product?.description || "Product Description"}
-                </Text>
-                <Text align={'justify'} fontSize={"lg"}>
+                  {product?.name}
+                </Heading>
+
+                <HStack mt="2" alignItems={"flex-end"}>
+                  {Array(5)
+                    .fill("")
+                    .map((_, i) => (
+                      <StarIcon
+                        key={i}
+                        // color={i < /* product?.rating */ ? 'teal.500' : 'gray.300'}
+                      />
+                    ))}
+                  <Box as="span" ml="2" color="gray.600" fontSize="lg">
+                    {/* product?.reviewCount */} reviews
+                  </Box>
+                </HStack>
+              </Grid>
+
+
+              <Stack>
+                <Text fontSize={"lg"} py={2}>
+
                   <Badge
                     borderRadius="full"
                     px="2"
                     colorScheme="teal"
-                    fontSize={"lg"}
+
+                    fontSize={{ base: "sm", sm: "lg" }}
                   >
-                    {product?.category || "Category"}
+                    {product?.category}
                   </Badge>
 
                 </Text>
               </Stack>
-              <Box>
-                <Text
-                  fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
-                  color={useColorModeValue("teal.500", "teal.300")}
-                  fontWeight={"500"}
-                  textTransform={"uppercase"}
-                  mb={"4"}
-                >
-                  Features
-                </Text>
-
-                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
-                  <List spacing={2}>
-                    <ListItem>Chronograph</ListItem>
-                    <ListItem>Master Chronometer Certified</ListItem>{" "}
-                    <ListItem>Tachymeter</ListItem>
-                  </List>
-                  <List spacing={2}>
-                    <ListItem>Anti‑magnetic</ListItem>
-                    <ListItem>Chronometer</ListItem>
-                    <ListItem>Small seconds</ListItem>
-                  </List>
-                </SimpleGrid>
-              </Box>
-
             </Stack>
-            <Text
+
+            <Box>
+              <CarouselDetailProducts product={product} />
+            </Box>
+          </Stack>
+
+
+          <Stack>
+            <Box
               color={useColorModeValue("gray.900", "gray.400")}
-              fontWeight={300}
-              fontSize={"2xl"}
+              fontWeight={600}
+              fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
             >
-              {product?.price || "000"}€
-            </Text>
+              {product?.price}€
+            </Box>
+
 
             <Button
               rounded={"none"}
@@ -138,7 +112,52 @@ export default function ProductDetail({ product }: any) {
               <MdLocalShipping />
               <Text>2-3 business days delivery</Text>
             </Stack>
-          </VStack>
+
+            <Box>
+              <Text
+                fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
+                color={useColorModeValue("teal.500", "teal.300")}
+                fontWeight={"500"}
+                textTransform={"uppercase"}
+                mb={"4"}
+              >
+                Features
+              </Text>
+            </Box>
+            <SimpleGrid columns={{ base: 2 }} spacing={"11rem"}>
+              <List spacing={5}>
+                <ListItem>White</ListItem>
+                <ListItem>Electronics</ListItem>
+                <ListItem>1 TB</ListItem>
+              </List>
+              <List spacing={5}>
+                <ListItem>PlayStation</ListItem>
+                <ListItem>PS4</ListItem>
+                <ListItem>Joystick</ListItem>
+              </List>
+            </SimpleGrid>
+
+            <Box>
+              <Text
+                fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
+                color={useColorModeValue("teal.500", "teal.300")}
+                fontWeight={"500"}
+                textTransform={"uppercase"}
+                mb={"4"}
+              >
+                Description
+              </Text>
+            </Box>
+
+            <Text
+              color={useColorModeValue("gray.500", "gray.400")}
+              fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
+              fontWeight={"300"}
+              align={"justify"}
+            >
+              {product?.description}
+            </Text>
+          </Stack>
 
         </Stack>
       </VStack>
