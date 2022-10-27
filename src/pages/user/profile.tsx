@@ -43,7 +43,7 @@ import {
   FiUser,
   FiShoppingBag,
 } from "react-icons/fi";
-import { FaAngleDoubleRight } from "react-icons/fa";
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 
 import {
   RiVipDiamondFill,
@@ -254,7 +254,7 @@ export function Profile() {
                   Profile
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
 
             <Flex
@@ -269,7 +269,7 @@ export function Profile() {
                   Settings
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
 
             <Flex
@@ -287,7 +287,7 @@ export function Profile() {
                   Orders
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
 
             <Flex
@@ -305,7 +305,7 @@ export function Profile() {
                   Payment
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
             <Flex
               mt={2}
@@ -322,7 +322,7 @@ export function Profile() {
                   Logout
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
             {user?.role === "admin" && (
               <>
@@ -349,7 +349,7 @@ export function Profile() {
                       Users
                     </Text>
                   </Flex>
-                  <Icon as={FaAngleDoubleRight} w={5} h={5} />
+                  <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
                 </Flex>
                 <Flex
                   mt={2}
@@ -366,7 +366,7 @@ export function Profile() {
                       Products
                     </Text>
                   </Flex>
-                  <Icon as={FaAngleDoubleRight} w={5} h={5} />
+                  <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
                 </Flex>
                 <Flex
                   mt={2}
@@ -383,7 +383,7 @@ export function Profile() {
                       Create Product
                     </Text>
                   </Flex>
-                  <Icon as={FaAngleDoubleRight} w={5} h={5} />
+                  <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
                 </Flex>
 
                 <Flex
@@ -401,7 +401,7 @@ export function Profile() {
                       Update Product
                     </Text>
                   </Flex>
-                  <Icon as={FaAngleDoubleRight} w={5} h={5} />
+                  <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
                 </Flex>
 
                 <Flex
@@ -419,7 +419,7 @@ export function Profile() {
                       Orders
                     </Text>
                   </Flex>
-                  <Icon as={FaAngleDoubleRight} w={5} h={5} />
+                  <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
                 </Flex>
               </>
             )}
@@ -450,7 +450,7 @@ export function Profile() {
                   Help Center
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
             <Flex
               mt={2}
@@ -467,7 +467,7 @@ export function Profile() {
                   Contact Us
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
             <Flex
               mt={2}
@@ -484,7 +484,7 @@ export function Profile() {
                   +1 234 567 890
                 </Text>
               </Flex>
-              <Icon as={FaAngleDoubleRight} w={5} h={5} />
+              <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
           </Box>
         </Box>

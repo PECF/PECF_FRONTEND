@@ -1,5 +1,12 @@
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import React, { useState, FormEvent } from "react";
+import ReactCountryFlag from "react-country-flag";
+import {
+  AsyncCreatableSelect,
+  AsyncSelect,
+  CreatableSelect,
+  Select,
+} from "chakra-react-select";
 import {
   useToast,
   Button,
@@ -20,6 +27,7 @@ import {
   Heading,
   Avatar,
   Grid,
+  Icon,
   Box,
   GridItem
 } from "@chakra-ui/react";
@@ -43,13 +51,13 @@ export function EditProfile() {
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isOpen2,
-    onOpen: onOpen2,
-    onClose: onClose2,
-  } = useDisclosure();
+
+  const { isOpen: isOpenConfirm, onOpen: onOpenConfirm, onClose: onCloseConfirm } = useDisclosure();
+
+
 
   const [loading, setLoading] = useState(false);
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -197,7 +205,197 @@ export function EditProfile() {
                   </ModalContent>
                 </Modal>
               </Flex>
+
+              <Grid
+                templateColumns={{
+                  base: "repeat(1, 1fr)",
+                  md: "repeat(2, 1fr)",
+                  lg: "repeat(1, 1fr)",
+                }}
+                gap={6}>
+                <GridItem colSpan={1}>
+                  <FormControl id="name">
+                    <FormLabel>Name</FormLabel>
+                    <Input
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Enter your name"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl id="email">
+                    <FormLabel>Email</FormLabel>
+                    <Input
+                      type="email"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl id="phone">
+                    <FormLabel>Phone</FormLabel>
+                    <Input
+
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="Enter your phone"
+                    />
+
+                  </FormControl>
+                </GridItem>
+              </Grid>
+
+              <Grid
+                mt={6}
+                templateColumns={{
+                  base: "repeat(2, 1fr)",
+                  md: "repeat(2, 1fr)",
+                  lg: "repeat(2, 1fr)",
+                }}
+                gap={6}
+              >
+                <GridItem colSpan={1}>
+                  <FormControl id="country"
+                  >
+                    <FormLabel>Country</FormLabel>
+                    <Input
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="country"
+                      value={country}
+                      onChange={(e) => setCountry(e.target.value)}
+                      placeholder="Enter your country"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl id="address">
+                    <FormLabel>Address</FormLabel>
+                    <Input
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Enter your address"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl id="city">
+                    <FormLabel>City</FormLabel>
+                    <Input
+
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+
+                      placeholder="Enter your city"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl id="state">
+                    <FormLabel>State</FormLabel>
+                    <Input
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="state"
+                      value={state}
+
+                      onChange={(e) => setState(e.target.value)}
+                      placeholder="Enter your state"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl id="zip">
+                    <FormLabel>Zip</FormLabel>
+                    <Input
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="zip"
+                      value={zip}
+                      onChange={(e) => setZip(e.target.value)}
+                      placeholder="Enter your zip"
+                    />
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+
+                  {/* Create button with a modal for confirm with password */}
+
+                  <Button
+                    colorScheme="teal"
+                    variant="solid"
+                    size="sm"
+                    onClick={onOpenConfirm}>
+                    Confirm
+                  </Button>
+
+                  <Modal isOpen={isOpenConfirm} onClose={onCloseConfirm}>
+                    <ModalOverlay />
+                    <ModalContent>
+                      <ModalHeader>Confirm</ModalHeader>
+                      <ModalCloseButton />
+                      <ModalBody>
+                        <FormControl id="password">
+                          <FormLabel>Password</FormLabel>
+                          <Input
+                            type="password"
+                            name="password"
+                            onChange={updateProfileDataChange}
+                          />
+                        </FormControl>
+                      </ModalBody>
+
+                      <ModalFooter>
+                        <Button
+                          colorScheme="teal"
+                          variant="ghost"
+                          onClick={() => {
+                            onCloseConfirm();
+                          }}>
+                          Cancel
+                        </Button>
+                        <Button
+                          colorScheme="teal"
+                          variant="solid"
+                          mr={3}
+                          onClick={onCloseConfirm}>
+                          Save
+                        </Button>
+                      </ModalFooter>
+                    </ModalContent>
+                  </Modal>
+
+
+                </GridItem>
+
+              </Grid>
+
             </Box>
+
           </VStack>
         </Box>
       </VStack>

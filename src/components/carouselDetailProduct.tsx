@@ -30,7 +30,11 @@ export function CarouselDetailProducts({ product }: any) {
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={"full"} h={"50vh"} maxHeight={"50vh"} mt={5}>
+    <Flex w={"full"} mt={5}
+      maxH={top}
+
+      mb={30}
+    >
       <Box
 
         position={"relative"}
@@ -47,52 +51,59 @@ export function CarouselDetailProducts({ product }: any) {
           type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
         />
-        <IconButton
-          aria-label="left-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          bgColor="teal.500"
-          left={side}
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          onClick={() => slider?.slickPrev()}
-        >
-          <BiLeftArrow />
-        </IconButton>
-        <IconButton
-          aria-label="right-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          right={side}
-          bgColor="teal.500"
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          onClick={() => slider?.slickNext()}
-        >
-          <BiRightArrow />
-        </IconButton>
+        {product && product.images && product.images.length > 0 ? (
+          <>
+            <IconButton
+              aria-label="left-arrow"
+              colorScheme="messenger"
+              borderRadius="full"
+              position="absolute"
+              bgColor="teal.500"
+              left={side}
+              top={top}
+              transform={"translate(0%, -50%)"}
+              zIndex={2}
+              onClick={() => slider?.slickPrev()}
+            >
+              <BiLeftArrow />
+            </IconButton>
+            <IconButton
+              aria-label="right-arrow"
+              colorScheme="messenger"
+              borderRadius="full"
+              position="absolute"
+              right={side}
+              bgColor="teal.500"
+              top={top}
+              transform={"translate(0%, -50%)"}
+              zIndex={2}
+              onClick={() => slider?.slickNext()}
+            >
+              <BiRightArrow />
+            </IconButton>
+          </>
+
+        ) : (
+          null)
+        }
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {product &&
             product.image.map((item: any) => {
               return (
                 <Box
                   key={item._id}
-                  height={"lg"}
+                  height={"2xl"}
                   width={"full"}
                   position="relative"
                   backgroundPosition="center"
                   backgroundRepeat="no-repeat"
-                  backgroundSize="cover"
+                  // backgroundSize="cover"
                   backgroundImage={`url(${item.url})`}
                 />
               );
             })}
         </Slider>
-      </Box> */}
+      </Box>
     </Flex>
   );
 }

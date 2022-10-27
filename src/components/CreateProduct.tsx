@@ -27,7 +27,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { createProduct } from "../redux/actions/productsActions";
 import { useLoad } from "../hooks/useLoad";
-import ProductDetail from '../pages/ProductDetail';
+import { ProductDetail } from '../pages/ProductDetail';
 
 export function CreateProduct() {
   const [name, setName] = useState("");
@@ -35,8 +35,9 @@ export function CreateProduct() {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [images, setImages] = useState<string[]>([]);
+  const [image, setImages] = useState<string[]>([]);
   const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
   const dispatch = useDispatch<AppDispatch>();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -77,6 +78,11 @@ export function CreateProduct() {
 
   const toast = useToast();
 
+  const createTags = (str: string) => {
+    setTags(str.split(" "))
+
+  }
+
   const previewHandler = () => {
     if (
       name === "" ||
@@ -84,6 +90,7 @@ export function CreateProduct() {
       description === "" ||
       price === "" ||
       stock === ""
+
     ) {
       toast({
         title: "Error",
@@ -134,6 +141,7 @@ export function CreateProduct() {
               <FormLabel>Name</FormLabel>
               <Input
                 type="text"
+                placeholder="Samsung Galaxy Fold 4"
                 bg={useColorModeValue("alphaWhite", "gray.800")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
@@ -141,22 +149,10 @@ export function CreateProduct() {
             </FormControl>
             <FormControl id="category" isRequired>
               <FormLabel>Category</FormLabel>
-              <Text
-                bg={useColorModeValue("gray.50", "gray.700")}
-                p={2}
-                borderRadius="md"
-                color="gray.500"
-                fontSize="sm"
-                fontWeight="medium"
-                lineHeight="short">
-
-                {` You can use multiple categories by separating them with a spaces, e.g. "category1 category2"`}
-
-              </Text>
               <Input
                 type="text"
+                placeholder="Electronics"
                 bg={useColorModeValue("alphaWhite", "gray.800")}
-
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
               />
@@ -176,7 +172,7 @@ export function CreateProduct() {
               <Input
                 type="number"
                 bg={useColorModeValue("alphaWhite", "gray.800")}
-
+                placeholder="1000"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
               />
@@ -187,7 +183,7 @@ export function CreateProduct() {
                 type="number"
                 value={stock}
                 bg={useColorModeValue("alphaWhite", "gray.800")}
-
+                placeholder="100"
                 onChange={(e) => setStock(e.target.value)}
               />
             </FormControl>
@@ -204,7 +200,7 @@ export function CreateProduct() {
             <FormLabel>Description</FormLabel>
             <Textarea
               bg={useColorModeValue("alphaWhite", "gray.800")}
-
+              placeholder="Description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
             />
@@ -234,9 +230,9 @@ export function CreateProduct() {
             <Input
               type="text"
               bg={useColorModeValue("alphaWhite", "gray.800")}
-
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
+              value={tags}
+              placeholder="Samsung Galaxy Fold 4"
+              onChange={(e) => createTags(e.target.value)}
             />
           </FormControl>
         </Flex>
@@ -270,6 +266,32 @@ export function CreateProduct() {
             />
           </FormControl>
         </Flex>
+        {image.length && (
+          <Flex
+            justify="space-between"
+            align="center"
+            px={6}
+            py={4}
+            bg={useColorModeValue("gray.50", "gray.700")}
+            borderBottomWidth="1px">
+            <FormControl id="images" isRequired>
+              <FormLabel>Images Preview</FormLabel>
+              <SimpleGrid columns={3} spacing={4} w="full">
+                {image.map((img, index) => (
+                  <Image
+                    key={index}
+                    src={img}
+                    h="100px"
+                    w="100px"
+                    objectFit="cover"
+                  />
+                ))}
+              </SimpleGrid>
+            </FormControl>
+          </Flex>
+        )}
+
+
         <Flex
           justify="space-between"
           align="center"
@@ -303,7 +325,8 @@ export function CreateProduct() {
                     description,
                     price,
                     stock,
-                    images,
+                    image,
+                    tags
                   }
                 } />
               </ModalBody>
