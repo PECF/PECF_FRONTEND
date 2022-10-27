@@ -21,9 +21,9 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 import { CarouselDetailProducts } from "../components/carouselDetailProduct";
 
 
-export default function ProductDetail() {
+export function ProductDetail() {
   const { products } = useRecoveryData("productList");
-  const product = products[0];
+  const product = products[0  ];
   return (
     <Center>
       <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
