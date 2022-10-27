@@ -20,6 +20,7 @@ import { MdLocalShipping } from "react-icons/md";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { CarouselDetailProducts } from "../components/carouselDetailProduct";
 
+
 export default function ProductDetail() {
   const { products } = useRecoveryData("productList");
   const product = products[0];
@@ -27,13 +28,7 @@ export default function ProductDetail() {
     <Center>
       <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
         <Stack>
-
-
-
           <Stack>
-
-
-
             <Stack as={"header"}  >
               <Grid spacing={""} templateColumns={{base: "repeat(2,1fr)"}}>
                 <Heading 
@@ -61,14 +56,17 @@ export default function ProductDetail() {
 
               <Stack>
                 <Text fontSize={"lg"} py={2}>
+
                   <Badge
                     borderRadius="full"
                     px="2"
                     colorScheme="teal"
+
                     fontSize={{ base: "sm", sm: "lg" }}
                   >
                     {product?.category}
                   </Badge>
+
                 </Text>
               </Stack>
             </Stack>
@@ -78,6 +76,7 @@ export default function ProductDetail() {
             </Box>
           </Stack>
 
+
           <Stack>
             <Box
               color={useColorModeValue("gray.900", "gray.400")}
@@ -86,6 +85,7 @@ export default function ProductDetail() {
             >
               {product?.price}€
             </Box>
+
 
             <Button
               rounded={"none"}
@@ -158,6 +158,7 @@ export default function ProductDetail() {
               {product?.description}
             </Text>
           </Stack>
+
         </Stack>
       </VStack>
     </Center>

@@ -1,3 +1,4 @@
+
 import {
   Flex,
   useBreakpointValue,
@@ -5,6 +6,7 @@ import {
   IconButton,
   Text,
 } from "@chakra-ui/react";
+
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import Slider from "react-slick";
 import React from "react";
@@ -30,6 +32,7 @@ export function CarouselDetailProducts({ product }: any) {
   return (
     <Flex w={"full"} h={"50vh"} maxHeight={"50vh"} mt={5}>
       <Box
+
         position={"relative"}
         width={"full"}
         overflow={"hidden"}
@@ -89,7 +92,7 @@ export function CarouselDetailProducts({ product }: any) {
               );
             })}
         </Slider>
-      </Box>
+      </Box> */}
     </Flex>
   );
 }

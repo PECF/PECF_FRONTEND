@@ -99,7 +99,7 @@ export const deleteProduct =
  * Action used to create a product
  */
 export const createProduct =
-  ({ name, category, price, stock, description }: any): AppThunk =>
+  ({ name, category, price, stock, description, offer, discount }: any): AppThunk =>
   async (dispatch, getState) => {
     try {
       dispatch({
@@ -123,6 +123,8 @@ export const createProduct =
         price,
         stock,
         description,
+        offer,
+        discount
       };
 
       const { data } = await axios.post(`/admin/product/new`, product, config);
