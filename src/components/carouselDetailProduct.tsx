@@ -1,9 +1,13 @@
-import {Flex,useBreakpointValue,Box,IconButton,Text}from "@chakra-ui/react";
+import {
+  Flex,
+  useBreakpointValue,
+  Box,
+  IconButton,
+  Text,
+} from "@chakra-ui/react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import Slider from "react-slick";
 import React from "react";
-
-
 
 const settings = {
   dots: true,
@@ -17,20 +21,19 @@ const settings = {
   slidesToScroll: 1,
 };
 
-
-export function CarouselDetailProducts({product}: any) {
+export function CarouselDetailProducts({ product }: any) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={"full"} h={"30vh"} mb='10rem' mt={'5rem'}>
+    <Flex w={"full"} h={"50vh"} maxHeight={"50vh"} mt={5}>
       <Box
         position={"relative"}
-        height={"50vh"}
         width={"full"}
-        overflow={"hidden"}>
+        overflow={"hidden"}
+      >
         <link
           rel="stylesheet"
           type="text/css"
@@ -51,7 +54,8 @@ export function CarouselDetailProducts({product}: any) {
           top={top}
           transform={"translate(0%, -50%)"}
           zIndex={2}
-          onClick={() => slider?.slickPrev()}>
+          onClick={() => slider?.slickPrev()}
+        >
           <BiLeftArrow />
         </IconButton>
         <IconButton
@@ -64,26 +68,26 @@ export function CarouselDetailProducts({product}: any) {
           top={top}
           transform={"translate(0%, -50%)"}
           zIndex={2}
-          onClick={() => slider?.slickNext()}>
+          onClick={() => slider?.slickNext()}
+        >
           <BiRightArrow />
         </IconButton>
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {
-            product && product.image.map((item: any) => {
+          {product &&
+            product.image.map((item: any) => {
               return (
                 <Box
                   key={item._id}
                   height={"lg"}
-              width={"full"}
-              position="relative"
-              backgroundPosition="center"
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundImage={`url(${item.url})`}
+                  width={"full"}
+                  position="relative"
+                  backgroundPosition="center"
+                  backgroundRepeat="no-repeat"
+                  backgroundSize="cover"
+                  backgroundImage={`url(${item.url})`}
                 />
               );
-            })
-          }
+            })}
         </Slider>
       </Box>
     </Flex>
