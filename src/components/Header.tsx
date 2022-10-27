@@ -4,6 +4,7 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
+  IconButton,
 } from "@chakra-ui/react";
 import { companyName } from "../constant/general";
 import { Container } from "@chakra-ui/react";
@@ -12,10 +13,11 @@ import { SearchBar } from "./SearchBar";
 import { Logged } from "./Logged";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import React from "react";
+import Menu from "./Menu";
 
 export function Header() {
   const { toggleColorMode } = useColorMode();
-  const text = useColorModeValue("Dark", "Light");
+
   return (
     <Container
       maxW="full"
@@ -28,25 +30,37 @@ export function Header() {
       top={0}
       left={0}
       right={0}
-      zIndex={1000}>
+      zIndex={1000}
+      justifyContent={"space-between"}
+    >
       <Flex
-        maxW="container.xl"
+        maxW="container.lg"
         mx="auto"
         alignItems={"center"}
         gap="10"
-        justifyContent={"space-between"}>
+        justifyContent={"space-between"}
+      >
+        <Menu />
         <Text
+          justify="center"
           fontSize="3xl"
           fontWeight="bold"
           letterSpacing={"wide"}
           color={useColorModeValue("gray.800", "white")}
           as={Link}
-          ml={10}
-          to={"/"}>
+          to={"/"}
+        >
           {companyName}
         </Text>
-        <SearchBar />
+        {/* <IconButton
+          icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+          colorScheme="teal"
+          variant="ghost"
+          size="md"
+          onClick={toggleColorMode}
+        ></IconButton> */}
         <Logged />
+        <SearchBar />
         {/* <Button
           leftIcon={<SwitchIcon />}
           colorScheme="teal"
@@ -56,17 +70,6 @@ export function Header() {
           onClick={toggleColorMode}>
           {text}
         </Button> */}
-
-        <Button
-          leftIcon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-          colorScheme="teal"
-          variant="outline"
-          size="md"
-          pl={6}
-          pr={6}
-          onClick={toggleColorMode}>
-          {text}
-        </Button>
       </Flex>
     </Container>
   );
