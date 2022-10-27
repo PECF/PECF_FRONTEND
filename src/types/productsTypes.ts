@@ -10,6 +10,8 @@ export interface Product {
   rating: number;
   numReviews: number;
   reviews: Array<Review>;
+  offer: boolean;
+  discount: number;
 }
 
 export interface Review {
@@ -230,6 +232,8 @@ export interface TemporaryProduct {
   category: string;
   price: number;
   countInStock: number;
+  offer: boolean;
+  discount: number;
 }
 
 export interface ProductUpdateState {

@@ -22,6 +22,7 @@ import {
   Avatar,
   Grid,
   Box,
+  GridItem
 } from "@chakra-ui/react";
 
 export function EditProfile() {
@@ -112,6 +113,7 @@ export function EditProfile() {
       onSubmit={handleSubmit}
       w="full"
       mt={8}
+      ml={6}
       maxW="full"
       mx="auto"
       bg={useColorModeValue("white", "gray.700")}
@@ -182,9 +184,9 @@ export function EditProfile() {
                 </Modal>
               </Flex>
             </Box>
-
+            
+          <Grid templateColumns='repeat(2, 1fr)'>
             <Box p={6}>
-              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 <FormControl id="name">
                   <FormLabel>Name</FormLabel>
                   <Input
@@ -192,10 +194,86 @@ export function EditProfile() {
                     name="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                  />
+                    />
                 </FormControl>
-              </Grid>
             </Box>
+
+            <Box p={6}>
+                <FormControl id="email">
+                  <FormLabel>Email</FormLabel>
+                  <Input
+                    type="text"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                </FormControl>
+            </Box>
+            </Grid>
+
+            <Grid templateColumns='repeat(2, 1fr)' gap={2}>
+            <Box p={6}>
+                <FormControl id="country">
+                  <FormLabel>Country</FormLabel>
+                  <Input
+                    type="text"
+                    name="country"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    />
+                </FormControl>
+            </Box>
+
+            <Box p={6}>
+                <FormControl id="address">
+                  <FormLabel>Location</FormLabel>
+                  <Input
+                    type="text"
+                    name="address"
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                    />
+                </FormControl>
+            </Box>
+            </Grid>
+
+            <Grid templateColumns='repeat(2, 1fr)'>
+            <Box p={6}>
+                <FormControl id="password">
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
+                </FormControl>
+            </Box>
+
+            <Box p={6}>
+                <FormControl id="confirmPassword">
+                  <FormLabel>Confirm Password</FormLabel>
+                  <Input
+                    type="password"
+                    name="confirmPassword"
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </FormControl>
+            </Box>
+            </Grid>
+
+            <Box>
+            <Button
+                w={"100"}
+                ml={"21"}
+                variant={"outline"}
+                bg={"green.300"}
+                _hover={{ bg: "gray.50" }}>
+                    Save
+            </Button>
+            </Box>
+
           </VStack>
         </Box>
       </VStack>

@@ -21,23 +21,21 @@ export const OrdersDashboard = () => {
     <Flex>
       <Box
         mt={"50"}
-        ml={"120"}
-        bg={"white"}
-        borderWidth="2px"
-        borderRadius="lg"
+        ml={"5"}
+        mb={"500"}
         overflow="hidden"
-        p={50}
-        boxShadow="lg">
+        p={50}>
+          <Box mb={"5"}>
+            <Heading size="md">Manage Orders</Heading>
+          </Box>
         <Flex
           minWidth="max-content"
           alignItems="center"
-          gap="10"
+          mb={"5"}
           justify="space-between">
-          <Box p="2">
-            <Heading size="md">Manage Orders</Heading>
-          </Box>
           <InputGroup gap="2">
             <Input
+              bg={"white"}
               placeholder="Search..."
               width="sm"
               flex={100}
@@ -47,7 +45,7 @@ export const OrdersDashboard = () => {
         </Flex>
         <Divider mt={"1"} />
         <TableContainer>
-          <Table variant="simple">
+          <Table variant='striped' colorScheme='teal'>
             <Thead>
               <Tr>
                 <Th>Order name</Th>
@@ -112,6 +110,22 @@ export const OrdersDashboard = () => {
                 <Td>1</Td>
                 <Td>Main Street no.10</Td>
                 <Td>Delivering</Td>
+                <Td>
+                  <Button
+                    w={"full"}
+                    variant={"outline"}
+                    bg={"green.300"}
+                    _hover={{ bg: "gray.50" }}>
+                    Cancel order
+                  </Button>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>Gaming Chair</Td>
+                <Td>$200</Td>
+                <Td>1</Td>
+                <Td>Main Street no.16</Td>
+                <Td>Preparing</Td>
                 <Td>
                   <Button
                     w={"full"}
