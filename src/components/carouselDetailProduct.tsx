@@ -1,4 +1,4 @@
-import {Flex,useBreakpointValue,Box,IconButton,Text}from "@chakra-ui/react";
+import { Flex, useBreakpointValue, Box, IconButton, Text } from "@chakra-ui/react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import Slider from "react-slick";
 import React from "react";
@@ -18,7 +18,7 @@ const settings = {
 };
 
 
-export function CarouselDetailProducts({product}: any) {
+export function CarouselDetailProducts({ product }: any) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
@@ -26,7 +26,7 @@ export function CarouselDetailProducts({product}: any) {
 
   return (
     <Flex w={"full"} h={"30vh"} mb='10rem' mt={'5rem'}>
-      <Box
+      {/* <Box
         position={"relative"}
         height={"50vh"}
         width={"full"}
@@ -85,7 +85,7 @@ export function CarouselDetailProducts({product}: any) {
             })
           }
         </Slider>
-      </Box>
+      </Box> */}
     </Flex>
   );
 }

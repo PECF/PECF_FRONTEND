@@ -66,7 +66,7 @@ import { logout } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
 import { CreateProduct } from "../../components/CreateProduct";
-import { UpdateProduct } from "../../components/UpdateProducts";
+import { UpdateProduct } from "../../components/UpdateProduct"
 export function Profile() {
   const { user } = useRecoveryData("userDetails");
 

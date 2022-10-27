@@ -198,22 +198,6 @@ export function EditProfile() {
                 </Modal>
               </Flex>
             </Box>
-            
-          <Grid templateColumns='repeat(2, 1fr)'>
-            <Box p={6}>
-              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
-                <FormControl id="name">
-                  <FormLabel>Full Name</FormLabel>
-                  <Input
-                    type="text"
-                    name="name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    />
-                </FormControl>
-              </Grid>
-            </Box>
-
           </VStack>
         </Box>
       </VStack>
