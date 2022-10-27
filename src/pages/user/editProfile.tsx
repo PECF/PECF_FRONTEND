@@ -1,6 +1,5 @@
 import { useRecoveryData } from "../../hooks/useRecoveryData";
-import React, { useState, FormEvent, SetStateAction } from "react";
-import { createProduct } from "../../redux/actions/productsActions";
+import React, { useState, FormEvent } from "react";
 import {
   useToast,
   Button,
@@ -44,6 +43,11 @@ export function EditProfile() {
 
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpen2,
+    onOpen: onOpen2,
+    onClose: onClose2,
+  } = useDisclosure();
 
   const [loading, setLoading] = useState(false);
 
@@ -146,7 +150,11 @@ export function EditProfile() {
                 bg={useColorModeValue("gray.50", "gray.900")}>
                 <Avatar size="2xl" src={avatarPreview} mb={4} pos="relative" />
 
-                <Button colorScheme="blue" size="sm" onClick={onOpen}>
+                <Button
+                  colorScheme="teal"
+                  variant="solid"
+                  size="sm"
+                  onClick={onOpen}>
                   Change Avatar
                 </Button>
 
@@ -168,16 +176,22 @@ export function EditProfile() {
                     </ModalBody>
 
                     <ModalFooter>
-                      <Button colorScheme="blue" mr={3} onClick={onClose}>
-                        Save
-                      </Button>
                       <Button
+                        colorScheme="teal"
+                        variant="ghost"
                         onClick={() => {
                           onClose();
                           setAvatar(user?.avatar.url);
                           setAvatarPreview(user?.avatar.url);
                         }}>
                         Cancel
+                      </Button>
+                      <Button
+                        colorScheme="teal"
+                        variant="solid"
+                        mr={3}
+                        onClick={onClose}>
+                        Save
                       </Button>
                     </ModalFooter>
                   </ModalContent>
@@ -187,8 +201,9 @@ export function EditProfile() {
             
           <Grid templateColumns='repeat(2, 1fr)'>
             <Box p={6}>
+              <Grid templateColumns="repeat(2, 1fr)" gap={6}>
                 <FormControl id="name">
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Full Name</FormLabel>
                   <Input
                     type="text"
                     name="name"
@@ -196,82 +211,7 @@ export function EditProfile() {
                     onChange={(e) => setName(e.target.value)}
                     />
                 </FormControl>
-            </Box>
-
-            <Box p={6}>
-                <FormControl id="email">
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    type="text"
-                    name="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    />
-                </FormControl>
-            </Box>
-            </Grid>
-
-            <Grid templateColumns='repeat(2, 1fr)' gap={2}>
-            <Box p={6}>
-                <FormControl id="country">
-                  <FormLabel>Country</FormLabel>
-                  <Input
-                    type="text"
-                    name="country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    />
-                </FormControl>
-            </Box>
-
-            <Box p={6}>
-                <FormControl id="address">
-                  <FormLabel>Location</FormLabel>
-                  <Input
-                    type="text"
-                    name="address"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                    />
-                </FormControl>
-            </Box>
-            </Grid>
-
-            <Grid templateColumns='repeat(2, 1fr)'>
-            <Box p={6}>
-                <FormControl id="password">
-                  <FormLabel>Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </FormControl>
-            </Box>
-
-            <Box p={6}>
-                <FormControl id="confirmPassword">
-                  <FormLabel>Confirm Password</FormLabel>
-                  <Input
-                    type="password"
-                    name="confirmPassword"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </FormControl>
-            </Box>
-            </Grid>
-
-            <Box>
-            <Button
-                w={"100"}
-                ml={"21"}
-                variant={"outline"}
-                bg={"green.300"}
-                _hover={{ bg: "gray.50" }}>
-                    Save
-            </Button>
+              </Grid>
             </Box>
 
           </VStack>

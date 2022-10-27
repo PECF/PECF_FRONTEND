@@ -88,7 +88,7 @@ export const ForgotPassword = () => {
             type="email"
           />
           <FormHelperText>
-            Your Email is private, we&apos;ll never share your email.
+            Your password is private, we&apos;ll never share your passwords.
           </FormHelperText>
           <Grid mt={5} templateColumns="repeat(2, 1fr)" gap={6}>
             <Spacer />
