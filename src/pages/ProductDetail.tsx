@@ -20,14 +20,13 @@ import { MdLocalShipping } from "react-icons/md";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { CarouselDetailProducts } from "../components/carouselDetailProduct";
 
-
 export function ProductDetail() {
   const { products } = useRecoveryData("productList");
-  const product = products[0  ];
+  const product = products[0];
+
   return (
     <Center>
       <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
-
         <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",
@@ -38,23 +37,27 @@ export function ProductDetail() {
           <Heading
             fontWeight={400}
             fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
+            ml={5}
+
           >
             {product?.name}
           </Heading>
 
           <HStack
+            mr={5}
             spacing={1}
             alignItems="center"
             justifyContent={{
               base: "center",
               md: "flex-end",
-            }}>
+            }}
+          >
             {Array(5)
               .fill("")
               .map((_, i) => (
                 <StarIcon
                   key={i}
-                // color={i < /* product?.rating */ ? 'teal.500' : 'gray.300'}
+                  // color={i < /* product?.rating */ ? 'teal.500' : 'gray.300'}
                 />
               ))}
             <Box as="span" ml="2" color="gray.600" fontSize="lg">
@@ -62,8 +65,6 @@ export function ProductDetail() {
             </Box>
           </HStack>
         </Grid>
-
-
 
         <Stack
           direction={{
@@ -77,30 +78,40 @@ export function ProductDetail() {
           }}
           justifyContent="space-between"
           mt={4}
-          width="100%">
+          width="100%"
+        >
+          <Stack
+          ml={5}
+          direction={"row"}>
           <Text fontSize={"lg"} py={2}>
-
             <Badge
               borderRadius="full"
               px="2"
               colorScheme="teal"
-
               fontSize={{ base: "sm", sm: "lg" }}
             >
               {product?.category}
             </Badge>
           </Text>
 
+          {product.numberSells > 0 && (
+            <Text fontSize={"lg"} py={2}>
+              <Badge
+                borderRadius="full"   
+                px="2"
+                colorScheme="red"
+                fontSize={{ base: "sm", sm: "lg" }}
+              >
+                Best Seller
+              </Badge>
+            </Text>
+          )}
+         </Stack>
 
           <CarouselDetailProducts product={product} />
         </Stack>
 
-
-        <Stack
-          w="100%"
-          mt={5}
-        >
-
+        <Stack w="100%" mt={5}>
           <Text
             ml={5}
             color={useColorModeValue("gray.900", "gray.400")}
@@ -109,7 +120,6 @@ export function ProductDetail() {
           >
             {product?.price}€
           </Text>
-
 
           <Button
             rounded={"none"}
@@ -121,8 +131,6 @@ export function ProductDetail() {
             colorScheme={"teal"}
             fontSize={"md"}
             fontWeight={"bold"}
-
-
             color={useColorModeValue("white", "gray.900")}
             textTransform={"uppercase"}
             _hover={{
@@ -146,12 +154,10 @@ export function ProductDetail() {
               fontWeight={600}
               fontSize={{ base: "sm", sm: "md", lg: "lg" }}
             >
-              2-3 business days delivery            </Text>
-
+              2-3 business days delivery{" "}
+            </Text>
           </Stack>
-
         </Stack>
-
 
         <Box
           w="100%"
@@ -170,13 +176,14 @@ export function ProductDetail() {
             Features
           </Text>
         </Box>
-        <SimpleGrid columns={{ base: 2 }} spacing={"11rem"}
+        <SimpleGrid
+          columns={{ base: 2 }}
+          spacing={"11rem"}
           w="100%"
           mt={5}
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
           rounded={"md"}
-
         >
           <List spacing={5}>
             <ListItem>White</ListItem>
@@ -196,7 +203,6 @@ export function ProductDetail() {
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
           rounded={"md"}
-
         >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
@@ -221,11 +227,6 @@ export function ProductDetail() {
         >
           {product?.description}
         </Text>
-
-
-
-
-
       </VStack>
     </Center>
   );
