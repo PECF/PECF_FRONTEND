@@ -14,6 +14,7 @@ import { NotFound } from "../pages/NotFound";
 import { CreateProduct } from "../components/CreateProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Profile } from "../pages/user/profile";
+import { ProductReview } from "../components/ProductReview";
 import { Products } from "../pages/Products";
 // import AuthContext from "../contexts/authContext";
 export const AppRoutes: React.FC = () => {
@@ -22,6 +23,7 @@ export const AppRoutes: React.FC = () => {
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/products" element={<Products />} />
+      <Route path="/product/:id" element={<ProductReview />} />
       {!user?.role ? (
         <Route path="/forgot-password" element={<ForgotPassword />} />
       ) : (

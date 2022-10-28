@@ -10,3 +10,6 @@
   overflow: hidden;
   overflow-y: auto;
 }
+.radio{
+  display: none
+}
