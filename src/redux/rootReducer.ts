@@ -10,48 +10,49 @@ import {
 } from "./reducers/productsReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import {
-  userDeleteReducer,
+  // userDeleteReducer,
   userDetailsReducer,
-  userListReducer,
+  // userListReducer,
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
-  userUpdateReducer,
+  // userUpdateReducer,
   userForgotPasswordReducer,
 } from "./reducers/authReducer";
 import { ReduxState } from "../types/reduxTypes";
-import {
-  orderCreateReducer,
-  orderDetailsReducer,
-  orderListMyReducer,
-  orderListReducer,
-  orderPayReducer,
-  orderDeliverReducer,
-} from "./reducers/ordersReducer";
+// import {
+//   orderCreateReducer,
+//   orderDetailsReducer,
+//   orderListMyReducer,
+//   orderListReducer,
+//   orderPayReducer,
+//   orderDeliverReducer,
+// } from "./reducers/ordersReducer";
 
 export const rootReducer = combineReducers<ReduxState>({
   cart: cartReducer,
-  orderPay: orderPayReducer,
-  orderList: orderListReducer,
-  orderCreate: orderCreateReducer,
-  orderListMy: orderListMyReducer,
-  orderDeliver: orderDeliverReducer,
-  orderDetails: orderDetailsReducer,
-  productList: productListReducer,
-  productCreate: productCreateReducer,
-  productDelete: productDeleteReducer,
-  productUpdate: productUpdateReducer,
-  productDetails: productDetailsReducer,
-  productTopRated: productTopRatedReducer,
-  productCreateReview: productCreateReducer,
-  userList: userListReducer,
   userLogin: userLoginReducer,
-  userDelete: userDeleteReducer,
-  userUpdate: userUpdateReducer,
   userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userForgotPassword: userForgotPasswordReducer,
+  // userList: userListReducer,
+  // userDelete: userDeleteReducer,
+  // userUpdate: userUpdateReducer,
+  // orderPay: orderPayReducer,
+  // orderList: orderListReducer,
+  // orderCreate: orderCreateReducer,
+  // orderListMy: orderListMyReducer,
+  // orderDeliver: orderDeliverReducer,
+  // orderDetails: orderDetailsReducer,
+  productList: productListReducer,
+  productCreate: productCreateReducer,
+  // productDelete: productDeleteReducer,
+  // productUpdate: productUpdateReducer,
+  productDetails: productDetailsReducer,
+  // productTopRated: productTopRatedReducer,
+  // productCreateReview: productCreateReducer,
+
 });
 
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")

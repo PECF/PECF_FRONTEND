@@ -4,10 +4,6 @@ const cartInitialState: CartState = {
   cartItems: [],
 };
 
-/**
- * Reducer used to add item to cart, remove item from cart, save shipping address, and save payment method
- */
-
 export const cartReducer = (
   state: CartState = cartInitialState,
   action: CartAction

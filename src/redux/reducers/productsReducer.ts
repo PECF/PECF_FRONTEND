@@ -103,6 +103,9 @@ export const productDeleteReducer = (
 
 const initialProductCreateState: ProductCreateState = {
   loading: false,
+  success: false,
+  product: undefined,
+  error: null,
 };
 
 /**
@@ -114,13 +117,30 @@ export const productCreateReducer = (
 ) => {
   switch (action.type) {
     case ProductCreateActionTypes.PRODUCT_CREATE_REQUEST:
-      return { loading: true };
+      return {
+        loading: true,
+        success: initialProductCreateState.success,
+        product: initialProductCreateState.product,
+        error: initialProductCreateState.error
+      };
     case ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return {
+        loading: false, success: true, product: action.payload,
+        error: initialProductCreateState.error
+      };
     case ProductCreateActionTypes.PRODUCT_CREATE_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false, error: action.payload,
+        success: initialProductCreateState.success,
+        product: initialProductCreateState.product,
+      };
     case ProductCreateActionTypes.PRODUCT_CREATE_RESET:
-      return {};
+      return {
+        loading: initialProductCreateState.loading,
+        success: initialProductCreateState.success,
+        product: initialProductCreateState.product,
+        error: initialProductCreateState.error
+      };
     default:
       return state;
   }

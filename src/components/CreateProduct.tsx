@@ -1,4 +1,5 @@
-import React, { FormEvent, SetStateAction, useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
+import { Select, CreatableSelect } from "chakra-react-select";
 import {
   Text,
   Box,
@@ -23,65 +24,51 @@ import {
   useColorModeValue,
   Textarea,
 } from "@chakra-ui/react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { createProduct } from "../redux/actions/productsActions";
-import { useLoad } from "../hooks/useLoad";
-import { ProductDetail } from '../pages/ProductDetail';
-
+import { ProductDetailPreview } from "./ProductDetailPreview";
 export function CreateProduct() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const dispatch = useDispatch<AppDispatch>();
+  const toast = useToast();
+
   const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
-  const [image, setImages] = useState<string[]>([]);
-  const [imagesPreview, setImagesPreview] = useState<string[]>([]);
   const [tags, setTags] = useState<string[]>([]);
-  const dispatch = useDispatch<AppDispatch>();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
 
-    // dispatch(
-    //   createProduct({
-    //     name,
-    //     category,
-    //     description,
-    //     price,
-    //     stock,
-    //   })
-    // );
-  };
+  const [image, setImages] = useState<any[]>([]);
+  const [imagesPreview, setImagesPreview] = useState<any[]>([null]);
+  const createTags = (str: string) => {
+    setTags(str.split(" "))
+  }
 
-  const createProductImagesChange = (e: {
-    target: { files: Iterable<unknown> | ArrayLike<unknown> };
-  }) => {
-    const files = Array.from(e.target.files);
-    setImagesPreview([]);
+
+
+  const createProductImagesChange = (e: any) => {
+    const files = Array.from(e?.target?.files);
+    setImagesPreview([null]);
     setImages([]);
     files.forEach((file: any) => {
       const reader = new FileReader();
       reader.onload = () => {
         if (reader.readyState === 2) {
-          setImagesPreview((oldArray) => [
-            ...oldArray,
-            reader.result as string,
-          ]);
-          setImages((oldArray) => [...oldArray, reader.result as string]);
+          imagesPreview?.push(reader.result);
+          setImagesPreview(imagesPreview);
+          image?.push(reader.result);
+          setImages(image);
+
         }
       };
       reader.readAsDataURL(file);
     });
-  };
-
-  const toast = useToast();
-
-  const createTags = (str: string) => {
-    setTags(str.split(" "))
-
   }
+
 
   const previewHandler = () => {
     if (
@@ -103,6 +90,22 @@ export function CreateProduct() {
       onOpen();
     }
   };
+
+
+  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // dispatch(
+    //   createProduct({
+    //     name,
+    //     category,
+    //     description,
+    //     price,
+    //     stock,
+    //   })
+    // );
+  };
+
 
   return (
     <Box
@@ -227,13 +230,12 @@ export function CreateProduct() {
               Tags are used to help customers find your products. Add up to 3 tags for better results.
               Must include spaces between tags.
             </Text>
-            <Input
-              type="text"
-              bg={useColorModeValue("alphaWhite", "gray.800")}
-              value={tags}
-              placeholder="Samsung Galaxy Fold 4"
-              onChange={(e) => createTags(e.target.value)}
-            />
+            <CreatableSelect selectedOptionColor="purple"
+            
+              isMulti
+              onChange={(e) => createTags(e?.map((item: any) => item.value).join(" "))}
+              placeholder="Add tags"
+            />  
           </FormControl>
         </Flex>
 
@@ -262,11 +264,11 @@ export function CreateProduct() {
               name="images"
               bg={useColorModeValue("alphaWhite", "gray.800")}
               multiple
-              onChange={createProductImagesChange}
+              onChange={(e) => createProductImagesChange(e)}
             />
           </FormControl>
         </Flex>
-        {image.length && (
+        {imagesPreview.length && (
           <Flex
             justify="space-between"
             align="center"
@@ -274,18 +276,23 @@ export function CreateProduct() {
             py={4}
             bg={useColorModeValue("gray.50", "gray.700")}
             borderBottomWidth="1px">
-            <FormControl id="images" isRequired>
+            <FormControl id="images">
               <FormLabel>Images Preview</FormLabel>
               <SimpleGrid columns={3} spacing={4} w="full">
-                {image.map((img, index) => (
-                  <Image
-                    key={index}
-                    src={img}
-                    h="100px"
-                    w="100px"
-                    objectFit="cover"
-                  />
-                ))}
+                {imagesPreview.map((img, index) => {
+                  console.log(image)
+                  if (img !== null) {
+                    return (
+                      <Image
+                        key={index}
+                        src={img?.toString()}
+                        h="100px"
+                        w="100px"
+                        objectFit="cover"
+                      />
+                    )
+                  }
+                })}
               </SimpleGrid>
             </FormControl>
           </Flex>
@@ -318,7 +325,8 @@ export function CreateProduct() {
               <ModalHeader>Product Preview</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <ProductDetail product={
+                <ProductDetailPreview product={
+
                   {
                     name,
                     category,

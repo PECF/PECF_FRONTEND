@@ -59,7 +59,6 @@ export default function Cart() {
     );
 
     const data = await response.json();
-    console.log(data);
 
     window.open(data.init_point, "_blank");
   }
