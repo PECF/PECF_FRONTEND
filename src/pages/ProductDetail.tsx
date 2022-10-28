@@ -81,7 +81,7 @@ export function ProductDetail() {
           width="100%"
         >
           <Stack
-          ml={5}
+          ml={5}  
           direction={"row"}>
           <Text fontSize={"lg"} py={2}>
             <Badge
@@ -94,7 +94,7 @@ export function ProductDetail() {
             </Badge>
           </Text>
 
-          {product.numberSells > 0 && (
+          {product?.numberSells > 0 && (
             <Text fontSize={"lg"} py={2}>
               <Badge
                 borderRadius="full"   
