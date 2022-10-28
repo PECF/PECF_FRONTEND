@@ -17,36 +17,33 @@ import React from "react";
 export const Refund = () => {
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
-      <Box marginTop={"10"} w="full" bg="gray.700" px="100px" py="40px">
+      <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">
         <Flex justifyContent="space-between" alignItems="center" pb="30px">
-          <Heading
-            fontSize={44}
-            ml={"180"}
-            letterSpacing="3px"
-            color="whiteAlpha.900">
+          <Heading color="whiteAlpha.900">
             Cuándo y dónde recibo el dinero de mi devolución
           </Heading>
         </Flex>
       </Box>
       <Flex>
         <Box
-          mt={20}
-          ml={"450"}
-          maxW="500"
+          // mt={10}
+          // ml={"450"}
+          // maxW="500"
           bg={"whiteAlpha.100"}
           borderWidth="2px"
           borderRadius="lg"
           overflow="hidden"
           p={50}
-          boxShadow="lg">
+          boxShadow="lg"
+        >
           <Box>
-            <Text fontSize={35} color="blackAlpha.900" pb="20px">
+            <Text fontSize={35} pb="20px">
               ¿Cuándo me reembolsan el dinero?
             </Text>
             <Text fontSize={20}>
               Haremos el reembolso 3 días hábiles después de que llegue el
               producto, una vez que revisemos si cumple con las
-              <Link color="teal.500" href="/#">
+              <Link color="teal.500" href="../pages/ReturnPolicy">
                 {" "}
                 políticas de devolución.
               </Link>{" "}
@@ -77,7 +74,7 @@ export const Refund = () => {
                 medio en el que recibirás el dinero. <br />
                 Los plazos suelen ser los siguientes:
               </Text>
-              <TableContainer>
+              <TableContainer display={"flex"}>
                 <Table variant="simple">
                   <Thead>
                     <Tr>
@@ -87,7 +84,7 @@ export const Refund = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    <Tr>
+                    <Tr bg="teal.100">
                       <Td>Dinero en Mercado Pago</Td>
                       <Td>Dinero en Mercado Pago </Td>
                       <Td>Inmediato</Td>
@@ -97,7 +94,7 @@ export const Refund = () => {
                       <Td>Dinero en Mercado Pago</Td>
                       <Td>Inmediato</Td>
                     </Tr>
-                    <Tr>
+                    <Tr bg="teal.100">
                       <Td>Tarjeta de crédito o débito</Td>
                       <Td>Dinero en Mercado Pago</Td>
                       <Td>Inmediato</Td>
@@ -107,7 +104,7 @@ export const Refund = () => {
                       <Td>Tu límite disponible</Td>
                       <Td>Inmediato</Td>
                     </Tr>
-                    <Tr>
+                    <Tr bg="teal.100">
                       <Td>Tarjeta de crédito</Td>
                       <Td>Tarjeta de crédito</Td>
                       <Td>Entre 2 y 35 días (el plazo depende del banco)</Td>

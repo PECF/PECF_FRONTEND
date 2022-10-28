@@ -15,12 +15,12 @@ const support = "Support";
 const helpCenter = "Help Center";
 const company = "Company";
 const safetyCenter = "Safety Center";
-const communityGuidelines = "Community Guidelines";
+const refundPolicy = "Refund Policy";
 const legal = "Legal";
 const cookiesPolicy = "Cookies Policy";
 const privacyPolicy = "Privacy Policy";
 const termsOfService = "Terms of Service";
-const lawEnforcement = "Law Enforcement";
+const returnPolicy = "Return Policy";
 
 export {
   followUs,
@@ -40,10 +40,10 @@ export {
   support,
   helpCenter,
   safetyCenter,
-  communityGuidelines,
+  refundPolicy,
   legal,
   cookiesPolicy,
   privacyPolicy,
   termsOfService,
-  lawEnforcement,
+  returnPolicy,
 };
