@@ -96,6 +96,9 @@ export const userDetailsReducer = (
 
 const userUpdateProfileReducerInitialState: UserUpdateProfileState = {
   loading: false,
+  success: false,
+  error: false,
+  userInfo: false,
 };
 
 export const userUpdateProfileReducer = (
@@ -104,79 +107,88 @@ export const userUpdateProfileReducer = (
 ) => {
   switch (action.type) {
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST:
-      return { loading: true };
+      return { loading: true, error: false, success: false };
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload };
+      return { loading: false, success: true, userInfo: action.payload, error: false };
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, success: false, userInfo: false };
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_RESET:
-      return {};
+      return {
+        loading: false,
+        error: false,
+        success: false,
+        userInfo: false,
+      };
     default:
       return state;
   }
 };
 
-const userListReducerInitialState: UserListState = {
-  loading: false,
-  users: [],
-};
+// const userListReducerInitialState: UserListState = {
+//   loading: false,
+//   users: [],
+// };
 
-export const userListReducer = (
-  state: UserListState = userListReducerInitialState,
-  action: UserListAction
-) => {
-  switch (action.type) {
-    case UserListActionTypes.USER_LIST_REQUEST:
-      return { loading: true, users: [] };
-    case UserListActionTypes.USER_LIST_SUCCESS:
-      return { loading: false, users: action.payload };
-    case UserListActionTypes.USER_LIST_FAILURE:
-      return { loading: false, error: action.payload, users: [] };
-    case UserListActionTypes.USER_LIST_RESET:
-      return { loading: false, users: [] };
-    default:
-      return state;
-  }
-};
+// export const userListReducer = (
+//   state: UserListState = userListReducerInitialState,
+//   action: UserListAction
+// ) => {
+//   switch (action.type) {
+//     case UserListActionTypes.USER_LIST_REQUEST:
+//       return { loading: true, users: [] };
+//     case UserListActionTypes.USER_LIST_SUCCESS:
+//       return { loading: false, users: action.payload };
+//     case UserListActionTypes.USER_LIST_FAILURE:
+//       return { loading: false, error: action.payload, users: [] };
+//     case UserListActionTypes.USER_LIST_RESET:
+//       return { loading: false, users: [] };
+//     default:
+//       return state;
+//   }
+// };
 
-const userDeleteInitialState: UserDeleteState = {
-  loading: false,
-};
+// const userDeleteInitialState: UserDeleteState = {
+//   loading: false,
+// };
 
-export const userDeleteReducer = (
-  state: UserDeleteState = userDeleteInitialState,
-  action: UserDeleteAction
-) => {
-  switch (action.type) {
-    case UserDeleteActionTypes.USER_DELETE_REQUEST:
-      return { loading: true };
-    case UserDeleteActionTypes.USER_DELETE_SUCCESS:
-      return { loading: false, success: true };
-    case UserDeleteActionTypes.USER_DELETE_FAILURE:
-      return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+// export const userDeleteReducer = (
+//   state: UserDeleteState = userDeleteInitialState,
+//   action: UserDeleteAction
+// ) => {
+//   switch (action.type) {
+//     case UserDeleteActionTypes.USER_DELETE_REQUEST:
+//       return { loading: true };
+//     case UserDeleteActionTypes.USER_DELETE_SUCCESS:
+//       return { loading: false, success: true };
+//     case UserDeleteActionTypes.USER_DELETE_FAILURE:
+//       return { loading: false, error: action.payload };
+//     default:
+//       return state;
+//   }
+// };
 
-const UserForgotPasswordInitialState: UserForgotPassword = {
-  loading: false,
-};
+// const UserForgotPasswordInitialState: UserForgotPassword = {
+//   loading: false,
+// };
 
-export const userUpdateReducer = (
-  state: UserForgotPassword = UserForgotPasswordInitialState,
-  action: UserUpdateAction
-) => {
-  switch (action.type) {
-    case UserUpdateActionTypes.USER_UPDATE_REQUEST:
-      return { loading: true };
-    case UserUpdateActionTypes.USER_UPDATE_SUCCESS:
-      return { loading: false, success: true };
-    case UserUpdateActionTypes.USER_UPDATE_FAILURE:
-      return { loading: false, error: action.payload };
-    case UserUpdateActionTypes.USER_UPDATE_RESET:
-      return {};
-    default:
-      return state;
-  }
-};
+// export const userUpdateReducer = (
+//   state: UserForgotPassword = UserForgotPasswordInitialState,
+//   action: UserUpdateAction
+// ) => {
+//   switch (action.type) {
+//     case UserUpdateActionTypes.USER_UPDATE_REQUEST:
+//       return { loading: true, success: false, error: false };
+//     case UserUpdateActionTypes.USER_UPDATE_SUCCESS:
+//       return { loading: false, success: true, error: false };
+//     case UserUpdateActionTypes.USER_UPDATE_FAILURE:
+//       return { loading: false, error: action.payload, success: false };
+//     case UserUpdateActionTypes.USER_UPDATE_RESET:
+//       return {
+//         loading: false,
+//         error: false,
+//         success: false,
+//       };
+//     default:
+//       return state;
+//   }
+// };

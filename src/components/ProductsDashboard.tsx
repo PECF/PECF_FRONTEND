@@ -25,7 +25,6 @@ import {
 import { useRecoveryData } from "../hooks/useRecoveryData";
 export function ProductsDashboard() {
   const { products } = useRecoveryData("productList");
-  console.log(products);
 
   return (
     <Box

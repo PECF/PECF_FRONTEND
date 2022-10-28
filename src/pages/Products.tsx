@@ -9,7 +9,6 @@ export const Products = () => {
   
   const {products} = useRecoveryData('productList')
 
-  console.log(products)
   return(
   
   <Box

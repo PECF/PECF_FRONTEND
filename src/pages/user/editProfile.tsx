@@ -1,12 +1,10 @@
 import { useRecoveryData } from "../../hooks/useRecoveryData";
-import React, { useState, FormEvent } from "react";
-import ReactCountryFlag from "react-country-flag";
-import {
-  AsyncCreatableSelect,
-  AsyncSelect,
-  CreatableSelect,
-  Select,
-} from "chakra-react-select";
+import React, { useState, useEffect } from "react";
+import { updateUserProfile } from '../../redux/actions/authActions';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../redux/rootStore';
+
+
 import {
   useToast,
   Button,
@@ -27,86 +25,58 @@ import {
   Heading,
   Avatar,
   Grid,
-  Icon,
   Box,
   GridItem
 } from "@chakra-ui/react";
 
 export function EditProfile() {
+  const dispatch = useDispatch<AppDispatch>();
   const { user } = useRecoveryData("userDetails");
-
+  const { loading, success, error, }: { loading: boolean, success: boolean, error: boolean | string } = useRecoveryData("userUpdateProfile")
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
-  const [phone, setPhone] = useState(user?.phone);
-  const [address, setAddress] = useState(user?.address);
-  const [city, setCity] = useState(user?.city);
-  const [state, setState] = useState(user?.state);
-  const [zip, setZip] = useState(user?.zip);
-  const [country, setCountry] = useState(user?.country);
+  const [phone, setPhone] = useState(user?.phone || "");
+  const [address, setAddress] = useState(user?.address.address || "");
+  const [city, setCity] = useState(user?.address.city || "");
+  const [state, setState] = useState(user?.address.state || "");
+  const [zipCode, setZipCode] = useState(user?.address.zipCode || "");
+  const [country, setCountry] = useState(user?.address.country || "");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [avatar, setAvatar] = useState(user?.avatar.url);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar.url);
-
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
+  const { isOpen: isOpenAvatar, onOpen: onOpenAvatar, onClose: onCloseAvatar } = useDisclosure();
   const { isOpen: isOpenConfirm, onOpen: onOpenConfirm, onClose: onCloseConfirm } = useDisclosure();
 
 
-
-  const [loading, setLoading] = useState(false);
-
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-
-    if (password !== confirmPassword) {
+  useEffect(() => {
+    if (success) {
       toast({
-        title: "Passwords do not match.",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
-    setLoading(true);
-
-    try {
-      // const response = await api.put("/users", {
-      //   name,
-      //   email,
-      //   phone,
-      //   address,
-      //   city,
-      //   state,
-      //   zip,
-      //   country,
-      //   password,
-      // });
-
-      toast({
-        title: "Profile updated successfully.",
+        title: "Profile updated.",
+        description: "Your profile has been updated.",
         status: "success",
-        duration: 3000,
+        duration: 9000,
         isClosable: true,
       });
-
-      setLoading(false);
-    } catch (err) {
+    }
+    if (error) {
       toast({
         title: "Error updating profile.",
+        description: error,
         status: "error",
-        duration: 3000,
+        duration: 9000,
         isClosable: true,
       });
-
-      setLoading(false);
     }
-  };
-  const updateProfileDataChange = (e: any) => {
+  }, [success, error])
+
+
+
+
+  const updateProfileDataChange = (e:
+    React.ChangeEvent<HTMLInputElement>) => {
+
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -116,8 +86,49 @@ export function EditProfile() {
       }
     };
 
-    reader.readAsDataURL(e.target.files[0]);
+    if (e.target.files) {
+      reader.readAsDataURL(e.target.files[0]);
+    }
   };
+
+
+  const handleSubmit = async () => {
+
+    if (password !== passwordConfirmation) {
+      toast({
+        title: "Passwords do not match.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+
+    try {
+
+      const _user = {
+        name,
+        email,
+        phone,
+        address,
+        city,
+        state,
+        zipCode,
+        country,
+        password,
+        avatar
+      };
+
+      await dispatch(updateUserProfile(_user));
+
+
+    } catch (error) {
+      console.log(error)
+    }
+  };
+
+
 
   return (
     <Box
@@ -145,7 +156,6 @@ export function EditProfile() {
             Edit Profile
           </Heading>
         </Flex>
-
         <Box w={{ base: "100%", md: "100%" }}>
           <VStack align="stretch" spacing={0}>
             <Box p={6}>
@@ -157,16 +167,14 @@ export function EditProfile() {
                 px={6}
                 bg={useColorModeValue("gray.50", "gray.900")}>
                 <Avatar size="2xl" src={avatarPreview} mb={4} pos="relative" />
-
                 <Button
                   colorScheme="teal"
                   variant="solid"
                   size="sm"
-                  onClick={onOpen}>
+                  onClick={onOpenAvatar}>
                   Change Avatar
                 </Button>
-
-                <Modal isOpen={isOpen} onClose={onClose}>
+                <Modal isOpen={isOpenAvatar} onClose={onCloseAvatar}>
                   <ModalOverlay />
                   <ModalContent>
                     <ModalHeader>Change Photo</ModalHeader>
@@ -182,13 +190,12 @@ export function EditProfile() {
                         />
                       </FormControl>
                     </ModalBody>
-
                     <ModalFooter>
                       <Button
                         colorScheme="teal"
                         variant="ghost"
                         onClick={() => {
-                          onClose();
+                          onCloseAvatar();
                           setAvatar(user?.avatar.url);
                           setAvatarPreview(user?.avatar.url);
                         }}>
@@ -198,15 +205,17 @@ export function EditProfile() {
                         colorScheme="teal"
                         variant="solid"
                         mr={3}
-                        onClick={onClose}>
+                        onClick={
+                          onCloseAvatar
+                        }>
                         Save
                       </Button>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>
               </Flex>
-
               <Grid
+                mt={6}
                 templateColumns={{
                   base: "repeat(1, 1fr)",
                   md: "repeat(2, 1fr)",
@@ -215,7 +224,7 @@ export function EditProfile() {
                 gap={6}>
                 <GridItem colSpan={1}>
                   <FormControl id="name">
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Full Name</FormLabel>
                     <Input
                       type="text"
                       bg={useColorModeValue("gray.50", "gray.900")}
@@ -226,9 +235,8 @@ export function EditProfile() {
                     />
                   </FormControl>
                 </GridItem>
-
                 <GridItem colSpan={1}>
-                  <FormControl id="email">
+                  <FormControl id="email" isRequired>
                     <FormLabel>Email</FormLabel>
                     <Input
                       type="email"
@@ -240,12 +248,10 @@ export function EditProfile() {
                     />
                   </FormControl>
                 </GridItem>
-
                 <GridItem colSpan={1}>
                   <FormControl id="phone">
                     <FormLabel>Phone</FormLabel>
                     <Input
-
                       type="text"
                       bg={useColorModeValue("gray.50", "gray.900")}
                       name="phone"
@@ -253,11 +259,22 @@ export function EditProfile() {
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="Enter your phone"
                     />
-
+                  </FormControl>
+                </GridItem>
+                <GridItem colSpan={1}>
+                  <FormControl id="address">
+                    <FormLabel>Address</FormLabel>
+                    <Input
+                      type="text"
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      name="address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Enter your address"
+                    />
                   </FormControl>
                 </GridItem>
               </Grid>
-
               <Grid
                 mt={6}
                 templateColumns={{
@@ -281,37 +298,19 @@ export function EditProfile() {
                     />
                   </FormControl>
                 </GridItem>
-
-                <GridItem colSpan={1}>
-                  <FormControl id="address">
-                    <FormLabel>Address</FormLabel>
-                    <Input
-                      type="text"
-                      bg={useColorModeValue("gray.50", "gray.900")}
-                      name="address"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                      placeholder="Enter your address"
-                    />
-                  </FormControl>
-                </GridItem>
-
                 <GridItem colSpan={1}>
                   <FormControl id="city">
                     <FormLabel>City</FormLabel>
                     <Input
-
                       type="text"
                       bg={useColorModeValue("gray.50", "gray.900")}
                       name="city"
                       value={city}
                       onChange={(e) => setCity(e.target.value)}
-
                       placeholder="Enter your city"
                     />
                   </FormControl>
                 </GridItem>
-
                 <GridItem colSpan={1}>
                   <FormControl id="state">
                     <FormLabel>State</FormLabel>
@@ -320,85 +319,105 @@ export function EditProfile() {
                       bg={useColorModeValue("gray.50", "gray.900")}
                       name="state"
                       value={state}
-
                       onChange={(e) => setState(e.target.value)}
                       placeholder="Enter your state"
                     />
                   </FormControl>
                 </GridItem>
-
                 <GridItem colSpan={1}>
-                  <FormControl id="zip">
-                    <FormLabel>Zip</FormLabel>
+                  <FormControl id="zipCode">
+                    <FormLabel>ZipCode</FormLabel>
                     <Input
                       type="text"
                       bg={useColorModeValue("gray.50", "gray.900")}
-                      name="zip"
-                      value={zip}
-                      onChange={(e) => setZip(e.target.value)}
-                      placeholder="Enter your zip"
+                      name="zipCode"
+                      value={zipCode}
+                      onChange={(e) => setZipCode(e.target.value)}
+                      placeholder="Enter your zipCode"
                     />
                   </FormControl>
                 </GridItem>
-
-                <GridItem colSpan={1}>
-
-                  {/* Create button with a modal for confirm with password */}
-
-                  <Button
-                    colorScheme="teal"
-                    variant="solid"
-                    size="sm"
-                    onClick={onOpenConfirm}>
-                    Confirm
-                  </Button>
-
-                  <Modal isOpen={isOpenConfirm} onClose={onCloseConfirm}>
-                    <ModalOverlay />
-                    <ModalContent>
-                      <ModalHeader>Confirm</ModalHeader>
-                      <ModalCloseButton />
-                      <ModalBody>
-                        <FormControl id="password">
-                          <FormLabel>Password</FormLabel>
-                          <Input
-                            type="password"
-                            name="password"
-                            onChange={updateProfileDataChange}
-                          />
-                        </FormControl>
-                      </ModalBody>
-
-                      <ModalFooter>
-                        <Button
-                          colorScheme="teal"
-                          variant="ghost"
-                          onClick={() => {
-                            onCloseConfirm();
-                          }}>
-                          Cancel
-                        </Button>
-                        <Button
-                          colorScheme="teal"
-                          variant="solid"
-                          mr={3}
-                          onClick={onCloseConfirm}>
-                          Save
-                        </Button>
-                      </ModalFooter>
-                    </ModalContent>
-                  </Modal>
-
-
-                </GridItem>
-
               </Grid>
+              <Flex
+                justify="center"
+                align="center"
+                direction="column"
+                py={12}
+                px={6}
+                bg={useColorModeValue("white", "gray.700")}>
+                <Button
+                  colorScheme="teal"
+                  variant="solid"
+                  size="lg"
+                  isLoading={loading}
+                  onClick={onOpenConfirm}>
+                  Update Profile
+                </Button>
+              </Flex>
+              <Modal isOpen={isOpenConfirm} onClose={onCloseConfirm}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Confirm</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody>
+                    <FormControl id="password"
+                      isRequired
+                    >
+                      <FormLabel>Password</FormLabel>
+                      <Input
+                        type="password"
+                        name="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter your password"
 
+                      />
+                    </FormControl>
+                    <FormControl
+                      mt={4}
+                      id="password_confirmation"
+                      isRequired
+                    >
+                      <FormLabel>Confirm Password</FormLabel>
+                      <Input
+                        type="password"
+                        name="password_confirmation"
+                        value={passwordConfirmation}
+                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                        placeholder="Enter your password confirmation"
+
+                      />
+                    </FormControl>
+                  </ModalBody>
+                  <ModalFooter>
+                    <Button
+                      colorScheme="teal"
+                      variant="ghost"
+                      onClick={() => {
+                        onCloseConfirm();
+                      }}>
+                      Cancel
+                    </Button>
+                    <Button
+                      colorScheme="teal"
+                      variant="solid"
+                      ml={3}
+                      loadingText="Updating"
+                      onClick={
+                        () => {
+                          handleSubmit();
+                          onCloseConfirm();
+                        }
+                      }>
+                      Save
+                    </Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
             </Box>
-
           </VStack>
         </Box>
-      </VStack>
-    </Box>
+      </VStack >
+    </Box >
   );
 }

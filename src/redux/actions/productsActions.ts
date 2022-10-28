@@ -22,7 +22,6 @@ export const listProducts = (): AppThunk => async (dispatch) => {
 
     const { data } = await axios.get(`/product/all`);
 
-    console.log(data);
     dispatch({
       type: ProductListActionTypes.PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -129,7 +128,6 @@ export const createProduct =
 
       const { data } = await axios.post(`/admin/product/new`, product, config);
 
-      console.log(data);
       
       dispatch({
         type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,

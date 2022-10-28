@@ -28,7 +28,6 @@ export const ForgotPassword = () => {
 
   const { error, userInfo, loading } = useRecoveryData("userForgotPassword");
   const data = useRecoveryData("userForgotPassword");
-  console.log(data);
 
   useEffect(() => {
     if (error) {

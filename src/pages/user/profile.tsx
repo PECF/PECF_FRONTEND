@@ -144,42 +144,6 @@ export function Profile() {
             >
               {user?.phone}
             </Text>
-
-            <Text
-              fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
-              {user?.address}
-            </Text>
-
-            <Text
-              fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
-              {user?.city}
-            </Text>
-
-            <Text
-              fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
-              {user?.state}
-            </Text>
-
-            <Text
-              fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
-              {user?.country}
-            </Text>
-
-            <Text
-              fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
-              {user?.zip}
-            </Text>
-
             <Text
               fontSize="sm"
               color={useColorModeValue("gray.600", "gray.400")}

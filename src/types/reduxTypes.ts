@@ -6,6 +6,7 @@ import {
   OrderListState,
   OrderListMyState,
   OrderPayState,
+
 } from "./ordersTypes";
 import {
   ProductDetailsState,
@@ -15,6 +16,7 @@ import {
   ProductDeleteState,
   ProductTopState,
   ProductUpdateState,
+
 } from "./productsTypes";
 
 import {
@@ -29,26 +31,26 @@ import {
 } from "./authTypes";
 
 export interface ReduxState {
+  cart?: CartState;
   userLogin: UserLoginState;
-  userRegister: UserRegisterState;
-  productList: ProductListState;
-  productDetails: ProductDetailsState;
-  cart: CartState;
-  userDetails: UserDetailsState;
-  userUpdateProfile: UserUpdateProfileState;
-  orderCreate: OrderCreateState;
-  orderDetails: OrderDetailsState;
-  orderPay: OrderPayState;
-  orderDeliver: OrderDeliverState;
-  orderListMy: OrderListMyState;
-  orderList: OrderListState;
-  userList: UserListState;
-  userDelete: UserDeleteState;
-  userUpdate: UserUpdateState;
-  productDelete: ProductDeleteState;
-  productCreate: ProductCreateState;
-  productUpdate: ProductUpdateState;
-  productCreateReview: ProductCreateReviewState;
-  productTopRated: ProductTopState;
-  userForgotPassword: UserForgotPassword;
+  userRegister?: UserRegisterState;
+  productList?: ProductListState;
+  productDetails?: ProductDetailsState;
+  userDetails?: UserDetailsState;
+  userUpdateProfile?: UserUpdateProfileState;
+  orderCreate?: OrderCreateState;
+  orderDetails?: OrderDetailsState;
+  orderPay?: OrderPayState;
+  orderDeliver?: OrderDeliverState;
+  orderListMy?: OrderListMyState;
+  orderList?: OrderListState;
+  userList?: UserListState;
+  userDelete?: UserDeleteState;
+  userUpdate?: UserUpdateState;
+  productDelete?: ProductDeleteState;
+  productCreate?: ProductCreateState;
+  productUpdate?: ProductUpdateState;
+  productCreateReview?: ProductCreateReviewState;
+  productTopRated?: ProductTopState;
+  userForgotPassword?: UserForgotPassword;
 }

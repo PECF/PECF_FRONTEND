@@ -18,7 +18,6 @@ import { Products } from "../pages/Products";
 // import AuthContext from "../contexts/authContext";
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
-  console.log(user);
   return (
     <Routes>
       <Route path="/" element={<Home />} />
