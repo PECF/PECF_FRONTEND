@@ -20,13 +20,17 @@ import { MdLocalShipping } from "react-icons/md";
 import { CarouselDetailProducts } from "./carouselDetailProductPreview";
 
 export function ProductDetailPreview({ product }: any) {
-  console.log(product)
+  const { name,
+    category,
+    description,
+    price,
+    stock,
+    feature,
+    tags,
+    image, } = product;
   return (
     <Center>
-
-
       <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
-
         <Grid
           templateColumns={{
             base: "repeat(1, 1fr)",
@@ -38,7 +42,7 @@ export function ProductDetailPreview({ product }: any) {
             fontWeight={400}
             fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
           >
-            {product?.name}
+            {name}
           </Heading>
 
           <HStack
@@ -87,12 +91,12 @@ export function ProductDetailPreview({ product }: any) {
 
               fontSize={{ base: "sm", sm: "lg" }}
             >
-              {product?.category}
+              {category}
             </Badge>
           </Text>
 
 
-          <CarouselDetailProducts product={product} />
+          {/* <CarouselDetailProducts product={image} /> */}
         </Stack>
 
 
@@ -107,7 +111,7 @@ export function ProductDetailPreview({ product }: any) {
             fontWeight={600}
             fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
           >
-            {product?.price}€
+            {price}€
           </Text>
 
 
@@ -219,7 +223,7 @@ export function ProductDetailPreview({ product }: any) {
           fontWeight={"300"}
           align={"justify"}
         >
-          {product?.description}
+          {description}
         </Text>
 
 
@@ -227,7 +231,9 @@ export function ProductDetailPreview({ product }: any) {
 
 
       </VStack >
+
     </Center >
   );
 }
+
 

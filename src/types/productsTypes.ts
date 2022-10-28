@@ -268,8 +268,46 @@ export interface ProductUpdateResetAction {
   type: ProductUpdateActionTypes.PRODUCT_UPDATE_RESET;
 }
 
+
+
 export type ProductUpdateAction =
   | ProductUpdateRequestAction
   | ProductUpdateSuccessAction
   | ProductUpdateFailureAction
   | ProductUpdateResetAction;
+
+
+export interface productFeatureAction {
+  type: string;
+  payload: string;
+}
+
+export interface ProductFeatureState {
+  feature: string[];
+}
+
+export enum ProductFeatureActionTypes {
+  PRODUCT_FEATURE_REQUEST = "PRODUCT_FEATURE_REQUEST",
+  PRODUCT_FEATURE_SUCCESS = "PRODUCT_FEATURE_SUCCESS",
+  PRODUCT_FEATURE_FAILURE = "PRODUCT_FEATURE_FAILURE"
+}
+
+export interface ProductFeatureRequestAction {
+  type: ProductFeatureActionTypes.PRODUCT_FEATURE_REQUEST;
+}
+
+export interface ProductFeatureSuccessAction {
+  type: ProductFeatureActionTypes.PRODUCT_FEATURE_SUCCESS;
+  payload: string[];
+}
+
+export interface ProductFeatureFailureAction {
+  type: ProductFeatureActionTypes.PRODUCT_FEATURE_FAILURE;
+  payload: any;
+}
+
+export type ProductFeatureAction =
+  | ProductFeatureRequestAction
+  | ProductFeatureSuccessAction
+  | ProductFeatureFailureAction;
+

@@ -20,6 +20,10 @@ import {
   ProductDetailsAction,
   ProductDetailsActionTypes,
   ProductDetailsState,
+  productFeatureAction,
+  ProductFeatureState,
+  ProductFeatureActionTypes,
+
 } from "../../types/productsTypes";
 
 const initialProductListState: ProductListState = {
@@ -104,7 +108,6 @@ export const productDeleteReducer = (
 const initialProductCreateState: ProductCreateState = {
   loading: false,
   success: false,
-  product: undefined,
   error: null,
 };
 
@@ -230,3 +233,30 @@ export const productTopRatedReducer = (
       return state;
   }
 };
+
+
+
+const initialProductFeatureState: ProductFeatureState = {
+  feature: [],
+};
+
+export const productFeature = (
+  state: ProductFeatureState = initialProductFeatureState,
+  action: productFeatureAction
+) => {
+  switch (action.type) {
+    case ProductFeatureActionTypes.PRODUCT_FEATURE_REQUEST:
+      return { feature: [] };
+    case ProductFeatureActionTypes.PRODUCT_FEATURE_SUCCESS:
+      return {
+        feature: action.payload,
+      };
+    case ProductFeatureActionTypes.PRODUCT_FEATURE_FAILURE:
+      return {
+        feature: [],
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+}

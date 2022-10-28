@@ -20,6 +20,7 @@ import {
   userForgotPasswordReducer,
 } from "./reducers/authReducer";
 import { ReduxState } from "../types/reduxTypes";
+import { productFeature } from './reducers/productsReducer';
 // import {
 //   orderCreateReducer,
 //   orderDetailsReducer,
@@ -47,6 +48,8 @@ export const rootReducer = combineReducers<ReduxState>({
   // orderDetails: orderDetailsReducer,
   productList: productListReducer,
   productCreate: productCreateReducer,
+  productFeature: productFeature,
+
   // productDelete: productDeleteReducer,
   // productUpdate: productUpdateReducer,
   productDetails: productDetailsReducer,
@@ -71,6 +74,20 @@ const userDetailsFromLocalStorage = localStorage.getItem("userDetails")
   ? JSON.parse(localStorage.getItem("userDetails") as string)
   : {};
 
+const productCreateFromLocalStorage = localStorage.getItem("productCreate")
+  ? JSON.parse(localStorage.getItem("productCreate") as string)
+  : {};
+
+const productTagsFromLocalStorage = localStorage.getItem("productTags")
+  ? JSON.parse(localStorage.getItem("productTags") as string)
+  : [];
+
+const productFeaturesFromLocalStorage = localStorage.getItem("productFeatures")
+  ? JSON.parse(localStorage.getItem("productFeatures") as string)
+  : [];
+
+console.log(productFeaturesFromLocalStorage)
+
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
@@ -78,4 +95,14 @@ export const initialState = {
   },
   userLogin: { userInfo: userInfoFromLocalStorage },
   userDetails: { user: userDetailsFromLocalStorage },
+  productCreate: {
+    product: productCreateFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
+  },
+  productFeature: {
+    feature: productFeaturesFromLocalStorage,
+  }
 };
+

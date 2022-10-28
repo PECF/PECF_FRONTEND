@@ -1,5 +1,5 @@
-import React, { FormEvent, useEffect, useState } from "react";
-import { Select, CreatableSelect } from "chakra-react-select";
+import React, { useState, useEffect, SetStateAction } from "react";
+import { CreatableSelect, MultiValue } from "chakra-react-select";
 import {
   Text,
   Box,
@@ -28,46 +28,77 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { createProduct } from "../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 export function CreateProduct() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-
   const dispatch = useDispatch<AppDispatch>();
+  const { loading, success, error, product } = useRecoveryData("productCreate");
+
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-
-  const [name, setName] = useState("");
-  const [category, setCategory] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [tags, setTags] = useState<string[]>([]);
-
-
-  const [image, setImages] = useState<any[]>([]);
+  const [name, setName] = useState(product?.name);
+  const [category, setCategory] = useState(product?.category);
+  const [description, setDescription] = useState(product?.description);
+  const [price, setPrice] = useState(product?.price);
+  const [stock, setStock] = useState(product?.stock);
+  const [tags, setTags] = useState(product?.tags);
+  const [feature, setFeatures] = useState(product?.feature);
+  const [image, setImages] = useState<any[]>(product?.image);
   const [imagesPreview, setImagesPreview] = useState<any[]>([null]);
-  const createTags = (str: string) => {
-    setTags(str.split(" "))
-  }
+  const _product = {
+    name,
+    category,
+    description,
+    price,
+    stock,
+    feature,
+    tags,
+    image,
+  };
+
+  useEffect(() => {
+
+    localStorage.setItem("productCreate", JSON.stringify(_product));
+
+    if (success) {
+      toast({
+        title: "Product created.",
+        description: "We've created your product for you.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+    if (error) {
+      toast({
+        title: "An error occurred.",
+        description: "We were unable to create your product.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }, [success, error, _product, tags,]);
 
 
 
   const createProductImagesChange = (e: any) => {
     const files = Array.from(e?.target?.files);
-    setImagesPreview([null]);
+    setImagesPreview([]);
     setImages([]);
-    files.forEach((file: any) => {
+    files.forEach((file) => {
       const reader = new FileReader();
+      const _file: any = file;
       reader.onload = () => {
         if (reader.readyState === 2) {
-          imagesPreview?.push(reader.result);
-          setImagesPreview(imagesPreview);
-          image?.push(reader.result);
-          setImages(image);
-
+          setImagesPreview((oldArray) => [...oldArray, reader.result]);
+          setImages((oldArray) => [...oldArray, reader.result]);
         }
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(_file);
     });
   }
+
 
 
   const previewHandler = () => {
@@ -77,7 +108,6 @@ export function CreateProduct() {
       description === "" ||
       price === "" ||
       stock === ""
-
     ) {
       toast({
         title: "Error",
@@ -92,8 +122,8 @@ export function CreateProduct() {
   };
 
 
-  const submitHandler = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submitHandler = () => {
+
 
     // dispatch(
     //   createProduct({
@@ -105,6 +135,8 @@ export function CreateProduct() {
     //   })
     // );
   };
+
+
 
 
   return (
@@ -217,7 +249,40 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <FormControl id="tags" isRequired>
+          <FormControl id="Features" >
+            <FormLabel>Features</FormLabel>
+            <Text
+              bg={useColorModeValue("gray.50", "gray.700")}
+              p={2}
+              borderRadius="md"
+              color="gray.500"
+              fontSize="sm"
+              fontWeight="medium"
+              lineHeight="short">
+              If you dont have any features, leave this field blank, that table will not be shown
+            </Text>
+            <CreatableSelect selectedOptionColor="purple"
+              isMulti
+              onChange={(e: any) => setFeatures(e)}
+              placeholder="Add Features"
+              colorScheme="teal"
+            // options={
+            //   feature.map((f: any) => ({
+            //     value: f.value,
+            //     label: f.label,
+            //   }))
+
+            />
+          </FormControl>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
+          <FormControl id="tags" >
             <FormLabel>Tags</FormLabel>
             <Text
               bg={useColorModeValue("gray.50", "gray.700")}
@@ -228,14 +293,15 @@ export function CreateProduct() {
               fontWeight="medium"
               lineHeight="short">
               Tags are used to help customers find your products. Add up to 3 tags for better results.
-              Must include spaces between tags.
             </Text>
-            <CreatableSelect selectedOptionColor="purple"
-            
+            <CreatableSelect
+              selectedOptionColor="purple"
+              colorScheme="teal"
               isMulti
-              onChange={(e) => createTags(e?.map((item: any) => item.value).join(" "))}
+              onChange={(e: any) => setTags(e)}
               placeholder="Add tags"
-            />  
+            // options={TagsOptions}
+            />
           </FormControl>
         </Flex>
 
@@ -246,7 +312,7 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <FormControl id="images" isRequired>
+          <FormControl id="images" >
             <FormLabel>Images</FormLabel>
             <Text
               bg={useColorModeValue("gray.50", "gray.700")}
@@ -280,7 +346,6 @@ export function CreateProduct() {
               <FormLabel>Images Preview</FormLabel>
               <SimpleGrid columns={3} spacing={4} w="full">
                 {imagesPreview.map((img, index) => {
-                  console.log(image)
                   if (img !== null) {
                     return (
                       <Image
@@ -306,7 +371,10 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <Button type="submit" colorScheme="teal" mr={3}>
+          <Button type="submit" colorScheme="teal" mr={3}
+            isLoading={loading}
+            onClick={submitHandler}
+          >
             Create
           </Button>
           <Button
@@ -325,18 +393,7 @@ export function CreateProduct() {
               <ModalHeader>Product Preview</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <ProductDetailPreview product={
-
-                  {
-                    name,
-                    category,
-                    description,
-                    price,
-                    stock,
-                    image,
-                    tags
-                  }
-                } />
+                <ProductDetailPreview product={_product} />
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onClose}>
