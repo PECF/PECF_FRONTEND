@@ -26,12 +26,12 @@ import {
   support,
   helpCenter,
   safetyCenter,
-  communityGuidelines,
+  refundPolicy,
   legal,
   cookiesPolicy,
   privacyPolicy,
   termsOfService,
-  lawEnforcement,
+  returnPolicy,
 } from "../constant/Footer";
 // import "./footer.css";
 
@@ -70,7 +70,8 @@ const SocialButton = ({
       transition={"background 0.3s ease"}
       _hover={{
         bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}>
+      }}
+    >
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
     </chakra.button>
@@ -84,25 +85,25 @@ export function Footer() {
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={"flex-start"}>
             <ListHeader>{company}</ListHeader>
-            <Link href={"#"}>{aboutUs}</Link>
+            <Link href={"../pages/AboutUs"}>{aboutUs}</Link>
             <Link href={"#"}>{blog}</Link>
             <Link href={"#"}>{careers}</Link>
-            <Link href={"#"}>{contactUs}</Link>
+            <Link href={"../pages/ContactUs"}>{contactUs}</Link>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>{support}</ListHeader>
             <Link href={"#"}>{helpCenter}</Link>
             <Link href={"#"}>{safetyCenter}</Link>
-            <Link href={"#"}>{communityGuidelines}</Link>
+            <Link href={"../pages/Refund"}>{refundPolicy}</Link>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>{legal}</ListHeader>
             <Link href={"#"}>{cookiesPolicy}</Link>
             <Link href={"#"}>{privacyPolicy}</Link>
-            <Link href={"#"}>{termsOfService}</Link>
-            <Link href={"#"}>{lawEnforcement}</Link>
+            <Link href={"../pages/TermsOfService"}>{termsOfService}</Link>
+            <Link href={"../pages/ReturnPolicy"}>{returnPolicy}</Link>
           </Stack>
 
           <Stack align={"flex-start"}>
@@ -119,7 +120,8 @@ export function Footer() {
               <IconButton
                 colorScheme="teal"
                 variant="solid"
-                aria-label="Subscribe">
+                aria-label="Subscribe"
+              >
                 <BiMailSend
                   color={useColorModeValue("blackAlpha.100", "gray.800")}
                 />
@@ -138,7 +140,8 @@ export function Footer() {
       <Box
         borderTopWidth={1}
         borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.700")}>
+        borderColor={useColorModeValue("gray.200", "gray.700")}
+      >
         <Container
           as={Stack}
           maxW={"6xl"}
@@ -146,14 +149,16 @@ export function Footer() {
           direction={{ base: "column", md: "row" }}
           spacing={4}
           justify={{ md: "space-around" }}
-          align={{ md: "center" }}>
+          align={{ md: "center" }}
+        >
           <Text
             fontSize="sm"
             color={useColorModeValue("gray.700", "gray.200")}
-            textAlign="center">
+            textAlign="center"
+          >
             {copyright} &copy; {new Date().getFullYear()} {kalu}
           </Text>
-          <Stack direction={"row"} spacing={6}>
+          <Stack direction={"row"} spacing={6} justify={"center"}>
             <SocialButton label={"Instagram"} href={"#"}>
               <FaInstagram />
             </SocialButton>
