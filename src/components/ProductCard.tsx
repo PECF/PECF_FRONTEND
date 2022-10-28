@@ -47,7 +47,7 @@ import {
         </Box>
         <Stack>
           <Stack spacing="1">
-            <Text fontWeight="medium" color={useColorModeValue('gray.700', 'gray.400')}>
+            <Text noOfLines={[1]} maxHeight={'2rem'}fontWeight="medium" color={useColorModeValue('gray.700', 'gray.400')}>
               {name}
             </Text>
             <PriceTag price={price} currency="USD" />

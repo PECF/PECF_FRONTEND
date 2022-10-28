@@ -16,6 +16,8 @@ import {
 import { useRecoveryData } from "../hooks/useRecoveryData";
 
 import { SecondSlider } from "../constant/Home";
+import { Link } from "react-router-dom";
+
 
 export function Carousel({text , name} : any) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
@@ -23,7 +25,7 @@ export function Carousel({text , name} : any) {
   const { products } = useRecoveryData(name);
   
   const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "5px" });
+  const side = useBreakpointValue({ base: "30%", md: "1px" });
 
   return (
 
@@ -34,12 +36,9 @@ export function Carousel({text , name} : any) {
       position={"relative"}
       left="44%"
       transform="translate(-50%)"
-      
       borderRadius="20px"
-      
       width="90%"
-      mb="5rem"
-      mt="5rem">
+      mt="2rem">
       <Heading ml={'1rem'} width={'100%'} fontSize='24' fontWeight='light' >{`${text}:`}</Heading>
 
       <Box
@@ -48,7 +47,10 @@ export function Carousel({text , name} : any) {
         position={"relative"}
         alignSelf={"center"}
         marginTop="10px"
+        pt='1rem'
+        pb='2rem'
         width="100%">
+        
         
         
         <Box
@@ -90,12 +92,15 @@ export function Carousel({text , name} : any) {
           <BiRightArrow />
                   </IconButton>
         </Box>
-
+        
         <Slider {...SecondSlider} ref={(slider) => setSlider(slider)}>
           {products.map((product: any, index: any) => (
-            <Card key={index} product={product} />
+            
+              <Card key={index} product={product} />
+            
           ))}
         </Slider>
+      
       </Box>
     </Flex>
   );

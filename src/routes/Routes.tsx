@@ -16,7 +16,7 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Profile } from "../pages/user/profile";
 import { Products } from "../pages/Products";
 // import AuthContext from "../contexts/authContext";
-import path from 'path';
+
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
   console.log(user);

@@ -10,10 +10,11 @@ export const FirstSlider = {
   slidesToScroll: 1,
 };
 export const SecondSlider = {
-  dots: true,
+  dots: false,
+  arrows: false,
   infinite: false,
   speed: 300,
-
+  centerMode:true,
   slidesToShow: 5.9,
   
   

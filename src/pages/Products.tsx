@@ -61,7 +61,7 @@ export const Products = () => {
                 <Link
                   to={`/products/${product._id}`}
                   key={product._id}
-                  className="home_container_content_games_card">
+                  className="home_container_content_product_card">
                   <ProductCard product={product} />
                 </Link>
               );
@@ -83,18 +83,3 @@ export const Products = () => {
   );
 }
 
-//   return(
-//   <Box
-//     maxW="7xl"
-//     mx="auto"
-//     px={{ base: '4', md: '8', lg: '12' }}
-//     py={{ base: '6', md: '8', lg: '12' }}
-//   >
-    
-//     <ProductGrid>
-//       {products && products.map((product:any) => (
-//         <ProductCard key={product._id} product={product} />
-//       ))}
-//     </ProductGrid>
-//   </Box>
-// )}
