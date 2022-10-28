@@ -1,4 +1,5 @@
 import React, { FormEvent, useEffect, useState } from "react";
+import { Select, CreatableSelect } from "chakra-react-select";
 import {
   Text,
   Box,
@@ -67,8 +68,6 @@ export function CreateProduct() {
       reader.readAsDataURL(file);
     });
   }
-
-
 
 
   const previewHandler = () => {
@@ -231,13 +230,12 @@ export function CreateProduct() {
               Tags are used to help customers find your products. Add up to 3 tags for better results.
               Must include spaces between tags.
             </Text>
-            <Input
-              type="text"
-              bg={useColorModeValue("alphaWhite", "gray.800")}
-              value={tags}
-              placeholder="Samsung Galaxy Fold 4"
-              onChange={(e) => createTags(e.target.value)}
-            />
+            <CreatableSelect selectedOptionColor="purple"
+            
+              isMulti
+              onChange={(e) => createTags(e?.map((item: any) => item.value).join(" "))}
+              placeholder="Add tags"
+            />  
           </FormControl>
         </Flex>
 
