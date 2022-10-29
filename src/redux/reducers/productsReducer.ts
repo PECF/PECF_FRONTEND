@@ -220,6 +220,14 @@ export const productUpdateReducer = (
         product: initialProductUpdateState.product,
         error: initialProductUpdateState.error
       };
+
+    case ProductUpdateActionTypes.PRODUCT_UPDATE_PREVIEW:
+      return {
+        loading: initialProductUpdateState.loading,
+        success: initialProductUpdateState.success,
+        product: action.payload,
+        error: initialProductUpdateState.error
+      };
     default:
       return state;
   }

@@ -87,6 +87,10 @@ const productFeaturesFromLocalStorage = localStorage.getItem("feature")
   ? JSON.parse(localStorage.getItem("feature") as string)
   : [];
 
+const productUpdateFromLocalStorage = localStorage.getItem("productUpdate")
+  ? JSON.parse(localStorage.getItem("productUpdate") as string)
+  : {};
+
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
@@ -105,6 +109,12 @@ export const initialState = {
   },
   productTag: {
     tags: productTagsFromLocalStorage,
-  }
+  },
+  productUpdate: {
+    product: productUpdateFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
+  },
 };
 

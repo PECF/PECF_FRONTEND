@@ -40,30 +40,33 @@ import { RiImageAddLine } from "react-icons/ri";
 
 export function UpdateProduct() {
   const dispatch = useDispatch<AppDispatch>();
+  const { feature } = useRecoveryData("productFeature");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { tags } = useRecoveryData("productTag");
+  const toast = useToast();
 
   const { products } = useRecoveryData("productList");
   const { product } = useRecoveryData("productDetails");
   const { loading, error, success } = useRecoveryData("productUpdate")
-  const { feature } = useRecoveryData("productFeature");
-  const { tags } = useRecoveryData("productTag");
-  const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [imagesPreview, setImagesPreview] = useState<any[]>(product?.image || []);
-  const [featureLocal, setFeatures] = useState<any[]>(product?.feature || []);
-  const [description, setDescription] = useState(product?.description || "");
-  const [category, setCategory] = useState(product?.category || "");
-  const [discount, setDiscount] = useState(product?.discount || 0);
-  const [image, setImages] = useState<any[]>(product?.image || []);
+  const productUpdate = useRecoveryData("productUpdate");
+
+  const [imagesPreview, setImagesPreview] = useState<any[]>([]);
+  const [featureLocal, setFeatures] = useState<any[]>([]);
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+  const [discount, setDiscount] = useState(0);
+  const [image, setImages] = useState<any[]>([]);
   const [featureOptions, setFeatureOptions] = useState<any[]>([]);
-  const [offer, setOffer] = useState<any[]>(product?.offer || []);
-  const [tagLocal, setTags] = useState<any[]>(product?.tag || []);
+  const [offer, setOffer] = useState<any[]>([]);
+  const [tagLocal, setTags] = useState<any[]>([]);
   const [tagOptions, setTagOptions] = useState<any[]>([]);
-  const [stock, setStock] = useState(product?.stock || 0);
-  const [price, setPrice] = useState(product?.price || 0);
-  const [brand, setBrand] = useState(product?.brand || "");
-  const [name, setName] = useState(product?.name || "");
+  const [stock, setStock] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [brand, setBrand] = useState("");
+  const [name, setName] = useState("");
   const [isCharge, setIsCharge] = useState(false)
+  const [isChange, setIsChange] = useState(false)
 
   if (!isCharge) {
     const featureOptions = feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
@@ -133,49 +136,51 @@ export function UpdateProduct() {
     localStorage.setItem("tags", JSON.stringify(_options));
   };
 
-
-
   const selectProduct = (e: any) => {
     dispatch(listProductDetails(e.value));
+    setIsChange(true)
   };
 
   const _product = {
-    name,
-    category,
-    description,
-    price,
-    stock,
-    discount,
-    offer,
-    brand,
-    feature: featureLocal,
-    tag: tagLocal,
-    image,
+    _id: product?._id,
+    name: name || product?.name,
+    category: category || product?.category,
+    description: description || product?.description,
+    price: price || product?.price,
+    stock: stock || product?.stock,
+    discount: discount || product?.discount,
+    offer: offer || product?.offer,
+    brand: brand || product?.brand,
+    feature: featureLocal || product?.feature,
+    tag: tagLocal || product?.tag,
+    image: image || product?.image,
     createdAt: new Date().toISOString(),
   };
+
   useEffect(() => {
-    setName(product?.name || "")
-    setBrand(product?.brand || "")
-    setCategory(product?.category || "")
-    setPrice(product?.price || 0)
-    setStock(product?.stock || 0)
-    setDescription(product?.description || "")
-    setDiscount(product?.discount || 0)
-    setOffer(product?.offer || [])
-    setFeatures(product?.feature || [])
-    setTags(product?.tag || [])
-    console.log(_product)
-    if (image.toString() !== product?.image.toString()) {
-      setImages(product?.image || [])
+    if (isChange) {
+      setFeatures(product?.feature || [])
+      setTags(product?.tag || [])
+      setDiscount(product?.discount || 0)
+      setOffer(product?.offer || [])
+      setName(product?.name || "")
+      setBrand(product?.brand || "")
+      setCategory(product?.category || "")
+      setPrice(product?.price || 0)
+      setStock(product?.stock || 0)
+      setDescription(product?.description || "")
       setImagesPreview(product?.image || [])
-
-      // setTimeout(() => {
-      //   dispatch(updateProduct({ product: _product, sendToDB: false }));
-      // }, 50000);
-
-      localStorage.setItem("productUpdate", JSON.stringify(_product));
-
+      setImages(product?.image || [])
+      setIsChange(false)
     }
+
+    setTimeout(() => {
+
+      dispatch(updateProduct({ product: _product, sendToDB: false }));
+
+    }, 30000);
+
+    localStorage.setItem("productUpdate", JSON.stringify(_product));
     if (success) {
       toast({
         title: "Product updated.",
@@ -195,7 +200,8 @@ export function UpdateProduct() {
         isClosable: true,
       });
     }
-  }, [product, success, error,]);
+  }, [product, success, error, _product, isChange]);
+
 
 
   const previewHandler = () => {
@@ -204,8 +210,8 @@ export function UpdateProduct() {
       category === "" ||
       description === "" ||
       brand === "" ||
-      price === "" ||
-      stock === "" ||
+      price === 0 ||
+      stock === 0 ||
       tagLocal.length === 0 ||
       featureLocal.length === 0 ||
       image.length === 0
@@ -223,10 +229,28 @@ export function UpdateProduct() {
   };
   const submitHandler = (e: any) => {
     e.preventDefault()
-    console.log(e)
-    // dispatch(
-    //   createProduct({ product: _product, sendToDB: true })
-    // );
+    if (
+      name === "" ||
+      category === "" ||
+      description === "" ||
+      brand === "" ||
+      price === 0 ||
+      stock === 0 ||
+      tagLocal.length === 0 ||
+      featureLocal.length === 0 ||
+      image.length === 0
+    ) {
+      toast({
+        title: "Error",
+        description: "Please fill in all fields",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      dispatch(updateProduct({ product: _product, sendToDB: true }));
+
+    }
   };
 
   return (
@@ -239,7 +263,7 @@ export function UpdateProduct() {
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden"
       shadow="base"
-    // onSubmit={submitHandler}
+      onSubmit={submitHandler}
     >
       <VStack align="stretch" spacing={0}>
         <Flex
@@ -344,7 +368,7 @@ export function UpdateProduct() {
                 bg={useColorModeValue("alphaWhite", "gray.800")}
                 placeholder="1000"
                 value={price}
-                onChange={(e) => setPrice(e.target.value)}
+                onChange={(e: any) => setPrice(e.target.value)}
               />
             </FormControl>
             <FormControl id="stock" isRequired>
@@ -354,7 +378,7 @@ export function UpdateProduct() {
                 value={stock}
                 bg={useColorModeValue("alphaWhite", "gray.800")}
                 placeholder="100"
-                onChange={(e) => setStock(e.target.value)}
+                onChange={(e: any) => setStock(e.target.value)}
               />
             </FormControl>
           </SimpleGrid>
@@ -383,6 +407,7 @@ export function UpdateProduct() {
           }}
           gap={6}
           px={6}
+          zIndex={20}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}>
           <FormControl id="offer" isRequired>
@@ -408,7 +433,7 @@ export function UpdateProduct() {
               bg={useColorModeValue("alphaWhite", "gray.800")}
               placeholder="10"
               value={discount}
-              onChange={(e) => setDiscount(e.target.value)}
+              onChange={(e: any) => setDiscount(e.target.value)}
             />
           </FormControl>
         </Grid>
@@ -418,6 +443,7 @@ export function UpdateProduct() {
           align="center"
           px={6}
           py={4}
+          zIndex={15}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
           <FormControl id="Features" isRequired>
@@ -449,6 +475,7 @@ export function UpdateProduct() {
           align="center"
           px={6}
           py={4}
+          zIndex={10}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
           <FormControl id="tags" isRequired>
@@ -467,6 +494,7 @@ export function UpdateProduct() {
               selectedOptionColor="purple"
               colorScheme="teal"
               isMulti
+              maxMenuHeight={200}
               onChange={(e: any) => {
                 setTags(e)
                 createTag(e)
@@ -566,7 +594,7 @@ export function UpdateProduct() {
             isLoading={loading}
             onClick={() => submitHandler}
           >
-            Create
+            Update
           </Button>
           <Button
             type="button"

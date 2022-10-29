@@ -126,9 +126,10 @@ export function ProductDetailPreview({ product }: any) {
             </Badge>
           </Text>
           {
-            product.offer[0]?.value === "discount" ||
+            (product.offer[0]?.value === "discount" ||
               product.offer[1]?.value === "discount" ||
-              product.offer[2]?.value === "discount"
+              product.offer[2]?.value === "discount") &&
+              product.discount !== 0
               ?
               <Text
                 fontSize="lg"

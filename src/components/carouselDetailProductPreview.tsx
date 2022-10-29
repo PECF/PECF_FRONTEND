@@ -4,7 +4,6 @@ import {
   useBreakpointValue,
   Box,
   IconButton,
-  Text,
   Image,
 } from "@chakra-ui/react";
 
@@ -74,7 +73,6 @@ export function CarouselDetailProducts({ image }: any) {
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {image.map((img: any, index: number) => {
             const src = img?.url ? img.url : img;
-            console.log(src);
             return (
               <Box key={index} w="full" h="full" position="relative"
               >

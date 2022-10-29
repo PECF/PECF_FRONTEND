@@ -235,19 +235,30 @@ export type ProductTopAction =
 export interface TemporaryProduct {
   _id: string;
   name: string;
-  image: string;
-  description: string;
-  brand: string;
   category: string;
+  description: string;
   price: number;
-  countInStock: number;
-  offer: boolean;
+  stock: number;
   discount: number;
+  offer: {
+    value: string,
+    label: string
+  }[]
+  brand: string;
+  feature: {
+    value: string,
+    label: string
+  }[]
+  tag: {
+    value: string,
+    label: string
+  }[]
+  image: any;
 }
 
 export interface ProductUpdateState {
   success?: boolean;
-  product?: TemporaryProduct;
+  product?: any[];
   loading?: boolean;
   error?: any;
 }
@@ -257,6 +268,7 @@ export enum ProductUpdateActionTypes {
   PRODUCT_UPDATE_SUCCESS = "PRODUCT_UPDATE_SUCCESS",
   PRODUCT_UPDATE_FAILURE = "PRODUCT_UPDATE_FAILURE",
   PRODUCT_UPDATE_RESET = "PRODUCT_UPDATE_RESET",
+  PRODUCT_UPDATE_PREVIEW = "PRODUCT_UPDATE_PREVIEW",
 }
 
 export interface ProductUpdateRequestAction {
@@ -265,7 +277,7 @@ export interface ProductUpdateRequestAction {
 
 export interface ProductUpdateSuccessAction {
   type: ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS;
-  payload: TemporaryProduct;
+  payload: any[];
 }
 
 export interface ProductUpdateFailureAction {
@@ -277,13 +289,21 @@ export interface ProductUpdateResetAction {
   type: ProductUpdateActionTypes.PRODUCT_UPDATE_RESET;
 }
 
+export interface ProductUpdatePreviewAction {
+  type: ProductUpdateActionTypes.PRODUCT_UPDATE_PREVIEW;
+  payload: any[];
+}
+
+
 
 
 export type ProductUpdateAction =
   | ProductUpdateRequestAction
   | ProductUpdateSuccessAction
   | ProductUpdateFailureAction
-  | ProductUpdateResetAction;
+  | ProductUpdateResetAction
+  | ProductUpdatePreviewAction;
+
 
 
 export interface productFeatureAction {
