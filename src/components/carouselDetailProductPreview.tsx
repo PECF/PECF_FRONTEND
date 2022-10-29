@@ -72,24 +72,16 @@ export function CarouselDetailProducts({ image }: any) {
           null)
         }
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {image.map((item: string, index: number) => {
+          {image.map((img: any, index: number) => {
+            const src = img?.url ? img.url : img;
+            console.log(src);
             return (
-              <Box
-                key={index}
-                height={
-                  useBreakpointValue({
-                    base: "300px",
-                    md: "2xl",
-                  }) as string
-                }
-                width={"auto"}
-                backgroundImage={`url(${item})`}
-                backgroundSize={
-                  useBreakpointValue({ base: "contain", md: "cover" })
-                }
-                backgroundRepeat="no-repeat"
-                backgroundPosition="center"
-              />
+              <Box key={index} w="full" h="full" position="relative"
+              >
+                <Image src={src} w="full" maxH="full" h={
+                  useBreakpointValue({ base: "full", md: "full" })
+                } objectFit="cover" />
+              </Box>
             );
           })}
         </Slider>

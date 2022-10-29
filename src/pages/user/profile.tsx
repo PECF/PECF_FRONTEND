@@ -155,6 +155,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -177,6 +178,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -199,6 +201,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -221,6 +224,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -254,6 +258,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
+                  borderRadius="md"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
@@ -276,6 +281,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
+                  borderRadius="md"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
@@ -298,6 +304,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
+                  borderRadius="md"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
@@ -320,6 +327,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
+                  borderRadius="md"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
@@ -342,6 +350,7 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
+                  borderRadius="md"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
@@ -378,6 +387,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -400,6 +410,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -422,6 +433,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -444,6 +456,7 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -474,6 +487,7 @@ export function Profile() {
               px={6}
               py={3}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -493,6 +507,7 @@ export function Profile() {
               px={6}
               py={3}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -512,6 +527,7 @@ export function Profile() {
               px={6}
               py={3}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -531,6 +547,7 @@ export function Profile() {
               px={6}
               py={3}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -552,6 +569,7 @@ export function Profile() {
                     px={6}
                     py={3}
                     cursor="pointer"
+                    borderRadius="md"
                     _hover={{
                       bg: useColorModeValue("gray.100", "gray.700"),
                     }}
@@ -571,6 +589,7 @@ export function Profile() {
                     px={6}
                     py={3}
                     cursor="pointer"
+                    borderRadius="md"
                     _hover={{
                       bg: useColorModeValue("gray.100", "gray.700"),
                     }}
@@ -590,6 +609,7 @@ export function Profile() {
                     px={6}
                     py={3}
                     cursor="pointer"
+                    borderRadius="md"
                     _hover={{
                       bg: useColorModeValue("gray.100", "gray.700"),
                     }}
@@ -609,6 +629,7 @@ export function Profile() {
                     px={6}
                     py={3}
                     cursor="pointer"
+                    borderRadius="md"
                     _hover={{
                       bg: useColorModeValue("gray.100", "gray.700"),
                     }}
@@ -628,6 +649,7 @@ export function Profile() {
                     px={6}
                     py={3}
                     cursor="pointer"
+                    borderRadius="md"
                     _hover={{
                       bg: useColorModeValue("gray.100", "gray.700"),
                     }}
@@ -650,6 +672,7 @@ export function Profile() {
               px={6}
               py={3}
               cursor="pointer"
+              borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}

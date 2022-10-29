@@ -24,6 +24,10 @@ import {
   FormControl,
   FormLabel,
   Input,
+  IconButton,
+  Icon,
+  InputGroup,
+  InputLeftElement,
 
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
@@ -31,6 +35,8 @@ import { AppDispatch } from "../redux/rootStore";
 import { listProductDetails, updateProduct } from '../redux/actions/productsActions';
 import { ProductDetailPreview } from "./ProductDetailPreview";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { RiImageAddLine } from "react-icons/ri";
 
 export function UpdateProduct() {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,20 +50,20 @@ export function UpdateProduct() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [imagesPreview, setImagesPreview] = useState<any[]>(product?.image || []);
+  const [featureLocal, setFeatures] = useState<any[]>(product?.feature || []);
   const [description, setDescription] = useState(product?.description || "");
   const [category, setCategory] = useState(product?.category || "");
   const [discount, setDiscount] = useState(product?.discount || 0);
+  const [image, setImages] = useState<any[]>(product?.image || []);
   const [featureOptions, setFeatureOptions] = useState<any[]>([]);
   const [offer, setOffer] = useState<any[]>(product?.offer || []);
-  const [image, setImages] = useState<any[]>(product?.image || []);
+  const [tagLocal, setTags] = useState<any[]>(product?.tag || []);
   const [tagOptions, setTagOptions] = useState<any[]>([]);
   const [stock, setStock] = useState(product?.stock || 0);
   const [price, setPrice] = useState(product?.price || 0);
   const [brand, setBrand] = useState(product?.brand || "");
   const [name, setName] = useState(product?.name || "");
-  const [featureLocal, setFeatures] = useState([]);
   const [isCharge, setIsCharge] = useState(false)
-  const [tagLocal, setTags] = useState([]);
 
   if (!isCharge) {
     const featureOptions = feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
@@ -86,6 +92,13 @@ export function UpdateProduct() {
       };
       reader.readAsDataURL(_file);
     });
+
+  }
+  const deleteImagePreview = (index: number) => {
+    const newImagesPreview = imagesPreview.filter((item, i) => i !== index);
+    const newImages = image.filter((item, i) => i !== index);
+    setImagesPreview(newImagesPreview);
+    setImages(newImages);
   }
 
   const createFeature = (_feature: {
@@ -120,6 +133,8 @@ export function UpdateProduct() {
     localStorage.setItem("tags", JSON.stringify(_options));
   };
 
+
+
   const selectProduct = (e: any) => {
     dispatch(listProductDetails(e.value));
   };
@@ -149,18 +164,18 @@ export function UpdateProduct() {
     setOffer(product?.offer || [])
     setFeatures(product?.feature || [])
     setTags(product?.tag || [])
+    console.log(_product)
+    if (image.toString() !== product?.image.toString()) {
+      setImages(product?.image || [])
+      setImagesPreview(product?.image || [])
 
-    if(image.toString() !== product?.image.toString()){
-    setImages(product?.image || [])
-    setImagesPreview(product?.image || [])
+      // setTimeout(() => {
+      //   dispatch(updateProduct({ product: _product, sendToDB: false }));
+      // }, 50000);
 
-    // setTimeout(() => {
-    //   dispatch(updateProduct({ product: _product, sendToDB: false }));
-    // }, 50000);
+      localStorage.setItem("productUpdate", JSON.stringify(_product));
 
-    localStorage.setItem("productUpdate", JSON.stringify(_product));
-
-
+    }
     if (success) {
       toast({
         title: "Product updated.",
@@ -180,7 +195,7 @@ export function UpdateProduct() {
         isClosable: true,
       });
     }
-  }, [success, error, _product, dispatch, toast, product])
+  }, [product, success, error,]);
 
 
   const previewHandler = () => {
@@ -247,7 +262,7 @@ export function UpdateProduct() {
           align="center"
           px={6}
           py={4}
-          bg={useColorModeValue("gray.50", "gray.800")}
+          bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
           <FormControl id="selector" isRequired>
             <FormLabel>Select Product</FormLabel>
@@ -461,13 +476,15 @@ export function UpdateProduct() {
           </FormControl>
         </Flex>
 
-        <Flex
+        <VStack
+
           justify="space-between"
           align="center"
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
+
           <FormControl id="images" >
             <FormLabel>Images</FormLabel>
             <Text
@@ -481,45 +498,63 @@ export function UpdateProduct() {
               Add up to 3 images for better results.
               All formats are accepted, but we recommend using PNG.
             </Text>
-            <Input
-              type="file"
-              name="images"
+
+            <InputGroup
+              size="md"
               bg={useColorModeValue("alphaWhite", "gray.800")}
-              multiple
-              onChange={(e) => createProductImagesChange(e)}
-            />
+              borderRadius="md"
+              color="gray.500"
+              fontSize="sm"
+              fontWeight="medium"
+              lineHeight="short"
+
+            >
+              <InputLeftElement
+                pointerEvents="none"
+              ><Icon as={RiImageAddLine} color="gray.300" /></InputLeftElement>
+              <Input
+                type="file"
+                placeholder="Upload image"
+                multiple
+                sx={{
+                  "::file-selector-button": {
+                    height: 10,
+                    padding: 0,
+                    mr: 4,
+                    background: "none",
+                    border: "none",
+                    fontWeight: "bold",
+                  },
+                }}
+                onChange={(e) => {
+                  createProductImagesChange(e)
+                }}
+              />
+            </InputGroup>
           </FormControl>
-        </Flex>
-        {imagesPreview.length && (
-          <Flex
-            justify="space-between"
-            align="center"
-            px={6}
-            py={4}
-            bg={useColorModeValue("gray.50", "gray.700")}
-            borderBottomWidth="1px">
-            <FormControl id="images">
-              <FormLabel>Images Preview</FormLabel>
-              <SimpleGrid columns={3} spacing={4} w="full">
-                {imagesPreview.map((img, index) => {
-                  if (img !== null) {
-                    return (
-                      <Image
-                        key={index}
-                        src={
-                          img.url ||
-                          img?.toString()}
-                        h="100px"
-                        w="100px"
-                        objectFit="cover"
-                      />
-                    )
-                  }
-                })}
-              </SimpleGrid>
-            </FormControl>
-          </Flex>
-        )}
+
+          <SimpleGrid columns={3} spacing={4} w="full">
+            {imagesPreview.map((img, index) => {
+              return (
+                <Box key={index} w="full" h="full" position="relative">
+                  <Image src={
+                    img.url ? img.url : img
+                  } w="full" h="full" objectFit="cover" />
+                  <IconButton
+                    aria-label="Delete Image"
+                    icon={<DeleteIcon />}
+                    position="absolute"
+                    top={2}
+                    right={2}
+                    colorScheme="red"
+                    onClick={() => deleteImagePreview(index)}
+                  />
+                </Box>
+              )
+            })}
+          </SimpleGrid>
+
+        </VStack>
         <Flex
           justify="space-between"
           align="center"

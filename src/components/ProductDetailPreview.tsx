@@ -126,8 +126,10 @@ export function ProductDetailPreview({ product }: any) {
             </Badge>
           </Text>
           {
-            product.offer[0].value === "discount" ||
-              product.offer[1].value === "discount" ?
+            product.offer[0]?.value === "discount" ||
+              product.offer[1]?.value === "discount" ||
+              product.offer[2]?.value === "discount"
+              ?
               <Text
                 fontSize="lg"
                 color="gray.600"
@@ -199,8 +201,10 @@ export function ProductDetailPreview({ product }: any) {
               fontSize={{ base: "sm", sm: "md", lg: "lg" }}
             >
 
-              {product.offer[0].value === "freeShipping" ||
-                product.offer[1].value === "freeShipping" ?
+              {product.offer[0]?.value === "freeShipping" ||
+                product.offer[1]?.value === "freeShipping" ||
+                product.offer[2]?.value === "freeShipping"
+                ?
                 "Free shipping" : "Delivery in 72hs"}
 
             </Text>
@@ -228,7 +232,7 @@ export function ProductDetailPreview({ product }: any) {
             h="full"
             p={5}
           >
-            {product.feature.map((f: { value: string }, index: number) => (
+            {product.feature?.map((f: { value: string }, index: number) => (
               <Box
                 key={index}
                 w="full"
@@ -307,7 +311,7 @@ export function ProductDetailPreview({ product }: any) {
             h="full"
             p={5}
           >
-            {product.tag.map((t: { value: string }, index: number) => (
+            {product.tag?.map((t: { value: string }, index: number) => (
               <Box
                 key={index}
                 p={1}
