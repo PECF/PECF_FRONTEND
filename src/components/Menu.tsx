@@ -87,7 +87,9 @@ export default function Acordion() {
                   colorScheme="teal"
                   variant="ghost"
                   size="md"
-                  onClick={toggleColorMode} aria-label={""}                ></IconButton>
+                  onClick={toggleColorMode}
+                  aria-label={""}
+                ></IconButton>
               </MenuItem>
             </MenuList>
             {/* <Button
@@ -142,7 +144,9 @@ export default function Acordion() {
                   colorScheme="teal"
                   variant="ghost"
                   size="sm"
-                  onClick={toggleColorMode} aria-label={""}                ></IconButton>
+                  onClick={toggleColorMode}
+                  aria-label={""}
+                ></IconButton>
                 <Text>{text}</Text>
               </MenuItem>
             </MenuList>
