@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CreatableSelect, MultiValue } from "chakra-react-select";
+import { CreatableSelect, Select } from "chakra-react-select";
 import {
   Text,
   Box,
@@ -23,24 +23,35 @@ import {
   Heading,
   useColorModeValue,
   Textarea,
+  Grid,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { createProduct } from "../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { FirstSlider } from '../constant/Home';
 export function CreateProduct() {
-  const dispatch = useDispatch<AppDispatch>();
-
   const { loading, success, error, product } = useRecoveryData("productCreate");
   const { feature } = useRecoveryData("productFeature");
   const { tags } = useRecoveryData("productTag");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const dispatch = useDispatch<AppDispatch>();
 
+  const [imagesPreview, setImagesPreview] = useState<any[]>(product?.image || []);
+  const [description, setDescription] = useState(product?.description || "");
+  const [category, setCategory] = useState(product?.category || "");
+  const [discount, setDiscount] = useState(product?.discount || 0);
   const [featureOptions, setFeatureOptions] = useState<any[]>([]);
+  const [offer, setOffer] = useState<any[]>(product?.offer || []);
+  const [image, setImages] = useState<any[]>(product?.image || []);
   const [tagOptions, setTagOptions] = useState<any[]>([]);
-  const [isCharge, setIsCharge] = useState(false)
+  const [stock, setStock] = useState(product?.stock || 0);
+  const [price, setPrice] = useState(product?.price || 0);
+  const [brand, setBrand] = useState(product?.brand || "");
+  const [name, setName] = useState(product?.name || "");
   const [featureLocal, setFeatures] = useState([]);
+  const [isCharge, setIsCharge] = useState(false)
   const [tagLocal, setTags] = useState([]);
 
   if (!isCharge) {
@@ -73,7 +84,6 @@ export function CreateProduct() {
     localStorage.setItem("feature", JSON.stringify(_options));
   }
 
-
   const createTag = (_tags: {
     value: string;
     label: string;
@@ -90,32 +100,28 @@ export function CreateProduct() {
     localStorage.setItem("tags", JSON.stringify(_options));
   };
 
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast();
-  const [name, setName] = useState(product?.name);
-  const [category, setCategory] = useState(product?.category);
-  const [description, setDescription] = useState(product?.description);
-  const [price, setPrice] = useState(product?.price);
-  const [stock, setStock] = useState(product?.stock);
-
-  const [image, setImages] = useState<any[]>(product?.image);
-  const [imagesPreview, setImagesPreview] = useState<any[]>(product?.image);
-
   const _product = {
     name,
     category,
     description,
     price,
     stock,
-    featureLocal,
-    tagLocal,
+    discount,
+    offer,
+    brand,
+    feature: featureLocal,
+    tag: tagLocal,
     image,
+    createdAt: new Date().toISOString(),
   };
 
-
   useEffect(() => {
+    setTimeout(() => {
+      dispatch(createProduct({ product: _product, sendToDB: false }));
+    }, 50000);
+
     localStorage.setItem("productCreate", JSON.stringify(_product));
+
     if (success) {
       toast({
         title: "Product created.",
@@ -124,6 +130,7 @@ export function CreateProduct() {
         duration: 9000,
         isClosable: true,
       });
+
     }
     if (error) {
       toast({
@@ -134,7 +141,7 @@ export function CreateProduct() {
         isClosable: true,
       });
     }
-  }, [success, error]);
+  }, [success, error, _product, dispatch, toast]);
 
 
   const createProductImagesChange = (e: any) => {
@@ -154,13 +161,12 @@ export function CreateProduct() {
     });
   }
 
-
-
   const previewHandler = () => {
     if (
       name === "" ||
       category === "" ||
       description === "" ||
+      brand === "" ||
       price === "" ||
       stock === "" ||
       tagLocal.length === 0 ||
@@ -181,25 +187,11 @@ export function CreateProduct() {
 
 
   const submitHandler = (e: any) => {
-    e.preventDefault();
-
-
-    console.log(_product)
-
-
-    // dispatch(
-    //   createProduct({
-    //     name,
-    //     category,
-    //     description,
-    //     price,
-    //     stock,
-    //   })
-    // );
+    e.preventDefault()
+    dispatch(
+      createProduct({ product: _product, sendToDB: true })
+    );
   };
-
-
-
 
   return (
     <Box
@@ -236,15 +228,33 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
+          <FormControl id="name" isRequired>
+            <FormLabel>Name</FormLabel>
+            <Input
+              type="text"
+              placeholder="Samsung Galaxy Fold 4"
+              bg={useColorModeValue("alphaWhite", "gray.800")}
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </FormControl>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}
+          borderBottomWidth="1px">
           <SimpleGrid columns={2} spacing={4} w="full">
-            <FormControl id="name" isRequired>
-              <FormLabel>Name</FormLabel>
+            <FormControl id="brand" isRequired>
+              <FormLabel>Brand</FormLabel>
               <Input
                 type="text"
-                placeholder="Samsung Galaxy Fold 4"
+                placeholder="Samsung"
                 bg={useColorModeValue("alphaWhite", "gray.800")}
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={brand}
+                onChange={(e) => setBrand(e.target.value)}
               />
             </FormControl>
             <FormControl id="category" isRequired>
@@ -306,6 +316,44 @@ export function CreateProduct() {
             />
           </FormControl>
         </Flex>
+        <Grid
+          templateColumns={{
+            base: "1fr",
+            md: "repeat(2, 1fr)",
+          }}
+          gap={6}
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.700")}>
+          <FormControl id="offer" isRequired>
+            <FormLabel>Offer</FormLabel>
+            <Select
+              isMulti
+              colorScheme="teal"
+              placeholder="Select offer"
+              value={offer}
+              onChange={(e: any) => setOffer(e)}
+              options=
+              {[
+                { value: "none", label: "None" },
+                { value: "discount", label: "Discount" },
+                { value: "freeShipping", label: "Free Shipping" },
+              ]}
+            />
+          </FormControl>
+          <FormControl id="offerValue" isRequired>
+            <FormLabel>Discount Value</FormLabel>
+            <Input
+              type="number"
+              bg={useColorModeValue("alphaWhite", "gray.800")}
+              placeholder="10"
+              value={discount}
+              onChange={(e) => setDiscount(e.target.value)}
+            />
+          </FormControl>
+        </Grid>
+
+
         <Flex
           justify="space-between"
           align="center"
@@ -313,7 +361,7 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <FormControl id="Features" >
+          <FormControl id="Features" isRequired>
             <FormLabel>Features</FormLabel>
             <Text
               bg={useColorModeValue("gray.50", "gray.700")}
@@ -344,7 +392,7 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <FormControl id="tags" >
+          <FormControl id="tags" isRequired>
             <FormLabel>Tags</FormLabel>
             <Text
               bg={useColorModeValue("gray.50", "gray.700")}
@@ -469,7 +517,3 @@ export function CreateProduct() {
     </Box>
   );
 }
-
-
-
-

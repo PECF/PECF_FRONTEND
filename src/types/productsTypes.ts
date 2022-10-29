@@ -35,6 +35,12 @@ export enum ProductCreateActionTypes {
   PRODUCT_CREATE_SUCCESS = "PRODUCT_CREATE_SUCCESS",
   PRODUCT_CREATE_FAILURE = "PRODUCT_CREATE_FAILURE",
   PRODUCT_CREATE_RESET = "PRODUCT_CREATE_RESET",
+  PRODUCT_CREATE_PREVIEW = "PRODUCT_CREATE_PREVIEW",
+}
+
+export interface ProductCreatePreviewAction {
+  type: ProductCreateActionTypes.PRODUCT_CREATE_PREVIEW;
+  payload?: any;
 }
 
 export interface ProductCreateRequestAction {
@@ -59,7 +65,10 @@ export type ProductCreateAction =
   | ProductCreateRequestAction
   | ProductCreateSuccessAction
   | ProductCreateFailureAction
-  | ProductCreateResetAction;
+  | ProductCreateResetAction
+  | ProductCreatePreviewAction;
+
+
 
 export interface ProductCreateReviewState {
   success?: boolean;

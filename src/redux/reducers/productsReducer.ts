@@ -131,12 +131,15 @@ export const productCreateReducer = (
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS:
       return {
-        loading: false, success: true, product: action.payload,
+        loading: false,
+        success: true,
+        product: action.payload,
         error: initialProductCreateState.error
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_FAILURE:
       return {
-        loading: false, error: action.payload,
+        loading: false,
+        error: action.payload,
         success: initialProductCreateState.success,
         product: initialProductCreateState.product,
       };
@@ -147,6 +150,14 @@ export const productCreateReducer = (
         product: initialProductCreateState.product,
         error: initialProductCreateState.error
       };
+    case ProductCreateActionTypes.PRODUCT_CREATE_PREVIEW:
+      return {
+        loading: initialProductCreateState.loading,
+        success: initialProductCreateState.success,
+        product: action.payload,
+        error: initialProductCreateState.error
+      };
+
     default:
       return state;
   }

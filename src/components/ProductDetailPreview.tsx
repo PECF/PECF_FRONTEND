@@ -16,30 +16,20 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
 import { CarouselDetailProducts } from "./carouselDetailProductPreview";
-import { Image } from '@chakra-ui/react';
 
 export function ProductDetailPreview({ product }: any) {
-  const { name,
-    category,
-    description,
-    price,
-    feature,
-    tags,
-    image, } = product;
-
-
+  console.log(product)
   return (
     <Center
       py={
         {
           base: 1,
           md: 10,
-
         }
       }
       bg={useColorModeValue("gray.50", "gray.800")}
     >
-      <VStack
+      < VStack
         w="full"
         maxW="7xl"
         mx="auto"
@@ -58,7 +48,7 @@ export function ProductDetailPreview({ product }: any) {
             fontWeight="extrabold"
             textAlign={{ base: "left", md: "left" }}
             p={2}>
-            {name}
+            {product.name}
           </Heading>
           <HStack
             spacing={2}
@@ -82,7 +72,7 @@ export function ProductDetailPreview({ product }: any) {
               reviews
             </Box>
           </HStack>
-        </Grid >
+        </Grid>
         <Stack
           direction={{ base: "column", md: "row" }}
           w="full"
@@ -101,13 +91,65 @@ export function ProductDetailPreview({ product }: any) {
               py="1"
               fontSize="md"
             >
-              {category}
+              {product.category}
             </Badge>
           </Text>
+          <Text
+            fontSize="lg"
+            color="gray.600"
+            textAlign="center"
+            display={{ base: "none", md: "block" }}
+          >
+            <Badge
+              colorScheme="teal"
+              borderRadius="full"
+              px="4"
+              py="1"
+              fontSize="md"
+            >
+              {product?.brand}
+            </Badge>
+          </Text>
+          <Text
+            fontSize="lg"
+            color="gray.600"
+            textAlign="center"
+            display={{ base: "none", md: "block" }}
+          >
+            <Badge
+              colorScheme="teal"
+              borderRadius="full"
+              px="4"
+              py="1"
+              fontSize="md"
+            >
+              only {product?.stock} units
+            </Badge>
+          </Text>
+          {
+            product.offer[0].value === "discount" ||
+              product.offer[1].value === "discount" ?
+              <Text
+                fontSize="lg"
+                color="gray.600"
+                textAlign="center"
+                display={{ base: "none", md: "block" }}
+              >
+                <Badge
+                  colorScheme="teal"
+                  borderRadius="full"
+                  px="4"
+                  py="1"
+                  fontSize="md"
+                >
+                  {`${product.discount}% OFF`}
+                </Badge>
+              </Text>
+              : null
+          }
+
         </Stack>
-
-        <CarouselDetailProducts image={image} />
-
+        <CarouselDetailProducts image={product.image} />
         <Stack
           w="100%"
           h="full"
@@ -121,7 +163,7 @@ export function ProductDetailPreview({ product }: any) {
             fontWeight={600}
             fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
           >
-            {price}€
+            {product.price}€
           </Text>
           <Button
             w="full"
@@ -154,9 +196,16 @@ export function ProductDetailPreview({ product }: any) {
               ml={2}
               color={useColorModeValue("gray.900", "gray.400")}
               fontWeight={600}
+
               fontSize={{ base: "sm", sm: "md", lg: "lg" }}
             >
-              2-3 business days delivery</Text>
+
+              {product.offer[0].value === "freeShipping" ||
+                product.offer[1].value === "freeShipping" ?
+                "Free shipping" : "Delivery in 72hs"}
+
+            </Text>
+
           </Stack>
         </Stack>
         <Box
@@ -180,14 +229,14 @@ export function ProductDetailPreview({ product }: any) {
             h="full"
             p={5}
           >
-            {feature.map((f: { value: string }, index: number) => (
+            {product.feature.map((f: { value: string }, index: number) => (
               <Box
                 key={index}
                 w="full"
                 h="full"
                 p={1}
                 bg={useColorModeValue("gray.50", "gray.800")}
-                rounded="0"
+                rounded="xl"
                 alignContent={"center"}
                 justifyContent={"center"}
                 alignItems={"center"}
@@ -235,7 +284,7 @@ export function ProductDetailPreview({ product }: any) {
             align={"center"}
             textAlign="justify"
           >
-            {description}
+            {product.description}
           </Text>
         </Box>
         <Box
@@ -259,12 +308,12 @@ export function ProductDetailPreview({ product }: any) {
             h="full"
             p={5}
           >
-            {tags.map((t: { value: string }, index: number) => (
+            {product.tag.map((t: { value: string }, index: number) => (
               <Box
                 key={index}
                 p={1}
                 bg={useColorModeValue("gray.50", "gray.800")}
-                rounded="0"
+                rounded="xl"
                 shadow="lg"
                 cursor="pointer"
                 _hover={{
@@ -286,6 +335,7 @@ export function ProductDetailPreview({ product }: any) {
           </SimpleGrid>
         </Box>
       </VStack>
+
     </Center>
   );
 }
