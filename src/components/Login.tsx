@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAuth0 } from "@auth0/auth0-react"
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { login } from "../redux/actions/authActions";
@@ -29,6 +30,7 @@ export const Login = () => {
   const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState("");
+  const [authing, setAuthing] = useState(false);
   const send = useToast();
 
   useEffect(() => {
@@ -43,6 +45,8 @@ export const Login = () => {
     }
   }, [error]);
 
+  const { loginWithRedirect } = useAuth0();
+
   const submitHandler = () => {
     if (emailRegex.test(email)) {
       dispatch(login(email, password));
@@ -53,7 +57,6 @@ export const Login = () => {
         duration: 9000,
         isClosable: true,
       });
-      onClose();
     } else {
       send({
         title: "Error",
@@ -67,7 +70,7 @@ export const Login = () => {
 
   return (
     <Box>
-      <Button mr={3} colorScheme="teal" variant="solid" onClick={onOpen}>
+      <Button mr={3} colorScheme="teal" variant="solid" onClick={() => loginWithRedirect()}>
         Log In
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="md">
@@ -106,8 +109,7 @@ export const Login = () => {
             <Button
               colorScheme="teal"
               variant="solid"
-              mr={3}
-              onClick={submitHandler}>
+              mr={3}>
               Log In
             </Button>
           </ModalFooter>

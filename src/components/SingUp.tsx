@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-
+import { useAuth0 } from "@auth0/auth0-react"
 import {
   Button,
   Modal,
@@ -36,26 +36,7 @@ export function SingUp() {
 
   const send = useToast();
 
-  const handleSubmit = () => {
-    if (emailRegex.test(email)) {
-      dispatch(register(name, email, password));
-      send({
-        title: "Success",
-        description: "You have successfully registered",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      send({
-        title: "Invalid email or password",
-        description: "Please enter a valid email or password",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
+  const { loginWithRedirect } = useAuth0();
 
   useEffect(() => {
     if (error) {
@@ -69,15 +50,37 @@ export function SingUp() {
     }
   }, [error]);
 
+  const handleSubmit = () => {
+    if (emailRegex.test(email)) {
+      dispatch(register(name, email, password));
+      return send({
+        title: "Success",
+        description: "You have successfully registered",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      return send({
+        title: "Invalid email or password",
+        description: "Please enter a valid email or password",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
+
   return (
     <Box>
-      <Button colorScheme="teal" variant="solid" onClick={onOpen}>
-        Sing Up
+      <Button colorScheme="teal" variant="solid" onClick={() => loginWithRedirect()}>
+        Sign Up
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Sing Up</ModalHeader>
+          <ModalHeader>Sign Up</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
@@ -113,7 +116,7 @@ export function SingUp() {
               variant="solid"
               mr={3}
               onClick={handleSubmit}>
-              Sing Up
+              Sign Up
             </Button>
           </ModalFooter>
         </ModalContent>

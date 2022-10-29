@@ -213,7 +213,7 @@ export function EditProfile() {
                 </FormControl>
               </Grid>
             </Box>
-
+            </Grid>
           </VStack>
         </Box>
       </VStack>

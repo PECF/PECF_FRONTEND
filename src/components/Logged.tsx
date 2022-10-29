@@ -12,7 +12,6 @@ import { SingUp } from "./SingUp";
 import { Login } from "./Login";
 import Cart from "./Cart";
 import React from "react";
-
 import {
   Box,
   Flex,
@@ -25,15 +24,16 @@ import {
   MenuItem,
   useToast,
 } from "@chakra-ui/react";
-
+import { useAuth0 } from "@auth0/auth0-react"
 export function Logged() {
-  const { user } = useRecoveryData("userDetails");
+  const { isAuthenticated } = useAuth0();
+  const { user } = useAuth0();
   const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
+  const { logout } = useAuth0()
 
   const logoutHandler = () => {
-    dispatch(logout());
     send({
       title: "Success",
       description: "You are logged out",
@@ -45,7 +45,7 @@ export function Logged() {
   return (
     <Box>
       <Flex gap={6} alignItems="center" justifyContent="center">
-        {!userInfo ? (
+        {!isAuthenticated ? (
           <>
             <Login />
             <SingUp />
@@ -60,7 +60,7 @@ export function Logged() {
                 cursor={"pointer"}>
                 <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
                   <Text>{user?.name}</Text>
-                  <Avatar size={"sm"} src={user?.avatar?.url} />
+                  <Avatar size={"sm"} src={user?.picture} />
                 </Flex>
               </MenuButton>
               <MenuList>
@@ -72,7 +72,7 @@ export function Logged() {
                   <IoBagCheckOutline />
                   <Text ml="2">Orders</Text>
                 </MenuItem>
-                <MenuItem onClick={logoutHandler}>
+                <MenuItem onClick={() => logout()}>
                   <MdLogout />
                   <Text ml="2">Log Out</Text>
                 </MenuItem>
