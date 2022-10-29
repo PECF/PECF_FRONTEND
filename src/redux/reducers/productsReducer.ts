@@ -23,6 +23,9 @@ import {
   productFeatureAction,
   ProductFeatureState,
   ProductFeatureActionTypes,
+  productTagAction,
+  ProductTagState,
+  ProductTagActionTypes,
 
 } from "../../types/productsTypes";
 
@@ -260,3 +263,29 @@ export const productFeature = (
       return state;
   }
 }
+
+const initialProductTagState: ProductTagState = {
+  tag: [],
+};
+
+export const productTag = (
+  state: ProductTagState = initialProductTagState,
+  action: productTagAction
+) => {
+  switch (action.type) {
+    case ProductTagActionTypes.PRODUCT_TAG_REQUEST:
+      return { feature: [] };
+    case ProductTagActionTypes.PRODUCT_TAG_SUCCESS:
+      return {
+        feature: action.payload,
+      };
+    case ProductTagActionTypes.PRODUCT_TAG_FAILURE:
+      return {
+        feature: [],
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+

@@ -311,3 +311,39 @@ export type ProductFeatureAction =
   | ProductFeatureSuccessAction
   | ProductFeatureFailureAction;
 
+
+
+export interface productTagAction {
+  type: string;
+  payload: string;
+}
+
+export interface ProductTagState {
+  tag: string[];
+}
+
+export enum ProductTagActionTypes {
+  PRODUCT_TAG_REQUEST = "PRODUCT_TAG_REQUEST",
+  PRODUCT_TAG_SUCCESS = "PRODUCT_TAG_SUCCESS",
+  PRODUCT_TAG_FAILURE = "PRODUCT_TAG_FAILURE"
+}
+
+export interface ProductTagRequestAction {
+  type: ProductTagActionTypes.PRODUCT_TAG_REQUEST;
+}
+
+export interface ProductTagSuccessAction {
+  type: ProductTagActionTypes.PRODUCT_TAG_SUCCESS;
+  payload: string[];
+}
+
+export interface ProductTagFailureAction {
+  type: ProductTagActionTypes.PRODUCT_TAG_FAILURE;
+  payload: any;
+}
+
+export type ProductTagAction =
+  | ProductTagRequestAction
+  | ProductTagSuccessAction
+  | ProductTagFailureAction;
+

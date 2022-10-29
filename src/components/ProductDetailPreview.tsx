@@ -188,6 +188,11 @@ export function ProductDetailPreview({ product }: any) {
                 p={1}
                 bg={useColorModeValue("gray.50", "gray.800")}
                 rounded="0"
+                alignContent={"center"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                alignSelf={"center"}
+                textAlign={"center"}
                 shadow="lg"
                 cursor="pointer"
                 _hover={{
@@ -200,6 +205,7 @@ export function ProductDetailPreview({ product }: any) {
                   color={useColorModeValue("teal.500", "teal.300")}
                   fontWeight={"500"}
                   align={"center"}
+                  textAlign={"center"}
                   textTransform={"uppercase"}
                 >
                   {f.value}

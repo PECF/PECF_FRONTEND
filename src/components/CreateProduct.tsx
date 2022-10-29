@@ -1,4 +1,4 @@
-import React, { useState, useEffect, SetStateAction } from "react";
+import React, { useState, useEffect } from "react";
 import { CreatableSelect, MultiValue } from "chakra-react-select";
 import {
   Text,
@@ -31,7 +31,55 @@ import { ProductDetailPreview } from "./ProductDetailPreview";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 export function CreateProduct() {
   const dispatch = useDispatch<AppDispatch>();
+
   const { loading, success, error, product } = useRecoveryData("productCreate");
+  const { feature } = useRecoveryData("productFeature");
+  const { tags } = useRecoveryData("productTag");
+
+  const [featureOptions, setFeatureOptions] = useState<any[]>([]);
+  const [tagOptions, setTagOptions] = useState<any[]>([]);
+  const [isCharge, setIsCharge] = useState(false)
+  const [featureLocal, setFeatures] = useState([]);
+  const [tagLocal, setTags] = useState([]);
+
+  if (!isCharge) {
+    setFeatureOptions(feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })))
+    setTagOptions(tags?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })))
+    setIsCharge(true)
+  }
+
+  const createFeature = (_feature: {
+    value: string;
+    label: string;
+  }[]) => {
+    const newFeature = _feature.map((item: {
+      value: string;
+      label: string;
+    }) => ({
+      value: item.value,
+      label: item.label,
+    }));
+    const _options = [...featureOptions, ...newFeature];
+    setFeatureOptions(_options);
+    localStorage.setItem("feature", JSON.stringify(_options));
+  }
+
+
+  const createTag = (_tags: {
+    value: string;
+    label: string;
+  }[]) => {
+    const newTags = _tags.map((item: {
+      value: string;
+      label: string;
+    }) => ({
+      label: item.label,
+      value: item.value,
+    }));
+    const _options = [...tagOptions, ...newTags]
+    setTagOptions(_options);
+    localStorage.setItem("tags", JSON.stringify(_options));
+  };
 
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,25 +89,24 @@ export function CreateProduct() {
   const [description, setDescription] = useState(product?.description);
   const [price, setPrice] = useState(product?.price);
   const [stock, setStock] = useState(product?.stock);
-  const [tags, setTags] = useState(product?.tags);
-  const [feature, setFeatures] = useState(product?.feature);
+
   const [image, setImages] = useState<any[]>(product?.image);
-  const [imagesPreview, setImagesPreview] = useState<any[]>([null]);
+  const [imagesPreview, setImagesPreview] = useState<any[]>(product?.image);
+
   const _product = {
     name,
     category,
     description,
     price,
     stock,
-    feature,
-    tags,
+    featureLocal,
+    tagLocal,
     image,
   };
 
+
   useEffect(() => {
-
     localStorage.setItem("productCreate", JSON.stringify(_product));
-
     if (success) {
       toast({
         title: "Product created.",
@@ -78,8 +125,7 @@ export function CreateProduct() {
         isClosable: true,
       });
     }
-  }, [success, error, _product, tags,]);
-
+  }, [success, error]);
 
 
   const createProductImagesChange = (e: any) => {
@@ -107,7 +153,10 @@ export function CreateProduct() {
       category === "" ||
       description === "" ||
       price === "" ||
-      stock === ""
+      stock === "" ||
+      tagLocal.length === 0 ||
+      featureLocal.length === 0 ||
+      image.length === 0
     ) {
       toast({
         title: "Error",
@@ -122,7 +171,11 @@ export function CreateProduct() {
   };
 
 
-  const submitHandler = () => {
+  const submitHandler = (e: any) => {
+    e.preventDefault();
+
+
+    console.log(_product)
 
 
     // dispatch(
@@ -148,7 +201,10 @@ export function CreateProduct() {
       mx="auto"
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden"
-      onSubmit={submitHandler}>
+      rounded="lg"
+      shadow="base"
+      onSubmit={submitHandler}
+    >
       <VStack align="stretch" spacing={0}>
         <Flex
           justify="space-between"
@@ -241,7 +297,6 @@ export function CreateProduct() {
             />
           </FormControl>
         </Flex>
-
         <Flex
           justify="space-between"
           align="center"
@@ -263,15 +318,13 @@ export function CreateProduct() {
             </Text>
             <CreatableSelect selectedOptionColor="purple"
               isMulti
-              onChange={(e: any) => setFeatures(e)}
+              onChange={(e: any) => {
+                setFeatures(e)
+                createFeature(e)
+              }}
               placeholder="Add Features"
               colorScheme="teal"
-            // options={
-            //   feature.map((f: any) => ({
-            //     value: f.value,
-            //     label: f.label,
-            //   }))
-
+              options={featureOptions || []}
             />
           </FormControl>
         </Flex>
@@ -298,10 +351,12 @@ export function CreateProduct() {
               selectedOptionColor="purple"
               colorScheme="teal"
               isMulti
-              onChange={(e: any) => setTags(e)}
+              onChange={(e: any) => {
+                setTags(e)
+                createTag(e)
+              }}
               placeholder="Add tags"
-            // options={TagsOptions}
-            />
+              options={tagOptions || []} />
           </FormControl>
         </Flex>
 
@@ -362,8 +417,6 @@ export function CreateProduct() {
             </FormControl>
           </Flex>
         )}
-
-
         <Flex
           justify="space-between"
           align="center"
@@ -373,7 +426,7 @@ export function CreateProduct() {
           borderBottomWidth="1px">
           <Button type="submit" colorScheme="teal" mr={3}
             isLoading={loading}
-            onClick={submitHandler}
+            onClick={() => submitHandler}
           >
             Create
           </Button>
