@@ -18,7 +18,6 @@ import { MdLocalShipping } from "react-icons/md";
 import { CarouselDetailProducts } from "./carouselDetailProductPreview";
 
 export function ProductDetailPreview({ product }: any) {
-  console.log(product)
   return (
     <Center
       py={

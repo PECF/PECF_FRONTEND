@@ -202,7 +202,6 @@ export function CreateProduct() {
       mx="auto"
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden"
-      rounded="lg"
       shadow="base"
       onSubmit={submitHandler}
     >

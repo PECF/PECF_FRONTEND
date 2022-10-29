@@ -222,7 +222,6 @@ export const updateUserProfile =
             user
             , config);
 
-          console.log(data)
 
           dispatch({
             type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS,

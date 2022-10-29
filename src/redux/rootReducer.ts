@@ -47,12 +47,12 @@ export const rootReducer = combineReducers<ReduxState>({
   // orderListMy: orderListMyReducer,
   // orderDeliver: orderDeliverReducer,
   // orderDetails: orderDetailsReducer,
+  productTag: productTag,
+  productFeature: productFeature,
   productList: productListReducer,
   productCreate: productCreateReducer,
-  productFeature: productFeature,
-  productTag: productTag,
   // productDelete: productDeleteReducer,
-  // productUpdate: productUpdateReducer,
+  productUpdate: productUpdateReducer,
   productDetails: productDetailsReducer,
   // productTopRated: productTopRatedReducer,
   // productCreateReview: productCreateReducer,
@@ -86,9 +86,6 @@ const productTagsFromLocalStorage = localStorage.getItem("tags")
 const productFeaturesFromLocalStorage = localStorage.getItem("feature")
   ? JSON.parse(localStorage.getItem("feature") as string)
   : [];
-
-console.log(productFeaturesFromLocalStorage)
-console.log(productTagsFromLocalStorage)
 
 export const initialState = {
   cart: {

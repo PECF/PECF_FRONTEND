@@ -139,7 +139,7 @@ export type ProductDeleteAction =
 export interface ProductDetailsState {
   loading: boolean;
   product?: Product;
-  error?: undefined;
+  error?: undefined | boolean;
 }
 
 export enum ProductDetailsActionTypes {

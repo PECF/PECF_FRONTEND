@@ -11,7 +11,6 @@ import {
 import axios from "axios";
 import { AppThunk } from "../rootStore";
 import { errorHandler } from "./errorHandler";
-import sendToken from '../../../../PECF_BACKEND/src/utils/jwtToken.utils';
 
 /**
  * List Products action creator
@@ -45,11 +44,10 @@ export const listProductDetails =
       try {
         dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST });
 
-        const { data } = await axios.get(`/api/products/${id}`);
-
+        const { data } = await axios.get(`/product/${id}`);
         dispatch({
           type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS,
-          payload: data,
+          payload: data.product,
         });
       } catch (error) {
         dispatch({
@@ -128,10 +126,9 @@ export const createProduct =
 
             const { data } = await axios.post(`/admin/product/new`, product, config);
 
-            console.log(data)
             dispatch({
               type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,
-              payload: data,
+              payload: data.newProduct,
             });
           }
 

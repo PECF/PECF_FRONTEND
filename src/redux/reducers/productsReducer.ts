@@ -64,6 +64,8 @@ export const productListReducer = (
 
 const initialProductDetailsState: ProductDetailsState = {
   loading: false,
+  product: undefined,
+  error: false,
 };
 
 /**
@@ -75,11 +77,23 @@ export const productDetailsReducer = (
 ) => {
   switch (action.type) {
     case ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST:
-      return { loading: true, product: initialProductDetailsState.product };
+      return {
+        loading: true,
+        product: initialProductDetailsState.product,
+        error: false
+      };
     case ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS:
-      return { loading: false, product: action.payload };
+      return {
+        loading: false,
+        product: action.payload,
+        error: false
+      };
     case ProductDetailsActionTypes.PRODUCT_DETAILS_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false,
+        error: action.payload,
+        product: undefined
+      };
     default:
       return state;
   }
@@ -165,6 +179,9 @@ export const productCreateReducer = (
 
 const initialProductUpdateState: ProductUpdateState = {
   loading: false,
+  success: false,
+  error: null,
+  product: undefined,
 };
 
 /**
@@ -176,13 +193,33 @@ export const productUpdateReducer = (
 ) => {
   switch (action.type) {
     case ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST:
-      return { loading: true };
+      return {
+        loading: true,
+        success: false,
+        product: initialProductUpdateState.product,
+        error: null
+      };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return {
+        loading: false,
+        success: true,
+        product: action.payload,
+        error: null
+      };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+        product: initialProductUpdateState.product,
+      };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_RESET:
-      return {};
+      return {
+        loading: initialProductUpdateState.loading,
+        success: initialProductUpdateState.success,
+        product: initialProductUpdateState.product,
+        error: initialProductUpdateState.error
+      };
     default:
       return state;
   }
