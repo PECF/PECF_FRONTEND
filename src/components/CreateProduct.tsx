@@ -29,6 +29,7 @@ import { AppDispatch } from "../redux/rootStore";
 import { createProduct } from "../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { FirstSlider } from '../constant/Home';
 export function CreateProduct() {
   const dispatch = useDispatch<AppDispatch>();
 
@@ -43,8 +44,16 @@ export function CreateProduct() {
   const [tagLocal, setTags] = useState([]);
 
   if (!isCharge) {
-    setFeatureOptions(feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })))
-    setTagOptions(tags?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })))
+    const featureOptions = feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
+      return self.findIndex((t: { label: string; value: string }) => t.value === item.value) === index;
+    })
+
+    const tagOptions = tags?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
+      return self.findIndex((t: { label: string; value: string }) => t.value === item.value) === index;
+    })
+
+    setFeatureOptions(featureOptions)
+    setTagOptions(tagOptions)
     setIsCharge(true)
   }
 
