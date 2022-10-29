@@ -8,8 +8,6 @@ import {
   Heading,
   SimpleGrid,
   useColorModeValue,
-  List,
-  ListItem,
   Center,
   Badge,
   HStack,
@@ -18,115 +16,122 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
 import { CarouselDetailProducts } from "./carouselDetailProductPreview";
+import { Image } from '@chakra-ui/react';
 
 export function ProductDetailPreview({ product }: any) {
   const { name,
     category,
     description,
     price,
-    stock,
     feature,
     tags,
     image, } = product;
+
+
   return (
-    <Center>
-      <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
+    <Center
+      py={
+        {
+          base: 1,
+          md: 10,
+
+        }
+      }
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
+      <VStack
+        w="full"
+        maxW="7xl"
+        mx="auto"
+        rounded="lg"
+        shadow="lg"
+        overflow="hidden"
+      >
         <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-          }}
-          gap={6}
+          templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+          w="full"
+          h="full"
         >
           <Heading
-            fontWeight={400}
-            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
-          >
+            as="h1"
+            size="2xl"
+            fontWeight="extrabold"
+            textAlign={{ base: "left", md: "left" }}
+            p={2}>
             {name}
           </Heading>
-
           <HStack
-            spacing={1}
-            alignItems="center"
-            justifyContent={{
-              base: "center",
-              md: "flex-end",
-            }}>
+            spacing={2}
+            align="center"
+            justify={{ base: "left", md: "flex-end" }}
+            p={2}
+          >
             {Array(5)
               .fill("")
               .map((_, i) => (
                 <StarIcon
                   key={i}
-                //   color={i < /* product?.rating */
-                // ? 'teal.500' : 'gray.300'}
                 />
               ))}
-            <Box as="span" ml="2" color="gray.600" fontSize="lg">
+            <Box
+              as="span"
+              ml="2"
+              color="gray.600"
+              fontSize="lg"
+            >
               reviews
             </Box>
           </HStack>
         </Grid >
-
-
-
         <Stack
-          direction={{
-            base: "column",
-            md: "column",
-          }}
-          spacing={4}
-          alignItems={{
-            base: "center",
-            md: "flex-start",
-          }}
-          justifyContent="space-between"
-          mt={4}
-          width="100%">
-          <Text fontSize={"lg"} py={2}>
-
+          direction={{ base: "column", md: "row" }}
+          w="full"
+          h="full"
+          p={1}
+        >
+          <Text
+            fontSize="lg"
+            color="gray.600"
+            textAlign="center"
+          >
             <Badge
-              borderRadius="full"
-              px="2"
               colorScheme="teal"
-
-              fontSize={{ base: "sm", sm: "lg" }}
+              borderRadius="full"
+              px="4"
+              py="1"
+              fontSize="md"
             >
               {category}
             </Badge>
           </Text>
-
-
-          {/* <CarouselDetailProducts product={image} /> */}
         </Stack>
 
+        <CarouselDetailProducts image={image} />
 
         <Stack
           w="100%"
-          mt={5}
-        >
+          h="full"
+          p={5}
+          spacing={4}
 
+        >
           <Text
             ml={5}
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={600}
-            fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
+            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
           >
             {price}€
           </Text>
-
-
           <Button
-            rounded={"none"}
-            w={"full"}
-            mt={8}
-            mb={8}
-            size={"lg"}
-            py={"7"}
-            colorScheme={"teal"}
-            fontSize={"md"}
-            fontWeight={"bold"}
-
-
+            w="full"
+            mt={5}
+            colorScheme="teal"
+            borderRadius="0"
+            fontSize="xl"
+            fontWeight={600}
+            letterSpacing="wide"
+            boxShadow="lg"
             color={useColorModeValue("white", "gray.900")}
             textTransform={"uppercase"}
             _hover={{
@@ -136,12 +141,13 @@ export function ProductDetailPreview({ product }: any) {
           >
             Add to cart
           </Button>
-
           <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"center"}
-            mt={8}
+            direction={{ base: "row", md: "row" }}
+            w="full"
+            h="full"
+            p={1}
+            justify="center"
+            align={{ base: "center", md: "center" }}
           >
             <MdLocalShipping />
             <Text
@@ -150,90 +156,130 @@ export function ProductDetailPreview({ product }: any) {
               fontWeight={600}
               fontSize={{ base: "sm", sm: "md", lg: "lg" }}
             >
-              2-3 business days delivery            </Text>
-
+              2-3 business days delivery</Text>
           </Stack>
-
         </Stack>
-
-
         <Box
-          w="100%"
-          mt={5}
+          w="full"
+          h="full"
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}
         >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
-            fontWeight={"500"}
+            fontWeight={"600"}
             textTransform={"uppercase"}
-            mb={"4"}
           >
             Features
           </Text>
+          <SimpleGrid
+            columns={{ base: 1, md: 6 }}
+            spacing={10}
+            w="full"
+            h="full"
+            p={5}
+          >
+            {feature.map((f: { value: string }, index: number) => (
+              <Box
+                key={index}
+                w="full"
+                h="full"
+                p={1}
+                bg={useColorModeValue("gray.50", "gray.800")}
+                rounded="0"
+                shadow="lg"
+                cursor="pointer"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  shadow: "lg",
+                }}
+              >
+                <Text
+                  fontSize="xl"
+                  color={useColorModeValue("teal.500", "teal.300")}
+                  fontWeight={"500"}
+                  align={"center"}
+                  textTransform={"uppercase"}
+                >
+                  {f.value}
+                </Text>
+              </Box>
+            ))}
+          </SimpleGrid>
         </Box>
-        <SimpleGrid columns={{ base: 2 }} spacing={"11rem"}
-          w="100%"
-          mt={5}
-          p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}
-
-        >
-          <List spacing={5}>
-            <ListItem>White</ListItem>
-            <ListItem>Electronics</ListItem>
-            <ListItem>1 TB</ListItem>
-          </List>
-          <List spacing={5}>
-            <ListItem>PlayStation</ListItem>
-            <ListItem>PS4</ListItem>
-            <ListItem>Joystick</ListItem>
-          </List>
-        </SimpleGrid>
-
         <Box
-          w="100%"
-          mt={5}
+          w="full"
+          h="full"
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}
-
         >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
-            fontWeight={"500"}
+            fontWeight={"600"}
             textTransform={"uppercase"}
-            mb={"4"}
           >
             Description
           </Text>
+          <Text
+            fontSize="xl"
+            color={useColorModeValue("gray.900", "gray.400")}
+            fontWeight={300}
+            align={"center"}
+            textAlign="justify"
+          >
+            {description}
+          </Text>
         </Box>
-
-        <Text
-          w="100%"
-          mt={5}
+        <Box
+          w="full"
+          h="full"
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}
-          fontSize={{ base: "sm", sm: "md", lg: "lg" }}
-          fontWeight={"300"}
-          align={"justify"}
         >
-          {description}
-        </Text>
-
-
-
-
-
-      </VStack >
-
-    </Center >
+          <Text
+            fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
+            color={useColorModeValue("teal.500", "teal.300")}
+            fontWeight={"600"}
+            textTransform={"uppercase"}
+          >
+            Tags
+          </Text>
+          <SimpleGrid
+            columns={{ base: 1, md: 6 }}
+            spacing={5}
+            w="full"
+            h="full"
+            p={5}
+          >
+            {tags.map((t: { value: string }, index: number) => (
+              <Box
+                key={index}
+                p={1}
+                bg={useColorModeValue("gray.50", "gray.800")}
+                rounded="0"
+                shadow="lg"
+                cursor="pointer"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  shadow: "lg",
+                }}
+              >
+                <Text
+                  fontSize="xl"
+                  color={useColorModeValue("teal.500", "teal.300")}
+                  fontWeight={"500"}
+                  align={"center"}
+                  textTransform={"uppercase"}
+                >
+                  {t.value}
+                </Text>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Box>
+      </VStack>
+    </Center>
   );
 }
-
-
