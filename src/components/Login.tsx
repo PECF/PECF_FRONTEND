@@ -68,7 +68,7 @@ export const Login = () => {
 
   return (
     <Box>
-      <Button mr={3} colorScheme="teal" variant="ghost" onClick={onOpen}>
+      <Button size="md" colorScheme="teal" variant="ghost" onClick={onOpen}>
         Log In
       </Button>
       {/* <Text fontWeight="semibold" color="teal" as={Link} onClick={onOpen}>

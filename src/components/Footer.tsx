@@ -101,7 +101,7 @@ export function Footer() {
           <Stack align={"flex-start"}>
             <ListHeader>{legal}</ListHeader>
             <Link href={"#"}>{cookiesPolicy}</Link>
-            <Link href={"#"}>{privacyPolicy}</Link>
+            <Link href={"../pages/PrivacyPolicy"}>{privacyPolicy}</Link>
             <Link href={"../pages/TermsOfService"}>{termsOfService}</Link>
             <Link href={"../pages/ReturnPolicy"}>{returnPolicy}</Link>
           </Stack>

@@ -13,13 +13,14 @@ import { NotFound } from "../pages/NotFound";
 import { CreateProduct } from "../components/CreateProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Profile } from "../pages/user/profile";
-import ProductDetail from "../pages/ProductDetail";
+import { ProductDetail } from "../pages/ProductDetail";
 // import AuthContext from "../contexts/authContext";
 import { TermsOfService } from "../pages/TermsOfService";
 import { AboutUs } from "../pages/AboutUs";
 import { ContactUs } from "../pages/ContactUs";
 import { ReturnPolicy } from "../pages/ReturnPolicy";
 import { Refund } from "../pages/Refund";
+import { PrivacyPolicy } from "../pages/PrivacyPolicy";
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
   return (
@@ -47,6 +48,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/pages/AboutUs" element={<AboutUs />} />
       <Route path="/pages/ContactUs" element={<ContactUs />} />
       <Route path="/pages/ReturnPolicy" element={<ReturnPolicy />} />
+      <Route path="/pages/PrivacyPolicy" element={<PrivacyPolicy />} />
       <Route path="/pages/Refund" element={<Refund />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

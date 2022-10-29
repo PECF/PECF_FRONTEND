@@ -65,9 +65,9 @@ export default function Cart() {
 
   return (
     <Box>
-      <Button onClick={onOpen} colorScheme="teal" variant="solid" size="md">
+      <Button onClick={onOpen} colorScheme="teal" variant="ghost" size="md">
         <FiShoppingCart />
-        <Text ml="2"> Cart </Text>
+        {/* <Text ml="2"> Cart </Text> */}
       </Button>
 
       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="lg">
@@ -136,7 +136,8 @@ export default function Cart() {
                       onClose();
                     }
                   : onClose
-              }>
+              }
+            >
               Pay
             </Button>
           </DrawerFooter>

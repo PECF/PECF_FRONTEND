@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { Link } from "react-router-dom";
 
 import {
   Button,
@@ -72,7 +73,7 @@ export function SignUp() {
 
   return (
     <Box>
-      <Button colorScheme="teal" variant="ghost" onClick={onOpen}>
+      <Button size="md" colorScheme="teal" variant="ghost" onClick={onOpen}>
         {/* <Text fontWeight="semibold" color="teal" as={Link} onClick={onOpen}> */}
         Sign Up
         {/* </Text> */}

@@ -68,13 +68,13 @@ export function Logged() {
           <>
             <Login />
             <SignUp />
-            <IconButton
+            {/* <IconButton
               icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
               colorScheme="teal"
               variant="ghost"
               size="md"
               onClick={toggleColorMode}
-            ></IconButton>
+            ></IconButton> */}
           </>
         ) : (
           <>
@@ -105,7 +105,6 @@ export function Logged() {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Cart />
           </>
         )}
       </Flex>
