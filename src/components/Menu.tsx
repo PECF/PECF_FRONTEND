@@ -135,14 +135,15 @@ export default function Acordion() {
                 <Text ml="2">Log Out</Text>
               </MenuItem>
 
-              <MenuItem>
+              <MenuItem
+                onClick={toggleColorMode}>
                 <IconButton
                   ml={-2}
                   icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
                   colorScheme="teal"
                   variant="ghost"
                   size="sm"
-                  onClick={toggleColorMode} aria-label={""}                ></IconButton>
+                  aria-label={""}                ></IconButton>
                 <Text>{text}</Text>
               </MenuItem>
             </MenuList>
