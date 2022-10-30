@@ -7,12 +7,14 @@ import {
   productListReducer,
   productTopRatedReducer,
   productUpdateReducer,
+  productFeature,
+  productTag,
 } from "./reducers/productsReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import {
   // userDeleteReducer,
   userDetailsReducer,
-  // userListReducer,
+  userListReducer,
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
@@ -36,7 +38,7 @@ export const rootReducer = combineReducers<ReduxState>({
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userForgotPassword: userForgotPasswordReducer,
-  // userList: userListReducer,
+  userList: userListReducer,
   // userDelete: userDeleteReducer,
   // userUpdate: userUpdateReducer,
   // orderPay: orderPayReducer,
@@ -45,14 +47,15 @@ export const rootReducer = combineReducers<ReduxState>({
   // orderListMy: orderListMyReducer,
   // orderDeliver: orderDeliverReducer,
   // orderDetails: orderDetailsReducer,
+  productTag: productTag,
+  productFeature: productFeature,
   productList: productListReducer,
   productCreate: productCreateReducer,
   // productDelete: productDeleteReducer,
-  // productUpdate: productUpdateReducer,
+  productUpdate: productUpdateReducer,
   productDetails: productDetailsReducer,
   // productTopRated: productTopRatedReducer,
   // productCreateReview: productCreateReducer,
-
 });
 
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
@@ -71,6 +74,22 @@ const userDetailsFromLocalStorage = localStorage.getItem("userDetails")
   ? JSON.parse(localStorage.getItem("userDetails") as string)
   : {};
 
+const productCreateFromLocalStorage = localStorage.getItem("productCreate")
+  ? JSON.parse(localStorage.getItem("productCreate") as string)
+  : {};
+
+const productTagsFromLocalStorage = localStorage.getItem("tags")
+  ? JSON.parse(localStorage.getItem("tags") as string)
+  : [];
+
+const productFeaturesFromLocalStorage = localStorage.getItem("feature")
+  ? JSON.parse(localStorage.getItem("feature") as string)
+  : [];
+
+const productUpdateFromLocalStorage = localStorage.getItem("productUpdate")
+  ? JSON.parse(localStorage.getItem("productUpdate") as string)
+  : {};
+
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
@@ -78,4 +97,22 @@ export const initialState = {
   },
   userLogin: { userInfo: userInfoFromLocalStorage },
   userDetails: { user: userDetailsFromLocalStorage },
+  productCreate: {
+    product: productCreateFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
+  },
+  productFeature: {
+    feature: productFeaturesFromLocalStorage,
+  },
+  productTag: {
+    tags: productTagsFromLocalStorage,
+  },
+  productUpdate: {
+    product: productUpdateFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
+  },
 };

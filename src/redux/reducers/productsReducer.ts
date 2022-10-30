@@ -20,6 +20,13 @@ import {
   ProductDetailsAction,
   ProductDetailsActionTypes,
   ProductDetailsState,
+  productFeatureAction,
+  ProductFeatureState,
+  ProductFeatureActionTypes,
+  productTagAction,
+  ProductTagState,
+  ProductTagActionTypes,
+
 } from "../../types/productsTypes";
 
 const initialProductListState: ProductListState = {
@@ -57,6 +64,8 @@ export const productListReducer = (
 
 const initialProductDetailsState: ProductDetailsState = {
   loading: false,
+  product: undefined,
+  error: false,
 };
 
 /**
@@ -68,11 +77,23 @@ export const productDetailsReducer = (
 ) => {
   switch (action.type) {
     case ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST:
-      return { loading: true, product: initialProductDetailsState.product };
+      return {
+        loading: true,
+        product: initialProductDetailsState.product,
+        error: false
+      };
     case ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS:
-      return { loading: false, product: action.payload };
+      return {
+        loading: false,
+        product: action.payload,
+        error: false
+      };
     case ProductDetailsActionTypes.PRODUCT_DETAILS_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false,
+        error: action.payload,
+        product: undefined
+      };
     default:
       return state;
   }
@@ -104,7 +125,6 @@ export const productDeleteReducer = (
 const initialProductCreateState: ProductCreateState = {
   loading: false,
   success: false,
-  product: undefined,
   error: null,
 };
 
@@ -125,12 +145,15 @@ export const productCreateReducer = (
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS:
       return {
-        loading: false, success: true, product: action.payload,
+        loading: false,
+        success: true,
+        product: action.payload,
         error: initialProductCreateState.error
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_FAILURE:
       return {
-        loading: false, error: action.payload,
+        loading: false,
+        error: action.payload,
         success: initialProductCreateState.success,
         product: initialProductCreateState.product,
       };
@@ -141,6 +164,14 @@ export const productCreateReducer = (
         product: initialProductCreateState.product,
         error: initialProductCreateState.error
       };
+    case ProductCreateActionTypes.PRODUCT_CREATE_PREVIEW:
+      return {
+        loading: initialProductCreateState.loading,
+        success: initialProductCreateState.success,
+        product: action.payload,
+        error: initialProductCreateState.error
+      };
+
     default:
       return state;
   }
@@ -148,6 +179,9 @@ export const productCreateReducer = (
 
 const initialProductUpdateState: ProductUpdateState = {
   loading: false,
+  success: false,
+  error: null,
+  product: undefined,
 };
 
 /**
@@ -159,13 +193,41 @@ export const productUpdateReducer = (
 ) => {
   switch (action.type) {
     case ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST:
-      return { loading: true };
+      return {
+        loading: true,
+        success: false,
+        product: initialProductUpdateState.product,
+        error: null
+      };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS:
-      return { loading: false, success: true, product: action.payload };
+      return {
+        loading: false,
+        success: true,
+        product: action.payload,
+        error: null
+      };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE:
-      return { loading: false, error: action.payload };
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+        product: initialProductUpdateState.product,
+      };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_RESET:
-      return {};
+      return {
+        loading: initialProductUpdateState.loading,
+        success: initialProductUpdateState.success,
+        product: initialProductUpdateState.product,
+        error: initialProductUpdateState.error
+      };
+
+    case ProductUpdateActionTypes.PRODUCT_UPDATE_PREVIEW:
+      return {
+        loading: initialProductUpdateState.loading,
+        success: initialProductUpdateState.success,
+        product: action.payload,
+        error: initialProductUpdateState.error
+      };
     default:
       return state;
   }
@@ -230,3 +292,56 @@ export const productTopRatedReducer = (
       return state;
   }
 };
+
+
+
+const initialProductFeatureState: ProductFeatureState = {
+  feature: [],
+};
+
+export const productFeature = (
+  state: ProductFeatureState = initialProductFeatureState,
+  action: productFeatureAction
+) => {
+  switch (action.type) {
+    case ProductFeatureActionTypes.PRODUCT_FEATURE_REQUEST:
+      return { feature: [] };
+    case ProductFeatureActionTypes.PRODUCT_FEATURE_SUCCESS:
+      return {
+        feature: action.payload,
+      };
+    case ProductFeatureActionTypes.PRODUCT_FEATURE_FAILURE:
+      return {
+        feature: [],
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+
+const initialProductTagState: ProductTagState = {
+  tag: [],
+};
+
+export const productTag = (
+  state: ProductTagState = initialProductTagState,
+  action: productTagAction
+) => {
+  switch (action.type) {
+    case ProductTagActionTypes.PRODUCT_TAG_REQUEST:
+      return { feature: [] };
+    case ProductTagActionTypes.PRODUCT_TAG_SUCCESS:
+      return {
+        feature: action.payload,
+      };
+    case ProductTagActionTypes.PRODUCT_TAG_FAILURE:
+      return {
+        feature: [],
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+}
+

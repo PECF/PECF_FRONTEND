@@ -92,6 +92,7 @@ export interface UserListState {
   users: User[];
   loading: boolean;
   error?: any;
+  success: boolean;
 }
 
 export enum UserListActionTypes {
@@ -231,7 +232,7 @@ export type UserUpdateAction =
   | UserUpdateResetAction;
 
 export interface UserUpdateProfileState {
-  userInfo?: TokenUser | boolean
+  userInfo?: TokenUser | boolean;
   loading?: boolean;
   success?: boolean;
   error?: any;

@@ -100,7 +100,6 @@ const userUpdateProfileReducerInitialState: UserUpdateProfileState = {
   error: false,
   userInfo: false,
 };
-
 export const userUpdateProfileReducer = (
   state: UserUpdateProfileState = userUpdateProfileReducerInitialState,
   action: UserUpdateProfileAction
@@ -109,9 +108,19 @@ export const userUpdateProfileReducer = (
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST:
       return { loading: true, error: false, success: false };
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS:
-      return { loading: false, success: true, userInfo: action.payload, error: false };
+      return {
+        loading: false,
+        success: true,
+        userInfo: action.payload,
+        error: false,
+      };
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE:
-      return { loading: false, error: action.payload, success: false, userInfo: false };
+      return {
+        loading: false,
+        error: action.payload,
+        success: false,
+        userInfo: false,
+      };
     case UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_RESET:
       return {
         loading: false,
@@ -124,28 +133,40 @@ export const userUpdateProfileReducer = (
   }
 };
 
-// const userListReducerInitialState: UserListState = {
-//   loading: false,
-//   users: [],
-// };
+const userListReducerInitialState: UserListState = {
+  loading: false,
+  users: [],
+  error: false,
+  success: false,
+};
 
-// export const userListReducer = (
-//   state: UserListState = userListReducerInitialState,
-//   action: UserListAction
-// ) => {
-//   switch (action.type) {
-//     case UserListActionTypes.USER_LIST_REQUEST:
-//       return { loading: true, users: [] };
-//     case UserListActionTypes.USER_LIST_SUCCESS:
-//       return { loading: false, users: action.payload };
-//     case UserListActionTypes.USER_LIST_FAILURE:
-//       return { loading: false, error: action.payload, users: [] };
-//     case UserListActionTypes.USER_LIST_RESET:
-//       return { loading: false, users: [] };
-//     default:
-//       return state;
-//   }
-// };
+export const userListReducer = (
+  state: UserListState = userListReducerInitialState,
+  action: UserListAction
+) => {
+  switch (action.type) {
+    case UserListActionTypes.USER_LIST_REQUEST:
+      return { loading: true, users: [], error: false, success: false };
+    case UserListActionTypes.USER_LIST_SUCCESS:
+      return {
+        loading: false,
+        users: action.payload,
+        error: false,
+        success: false,
+      };
+    case UserListActionTypes.USER_LIST_FAILURE:
+      return {
+        loading: false,
+        error: action.payload,
+        users: [],
+        success: false,
+      };
+    case UserListActionTypes.USER_LIST_RESET:
+      return { loading: false, users: [], error: false, success: false };
+    default:
+      return state;
+  }
+};
 
 // const userDeleteInitialState: UserDeleteState = {
 //   loading: false,
