@@ -74,20 +74,19 @@ export default function Acordion() {
               variant="outline"
             />
             <MenuList>
-              <MenuItem>
+              <MenuItem /* as={Link} to={"/login"} */>
                 <Login />
               </MenuItem>
-              <MenuItem>
+              <MenuItem /* as={Link} to={"/register"} */>
                 <SignUp />
               </MenuItem>
-              <MenuItem>
+              <MenuItem onClick={toggleColorMode}>
                 <IconButton
                   ml={5}
                   icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
                   colorScheme="teal"
                   variant="ghost"
                   size="md"
-                  onClick={toggleColorMode}
                   aria-label={""}
                 ></IconButton>
               </MenuItem>

@@ -105,7 +105,7 @@ export function Header() {
         {/* <SearchBar /> */}
 
         {userInfo ? (
-          <Flex>
+          <Flex ml={-8}>
             <SearchBar />
             <Cart />
           </Flex>
