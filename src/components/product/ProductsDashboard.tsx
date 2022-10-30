@@ -22,7 +22,7 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 
-import { useRecoveryData } from "../hooks/useRecoveryData";
+import { useRecoveryData } from "../../hooks/useRecoveryData";
 export function ProductsDashboard() {
   const { products } = useRecoveryData("productList");
 

@@ -30,10 +30,10 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/rootStore";
-import { createProduct } from "../redux/actions/productsActions";
+import { AppDispatch } from "../../redux/rootStore";
+import { createProduct } from "../../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
-import { useRecoveryData } from "../hooks/useRecoveryData";
+import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { RiImageAddLine } from "react-icons/ri";
 export function CreateProduct() {
@@ -44,7 +44,9 @@ export function CreateProduct() {
   const toast = useToast();
   const dispatch = useDispatch<AppDispatch>();
 
-  const [imagesPreview, setImagesPreview] = useState<any[]>(product?.image || []);
+  const [imagesPreview, setImagesPreview] = useState<any[]>(
+    product?.image || []
+  );
   const [featureLocal, setFeatures] = useState<any[]>(product?.feature || []);
   const [description, setDescription] = useState(product?.description || "");
   const [category, setCategory] = useState(product?.category || "");
@@ -58,20 +60,46 @@ export function CreateProduct() {
   const [brand, setBrand] = useState(product?.brand || "");
   const [tagLocal, setTags] = useState<any[]>(product?.tag || []);
   const [name, setName] = useState(product?.name || "");
-  const [isCharge, setIsCharge] = useState(false)
+  const [isCharge, setIsCharge] = useState(false);
 
   if (!isCharge) {
-    const featureOptions = feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
-      return self.findIndex((t: { label: string; value: string }) => t.value === item.value) === index;
-    })
+    const featureOptions = feature
+      ?.map((item: { label: string; value: string }) => ({
+        value: item.value,
+        label: item.label,
+      }))
+      .filter(function (
+        item: { label: string; value: string },
+        index: number,
+        self: { label: string; value: string }[]
+      ) {
+        return (
+          self.findIndex(
+            (t: { label: string; value: string }) => t.value === item.value
+          ) === index
+        );
+      });
 
-    const tagOptions = tags?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
-      return self.findIndex((t: { label: string; value: string }) => t.value === item.value) === index;
-    })
+    const tagOptions = tags
+      ?.map((item: { label: string; value: string }) => ({
+        value: item.value,
+        label: item.label,
+      }))
+      .filter(function (
+        item: { label: string; value: string },
+        index: number,
+        self: { label: string; value: string }[]
+      ) {
+        return (
+          self.findIndex(
+            (t: { label: string; value: string }) => t.value === item.value
+          ) === index
+        );
+      });
 
-    setFeatureOptions(featureOptions)
-    setTagOptions(tagOptions)
-    setIsCharge(true)
+    setFeatureOptions(featureOptions);
+    setTagOptions(tagOptions);
+    setIsCharge(true);
   }
 
   const createProductImagesChange = (e: any) => {
@@ -87,42 +115,42 @@ export function CreateProduct() {
       };
       reader.readAsDataURL(_file);
     });
-  }
+  };
   const deleteImagePreview = (index: number) => {
     const newImagesPreview = imagesPreview.filter((item, i) => i !== index);
     const newImages = image.filter((item, i) => i !== index);
     setImagesPreview(newImagesPreview);
     setImages(newImages);
-  }
+  };
 
-  const createFeature = (_feature: {
-    value: string;
-    label: string;
-  }[]) => {
-    const newFeature = _feature.map((item: {
+  const createFeature = (
+    _feature: {
       value: string;
       label: string;
-    }) => ({
-      value: item.value,
-      label: item.label,
-    }));
+    }[]
+  ) => {
+    const newFeature = _feature.map(
+      (item: { value: string; label: string }) => ({
+        value: item.value,
+        label: item.label,
+      })
+    );
     const _options = [...featureOptions, ...newFeature];
     setFeatureOptions(_options);
     localStorage.setItem("feature", JSON.stringify(_options));
-  }
+  };
 
-  const createTag = (_tags: {
-    value: string;
-    label: string;
-  }[]) => {
-    const newTags = _tags.map((item: {
+  const createTag = (
+    _tags: {
       value: string;
       label: string;
-    }) => ({
+    }[]
+  ) => {
+    const newTags = _tags.map((item: { value: string; label: string }) => ({
       label: item.label,
       value: item.value,
     }));
-    const _options = [...tagOptions, ...newTags]
+    const _options = [...tagOptions, ...newTags];
     setTagOptions(_options);
     localStorage.setItem("tags", JSON.stringify(_options));
   };
@@ -156,7 +184,6 @@ export function CreateProduct() {
         duration: 9000,
         isClosable: true,
       });
-
     }
     if (error) {
       toast({
@@ -168,8 +195,6 @@ export function CreateProduct() {
       });
     }
   }, [success, error, _product, dispatch, toast]);
-
-
 
   const previewHandler = () => {
     if (
@@ -195,9 +220,8 @@ export function CreateProduct() {
     }
   };
 
-
   const submitHandler = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     if (
       name === "" ||
       category === "" ||
@@ -217,9 +241,7 @@ export function CreateProduct() {
         isClosable: true,
       });
     } else {
-      dispatch(
-        createProduct({ product: _product, sendToDB: true })
-      );
+      dispatch(createProduct({ product: _product, sendToDB: true }));
     }
   };
 
@@ -233,8 +255,7 @@ export function CreateProduct() {
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden"
       shadow="base"
-      onSubmit={submitHandler}
-    >
+      onSubmit={submitHandler}>
       <VStack align="stretch" spacing={0}>
         <Flex
           justify="space-between"
@@ -362,8 +383,7 @@ export function CreateProduct() {
               placeholder="Select offer"
               value={offer}
               onChange={(e: any) => setOffer(e)}
-              options=
-              {[
+              options={[
                 { value: "none", label: "None" },
                 { value: "discount", label: "Discount" },
                 { value: "freeShipping", label: "Free Shipping" },
@@ -398,13 +418,15 @@ export function CreateProduct() {
               fontSize="sm"
               fontWeight="medium"
               lineHeight="short">
-              If you dont have any features, leave this field blank, that table will not be shown
+              If you dont have any features, leave this field blank, that table
+              will not be shown
             </Text>
-            <CreatableSelect selectedOptionColor="purple"
+            <CreatableSelect
+              selectedOptionColor="purple"
               isMulti
               onChange={(e: any) => {
-                setFeatures(e)
-                createFeature(e)
+                setFeatures(e);
+                createFeature(e);
               }}
               placeholder="Add Features"
               colorScheme="teal"
@@ -429,31 +451,31 @@ export function CreateProduct() {
               fontSize="sm"
               fontWeight="medium"
               lineHeight="short">
-              Tags are used to help customers find your products. Add up to 3 tags for better results.
+              Tags are used to help customers find your products. Add up to 3
+              tags for better results.
             </Text>
             <CreatableSelect
               selectedOptionColor="purple"
               colorScheme="teal"
               isMulti
               onChange={(e: any) => {
-                setTags(e)
-                createTag(e)
+                setTags(e);
+                createTag(e);
               }}
               placeholder="Add tags"
-              options={tagOptions || []} />
+              options={tagOptions || []}
+            />
           </FormControl>
         </Flex>
 
         <VStack
-
           justify="space-between"
           align="center"
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-
-          <FormControl id="images" >
+          <FormControl id="images">
             <FormLabel>Images</FormLabel>
             <Text
               bg={useColorModeValue("gray.50", "gray.700")}
@@ -463,8 +485,8 @@ export function CreateProduct() {
               fontSize="sm"
               fontWeight="medium"
               lineHeight="short">
-              Add up to 3 images for better results.
-              All formats are accepted, but we recommend using PNG.
+              Add up to 3 images for better results. All formats are accepted,
+              but we recommend using PNG.
             </Text>
 
             <InputGroup
@@ -474,12 +496,10 @@ export function CreateProduct() {
               color="gray.500"
               fontSize="sm"
               fontWeight="medium"
-              lineHeight="short"
-
-            >
-              <InputLeftElement
-                pointerEvents="none"
-              ><Icon as={RiImageAddLine} color="gray.300" /></InputLeftElement>
+              lineHeight="short">
+              <InputLeftElement pointerEvents="none">
+                <Icon as={RiImageAddLine} color="gray.300" />
+              </InputLeftElement>
               <Input
                 type="file"
                 placeholder="Upload image"
@@ -495,7 +515,7 @@ export function CreateProduct() {
                   },
                 }}
                 onChange={(e) => {
-                  createProductImagesChange(e)
+                  createProductImagesChange(e);
                 }}
               />
             </InputGroup>
@@ -507,9 +527,7 @@ export function CreateProduct() {
 
               return (
                 <Box key={index} w="full" h="full" position="relative">
-                  <Image src={
-                    src
-                  } w="full" h="full" objectFit="cover" />
+                  <Image src={src} w="full" h="full" objectFit="cover" />
                   <IconButton
                     aria-label="Delete Image"
                     icon={<DeleteIcon />}
@@ -520,10 +538,9 @@ export function CreateProduct() {
                     onClick={() => deleteImagePreview(index)}
                   />
                 </Box>
-              )
+              );
             })}
           </SimpleGrid>
-
         </VStack>
 
         <Flex
@@ -533,18 +550,21 @@ export function CreateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <Button type="submit" colorScheme="teal" mr={3}
+          <Button
+            type="submit"
+            colorScheme="teal"
+            mr={3}
             isLoading={loading}
-            onClick={() => submitHandler}
-          >
+            onClick={() => submitHandler}>
             Create
           </Button>
           <Button
             type="button"
             colorScheme="teal"
             variant="outline"
-            onClick={previewHandler}
-          >Preview</Button>
+            onClick={previewHandler}>
+            Preview
+          </Button>
           <Modal
             isOpen={isOpen}
             onClose={onClose}

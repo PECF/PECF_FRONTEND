@@ -28,13 +28,15 @@ import {
   Icon,
   InputGroup,
   InputLeftElement,
-
 } from "@chakra-ui/react";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "../redux/rootStore";
-import { listProductDetails, updateProduct } from '../redux/actions/productsActions';
+import { AppDispatch } from "../../redux/rootStore";
+import {
+  listProductDetails,
+  updateProduct,
+} from "../../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
-import { useRecoveryData } from "../hooks/useRecoveryData";
+import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { RiImageAddLine } from "react-icons/ri";
 
@@ -47,7 +49,7 @@ export function UpdateProduct() {
 
   const { products } = useRecoveryData("productList");
   const { product } = useRecoveryData("productDetails");
-  const { loading, error, success } = useRecoveryData("productUpdate")
+  const { loading, error, success } = useRecoveryData("productUpdate");
 
   const productUpdate = useRecoveryData("productUpdate");
 
@@ -65,21 +67,47 @@ export function UpdateProduct() {
   const [price, setPrice] = useState(0);
   const [brand, setBrand] = useState("");
   const [name, setName] = useState("");
-  const [isCharge, setIsCharge] = useState(false)
-  const [isChange, setIsChange] = useState(false)
+  const [isCharge, setIsCharge] = useState(false);
+  const [isChange, setIsChange] = useState(false);
 
   if (!isCharge) {
-    const featureOptions = feature?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
-      return self.findIndex((t: { label: string; value: string }) => t.value === item.value) === index;
-    })
+    const featureOptions = feature
+      ?.map((item: { label: string; value: string }) => ({
+        value: item.value,
+        label: item.label,
+      }))
+      .filter(function (
+        item: { label: string; value: string },
+        index: number,
+        self: { label: string; value: string }[]
+      ) {
+        return (
+          self.findIndex(
+            (t: { label: string; value: string }) => t.value === item.value
+          ) === index
+        );
+      });
 
-    const tagOptions = tags?.map((item: { label: string; value: string }) => ({ value: item.value, label: item.label })).filter(function (item: { label: string; value: string }, index: number, self: { label: string; value: string }[]) {
-      return self.findIndex((t: { label: string; value: string }) => t.value === item.value) === index;
-    })
+    const tagOptions = tags
+      ?.map((item: { label: string; value: string }) => ({
+        value: item.value,
+        label: item.label,
+      }))
+      .filter(function (
+        item: { label: string; value: string },
+        index: number,
+        self: { label: string; value: string }[]
+      ) {
+        return (
+          self.findIndex(
+            (t: { label: string; value: string }) => t.value === item.value
+          ) === index
+        );
+      });
 
-    setFeatureOptions(featureOptions)
-    setTagOptions(tagOptions)
-    setIsCharge(true)
+    setFeatureOptions(featureOptions);
+    setTagOptions(tagOptions);
+    setIsCharge(true);
   }
 
   const createProductImagesChange = (e: any) => {
@@ -95,50 +123,49 @@ export function UpdateProduct() {
       };
       reader.readAsDataURL(_file);
     });
-
-  }
+  };
   const deleteImagePreview = (index: number) => {
     const newImagesPreview = imagesPreview.filter((item, i) => i !== index);
     const newImages = image.filter((item, i) => i !== index);
     setImagesPreview(newImagesPreview);
     setImages(newImages);
-  }
+  };
 
-  const createFeature = (_feature: {
-    value: string;
-    label: string;
-  }[]) => {
-    const newFeature = _feature.map((item: {
+  const createFeature = (
+    _feature: {
       value: string;
       label: string;
-    }) => ({
-      value: item.value,
-      label: item.label,
-    }));
+    }[]
+  ) => {
+    const newFeature = _feature.map(
+      (item: { value: string; label: string }) => ({
+        value: item.value,
+        label: item.label,
+      })
+    );
     const _options = [...featureOptions, ...newFeature];
     setFeatureOptions(_options);
     localStorage.setItem("feature", JSON.stringify(_options));
-  }
+  };
 
-  const createTag = (_tags: {
-    value: string;
-    label: string;
-  }[]) => {
-    const newTags = _tags.map((item: {
+  const createTag = (
+    _tags: {
       value: string;
       label: string;
-    }) => ({
+    }[]
+  ) => {
+    const newTags = _tags.map((item: { value: string; label: string }) => ({
       label: item.label,
       value: item.value,
     }));
-    const _options = [...tagOptions, ...newTags]
+    const _options = [...tagOptions, ...newTags];
     setTagOptions(_options);
     localStorage.setItem("tags", JSON.stringify(_options));
   };
 
   const selectProduct = (e: any) => {
     dispatch(listProductDetails(e.value));
-    setIsChange(true)
+    setIsChange(true);
   };
 
   const _product = {
@@ -159,25 +186,23 @@ export function UpdateProduct() {
 
   useEffect(() => {
     if (isChange) {
-      setFeatures(product?.feature || [])
-      setTags(product?.tag || [])
-      setDiscount(product?.discount || 0)
-      setOffer(product?.offer || [])
-      setName(product?.name || "")
-      setBrand(product?.brand || "")
-      setCategory(product?.category || "")
-      setPrice(product?.price || 0)
-      setStock(product?.stock || 0)
-      setDescription(product?.description || "")
-      setImagesPreview(product?.image || [])
-      setImages(product?.image || [])
-      setIsChange(false)
+      setFeatures(product?.feature || []);
+      setTags(product?.tag || []);
+      setDiscount(product?.discount || 0);
+      setOffer(product?.offer || []);
+      setName(product?.name || "");
+      setBrand(product?.brand || "");
+      setCategory(product?.category || "");
+      setPrice(product?.price || 0);
+      setStock(product?.stock || 0);
+      setDescription(product?.description || "");
+      setImagesPreview(product?.image || []);
+      setImages(product?.image || []);
+      setIsChange(false);
     }
 
     setTimeout(() => {
-
       dispatch(updateProduct({ product: _product, sendToDB: false }));
-
     }, 30000);
 
     localStorage.setItem("productUpdate", JSON.stringify(_product));
@@ -189,7 +214,6 @@ export function UpdateProduct() {
         duration: 9000,
         isClosable: true,
       });
-
     }
     if (error) {
       toast({
@@ -201,8 +225,6 @@ export function UpdateProduct() {
       });
     }
   }, [product, success, error, _product, isChange]);
-
-
 
   const previewHandler = () => {
     if (
@@ -228,7 +250,7 @@ export function UpdateProduct() {
     }
   };
   const submitHandler = (e: any) => {
-    e.preventDefault()
+    e.preventDefault();
     if (
       name === "" ||
       category === "" ||
@@ -249,7 +271,6 @@ export function UpdateProduct() {
       });
     } else {
       dispatch(updateProduct({ product: _product, sendToDB: true }));
-
     }
   };
 
@@ -263,8 +284,7 @@ export function UpdateProduct() {
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden"
       shadow="base"
-      onSubmit={submitHandler}
-    >
+      onSubmit={submitHandler}>
       <VStack align="stretch" spacing={0}>
         <Flex
           justify="space-between"
@@ -418,8 +438,7 @@ export function UpdateProduct() {
               placeholder="Select offer"
               value={offer}
               onChange={(e: any) => setOffer(e)}
-              options=
-              {[
+              options={[
                 { value: "none", label: "None" },
                 { value: "discount", label: "Discount" },
                 { value: "freeShipping", label: "Free Shipping" },
@@ -456,13 +475,15 @@ export function UpdateProduct() {
               fontSize="sm"
               fontWeight="medium"
               lineHeight="short">
-              If you dont have any features, leave this field blank, that table will not be shown
+              If you dont have any features, leave this field blank, that table
+              will not be shown
             </Text>
-            <CreatableSelect selectedOptionColor="purple"
+            <CreatableSelect
+              selectedOptionColor="purple"
               isMulti
               onChange={(e: any) => {
-                setFeatures(e)
-                createFeature(e)
+                setFeatures(e);
+                createFeature(e);
               }}
               placeholder="Add Features"
               colorScheme="teal"
@@ -488,7 +509,8 @@ export function UpdateProduct() {
               fontSize="sm"
               fontWeight="medium"
               lineHeight="short">
-              Tags are used to help customers find your products. Add up to 3 tags for better results.
+              Tags are used to help customers find your products. Add up to 3
+              tags for better results.
             </Text>
             <CreatableSelect
               selectedOptionColor="purple"
@@ -496,24 +518,23 @@ export function UpdateProduct() {
               isMulti
               maxMenuHeight={200}
               onChange={(e: any) => {
-                setTags(e)
-                createTag(e)
+                setTags(e);
+                createTag(e);
               }}
               placeholder="Add tags"
-              options={tagOptions || []} />
+              options={tagOptions || []}
+            />
           </FormControl>
         </Flex>
 
         <VStack
-
           justify="space-between"
           align="center"
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-
-          <FormControl id="images" >
+          <FormControl id="images">
             <FormLabel>Images</FormLabel>
             <Text
               bg={useColorModeValue("gray.50", "gray.700")}
@@ -523,8 +544,8 @@ export function UpdateProduct() {
               fontSize="sm"
               fontWeight="medium"
               lineHeight="short">
-              Add up to 3 images for better results.
-              All formats are accepted, but we recommend using PNG.
+              Add up to 3 images for better results. All formats are accepted,
+              but we recommend using PNG.
             </Text>
 
             <InputGroup
@@ -534,12 +555,10 @@ export function UpdateProduct() {
               color="gray.500"
               fontSize="sm"
               fontWeight="medium"
-              lineHeight="short"
-
-            >
-              <InputLeftElement
-                pointerEvents="none"
-              ><Icon as={RiImageAddLine} color="gray.300" /></InputLeftElement>
+              lineHeight="short">
+              <InputLeftElement pointerEvents="none">
+                <Icon as={RiImageAddLine} color="gray.300" />
+              </InputLeftElement>
               <Input
                 type="file"
                 placeholder="Upload image"
@@ -555,7 +574,7 @@ export function UpdateProduct() {
                   },
                 }}
                 onChange={(e) => {
-                  createProductImagesChange(e)
+                  createProductImagesChange(e);
                 }}
               />
             </InputGroup>
@@ -565,9 +584,12 @@ export function UpdateProduct() {
             {imagesPreview.map((img, index) => {
               return (
                 <Box key={index} w="full" h="full" position="relative">
-                  <Image src={
-                    img.url ? img.url : img
-                  } w="full" h="full" objectFit="cover" />
+                  <Image
+                    src={img.url ? img.url : img}
+                    w="full"
+                    h="full"
+                    objectFit="cover"
+                  />
                   <IconButton
                     aria-label="Delete Image"
                     icon={<DeleteIcon />}
@@ -578,10 +600,9 @@ export function UpdateProduct() {
                     onClick={() => deleteImagePreview(index)}
                   />
                 </Box>
-              )
+              );
             })}
           </SimpleGrid>
-
         </VStack>
         <Flex
           justify="space-between"
@@ -590,18 +611,21 @@ export function UpdateProduct() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
           borderBottomWidth="1px">
-          <Button type="submit" colorScheme="teal" mr={3}
+          <Button
+            type="submit"
+            colorScheme="teal"
+            mr={3}
             isLoading={loading}
-            onClick={() => submitHandler}
-          >
+            onClick={() => submitHandler}>
             Update
           </Button>
           <Button
             type="button"
             colorScheme="teal"
             variant="outline"
-            onClick={previewHandler}
-          >Preview</Button>
+            onClick={previewHandler}>
+            Preview
+          </Button>
           <Modal
             isOpen={isOpen}
             onClose={onClose}
@@ -622,7 +646,6 @@ export function UpdateProduct() {
             </ModalContent>
           </Modal>
         </Flex>
-
       </VStack>
     </Box>
   );

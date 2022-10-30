@@ -8,13 +8,13 @@ import {
   productTopRatedReducer,
   productUpdateReducer,
   productFeature,
-  productTag
+  productTag,
 } from "./reducers/productsReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import {
   // userDeleteReducer,
   userDetailsReducer,
-  // userListReducer,
+  userListReducer,
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
@@ -38,7 +38,7 @@ export const rootReducer = combineReducers<ReduxState>({
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userForgotPassword: userForgotPasswordReducer,
-  // userList: userListReducer,
+  userList: userListReducer,
   // userDelete: userDeleteReducer,
   // userUpdate: userUpdateReducer,
   // orderPay: orderPayReducer,
@@ -56,7 +56,6 @@ export const rootReducer = combineReducers<ReduxState>({
   productDetails: productDetailsReducer,
   // productTopRated: productTopRatedReducer,
   // productCreateReview: productCreateReducer,
-
 });
 
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
@@ -117,4 +116,3 @@ export const initialState = {
     error: null,
   },
 };
-

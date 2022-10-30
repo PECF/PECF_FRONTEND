@@ -29,14 +29,15 @@ import { useState } from "react";
 import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
 import { EditProfile } from "./editProfile";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
-import { ProductsDashboard } from "../../components/ProductsDashboard";
+import { ProductsDashboard } from "../../components/product/ProductsDashboard";
 import { OrdersDashboard } from "../../components/OrdersDashboard";
 
 import { logout } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
-import { CreateProduct } from '../../components/CreateProduct';
-import { UpdateProduct } from "../../components/UpdateProduct"
+import { CreateProduct } from '../../components/product/CreateProduct';
+import { UpdateProduct } from "../../components/product/UpdateProduct"
+import { UsersDashboard } from "../../components/UsersDashboard";
 export function Profile() {
   const { user } = useRecoveryData("userDetails");
   const [show, setShow] = useState(1);
@@ -690,6 +691,7 @@ export function Profile() {
 
         </Box>
         {show === 1 && <EditProfile />}
+        {show === 5 && <UsersDashboard />}
         {show === 6 && <ProductsDashboard />}
         {show === 7 && <CreateProduct />}
         {show === 8 && <UpdateProduct />}
