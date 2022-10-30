@@ -1,11 +1,10 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Table,
   Thead,
   Input,
-  Tag,
   InputRightElement,
   InputGroup,
   Flex,
@@ -20,11 +19,21 @@ import {
   Switch,
   TableCaption,
   TableContainer,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
 
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 export function ProductsDashboard() {
   const { products } = useRecoveryData("productList");
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -36,6 +45,45 @@ export function ProductsDashboard() {
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden">
       <VStack align="stretch" spacing={0}>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.800")}
+          borderBottomWidth="1px">
+          <Heading
+            size="lg"
+            fontWeight="bold"
+            color={useColorModeValue("gray.900", "white")}>
+            Products
+          </Heading>
+        </Flex>
+        <Flex
+          justify="space-between"
+          align="center"
+          px={6}
+          py={4}
+          bg={useColorModeValue("gray.50", "gray.800")}
+          borderBottomWidth="1px">
+          <InputGroup>
+            <Input
+              placeholder="Search"
+              variant="filled"
+              _placeholder={{ color: "gray.500" }}
+            />
+            <InputRightElement pointerEvents="none">
+              <SearchIcon color="gray.300" />
+            </InputRightElement>
+          </InputGroup>
+        </Flex>
+      </VStack>
+    </Box>
+  );
+}
+
+{
+  /* <VStack align="stretch" spacing={0}>
         <Flex
           justify="space-between"
           align="center"
@@ -86,85 +134,22 @@ export function ProductsDashboard() {
               </Tr>
             </Thead>
             <Tbody>
-              {products.map(
-                (product: {
-                  _id:
-                    | boolean
-                    | React.Key
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | null
-                    | undefined;
-                  name:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                  price:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                  stock:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                  rating:
-                    | string
-                    | number
-                    | boolean
-                    | React.ReactElement<
-                        any,
-                        string | React.JSXElementConstructor<any>
-                      >
-                    | React.ReactFragment
-                    | React.ReactPortal
-                    | null
-                    | undefined;
-                  createdAt: string | number | Date;
-                  visibility: boolean | undefined;
-                }) => (
-                  <Tr key={product._id}>
-                    <Td>{product.name}</Td>
-                    <Td>{product.price}</Td>
-                    <Td>{product.stock}</Td>
-                    <Td>{product.rating}</Td>
-                    <Td>{product._id}</Td>
-                    <Td>{new Date(product?.createdAt).toLocaleString()}</Td>
-                    <Td>
-                      <Switch
-                        colorScheme="teal"
-                        defaultChecked={product.visibility}
-                      />
-                    </Td>
-                  </Tr>
-                )
-              )}
+              {products.map((product: any) => (
+                <Tr key={product._id} onClick={onOpen}>
+                  <Td>{product.name}</Td>
+                  <Td>{product.price}</Td>
+                  <Td>{product.stock}</Td>
+                  <Td>{product.rating}</Td>
+                  <Td>{product._id}</Td>
+                  <Td>{new Date(product?.createdAt).toLocaleString()}</Td>
+                  <Td>
+                    <Switch
+                      colorScheme="teal"
+                      defaultChecked={product.visibility}
+                    />
+                  </Td>
+                </Tr>
+              ))}
             </Tbody>
             <Tfoot>
               <Tr>
@@ -180,6 +165,8 @@ export function ProductsDashboard() {
           </Table>
         </TableContainer>
       </VStack>
+      
     </Box>
   );
+} */
 }
