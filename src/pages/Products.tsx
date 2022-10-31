@@ -1,31 +1,24 @@
-// Path: src/pages/Products.tsx
-// Language: typescript jsx
+import { ProductCard } from "../components/product/ProductCard";
+import { ProductGrid } from "../components/product/ProductGrid";
+import { useRecoveryData } from "../hooks/useRecoveryData";
+import { Box } from "@chakra-ui/react";
+import * as React from "react";
 
-import React from "react";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-// import { FaArrowRight } from "@chakra-ui/icons";
+export const Products = () => {
+  const { products } = useRecoveryData("productList");
 
-export const Products: React.FC = () => {
   return (
-    <Box>
-      <Flex
-        direction="column"
-        align="center"
-        justify="center"
-        height="calc(100vh - 100px)">
-        <Heading as="h1" size="4xl" mb={4}>
-          Products
-        </Heading>
-        <Text fontSize="xl" mb={4}>
-          This is the products page
-        </Text>
-        <Link to="/products/1">
-          <Text fontSize="xl" color="blue.500" fontWeight="bold">
-            {/* View Product <FaArrowRight /> */}
-          </Text>
-        </Link>
-      </Flex>
+    <Box
+      maxW="7xl"
+      mx="auto"
+      px={{ base: "4", md: "8", lg: "12" }}
+      py={{ base: "6", md: "8", lg: "12" }}>
+      <ProductGrid>
+        {products &&
+          products.map((product: any) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+      </ProductGrid>
     </Box>
   );
 };

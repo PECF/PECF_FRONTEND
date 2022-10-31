@@ -1,19 +1,20 @@
 import {
-  PasswordUser,
-  User,
+  UserForgotPasswordActionTypes,
+  UserUpdateProfileActionTypes,
+  UserRegisterActionTypes,
+  UserDetailsActionTypes,
   UserDeleteActionTypes,
   UserUpdateActionTypes,
   UserLoginActionTypes,
-  UserRegisterActionTypes,
-  UserDetailsActionTypes,
-  UserUpdateProfileActionTypes,
-  UserForgotPasswordActionTypes,
+  PasswordUser,
+  User,
 } from "../../types/authTypes";
-import axios from "axios";
-import { AppThunk } from "../rootStore";
-import { errorHandler } from "./errorHandler";
 import { OrderListMyActionTypes } from "../../types/ordersTypes";
 import { UserListActionTypes } from "../../types/authTypes";
+import { errorHandler } from "./errorHandler";
+import { AppThunk } from "../rootStore";
+import axios from "axios";
+import { updateCart } from "./cartActions";
 
 export const login =
   (email: string, password: string): AppThunk =>
@@ -31,7 +32,6 @@ export const login =
         }
       );
 
-      console.log(data["token"]);
       dispatch({
         type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
         payload: data["token"],
@@ -39,6 +39,10 @@ export const login =
 
       // Save user info to local storage
       localStorage.setItem("userInfo", JSON.stringify(data["token"]));
+
+      // Get user details
+      dispatch(getUserDetails());
+      dispatch(updateCart());
     } catch (error) {
       dispatch({
         type: UserLoginActionTypes.USER_LOGIN_FAILURE,
@@ -47,9 +51,6 @@ export const login =
     }
   };
 
-/**
- * Action used to log out a user
- */
 export const logout = (): AppThunk => async (dispatch, getState) => {
   try {
     const {
@@ -61,6 +62,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
         "Content-Type": "application/json",
         Authorization: `${userInfo}`,
       },
+      withCredentials: true,
     };
     dispatch({
       type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
@@ -77,6 +79,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     localStorage.removeItem("userInfo");
     localStorage.removeItem("cartItems");
     localStorage.removeItem("shippingAddress");
+    localStorage.removeItem("userDetails");
   } catch (error) {
     dispatch({
       type: UserLoginActionTypes.USER_LOGIN_FAILURE,
@@ -84,6 +87,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     });
   } finally {
     localStorage.removeItem("userInfo");
+    localStorage.removeItem("userDetails");
   }
 };
 
@@ -115,10 +119,6 @@ export const forgotPassword =
     }
   };
 
-/**
- * Action used to register a user and immediately log in
- * the user after registration
- */
 export const register =
   (name: string, email: string, password: string): AppThunk =>
   async (dispatch) => {
@@ -127,7 +127,6 @@ export const register =
         type: UserRegisterActionTypes.USER_REGISTER_REQUEST,
       });
 
-      // Axios config
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -140,20 +139,12 @@ export const register =
         config
       );
 
-      console.log(data);
       dispatch({
         type: UserRegisterActionTypes.USER_REGISTER_SUCCESS,
-        payload: data,
+        payload: data["token"],
       });
 
-      // Log user in immediately after registration
-      dispatch({
-        type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
-        payload: data,
-      });
-
-      // Save user info to local storage
-      localStorage.setItem("userInfo", JSON.stringify(data));
+      dispatch(login(email, password));
     } catch (error) {
       dispatch({
         type: UserRegisterActionTypes.USER_REGISTER_FAILURE,
@@ -192,6 +183,9 @@ export const getUserDetails = (): AppThunk => async (dispatch, getState) => {
         type: UserDetailsActionTypes.USER_DETAILS_SUCCESS,
         payload: data.user,
       });
+
+      // Save user info to local storage
+      localStorage.setItem("userDetails", JSON.stringify(data.user));
     }
     // Save user info to local storage
   } catch (error) {
@@ -202,11 +196,8 @@ export const getUserDetails = (): AppThunk => async (dispatch, getState) => {
   }
 };
 
-/**
- * Action used to get update user profile
- */
 export const updateUserProfile =
-  (user: PasswordUser): AppThunk =>
+  (user: User): AppThunk =>
   async (dispatch, getState) => {
     try {
       dispatch({
@@ -217,27 +208,24 @@ export const updateUserProfile =
         userLogin: { userInfo },
       } = getState();
 
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      };
+      if (userInfo) {
+        const config = {
+          withCredentials: true,
 
-      const { data } = await axios.put(`/api/users/profile`, user, config);
+          headers: {
+            Authorization: `${userInfo}`,
+          },
+        };
 
-      dispatch({
-        type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS,
-        payload: data,
-      });
+        const { data } = await axios.put("/user/update", user, config);
 
-      dispatch({
-        type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
-        payload: data,
-      });
-
-      // Store user info into local storage
-      localStorage.setItem("userInfo", JSON.stringify(data));
+        dispatch({
+          type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS,
+          payload: data.user,
+        });
+        dispatch(getUserDetails());
+        dispatch(updateCart());
+      }
     } catch (error) {
       dispatch({
         type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE,
@@ -246,33 +234,31 @@ export const updateUserProfile =
     }
   };
 
-/**
- * Action used to list all users
- */
 export const listUsers = (): AppThunk => async (dispatch, getState) => {
   try {
     dispatch({
       type: UserListActionTypes.USER_LIST_REQUEST,
     });
 
-    // Get user info from the userLogin object (from getState)
     const {
       userLogin: { userInfo },
     } = getState();
 
-    // Axios config
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo?.token}`,
-      },
-    };
+    if (userInfo) {
+      const config = {
+        withCredentials: true,
+        headers: {
+          Authorization: `${userInfo}`,
+        },
+      };
 
-    const { data } = await axios.get(`/api/users`, config);
+      const { data } = await axios.get("/admin/users", config);
 
-    dispatch({
-      type: UserListActionTypes.USER_LIST_SUCCESS,
-      payload: data,
-    });
+      dispatch({
+        type: UserListActionTypes.USER_LIST_SUCCESS,
+        payload: data.users,
+      });
+    }
   } catch (error) {
     dispatch({
       type: UserListActionTypes.USER_LIST_FAILURE,
@@ -281,81 +267,150 @@ export const listUsers = (): AppThunk => async (dispatch, getState) => {
   }
 };
 
-/**
- * Action used to delete a user
- */
-export const deleteUser =
-  (id: string): AppThunk =>
-  async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: UserDeleteActionTypes.USER_DELETE_REQUEST,
-      });
+// export const deleteUser =
+//   (id: string): AppThunk =>
+//     async (dispatch, getState) => {
+//       try {
+//         dispatch({
+//           type: UserDeleteActionTypes.USER_DELETE_REQUEST,
+//         });
 
-      // Get user info from the userLogin object (from getState)
-      const {
-        userLogin: { userInfo },
-      } = getState();
+//         const {
+//           userLogin: { userInfo },
+//         } = getState();
 
-      // Axios config
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      };
+//         if (userInfo) {
+//           // Axios config
+//           const config = {
+//             withCredentials: true,
 
-      await axios.delete(`/api/users/${id}`, config);
+//             headers: {
+//               "Content-Type": "application/json",
+//               Authorization: `${userInfo}`,
+//             },
+//           };
 
-      dispatch({
-        type: UserDeleteActionTypes.USER_DELETE_SUCCESS,
-      });
-    } catch (error) {
-      dispatch({
-        type: UserDeleteActionTypes.USER_DELETE_FAILURE,
-        payload: errorHandler(error),
-      });
-    }
-  };
+//           await axios.delete(`/user
 
-/**
- * Action used to update  a user
- */
-export const updateUser =
-  (user: User): AppThunk =>
-  async (dispatch, getState) => {
-    try {
-      dispatch({
-        type: UserUpdateActionTypes.USER_UPDATE_REQUEST,
-      });
+//   (user: PasswordUser): AppThunk =>
+//     async (dispatch, getState) => {
+//       try {
+//         dispatch({
+//           type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST,
+//         });
 
-      // Get user info from the userLogin object (from getState)
-      const {
-        userLogin: { userInfo },
-      } = getState();
+//         const {
+//           userLogin: { userInfo },
+//         } = getState();
 
-      // Axios config
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      };
+//         const config = {
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${userInfo?.token}`,
+//           },
+//         };
 
-      const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+//         const { data } = await axios.put(`/api/users/profile`, user, config);
 
-      dispatch({
-        type: UserUpdateActionTypes.USER_UPDATE_SUCCESS,
-      });
+//         dispatch({
+//           type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS,
+//           payload: data,
+//         });
 
-      // Dispatch the update user info
-      dispatch({
-        type: UserDetailsActionTypes.USER_DETAILS_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: UserUpdateActionTypes.USER_UPDATE_FAILURE,
-        payload: errorHandler(error),
-      });
-    }
-  };
+//         dispatch({
+//           type: UserLoginActionTypes.USER_LOGIN_SUCCESS,
+//           payload: data,
+//         });
+
+//         // Store user info into local storage
+//         localStorage.setItem("userInfo", JSON.stringify(data));
+//       } catch (error) {
+//         dispatch({
+//           type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE,
+//           payload: errorHandler(error),
+//         });
+//       }
+//     };
+
+// /**
+//  * Action used to list all users
+//  */
+
+// /**
+//  * Action used to delete a user
+//  */
+// export const deleteUser =
+//   (id: string): AppThunk =>
+//   async (dispatch, getState) => {
+//     try {
+//       dispatch({
+//         type: UserDeleteActionTypes.USER_DELETE_REQUEST,
+//       });
+
+//       // Get user info from the userLogin object (from getState)
+//       const {
+//         userLogin: { userInfo },
+//       } = getState();
+
+//       // Axios config
+//       const config = {
+//         headers: {
+//           Authorization: `Bearer ${userInfo?.token}`,
+//         },
+//       };
+
+//       await axios.delete(`/api/users/${id}`, config);
+
+//       dispatch({
+//         type: UserDeleteActionTypes.USER_DELETE_SUCCESS,
+//       });
+//     } catch (error) {
+//       dispatch({
+//         type: UserDeleteActionTypes.USER_DELETE_FAILURE,
+//         payload: errorHandler(error),
+//       });
+//     }
+//   };
+
+// /**
+//  * Action used to update  a user
+//  */
+// export const updateUser =
+//   (user: User): AppThunk =>
+//   async (dispatch, getState) => {
+//     try {
+//       dispatch({
+//         type: UserUpdateActionTypes.USER_UPDATE_REQUEST,
+//       });
+
+//       // Get user info from the userLogin object (from getState)
+//       const {
+//         userLogin: { userInfo },
+//       } = getState();
+
+//       // Axios config
+//       const config = {
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${userInfo?.token}`,
+//         },
+//       };
+
+//       const { data } = await axios.put(`/api/users/${user._id}`, user, config);
+
+//       dispatch({
+//         type: UserUpdateActionTypes.USER_UPDATE_SUCCESS,
+//       });
+
+//       // Dispatch the update user info
+//       dispatch({
+//         type: UserDetailsActionTypes.USER_DETAILS_SUCCESS,
+//         payload: data,
+//       });
+//     } catch (error) {
+//       dispatch({
+//         type: UserUpdateActionTypes.USER_UPDATE_FAILURE,
+//         payload: errorHandler(error),
+//       });
+//     }
+//   };

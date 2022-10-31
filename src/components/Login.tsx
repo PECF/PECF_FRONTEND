@@ -18,6 +18,7 @@ import {
   ModalFooter,
   useDisclosure,
   useToast,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { emailRegex } from "../constant/Regex";
 import { useRecoveryData } from "../hooks/useRecoveryData";
@@ -30,46 +31,43 @@ export const Login = () => {
   const [email, setEmail] = useState("");
   const send = useToast();
 
-  const handleSubmit = () => {
-    if (emailRegex.test(email)) {
-      dispatch(login(email, password));
-      send({
-        title: "Success",
-        description: "You have successfully logged in",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-    } else {
-      send({
-        title: "Invalid email or password",
-        description: "Please enter a valid email or password",
-        status: "error",
-        duration: 3000,
-        isClosable: true,
-      });
-    }
-  };
-
   useEffect(() => {
     if (error) {
       send({
         title: "Error",
         description: error,
         status: "error",
-        duration: 3000,
+        duration: 9000,
         isClosable: true,
       });
     }
   }, [error]);
 
+  const submitHandler = () => {
+    if (emailRegex.test(email)) {
+      dispatch(login(email, password));
+      send({
+        title: "Success",
+        description: "You are logged in",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+      onClose();
+    } else {
+      send({
+        title: "Error",
+        description: "Email is not valid",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box>
-      <Button
-        mr={3}
-        colorScheme="teal"
-        backgroundColor="blackAlpha.900"
-        onClick={onOpen}>
+      <Button mr={3} colorScheme="teal" variant="solid" onClick={onOpen}>
         Log In
       </Button>
       <Modal isOpen={isOpen} onClose={onClose} size="md">
@@ -96,14 +94,20 @@ export const Login = () => {
             </FormControl>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="teal" backgroundColor="blackAlpha.900" mr={3}>
-              <Link to="/forgotpassword">Forgot Password</Link>
+            <Button
+              as={Link}
+              to={"/forgot-password"}
+              colorScheme="teal"
+              variant="solid"
+              mr={3}
+              onClick={onClose}>
+              Forgot Password
             </Button>
             <Button
               colorScheme="teal"
-              backgroundColor="blackAlpha.900"
+              variant="solid"
               mr={3}
-              onClick={handleSubmit}>
+              onClick={submitHandler}>
               Log In
             </Button>
           </ModalFooter>

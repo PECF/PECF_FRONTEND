@@ -1,8 +1,15 @@
 export interface User {
-  _id: string;
   name: string;
   email: string;
-  isAdmin: boolean;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  password: string;
+  avatar: any;
+  actualCart?: any;
 }
 
 export interface TokenUser extends User {
@@ -85,6 +92,7 @@ export interface UserListState {
   users: User[];
   loading: boolean;
   error?: any;
+  success: boolean;
 }
 
 export enum UserListActionTypes {
@@ -224,7 +232,7 @@ export type UserUpdateAction =
   | UserUpdateResetAction;
 
 export interface UserUpdateProfileState {
-  userInfo?: TokenUser;
+  userInfo?: TokenUser | boolean;
   loading?: boolean;
   success?: boolean;
   error?: any;

@@ -10,6 +10,8 @@ export interface Product {
   rating: number;
   numReviews: number;
   reviews: Array<Review>;
+  offer: boolean;
+  discount: number;
 }
 
 export interface Review {
@@ -33,6 +35,12 @@ export enum ProductCreateActionTypes {
   PRODUCT_CREATE_SUCCESS = "PRODUCT_CREATE_SUCCESS",
   PRODUCT_CREATE_FAILURE = "PRODUCT_CREATE_FAILURE",
   PRODUCT_CREATE_RESET = "PRODUCT_CREATE_RESET",
+  PRODUCT_CREATE_PREVIEW = "PRODUCT_CREATE_PREVIEW",
+}
+
+export interface ProductCreatePreviewAction {
+  type: ProductCreateActionTypes.PRODUCT_CREATE_PREVIEW;
+  payload?: any;
 }
 
 export interface ProductCreateRequestAction {
@@ -57,7 +65,10 @@ export type ProductCreateAction =
   | ProductCreateRequestAction
   | ProductCreateSuccessAction
   | ProductCreateFailureAction
-  | ProductCreateResetAction;
+  | ProductCreateResetAction
+  | ProductCreatePreviewAction;
+
+
 
 export interface ProductCreateReviewState {
   success?: boolean;
@@ -128,7 +139,7 @@ export type ProductDeleteAction =
 export interface ProductDetailsState {
   loading: boolean;
   product?: Product;
-  error?: undefined;
+  error?: undefined | boolean;
 }
 
 export enum ProductDetailsActionTypes {
@@ -224,17 +235,30 @@ export type ProductTopAction =
 export interface TemporaryProduct {
   _id: string;
   name: string;
-  image: string;
-  description: string;
-  brand: string;
   category: string;
+  description: string;
   price: number;
-  countInStock: number;
+  stock: number;
+  discount: number;
+  offer: {
+    value: string,
+    label: string
+  }[]
+  brand: string;
+  feature: {
+    value: string,
+    label: string
+  }[]
+  tag: {
+    value: string,
+    label: string
+  }[]
+  image: any;
 }
 
 export interface ProductUpdateState {
   success?: boolean;
-  product?: TemporaryProduct;
+  product?: any[];
   loading?: boolean;
   error?: any;
 }
@@ -244,6 +268,7 @@ export enum ProductUpdateActionTypes {
   PRODUCT_UPDATE_SUCCESS = "PRODUCT_UPDATE_SUCCESS",
   PRODUCT_UPDATE_FAILURE = "PRODUCT_UPDATE_FAILURE",
   PRODUCT_UPDATE_RESET = "PRODUCT_UPDATE_RESET",
+  PRODUCT_UPDATE_PREVIEW = "PRODUCT_UPDATE_PREVIEW",
 }
 
 export interface ProductUpdateRequestAction {
@@ -252,7 +277,7 @@ export interface ProductUpdateRequestAction {
 
 export interface ProductUpdateSuccessAction {
   type: ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS;
-  payload: TemporaryProduct;
+  payload: any[];
 }
 
 export interface ProductUpdateFailureAction {
@@ -264,8 +289,90 @@ export interface ProductUpdateResetAction {
   type: ProductUpdateActionTypes.PRODUCT_UPDATE_RESET;
 }
 
+export interface ProductUpdatePreviewAction {
+  type: ProductUpdateActionTypes.PRODUCT_UPDATE_PREVIEW;
+  payload: any[];
+}
+
+
+
+
 export type ProductUpdateAction =
   | ProductUpdateRequestAction
   | ProductUpdateSuccessAction
   | ProductUpdateFailureAction
-  | ProductUpdateResetAction;
+  | ProductUpdateResetAction
+  | ProductUpdatePreviewAction;
+
+
+
+export interface productFeatureAction {
+  type: string;
+  payload: string;
+}
+
+export interface ProductFeatureState {
+  feature: string[];
+}
+
+export enum ProductFeatureActionTypes {
+  PRODUCT_FEATURE_REQUEST = "PRODUCT_FEATURE_REQUEST",
+  PRODUCT_FEATURE_SUCCESS = "PRODUCT_FEATURE_SUCCESS",
+  PRODUCT_FEATURE_FAILURE = "PRODUCT_FEATURE_FAILURE"
+}
+
+export interface ProductFeatureRequestAction {
+  type: ProductFeatureActionTypes.PRODUCT_FEATURE_REQUEST;
+}
+
+export interface ProductFeatureSuccessAction {
+  type: ProductFeatureActionTypes.PRODUCT_FEATURE_SUCCESS;
+  payload: string[];
+}
+
+export interface ProductFeatureFailureAction {
+  type: ProductFeatureActionTypes.PRODUCT_FEATURE_FAILURE;
+  payload: any;
+}
+
+export type ProductFeatureAction =
+  | ProductFeatureRequestAction
+  | ProductFeatureSuccessAction
+  | ProductFeatureFailureAction;
+
+
+
+export interface productTagAction {
+  type: string;
+  payload: string;
+}
+
+export interface ProductTagState {
+  tag: string[];
+}
+
+export enum ProductTagActionTypes {
+  PRODUCT_TAG_REQUEST = "PRODUCT_TAG_REQUEST",
+  PRODUCT_TAG_SUCCESS = "PRODUCT_TAG_SUCCESS",
+  PRODUCT_TAG_FAILURE = "PRODUCT_TAG_FAILURE"
+}
+
+export interface ProductTagRequestAction {
+  type: ProductTagActionTypes.PRODUCT_TAG_REQUEST;
+}
+
+export interface ProductTagSuccessAction {
+  type: ProductTagActionTypes.PRODUCT_TAG_SUCCESS;
+  payload: string[];
+}
+
+export interface ProductTagFailureAction {
+  type: ProductTagActionTypes.PRODUCT_TAG_FAILURE;
+  payload: any;
+}
+
+export type ProductTagAction =
+  | ProductTagRequestAction
+  | ProductTagSuccessAction
+  | ProductTagFailureAction;
+

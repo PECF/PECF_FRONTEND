@@ -19,6 +19,7 @@
     "@types/react-router": "^5.1.19",
     "@types/react-slick": "^0.23.10",
     "axios": "^0.27.2",
+    "chakra-react-select": "^4.4.0",
     "cookiejs": "^2.1.2",
     "firebase": "^9.12.1",
     "framer-motion": "^7.5.3",

@@ -26,7 +26,29 @@ export const ForgotPassword = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { error, userInfo } = useRecoveryData("userForgotPassword");
+  const { error, userInfo, loading } = useRecoveryData("userForgotPassword");
+  const data = useRecoveryData("userForgotPassword");
+
+  useEffect(() => {
+    if (error) {
+      send({
+        title: "Error",
+        description: error,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (userInfo) {
+      send({
+        title: "Success",
+        description: userInfo,
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [error, userInfo]);
 
   const handleSubmit = () => {
     if (emailRegex.test(email)) {
@@ -40,29 +62,7 @@ export const ForgotPassword = () => {
         isClosable: true,
       });
     }
-
-    useEffect(() => {
-      if (error) {
-        send({
-          title: "Error",
-          description: error,
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-      if (userInfo) {
-        send({
-          title: "Success",
-          description: userInfo,
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    }, [error, userInfo]);
   };
-
   return (
     <Container>
       <Box
@@ -87,7 +87,7 @@ export const ForgotPassword = () => {
             type="email"
           />
           <FormHelperText>
-            Your Email is private, we&apos;ll never share your email.
+            Your password is private, we&apos;ll never share your passwords.
           </FormHelperText>
           <Grid mt={5} templateColumns="repeat(2, 1fr)" gap={6}>
             <Spacer />
@@ -96,6 +96,7 @@ export const ForgotPassword = () => {
               mt={10}
               colorScheme="teal"
               backgroundColor="blackAlpha.900"
+              isLoading={loading}
               onClick={handleSubmit}>
               Recover!
             </Button>

@@ -1,5 +1,7 @@
+import { useColorMode, useColorModeValue } from "@chakra-ui/color-mode";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { logout } from "../redux/actions/authActions";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { AppDispatch } from "../redux/rootStore";
 import { CgProfile } from "react-icons/cg";
@@ -16,84 +18,70 @@ import {
   Flex,
   Text,
   Button,
-  useColorModeValue,
   Menu,
   MenuList,
   Avatar,
   MenuButton,
   MenuItem,
-  Grid,
+  useToast,
 } from "@chakra-ui/react";
 
 export function Logged() {
-  const { userInfo } = useRecoveryData("userLogin");
   const { user } = useRecoveryData("userDetails");
+  const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();
+  const send = useToast();
 
   const logoutHandler = () => {
     dispatch(logout());
+    send({
+      title: "Success",
+      description: "You are logged out",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
-
   return (
     <Box>
-      {userInfo ? (
-        <Flex alignItems={"center"}>
-          <Menu>
-            <MenuButton
-              as={Button}
-              variant="link"
-              border="none"
-              color="blackAlpha.900"
-              gap="10"
-              marginX="5">
-              <Flex
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                width={"full"}
-                _hover={{
-                  textDecoration: "none",
-                }}>
-                <Text
-                  fontWeight={600}
-                  fontSize={"lg"}
-                  color={useColorModeValue("gray.600", "gray.200")}>
-                  {user?.name.toUpperCase() || "USER"}
-                </Text>
-                <Avatar ml="2" size="sm" src={user?.avatar.url} />
-              </Flex>
-            </MenuButton>
-            <MenuList>
-              <MenuItem>
-                <CgProfile />
-                <Text ml="2" as={Link} to={"/profile"}>
-                  Profile
-                </Text>
-              </MenuItem>
-              <MenuItem>
-                <IoBagCheckOutline />
-                <Text ml="2" as={Link} to={"/orders"}>
-                  Orders
-                </Text>
-              </MenuItem>
-              <MenuItem onClick={logoutHandler}>
-                <MdLogout />
-                <Text ml="2">Log Out</Text>
-              </MenuItem>
-            </MenuList>
-          </Menu>
-          <Cart />
-        </Flex>
-      ) : (
-        <Grid
-          templateColumns="repeat(3, 1fr)"
-          gap={6}
-          alignItems="center"
-          justifyContent="center">
-          <Login />
-          <SingUp />
-          <Cart />
-        </Grid>
-      )}
+      <Flex gap={6} alignItems="center" justifyContent="center">
+        {!userInfo ? (
+          <>
+            <Login />
+            <SingUp />
+          </>
+        ) : (
+          <>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}>
+                <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
+                  <Text>{user?.name}</Text>
+                  <Avatar size={"sm"} src={user?.avatar?.url} />
+                </Flex>
+              </MenuButton>
+              <MenuList>
+                <MenuItem as={Link} to={"/profile"}>
+                  <CgProfile />
+                  <Text ml="2">Profile</Text>
+                </MenuItem>
+                <MenuItem as={Link} to={"/orders"}>
+                  <IoBagCheckOutline />
+                  <Text ml="2">Orders</Text>
+                </MenuItem>
+                <MenuItem onClick={logoutHandler}>
+                  <MdLogout />
+                  <Text ml="2">Log Out</Text>
+                </MenuItem>
+              </MenuList>
+            </Menu>
+            <Cart />
+          </>
+        )}
+      </Flex>
     </Box>
   );
 }

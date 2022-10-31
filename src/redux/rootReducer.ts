@@ -7,51 +7,55 @@ import {
   productListReducer,
   productTopRatedReducer,
   productUpdateReducer,
+  productFeature,
+  productTag,
 } from "./reducers/productsReducer";
 import { cartReducer } from "./reducers/cartReducer";
 import {
-  userDeleteReducer,
+  // userDeleteReducer,
   userDetailsReducer,
   userListReducer,
   userLoginReducer,
   userRegisterReducer,
   userUpdateProfileReducer,
-  userUpdateReducer,
+  // userUpdateReducer,
   userForgotPasswordReducer,
 } from "./reducers/authReducer";
 import { ReduxState } from "../types/reduxTypes";
-import {
-  orderCreateReducer,
-  orderDetailsReducer,
-  orderListMyReducer,
-  orderListReducer,
-  orderPayReducer,
-  orderDeliverReducer,
-} from "./reducers/ordersReducer";
+// import {
+//   orderCreateReducer,
+//   orderDetailsReducer,
+//   orderListMyReducer,
+//   orderListReducer,
+//   orderPayReducer,
+//   orderDeliverReducer,
+// } from "./reducers/ordersReducer";
 
 export const rootReducer = combineReducers<ReduxState>({
   cart: cartReducer,
-  orderPay: orderPayReducer,
-  orderList: orderListReducer,
-  orderCreate: orderCreateReducer,
-  orderListMy: orderListMyReducer,
-  orderDeliver: orderDeliverReducer,
-  orderDetails: orderDetailsReducer,
-  productList: productListReducer,
-  productCreate: productCreateReducer,
-  productDelete: productDeleteReducer,
-  productUpdate: productUpdateReducer,
-  productDetails: productDetailsReducer,
-  productTopRated: productTopRatedReducer,
-  productCreateReview: productCreateReducer,
-  userList: userListReducer,
   userLogin: userLoginReducer,
-  userDelete: userDeleteReducer,
-  userUpdate: userUpdateReducer,
   userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
   userUpdateProfile: userUpdateProfileReducer,
   userForgotPassword: userForgotPasswordReducer,
+  userList: userListReducer,
+  // userDelete: userDeleteReducer,
+  // userUpdate: userUpdateReducer,
+  // orderPay: orderPayReducer,
+  // orderList: orderListReducer,
+  // orderCreate: orderCreateReducer,
+  // orderListMy: orderListMyReducer,
+  // orderDeliver: orderDeliverReducer,
+  // orderDetails: orderDetailsReducer,
+  productTag: productTag,
+  productFeature: productFeature,
+  productList: productListReducer,
+  productCreate: productCreateReducer,
+  // productDelete: productDeleteReducer,
+  productUpdate: productUpdateReducer,
+  productDetails: productDetailsReducer,
+  // productTopRated: productTopRatedReducer,
+  // productCreateReview: productCreateReducer,
 });
 
 const userInfoFromLocalStorage = localStorage.getItem("userInfo")
@@ -66,10 +70,49 @@ const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems") as string)
   : [];
 
+const userDetailsFromLocalStorage = localStorage.getItem("userDetails")
+  ? JSON.parse(localStorage.getItem("userDetails") as string)
+  : {};
+
+const productCreateFromLocalStorage = localStorage.getItem("productCreate")
+  ? JSON.parse(localStorage.getItem("productCreate") as string)
+  : {};
+
+const productTagsFromLocalStorage = localStorage.getItem("tags")
+  ? JSON.parse(localStorage.getItem("tags") as string)
+  : [];
+
+const productFeaturesFromLocalStorage = localStorage.getItem("feature")
+  ? JSON.parse(localStorage.getItem("feature") as string)
+  : [];
+
+const productUpdateFromLocalStorage = localStorage.getItem("productUpdate")
+  ? JSON.parse(localStorage.getItem("productUpdate") as string)
+  : {};
+
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
     shippingAddress: shippingAddressFromLocalStorage,
   },
   userLogin: { userInfo: userInfoFromLocalStorage },
+  userDetails: { user: userDetailsFromLocalStorage },
+  productCreate: {
+    product: productCreateFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
+  },
+  productFeature: {
+    feature: productFeaturesFromLocalStorage,
+  },
+  productTag: {
+    tags: productTagsFromLocalStorage,
+  },
+  productUpdate: {
+    product: productUpdateFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
+  },
 };

@@ -1,36 +1,21 @@
 import {
-  Box,
   Flex,
   Text,
-  IconButton,
   Button,
-  Stack,
-  Collapse,
+  useColorMode,
   useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
-  Input,
-  InputGroup,
-  Avatar,
-  InputRightElement,
 } from "@chakra-ui/react";
-
-import { HamburgerIcon, CloseIcon, SearchIcon } from "@chakra-ui/icons";
-import { getUserDetails, logout } from "../redux/actions/authActions";
-import { useRecoveryData } from "../hooks/useRecoveryData";
-import { AppDispatch } from "../redux/rootStore";
+import { companyName } from "../constant/general";
 import { Container } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
-import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import SingUp from "./SingUp";
-import Login from "./Login";
-import Cart from "./Cart";
 import { SearchBar } from "./SearchBar";
 import { Logged } from "./Logged";
-import { companyName } from "../constant/general";
+import { BsMoonFill, BsSunFill } from "react-icons/bs";
+import React from "react";
 
 export function Header() {
+  const { toggleColorMode } = useColorMode();
+  const text = useColorModeValue("Dark", "Light");
   return (
     <Container
       maxW="full"
@@ -45,7 +30,8 @@ export function Header() {
       right={0}
       zIndex={1000}>
       <Flex
-        minWidth="100%"
+        maxW="container.xl"
+        mx="auto"
         alignItems={"center"}
         gap="10"
         justifyContent={"space-between"}>
@@ -61,142 +47,27 @@ export function Header() {
         </Text>
         <SearchBar />
         <Logged />
+        {/* <Button
+          leftIcon={<SwitchIcon />}
+          colorScheme="teal"
+          variant="outline"
+          size="sm"
+          mr={2}
+          onClick={toggleColorMode}>
+          {text}
+        </Button> */}
+
+        <Button
+          leftIcon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+          colorScheme="teal"
+          variant="outline"
+          size="md"
+          pl={6}
+          pr={6}
+          onClick={toggleColorMode}>
+          {text}
+        </Button>
       </Flex>
     </Container>
   );
 }
-
-//   return (
-//     <Container
-//       maxW="full"
-//       bg={useColorModeValue("white", "gray.800")}
-//       color={useColorModeValue("gray.600", "white")}
-//       px={4}
-//       py={4}
-//       shadow="md"
-//       position="fixed"
-//       top={0}
-//       left={0}
-//       right={0}
-//       zIndex={1000}>
-
-//       <Flex
-//         minWidth="100%"
-//         alignItems={"center"}
-//         gap="10"
-//         justifyContent={"space-between"}>
-//         <IconButton
-//           size={"md"}
-//           icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
-//           aria-label={"Open Menu"}
-//           display={{ md: "none" }}
-//           onClick={onToggle}
-//         />
-
-//         <Text
-//           fontSize="2xl"
-//           fontWeight="bold"
-//           letterSpacing={"wide"}
-//           color={useColorModeValue("gray.800", "white")}
-//           as={Link}
-//           ml={10}
-//           to={"/"}>
-//           Kalú
-//         </Text>
-
-//         {!isMobile && (
-//           <>
-//             <Box>
-//               <InputGroup gap="2">
-//                 <InputRightElement
-//                   children={<SearchIcon color="gray.300" cursor="pointer" />}
-//                 />
-//                 <Input
-//                   placeholder="Search..."
-//                   width="3xl"
-//                   flex={100}
-//                   variant="filled"
-//                 />
-//               </InputGroup>
-//             </Box>
-//             <Stack
-//               direction={"row"}
-//               spacing={6}
-//               alignItems={"center"}
-//               justifyContent={"center"}>
-//               {user ? (
-//                 <>
-//                   <Text fontSize="md" fontWeight="bold" letterSpacing={"wide"}>
-//                     {user.name}
-//                   </Text>
-//                   <Avatar
-//                     size="sm"
-//                     name={user.name}
-//                     src={user.avatar}
-//                     onClick={handleClick}
-//                   />
-//                   <Collapse in={show} animateOpacity>
-//                     <Button
-//                       variant="ghost"
-//                       colorScheme="red"
-//                       onClick={() => {
-//                         dispatch(logout());
-//                       }}>
-//                       Logout
-//                     </Button>
-//                   </Collapse>
-//                 </>
-//               ) : (
-//                 <>
-//                   <Login />
-//                   <SingUp />
-//                 </>
-//               )}
-
-//               <Cart />
-//             </Stack>
-//           </>
-//         )}
-//       </Flex>
-
-//       <Collapse in={isOpen} animateOpacity>
-//         <Stack
-//           bg={useColorModeValue("white", "gray.800")}
-//           p={4}
-//           display={{ md: "none" }}>
-//           <Stack direction={"row"} spacing={4}>
-//             <Button
-//               w={"full"}
-//               variant={"outline"}
-//               bg={useColorModeValue("white", "gray.900")}
-//               _hover={{ bg: "gray.50" }}>
-//               Home
-//             </Button>
-//             <Button
-//               w={"full"}
-//               variant={"outline"}
-//               bg={useColorModeValue("white", "gray.900")}
-//               _hover={{ bg: "gray.50" }}>
-//               Products
-//             </Button>
-//             <Button
-//               w={"full"}
-//               variant={"outline"}
-//               bg={useColorModeValue("white", "gray.900")}
-//               _hover={{ bg: "gray.50" }}>
-//               About
-//             </Button>
-//             <Button
-//               w={"full"}
-//               variant={"outline"}
-//               bg={useColorModeValue("white", "gray.900")}
-//               _hover={{ bg: "gray.50" }}>
-//               Contact
-//             </Button>
-//           </Stack>
-//         </Stack>
-//       </Collapse>
-
-//     </Container>
-//   );
-// }

@@ -9,130 +9,135 @@ import {
   DrawerOverlay,
   DrawerContent,
   Button,
-  UnorderedList,
-  ListItem,
   DrawerCloseButton,
   Table,
   Thead,
   Tbody,
   Tfoot,
+  Text,
   Tr,
   Th,
   Td,
   TableContainer,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { useDisclosure } from "@chakra-ui/react";
-
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/rootStore";
+import { updateCart } from "../redux/actions/cartActions";
+import { useRecoveryData } from "../hooks/useRecoveryData";
+import { productCreateReducer } from "../redux/reducers/productsReducer";
 export default function Cart() {
-  const btnRef = React.useRef();
+  // const btnRef = React.useRef();
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const { cartItems } = useRecoveryData("cart");
+
   async function payCartProducts() {
-    const carryProductsToMap = CARRYPRODUCTS.map((product) => {
-      const nuevoElemento = {
-        title: product.name,
-        unit_price: product.price,
-        quantity: product.quantity,
-        id: product.id,
+    const carryProductsToMap = cartItems.map((element: any) => {
+      const newProduct = {
+        title: element.product.name,
+        unit_price: element.product.price,
+        price: element.product.price,
+        quantity: element.quantity,
+        id: element.product._id,
       };
-      return nuevoElemento;
+      return newProduct;
     });
+
     const response = await fetch(
       "https://api.mercadopago.com/checkout/preferences",
       {
         method: "POST",
         headers: {
           Authorization:
-            "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168",  //Aca va el token individual luego del bearer: token individual
+            "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
         },
         body: JSON.stringify({
           items: carryProductsToMap,
         }),
       }
     );
+
     const data = await response.json();
-    console.log(data);
+
     window.open(data.init_point, "_blank");
   }
 
-  const CARRYPRODUCTS = [
-    { id: 1, name: "remera 1", price: 1000, quantity: 1 },
-    { id: 2, name: "remera 2", price: 550, quantity: 1 },
-    { id: 3, name: "remera 3", price: 4800, quantity: 1 },
-  ];
   return (
     <Box>
-      <Button
-        ref={btnRef}
-        onClick={onOpen}
-        leftIcon={<FiShoppingCart />}
-        colorScheme="teal"
-        p="5"
-        variant="solid"
-      >
-        Cart
+      <Button onClick={onOpen} colorScheme="teal" variant="solid" size="md">
+        <FiShoppingCart />
+        <Text ml="2"> Cart </Text>
       </Button>
-      <Drawer
-        isOpen={isOpen}
-        placement="right"
-        onClose={onClose}
-        finalFocusRef={btnRef}
-      >
+
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="lg">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>
+
+          <DrawerHeader>Cart</DrawerHeader>
+
+          <DrawerBody>
             <TableContainer>
               <Table variant="simple">
                 <Thead>
                   <Tr>
                     <Th>Product</Th>
                     <Th isNumeric>Price</Th>
+                    <Th isNumeric>Items</Th>
+                    <Th isNumeric>Total</Th>
                   </Tr>
                 </Thead>
+                <Tbody>
+                  {cartItems?.length > 0 ? (
+                    cartItems?.map((element: any) => (
+                      <Tr key={element.product._id}>
+                        <Td>{element.product.name}</Td>
+                        <Td isNumeric>{element.product.price}</Td>
+                        <Td isNumeric>{element.quantity}</Td>
+                        <Td isNumeric>
+                          {element.product.price * element.quantity}
+                        </Td>
+                      </Tr>
+                    ))
+                  ) : (
+                    <Tr>
+                      <Td>No products in cart</Td>
+                    </Tr>
+                  )}
+                </Tbody>
+                <Tfoot>
+                  <Tr>
+                    <Th></Th>
+                    <Th></Th>
+                    <Th isNumeric>Total</Th>
+                    <Th isNumeric>
+                      {cartItems?.reduce(
+                        (acc: any, element: any) =>
+                          acc + element.product.price * element.quantity,
+                        0
+                      )}
+                    </Th>
+                  </Tr>
+                </Tfoot>
               </Table>
             </TableContainer>
-          </DrawerHeader>
-          <DrawerBody>
-            <UnorderedList spacing={3} stylePosition="" styleType="none">
-              {CARRYPRODUCTS.map((product) => {
-                return (
-                  <ListItem styleType="none" key={product.name}>
-                    <TableContainer>
-                      <Table variant="simple">
-                        <Tbody>
-                          <Tr>
-                            <Td>{product.name}</Td>
-                            <Td isNumeric>{product.price}</Td>
-                          </Tr>
-                        </Tbody>
-                      </Table>
-                    </TableContainer>
-                  </ListItem>
-                );
-              })}
-              <TableContainer>
-                <Table variant="simple">
-                  <Tfoot>
-                    <Tr>
-                      <Th>Total</Th>
-                      <Th isNumeric>
-                        {CARRYPRODUCTS.reduce((acc, product) => {
-                          return acc + product.price;
-                        }, 0)}
-                      </Th>
-                    </Tr>
-                  </Tfoot>
-                </Table>
-              </TableContainer>
-            </UnorderedList>
           </DrawerBody>
-
           <DrawerFooter>
             <Button variant="outline" mr={3} onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="teal" onClick={payCartProducts}>
-              Buy
+            <Button
+              colorScheme="blue"
+              onClick={
+                cartItems?.length > 0
+                  ? () => {
+                      payCartProducts();
+                      onClose();
+                    }
+                  : onClose
+              }>
+              Pay
             </Button>
           </DrawerFooter>
         </DrawerContent>

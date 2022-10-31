@@ -22,7 +22,6 @@ export const listProducts = (): AppThunk => async (dispatch) => {
 
     const { data } = await axios.get(`/product/all`);
 
-    console.log(data);
     dispatch({
       type: ProductListActionTypes.PRODUCT_LIST_SUCCESS,
       payload: data,
@@ -45,11 +44,10 @@ export const listProductDetails =
     try {
       dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST });
 
-      const { data } = await axios.get(`/api/products/${id}`);
-
+      const { data } = await axios.get(`/product/${id}`);
       dispatch({
         type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS,
-        payload: data,
+        payload: data.product,
       });
     } catch (error) {
       dispatch({
@@ -76,13 +74,13 @@ export const deleteProduct =
       } = getState();
 
       // Axios config
-      const config = {
-        headers: {
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      };
+      // const config = {
+      //   headers: {
+      //     Authorization: `Bearer ${userInfo?.token}`,
+      //   },
+      // };
 
-      await axios.delete(`/api/products/${id}`, config);
+      // await axios.delete(`/api/products/${id}`, config);
 
       dispatch({
         type: ProductDeleteActionTypes.PRODUCT_DELETE_SUCCESS,
@@ -98,91 +96,101 @@ export const deleteProduct =
 /**
  * Action used to create a product
  */
+
 export const createProduct =
-  ({ name, category, price, stock, description }: any): AppThunk =>
+  ({ product, sendToDB }: { product: any; sendToDB: boolean }): AppThunk =>
   async (dispatch, getState) => {
-    try {
+    if (!sendToDB) {
       dispatch({
-        type: ProductCreateActionTypes.PRODUCT_CREATE_REQUEST,
+        type: ProductCreateActionTypes.PRODUCT_CREATE_PREVIEW,
+        payload: product,
       });
+    } else {
+      try {
+        dispatch({
+          type: ProductCreateActionTypes.PRODUCT_CREATE_REQUEST,
+        });
 
-      // Get user info from the userLogin object (from getState)
-      const {
-        userLogin: { userInfo },
-      } = getState();
+        if (sendToDB) {
+          // Get user info from the userLogin object (from getState)
+          const {
+            userLogin: { userInfo },
+          } = getState();
 
-      // Axios config
-      const config = {
-        headers: {
-          Authorization: `${userInfo}`,
-        },
-      };
-      const product = {
-        name,
-        category,
-        price,
-        stock,
-        description,
-      };
+          // Axios config
+          const config = {
+            headers: {
+              Authorization: `${userInfo}`,
+            },
+          };
 
-      const { data } = await axios.post(`/admin/product/new`, product, config);
+          const { data } = await axios.post(
+            `/admin/product/new`,
+            product,
+            config
+          );
 
-      console.log(data);
-      
-      dispatch({
-        type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,
-        payload: data,
-      });
-    } catch (error) {
-      dispatch({
-        type: ProductCreateActionTypes.PRODUCT_CREATE_FAILURE,
-        payload: errorHandler(error),
-      });
+          dispatch({
+            type: ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS,
+            payload: data.newProduct,
+          });
+          dispatch(listProducts());
+        }
+      } catch (error) {
+        dispatch({
+          type: ProductCreateActionTypes.PRODUCT_CREATE_FAILURE,
+          payload: errorHandler(error),
+        });
+      }
     }
   };
 
-/**
- * Action used to update a product
- */
 export const updateProduct =
-  (product: TemporaryProduct): AppThunk =>
+  ({ product, sendToDB }: { product: any; sendToDB: boolean }): AppThunk =>
   async (dispatch, getState) => {
-    try {
+    if (!sendToDB) {
+      console.log(product);
       dispatch({
-        type: ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST,
+        type: ProductUpdateActionTypes.PRODUCT_UPDATE_PREVIEW,
+        payload: product,
       });
+    } else {
+      try {
+        dispatch({
+          type: ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST,
+        });
 
-      // Get user info from the userLogin object (from getState)
-      const {
-        userLogin: { userInfo },
-      } = getState();
+        if (sendToDB) {
+          // Get user info from the userLogin object (from getState)
+          const {
+            userLogin: { userInfo },
+          } = getState();
 
-      // Axios config
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      };
+          // Axios config
+          const config = {
+            headers: {
+              Authorization: `${userInfo}`,
+            },
+          };
 
-      const { data } = await axios.put(
-        `/api/products/${product._id}`,
-        product,
-        config
-      );
+          const { data } = await axios.put(
+            `/admin/product/${product._id}`,
+            product,
+            config
+          );
 
-      dispatch({
-        type: ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS,
-        payload: data,
-      });
-
-      //TODO: Look into this issue from 78. Added this to fix the bug where an updated product was not showing new data in the form
-      dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS });
-    } catch (error) {
-      dispatch({
-        type: ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE,
-        payload: errorHandler(error),
-      });
+          dispatch({
+            type: ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS,
+            payload: data.newProduct,
+          });
+          dispatch(listProducts());
+        }
+      } catch (error) {
+        dispatch({
+          type: ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE,
+          payload: errorHandler(error),
+        });
+      }
     }
   };
 
@@ -203,14 +211,14 @@ export const createProductReview =
       } = getState();
 
       // Axios config
-      const config = {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userInfo?.token}`,
-        },
-      };
+      // const config = {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //     Authorization: `Bearer ${userInfo?.token}`,
+      //   },
+      // };
 
-      await axios.post(`/api/products/${productId}/reviews`, review, config);
+      // await axios.post(`/api/products/${productId}/reviews`, review, config);
 
       dispatch({
         type: ProductCreateReviewActionTypes.PRODUCT_CREATE_REVIEW_SUCCESS,
