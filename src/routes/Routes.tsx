@@ -26,8 +26,8 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="/products" element={<Products />} />
-      <Route path="/product/:id" element={<ProductReview />} />
+      {/* <Route path="/products" element={<Products />} />
+      <Route path="/product/:id" element={<ProductReview />} /> */}
       <Route path="/product/" element={<ProductDetail />} />
 
       {!user?.role ? (
@@ -82,9 +82,8 @@ export const AppRoutes: React.FC = () => {
           element={<Profile index={8} />}
         />
       ) : (
-
         <Route path="/create-product" element={<Navigate to="/" />} />
-      )} */}
+      )}
       <Route path="/pages/TermsOfService" element={<TermsOfService />} />
       <Route path="/pages/AboutUs" element={<AboutUs />} />
       <Route path="/pages/ContactUs" element={<ContactUs />} />
