@@ -18,13 +18,13 @@ import React, { useEffect } from "react";
 import { AppDispatch } from "../redux/rootStore";
 import { useDispatch } from "react-redux";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { getOrderDetails } from "../redux/actions/ordersActions";
+// import { getOrderDetails } from "../redux/actions/ordersActions";
 export function OrdersDashboard() {
-  const { orders } = useRecoveryData("orderList");
-  const dispatch: AppDispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getOrderDetails());
-  }, [dispatch]);
+  // const { orders } = useRecoveryData("orderList");
+  // const dispatch: AppDispatch = useDispatch();
+  // useEffect(() => {
+  //   dispatch(getOrderDetails());
+  // }, [dispatch]);
 
   return (
     <Box
@@ -34,16 +34,14 @@ export function OrdersDashboard() {
       maxW="full"
       mx="auto"
       bg="white"
-      overflow="hidden"
-    >
-      <Flex
+      overflow="hidden">
+      {/* <Flex
         justify="space-between"
         align="center"
         px={6}
         py={4}
         bg="gray.50"
-        borderBottomWidth="1px"
-      >
+        borderBottomWidth="1px">
         <Heading size="lg" fontWeight="bold" color="gray.900">
           Manage Orders
         </Heading>
@@ -54,8 +52,7 @@ export function OrdersDashboard() {
         px={6}
         py={4}
         bg="gray.50"
-        borderBottomWidth="1px"
-      >
+        borderBottomWidth="1px">
         <InputGroup>
           <Input
             type="text"
@@ -89,7 +86,9 @@ export function OrdersDashboard() {
                 <Td>{order._id}</Td>
                 <Td>{order.user && order.user.name}</Td>
                 <Td>{order.createdAt.substring(0, 10)}</Td>
-                <Td>{order.orderItems.reduce((acc, item) => acc + item.qty, 0)}</Td>
+                <Td>
+                  {order.orderItems.reduce((acc, item) => acc + item.qty, 0)}
+                </Td>
                 <Td>{order.totalPrice}</Td>
                 <Td>{order.shippingAddress.address}</Td>
                 <Td>{order.isPaid ? order.paidAt.substring(0, 10) : "No"}</Td>
@@ -102,7 +101,7 @@ export function OrdersDashboard() {
             ))}
           </Tbody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
     </Box>
   );
 }

@@ -8,7 +8,7 @@ import { CgProfile } from "react-icons/cg";
 import { MdLogout } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { SingUp } from "./SingUp";
+import { SignUp } from "./SingUp";
 import { Login } from "./Login";
 import Cart from "./Cart";
 import React from "react";
@@ -24,13 +24,32 @@ import {
   MenuButton,
   MenuItem,
   useToast,
+  IconButton,
 } from "@chakra-ui/react";
+import { BsMoonFill, BsSunFill } from "react-icons/bs";
 
 export function Logged() {
+  const { toggleColorMode } = useColorMode();
+
   const { user } = useRecoveryData("userDetails");
   const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
+
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const breakpoint = 768;
+
+  React.useEffect(() => {
+    window.addEventListener("resize", () => setWidth(window.innerWidth));
+  }, []);
+  const [isHidden, setIsHidden] = React.useState(false);
+  React.useEffect(() => {
+    if (width < breakpoint) {
+      setIsHidden(true);
+    } else {
+      setIsHidden(false);
+    }
+  }, [width]);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -43,12 +62,19 @@ export function Logged() {
     });
   };
   return (
-    <Box>
+    <Box display={isHidden ? "none" : "flex"} mr={5}>
       <Flex gap={6} alignItems="center" justifyContent="center">
         {!userInfo ? (
           <>
             <Login />
-            <SingUp />
+            <SignUp />
+            {/* <IconButton
+              icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+              colorScheme="teal"
+              variant="ghost"
+              size="md"
+              onClick={toggleColorMode}
+            ></IconButton> */}
           </>
         ) : (
           <>
@@ -78,7 +104,6 @@ export function Logged() {
                 </MenuItem>
               </MenuList>
             </Menu>
-            <Cart />
           </>
         )}
       </Flex>
