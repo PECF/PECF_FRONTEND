@@ -26,8 +26,12 @@ import {
   Avatar,
   Grid,
   Box,
-  GridItem
+  GridItem,
+  Icon,
+  InputGroup,
+  InputLeftElement
 } from "@chakra-ui/react";
+import { RiImageAddLine } from "react-icons/ri";
 
 export function EditProfile() {
   const dispatch = useDispatch<AppDispatch>();
@@ -182,34 +186,64 @@ export function EditProfile() {
                     <ModalBody>
                       <FormControl id="image">
                         <FormLabel>Image</FormLabel>
-                        <Input
-                          type="file"
-                          name="avatar"
-                          accept="image/*"
-                          onChange={updateProfileDataChange}
-                        />
+                        <InputGroup
+                          size="md"
+                          bg={useColorModeValue("alphaWhite", "gray.800")}
+                          borderRadius="md"
+                          color="gray.500"
+                          fontSize="sm"
+                          fontWeight="medium"
+                          lineHeight="short"
+
+                        >
+                          <InputLeftElement
+                            pointerEvents="none"
+                          ><Icon as={RiImageAddLine} color="gray.300" /></InputLeftElement>
+                          <Input
+                            type="file"
+                            name="avatar"
+                            accept="image/*"
+                            onChange={updateProfileDataChange}
+                            sx={{
+                              "::file-selector-button": {
+                                height: 10,
+                                padding: 0,
+                                mr: 4,
+                                background: "none",
+                                border: "none",
+                                fontWeight: "bold",
+                              },
+                            }}
+                          />
+                        </InputGroup>
                       </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                      <Button
-                        colorScheme="teal"
-                        variant="ghost"
-                        onClick={() => {
-                          onCloseAvatar();
-                          setAvatar(user?.avatar.url);
-                          setAvatarPreview(user?.avatar.url);
-                        }}>
-                        Cancel
-                      </Button>
-                      <Button
-                        colorScheme="teal"
-                        variant="solid"
-                        mr={3}
-                        onClick={
-                          onCloseAvatar
-                        }>
-                        Save
-                      </Button>
+                      <Grid
+                        templateColumns="repeat(2, 1fr)"
+                        gap={4}
+                      >
+
+                        <Button
+                          colorScheme="teal"
+                          variant="ghost"
+                          onClick={() => {
+                            onCloseAvatar();
+                            setAvatar(user?.avatar.url);
+                            setAvatarPreview(user?.avatar.url);
+                          }}>
+                          Cancel
+                        </Button>
+                        <Button
+                          colorScheme="teal"
+                          variant="solid"
+                          mr={3}
+                          onClick={
+                            onCloseAvatar
+                          }>
+                          Save
+                        </Button>
+                      </Grid>
                     </ModalFooter>
                   </ModalContent>
                 </Modal>

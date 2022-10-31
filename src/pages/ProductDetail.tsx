@@ -18,7 +18,7 @@ import {
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { CarouselDetailProducts } from "../components/carouselDetailProduct";
+import { CarouselDetailProducts } from "../components/product/carouselDetailProduct";
 
 export function ProductDetail() {
   const { products } = useRecoveryData("productList");
