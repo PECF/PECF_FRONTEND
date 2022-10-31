@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDisclosure } from "@chakra-ui/react";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { Link } from "react-router-dom";
 
 import {
   Button,
@@ -17,7 +16,6 @@ import {
   Box,
   ModalFooter,
   useToast,
-  Text,
 } from "@chakra-ui/react";
 
 import { emailRegex } from "../constant/Regex";
@@ -25,7 +23,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { register } from "../redux/actions/authActions";
 
-export function SignUp() {
+export function SingUp() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [password, setPassword] = useState("");
@@ -73,15 +71,13 @@ export function SignUp() {
 
   return (
     <Box>
-      <Button size="md" colorScheme="teal" variant="ghost" onClick={onOpen}>
-        {/* <Text fontWeight="semibold" color="teal" as={Link} onClick={onOpen}> */}
-        Sign Up
-        {/* </Text> */}
+      <Button colorScheme="teal" variant="solid" onClick={onOpen}>
+        Sing Up
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Sign Up</ModalHeader>
+          <ModalHeader>Sing Up</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Box>
@@ -117,7 +113,7 @@ export function SignUp() {
               variant="solid"
               mr={3}
               onClick={handleSubmit}>
-              Sign Up
+              Sing Up
             </Button>
           </ModalFooter>
         </ModalContent>
