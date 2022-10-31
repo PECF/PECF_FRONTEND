@@ -29,7 +29,12 @@ export const ContactUs = () => {
 
       <Box marginTop={"10"} w="full" bg="teal" px="80px" py="40px">
         <Flex justifyContent="space-between" alignItems="center" pb="30px">
-          <Heading fontSize={54} letterSpacing="2px" color="whiteAlpha.900">
+          <Heading
+            fontSize={54}
+            letterSpacing="1px"
+            color="whiteAlpha.900"
+            ml={-8}
+          >
             Contact us
             <Text fontSize={24}>
               We would love to hear from you. Contact us by filling out the
@@ -62,7 +67,7 @@ export const ContactUs = () => {
           </FormControl>
           <FormControl isRequired>
             <FormLabel mt={3}>Email address</FormLabel>
-            <Input type="email" />
+            <Input type="email" placeholder="example@gmail.com" />
             <FormHelperText>We´ll never share your email.</FormHelperText>
           </FormControl>
           <FormControl marginTop={"2"}>

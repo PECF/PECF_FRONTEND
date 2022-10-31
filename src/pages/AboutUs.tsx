@@ -6,7 +6,12 @@ export const AboutUs = () => {
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">
         <Flex justifyContent="space-between" alignItems="center" pb="30px">
-          <Heading fontSize={54} letterSpacing="2px" color="whiteAlpha.900">
+          <Heading
+            fontSize={54}
+            letterSpacing="1px"
+            color="whiteAlpha.900"
+            ml={-8}
+          >
             About us
             <Text fontSize={24}>Get to know us a little better</Text>
           </Heading>

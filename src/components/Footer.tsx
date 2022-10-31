@@ -100,7 +100,7 @@ export function Footer() {
 
           <Stack align={"flex-start"}>
             <ListHeader>{legal}</ListHeader>
-            <Link href={"#"}>{cookiesPolicy}</Link>
+            <Link href={"../pages/CookiesPolicy"}>{cookiesPolicy}</Link>
             <Link href={"../pages/PrivacyPolicy"}>{privacyPolicy}</Link>
             <Link href={"../pages/TermsOfService"}>{termsOfService}</Link>
             <Link href={"../pages/ReturnPolicy"}>{returnPolicy}</Link>
@@ -159,13 +159,16 @@ export function Footer() {
             {copyright} &copy; {new Date().getFullYear()} {kalu}
           </Text>
           <Stack direction={"row"} spacing={6} justify={"center"}>
-            <SocialButton label={"Instagram"} href={"#"}>
+            <SocialButton
+              label={"Instagram"}
+              href={"https://www.instagram.com"}
+            >
               <FaInstagram />
             </SocialButton>
-            <SocialButton label={"Facebook"} href={"#"}>
+            <SocialButton label={"Facebook"} href={"https://www.facebook.com"}>
               <FaFacebook />
             </SocialButton>
-            <SocialButton label={"YouTube"} href={"#"}>
+            <SocialButton label={"YouTube"} href={"https://www.youtube.com"}>
               <FaYoutube />
             </SocialButton>
           </Stack>

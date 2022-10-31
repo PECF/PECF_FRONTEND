@@ -21,6 +21,7 @@ import { ContactUs } from "../pages/ContactUs";
 import { ReturnPolicy } from "../pages/ReturnPolicy";
 import { Refund } from "../pages/Refund";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
+import { CookiesPolicy } from "../pages/CookiesPolicy";
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
   return (
@@ -50,6 +51,7 @@ export const AppRoutes: React.FC = () => {
       <Route path="/pages/ReturnPolicy" element={<ReturnPolicy />} />
       <Route path="/pages/PrivacyPolicy" element={<PrivacyPolicy />} />
       <Route path="/pages/Refund" element={<Refund />} />
+      <Route path="/pages/CookiesPolicy" element={<CookiesPolicy />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
