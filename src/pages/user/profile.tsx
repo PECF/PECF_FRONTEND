@@ -1,4 +1,6 @@
 import React from "react";
+import { Route, Routes, Navigate, useLocation, Link } from "react-router-dom";
+
 import {
   Box,
   Flex,
@@ -26,7 +28,7 @@ import {
 } from "react-icons/fi";
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { useState } from "react";
-import { MdOutlineKeyboardArrowRight } from 'react-icons/md'
+import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { EditProfile } from "./editProfile";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { ProductsDashboard } from "../../components/product/ProductsDashboard";
@@ -35,12 +37,12 @@ import { OrdersDashboard } from "../../components/OrdersDashboard";
 import { logout } from "../../redux/actions/authActions";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
-import { CreateProduct } from '../../components/product/CreateProduct';
-import { UpdateProduct } from "../../components/product/UpdateProduct"
+import { CreateProduct } from "../../components/product/CreateProduct";
+import { UpdateProduct } from "../../components/product/UpdateProduct";
 import { UsersDashboard } from "../../components/UsersDashboard";
-export function Profile() {
+export function Profile({ index }: { index?: number }) {
   const { user } = useRecoveryData("userDetails");
-  const [show, setShow] = useState(1);
+  const [show, setShow] = useState(index || 1);
   const { isOpen, onToggle } = useDisclosure();
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
@@ -61,28 +63,23 @@ export function Profile() {
       maxW="container.xxl"
       bg={useColorModeValue("gray.100", "gray.900")}
       minH="100vh"
-      mt="5vh"
-    >
+      mt="5vh">
       <Flex
         direction={{ base: "column", md: "row" }}
         shadow={{ md: "xl" }}
-        rounded={{ md: "lg" }}
-      >
-
+        rounded={{ md: "lg" }}>
         <Box
           w={{ base: "100%", md: "20%" }}
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
-          overflow="hidden"
-        >
+          overflow="hidden">
           <Flex
             justify="center"
             align="center"
             direction="column"
             py={12}
             px={6}
-            bg={useColorModeValue("gray.50", "gray.900")}
-          >
+            bg={useColorModeValue("gray.50", "gray.900")}>
             <Avatar
               size="2xl"
               src={user?.avatar?.url}
@@ -105,20 +102,17 @@ export function Profile() {
             </Text>
             <Text
               fontSize="sm"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
+              color={useColorModeValue("gray.600", "gray.400")}>
               {user?.email}
             </Text>
           </Flex>
-
 
           <Flex
             w={"auto"}
             direction="row"
             align="center"
             justify="center"
-            display={{ base: "flex", md: "none" }}
-          >
+            display={{ base: "flex", md: "none" }}>
             <IconButton
               onClick={onToggle}
               icon={
@@ -131,7 +125,6 @@ export function Profile() {
               variant={"ghost"}
               aria-label={"Toggle Navigation"}
             />
-
           </Flex>
 
           <Box
@@ -140,13 +133,11 @@ export function Profile() {
             px={6}
             bg={useColorModeValue("white", "gray.800")}
             borderBottomWidth={1}
-            borderColor={useColorModeValue("gray.200", "gray.700")}
-          >
+            borderColor={useColorModeValue("gray.200", "gray.700")}>
             <Text
               fontSize="sm"
               fontWeight="semibold"
-              color={useColorModeValue("gray.600", "gray.400")}
-            >
+              color={useColorModeValue("gray.600", "gray.400")}>
               Account
             </Text>
 
@@ -156,14 +147,15 @@ export function Profile() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              as={Link}
+              to="/profile"
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
                 setShow(1);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiUser} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -180,13 +172,14 @@ export function Profile() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
+              as={Link}
+              to="/profile/settings"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
                 setShow(2);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiSettings} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -203,13 +196,14 @@ export function Profile() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
+              as={Link}
+              to="/profile/orders"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
                 setShow(3);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiShoppingBag} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -226,14 +220,14 @@ export function Profile() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
+              as={Link}
+              to="/profile/payment"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
-
               onClick={() => {
                 setShow(4);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiCreditCard} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -249,8 +243,7 @@ export function Profile() {
                   fontSize="sm"
                   fontWeight="semibold"
                   color={useColorModeValue("gray.600", "gray.400")}
-                  mt={6}
-                >
+                  mt={6}>
                   Admin
                 </Text>
                 <Flex
@@ -260,13 +253,14 @@ export function Profile() {
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
                   borderRadius="md"
+                  as={Link}
+                  to="/profile/admin/users"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
                   onClick={() => {
                     setShow(5);
-                  }}
-                >
+                  }}>
                   <Flex align="center">
                     <Icon as={FiUsers} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -283,13 +277,14 @@ export function Profile() {
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
                   borderRadius="md"
+                  as={Link}
+                  to="/profile/admin/products"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
                   onClick={() => {
                     setShow(6);
-                  }}
-                >
+                  }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -305,14 +300,15 @@ export function Profile() {
                   align="center"
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
+                  as={Link}
+                  to="/profile/admin/createProduct"
                   borderRadius="md"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
                   onClick={() => {
                     setShow(7);
-                  }}
-                >
+                  }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -329,13 +325,14 @@ export function Profile() {
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
                   borderRadius="md"
+                  as={Link}
+                  to="/profile/admin/updateProduct"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
                   onClick={() => {
                     setShow(8);
-                  }}
-                >
+                  }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -352,13 +349,14 @@ export function Profile() {
                   color={useColorModeValue("gray.600", "gray.400")}
                   cursor="pointer"
                   borderRadius="md"
+                  as={Link}
+                  to="/profile/admin/orders"
                   _hover={{
                     bg: useColorModeValue("gray.100", "gray.700"),
                   }}
                   onClick={() => {
                     setShow(9);
-                  }}
-                >
+                  }}>
                   <Flex align="center">
                     <Icon as={FiShoppingCart} w={5} h={5} />
                     <Text ml={4} fontSize="sm">
@@ -367,7 +365,6 @@ export function Profile() {
                   </Flex>
                   <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
                 </Flex>
-
               </>
             )}
             <Text
@@ -377,8 +374,7 @@ export function Profile() {
               mt={6}
               onClick={() => {
                 setShow(10);
-              }}
-            >
+              }}>
               Support
             </Text>
 
@@ -394,8 +390,7 @@ export function Profile() {
               }}
               onClick={() => {
                 setShow(11);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiHelpCircle} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -417,8 +412,7 @@ export function Profile() {
               }}
               onClick={() => {
                 setShow(12);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiMail} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -440,8 +434,7 @@ export function Profile() {
               }}
               onClick={() => {
                 setShow(13);
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiPhone} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -463,8 +456,7 @@ export function Profile() {
               }}
               onClick={() => {
                 logoutHandler();
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FiLogOut} w={5} h={5} />
                 <Text ml={4} fontSize="sm">
@@ -473,16 +465,13 @@ export function Profile() {
               </Flex>
               <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
-
           </Box>
 
           <Stack
             spacing={1}
             align="center"
             justify="center"
-            display={{ base: isOpen ? "flex" : "none", md: "none" }}
-
-          >
+            display={{ base: isOpen ? "flex" : "none", md: "none" }}>
             <Flex
               align="center"
               px={6}
@@ -493,11 +482,9 @@ export function Profile() {
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
-                setShow(1)
-                onToggle()
-              }
-              }
-            >
+                setShow(1);
+                onToggle();
+              }}>
               <Icon as={FiUser} w={5} h={5} />
               <Text ml={4} fontWeight="medium">
                 Profile
@@ -513,10 +500,9 @@ export function Profile() {
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
-                setShow(2)
-                onToggle()
-              }}
-            >
+                setShow(2);
+                onToggle();
+              }}>
               <Icon as={FiSettings} w={5} h={5} />
               <Text ml={4} fontWeight="medium">
                 Settings
@@ -533,10 +519,9 @@ export function Profile() {
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
-                setShow(3)
-                onToggle()
-              }}
-            >
+                setShow(3);
+                onToggle();
+              }}>
               <Icon as={FiShoppingCart} w={5} h={5} />
               <Text ml={4} fontWeight="medium">
                 Orders
@@ -553,121 +538,113 @@ export function Profile() {
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
-                setShow(4)
-                onToggle()
-              }}
-            >
+                setShow(4);
+                onToggle();
+              }}>
               <Icon as={FiCreditCard} w={5} h={5} />
               <Text ml={4} fontWeight="medium">
                 Payment
               </Text>
             </Flex>
-            {
-              user?.role === "admin" && (
-                <>
-                  <Flex
-                    align="center"
-                    px={6}
-                    py={3}
-                    cursor="pointer"
-                    borderRadius="md"
-                    _hover={{
-                      bg: useColorModeValue("gray.100", "gray.700"),
-                    }}
-                    onClick={() => {
-                      setShow(5)
-                      onToggle()
-                    }}
-                  >
-                    <Icon as={FiUser} w={5} h={5} />
-                    <Text ml={4} fontWeight="medium">
-                      Users
-                    </Text>
-                  </Flex>
+            {user?.role === "admin" && (
+              <>
+                <Flex
+                  align="center"
+                  px={6}
+                  py={3}
+                  cursor="pointer"
+                  borderRadius="md"
+                  _hover={{
+                    bg: useColorModeValue("gray.100", "gray.700"),
+                  }}
+                  onClick={() => {
+                    // setShow(5);
 
-                  <Flex
-                    align="center"
-                    px={6}
-                    py={3}
-                    cursor="pointer"
-                    borderRadius="md"
-                    _hover={{
-                      bg: useColorModeValue("gray.100", "gray.700"),
-                    }}
-                    onClick={() => {
-                      setShow(6)
-                      onToggle()
-                    }}
-                  >
-                    <Icon as={FiShoppingBag} w={5} h={5} />
-                    <Text ml={4} fontWeight="medium">
-                      Products
-                    </Text>
-                  </Flex>
+                    onToggle();
+                  }}>
+                  <Icon as={FiUser} w={5} h={5} />
+                  <Text ml={4} fontWeight="medium">
+                    Users
+                  </Text>
+                </Flex>
 
-                  <Flex
-                    align="center"
-                    px={6}
-                    py={3}
-                    cursor="pointer"
-                    borderRadius="md"
-                    _hover={{
-                      bg: useColorModeValue("gray.100", "gray.700"),
-                    }}
-                    onClick={() => {
-                      setShow(7)
-                      onToggle()
-                    }}
-                  >
-                    <Icon as={FiShoppingBag} w={5} h={5} />
-                    <Text ml={4} fontWeight="medium">
-                      Create Product
-                    </Text>
-                  </Flex>
+                <Flex
+                  align="center"
+                  px={6}
+                  py={3}
+                  cursor="pointer"
+                  borderRadius="md"
+                  _hover={{
+                    bg: useColorModeValue("gray.100", "gray.700"),
+                  }}
+                  onClick={() => {
+                    setShow(6);
+                    onToggle();
+                  }}>
+                  <Icon as={FiShoppingBag} w={5} h={5} />
+                  <Text ml={4} fontWeight="medium">
+                    Products
+                  </Text>
+                </Flex>
 
-                  <Flex
-                    align="center"
-                    px={6}
-                    py={3}
-                    cursor="pointer"
-                    borderRadius="md"
-                    _hover={{
-                      bg: useColorModeValue("gray.100", "gray.700"),
-                    }}
-                    onClick={() => {
-                      setShow(8)
-                      onToggle()
-                    }}
-                  >
-                    <Icon as={FiShoppingBag} w={5} h={5} />
-                    <Text ml={4} fontWeight="medium">
-                      Update Product
-                    </Text>
-                  </Flex>
+                <Flex
+                  align="center"
+                  px={6}
+                  py={3}
+                  cursor="pointer"
+                  borderRadius="md"
+                  _hover={{
+                    bg: useColorModeValue("gray.100", "gray.700"),
+                  }}
+                  onClick={() => {
+                    setShow(7);
+                    onToggle();
+                  }}>
+                  <Icon as={FiShoppingBag} w={5} h={5} />
+                  <Text ml={4} fontWeight="medium">
+                    Create Product
+                  </Text>
+                </Flex>
 
-                  <Flex
-                    align="center"
-                    px={6}
-                    py={3}
-                    cursor="pointer"
-                    borderRadius="md"
-                    _hover={{
-                      bg: useColorModeValue("gray.100", "gray.700"),
-                    }}
-                    onClick={() => {
-                      setShow(9)
-                      onToggle()
-                    }}
-                  >
-                    <Icon as={FiShoppingCart} w={5} h={5} />
-                    <Text ml={4} fontWeight="medium">
-                      Orders
-                    </Text>
-                  </Flex>
+                <Flex
+                  align="center"
+                  px={6}
+                  py={3}
+                  cursor="pointer"
+                  borderRadius="md"
+                  _hover={{
+                    bg: useColorModeValue("gray.100", "gray.700"),
+                  }}
+                  onClick={() => {
+                    setShow(8);
+                    onToggle();
+                  }}>
+                  <Icon as={FiShoppingBag} w={5} h={5} />
+                  <Text ml={4} fontWeight="medium">
+                    Update Product
+                  </Text>
+                </Flex>
 
-                </>
-              )
-            }
+                <Flex
+                  align="center"
+                  px={6}
+                  py={3}
+                  cursor="pointer"
+                  borderRadius="md"
+                  _hover={{
+                    bg: useColorModeValue("gray.100", "gray.700"),
+                  }}
+                  onClick={() => {
+                    setShow(9);
+                    onToggle();
+                  }}>
+                  <Icon as={FiShoppingCart} w={5} h={5} />
+                  <Text ml={4} fontWeight="medium">
+                    Orders
+                  </Text>
+                </Flex>
+              </>
+            )}
             <Flex
               align="center"
               px={6}
@@ -677,18 +654,13 @@ export function Profile() {
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
-              onClick={logoutHandler}
-            >
+              onClick={logoutHandler}>
               <Icon as={FiLogOut} w={5} h={5} />
               <Text ml={4} fontWeight="medium">
                 Logout
               </Text>
             </Flex>
-
-
           </Stack>
-
-
         </Box>
         {show === 1 && <EditProfile />}
         {show === 5 && <UsersDashboard />}
@@ -696,8 +668,7 @@ export function Profile() {
         {show === 7 && <CreateProduct />}
         {show === 8 && <UpdateProduct />}
         {show === 9 && <OrdersDashboard />}
-
       </Flex>
-    </Container >
+    </Container>
   );
 }
