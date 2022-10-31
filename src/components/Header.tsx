@@ -4,6 +4,8 @@ import {
   Button,
   useColorMode,
   useColorModeValue,
+  IconButton,
+  Box,
 } from "@chakra-ui/react";
 import { companyName } from "../constant/general";
 import { Container } from "@chakra-ui/react";
@@ -12,10 +14,29 @@ import { SearchBar } from "./SearchBar";
 import { Logged } from "./Logged";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import React from "react";
+import Menu from "./Menu";
+import Cart from "./Cart";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export function Header() {
   const { toggleColorMode } = useColorMode();
-  const text = useColorModeValue("Dark", "Light");
+  const { userInfo } = useRecoveryData("userLogin");
+
+  const [width, setWidth] = React.useState(window.innerWidth);
+  const breakpoint = 768;
+
+  React.useEffect(() => {
+    window.addEventListener("resize", () => setWidth(window.innerWidth));
+  }, []);
+  const [isHidden, setIsHidden] = React.useState(false);
+  React.useEffect(() => {
+    if (width < breakpoint) {
+      setIsHidden(true);
+    } else {
+      setIsHidden(false);
+    }
+  }, [width]);
+
   return (
     <Container
       maxW="full"
@@ -28,45 +49,69 @@ export function Header() {
       top={0}
       left={0}
       right={0}
-      zIndex={1000}>
+      zIndex={1000}
+      justifyContent={"space-between"}
+    >
       <Flex
-        maxW="container.xl"
+        maxW="container.lg"
         mx="auto"
         alignItems={"center"}
         gap="10"
-        justifyContent={"space-between"}>
+        justifyContent={"space-between"}
+      >
+        <Menu />
         <Text
+          // mr={70}
+          ml={9}
+          justify="center"
+          align="center"
           fontSize="3xl"
           fontWeight="bold"
           letterSpacing={"wide"}
           color={useColorModeValue("gray.800", "white")}
           as={Link}
-          ml={10}
-          to={"/"}>
+          to={"/"}
+        >
           {companyName}
         </Text>
-        <SearchBar />
-        <Logged />
-        {/* <Button
-          leftIcon={<SwitchIcon />}
+        {/* <IconButton
+          icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
           colorScheme="teal"
-          variant="outline"
-          size="sm"
-          mr={2}
-          onClick={toggleColorMode}>
-          {text}
-        </Button> */}
-
-        <Button
-          leftIcon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-          colorScheme="teal"
-          variant="outline"
+          variant="ghost"
           size="md"
-          pl={6}
-          pr={6}
-          onClick={toggleColorMode}>
-          {text}
-        </Button>
+          onClick={toggleColorMode}
+        ></IconButton> */}
+        {/* <Flex>
+          <IconButton
+            ml={0}
+            icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+            colorScheme="teal"
+            variant="ghost"
+            size="sm"
+            onClick={toggleColorMode}
+          ></IconButton>
+        </Flex> */}
+        <Flex>
+          <Logged />
+          <IconButton
+            display={isHidden ? "none" : "flex"}
+            icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+            colorScheme="teal"
+            variant="ghost"
+            size="md"
+            onClick={toggleColorMode}
+          ></IconButton>
+        </Flex>
+        {/* <SearchBar /> */}
+
+        {userInfo ? (
+          <Flex ml={-8}>
+            <SearchBar />
+            <Cart />
+          </Flex>
+        ) : (
+          <SearchBar />
+        )}
       </Flex>
     </Container>
   );

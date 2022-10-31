@@ -1,9 +1,9 @@
 import React from "react";
-import { Box, Badge, Text, Stack, Spacer,} from "@chakra-ui/react";
+import { Box, Badge, Text, Stack, Spacer } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 
-
 export const Card = ({ product }: any) => {
+  console.log(product)
   return (
     <Box
       w="12.5rem"
@@ -15,7 +15,6 @@ export const Card = ({ product }: any) => {
       bgSize="cover"
       bgRepeat="no-repeat"
       display="flex"
-      
       role="group">
       <Box
         h="100%"
@@ -45,35 +44,38 @@ export const Card = ({ product }: any) => {
           </Stack>
         </Box>
         <Spacer />
-        
+
         <Spacer />
         <Box display={"flex"} flexDir="column" alignItems={"center"}>
-            <Text color="black" fontWeight="semibold" fontSize="l" backgroundColor={'white'}
-            borderRadius='2xl'
-            p={'5px'}>
-              ${product.price}
-            </Text>
+          <Text
+            color="black"
+            fontWeight="semibold"
+            fontSize="l"
+            backgroundColor={"white"}
+            borderRadius="2xl"
+            p={"5px"}>
+            ${product.price}
+          </Text>
           <Text
             as="h2"
-            backgroundColor={'white'}
-            borderRadius='2xl'
-            p={'5px'}
+            backgroundColor={"white"}
+            borderRadius="2xl"
+            p={"5px"}
             fontWeight="semibold"
             fontSize="sm"
             my={2}
-            textAlign='center'
+            textAlign="center"
             textTransform="uppercase"
             color="black">
             {product.name}
           </Text>
           <Stack isInline justify="space-between">
             <Box as="span">
-              {Array(product.rating)
+              {/* {Array(product.rating)
                 .fill("")
                 .map((_, i) => (
                   <StarIcon color="teal.500" key={i} />
-                ))}
-              
+                ))} */}
             </Box>
           </Stack>
         </Box>

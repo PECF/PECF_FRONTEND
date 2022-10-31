@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CreatableSelect, Select } from "chakra-react-select";
+import { useLocation } from "react-router-dom";
 import {
   Text,
   VStack,
@@ -46,13 +47,13 @@ export function UpdateProduct() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { tags } = useRecoveryData("productTag");
   const toast = useToast();
+  const location = useLocation();
+
+  const _productById = location.pathname.split("/")[4];
 
   const { products } = useRecoveryData("productList");
   const { product } = useRecoveryData("productDetails");
-  console.log(product);
   const { loading, error, success } = useRecoveryData("productUpdate");
-
-  const productUpdate = useRecoveryData("productUpdate");
 
   const [imagesPreview, setImagesPreview] = useState<any[]>([]);
   const [featureLocal, setFeatures] = useState<any[]>([]);
@@ -70,6 +71,18 @@ export function UpdateProduct() {
   const [name, setName] = useState("");
   const [isCharge, setIsCharge] = useState(false);
   const [isChange, setIsChange] = useState(false);
+
+  useEffect(() => {
+    if (_productById) {
+      dispatch(listProductDetails(_productById));
+      setIsChange(true);
+    }
+  }, [_productById]);
+
+  const selectProduct = (e: any) => {
+    dispatch(listProductDetails(e.value));
+    setIsChange(true);
+  };
 
   if (!isCharge) {
     const featureOptions = feature
@@ -110,7 +123,6 @@ export function UpdateProduct() {
     setTagOptions(tagOptions);
     setIsCharge(true);
   }
-
   const createProductImagesChange = (e: any) => {
     const files = Array.from(e?.target?.files);
     files.forEach((file) => {
@@ -162,11 +174,6 @@ export function UpdateProduct() {
     const _options = [...tagOptions, ...newTags];
     setTagOptions(_options);
     localStorage.setItem("tags", JSON.stringify(_options));
-  };
-
-  const selectProduct = (e: any) => {
-    dispatch(listProductDetails(e.value));
-    setIsChange(true);
   };
 
   const _product = {

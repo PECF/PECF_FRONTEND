@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Routes, Navigate, useLocation, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 
 import {
   Box,
@@ -46,6 +46,10 @@ export function Profile({ index }: { index?: number }) {
   const { isOpen, onToggle } = useDisclosure();
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
+  const locate = useLocation();
+  if (locate.pathname.includes("/profile/admin/updateProduct/") && show !== 8) {
+    setShow(8);
+  }
 
   const logoutHandler = () => {
     dispatch(logout());
