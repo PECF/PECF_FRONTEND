@@ -49,6 +49,7 @@ export function UpdateProduct() {
 
   const { products } = useRecoveryData("productList");
   const { product } = useRecoveryData("productDetails");
+  console.log(product);
   const { loading, error, success } = useRecoveryData("productUpdate");
 
   const productUpdate = useRecoveryData("productUpdate");
@@ -56,7 +57,7 @@ export function UpdateProduct() {
   const [imagesPreview, setImagesPreview] = useState<any[]>([]);
   const [featureLocal, setFeatures] = useState<any[]>([]);
   const [description, setDescription] = useState("");
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState<any[]>([]);
   const [discount, setDiscount] = useState(0);
   const [image, setImages] = useState<any[]>([]);
   const [featureOptions, setFeatureOptions] = useState<any[]>([]);
@@ -229,7 +230,7 @@ export function UpdateProduct() {
   const previewHandler = () => {
     if (
       name === "" ||
-      category === "" ||
+      category.length === 0 ||
       description === "" ||
       brand === "" ||
       price === 0 ||
@@ -253,7 +254,7 @@ export function UpdateProduct() {
     e.preventDefault();
     if (
       name === "" ||
-      category === "" ||
+      category.length === 0 ||
       description === "" ||
       brand === "" ||
       price === 0 ||
@@ -363,12 +364,19 @@ export function UpdateProduct() {
             </FormControl>
             <FormControl id="category" isRequired>
               <FormLabel>Category</FormLabel>
-              <Input
-                type="text"
-                placeholder="Electronics"
-                bg={useColorModeValue("alphaWhite", "gray.800")}
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+              <Select
+                selectedOptionColor="teal"
+                colorScheme="teal"
+                onChange={(e: any) => {
+                  setCategory(e);
+                }}
+                placeholder="Select Category"
+                options={[
+                  { value: "Shirt", label: "Shirt" },
+                  { value: "Pants", label: "Pants" },
+                  { value: "Shoes", label: "Shoes" },
+                  { value: "Accessories", label: "Accessories" },
+                ]}
               />
             </FormControl>
           </SimpleGrid>

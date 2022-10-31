@@ -35,6 +35,37 @@ export function ProductsDashboard() {
   const { products } = useRecoveryData("productList");
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  //searchbar filter function for products
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const handleChange = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const results = !searchTerm
+    ? products
+    : products.filter(
+        (product: {
+          name: string;
+          description: string;
+          price: number;
+          category: string;
+          stock: number;
+          _id: number;
+        }) => {
+          const _filter = searchTerm.toLowerCase();
+          return (
+            product.name.toLowerCase().includes(_filter) ||
+            product.description.toLowerCase().includes(_filter) ||
+            product.price.toString().toLowerCase().includes(_filter) ||
+            product.category.toLowerCase().includes(_filter) ||
+            product.stock.toString().toLowerCase().includes(_filter) ||
+            product._id.toString().toLowerCase().includes(_filter)
+          );
+        }
+      );
+
   return (
     <Box
       as="form"
@@ -66,21 +97,115 @@ export function ProductsDashboard() {
           py={4}
           bg={useColorModeValue("gray.50", "gray.800")}
           borderBottomWidth="1px">
-          <InputGroup>
+          <InputGroup size="md">
             <Input
+              pr="4.5rem"
+              type="text"
               placeholder="Search"
-              variant="filled"
-              _placeholder={{ color: "gray.500" }}
+              value={searchTerm}
+              onChange={handleChange}
             />
-            <InputRightElement pointerEvents="none">
+            <InputRightElement width="4.5rem">
               <SearchIcon color="gray.300" />
             </InputRightElement>
           </InputGroup>
         </Flex>
+        <TableContainer>
+          <Table variant="simple">
+            <TableCaption>Products</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Product</Th>
+                <Th>Price</Th>
+                <Th>Stock</Th>
+                <Th>Rating</Th>
+                <Th>ID</Th>
+                <Th>Date Relased</Th>
+                <Th>Active</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {results.map((product: any) => (
+                <Tr key={product._id}>
+                  <Td>{product.name}</Td>
+                  <Td>{product.price}</Td>
+                  <Td>{product.stock}</Td>
+                  <Td>{product.rating}</Td>
+                  <Td>{product._id}</Td>
+                  <Td>{new Date(product?.createdAt).toLocaleString()}</Td>
+                  <Td>
+                    <Switch
+                      colorScheme="teal"
+                      defaultChecked={product.visibility}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+            <Tfoot>
+              <Tr>
+                <Th>Product</Th>
+                <Th>Price</Th>
+                <Th>Stock</Th>
+                <Th>Rating</Th>
+                <Th>ID</Th>
+                <Th>Date Relased</Th>
+                <Th>Active</Th>
+              </Tr>
+            </Tfoot>
+          </Table>
+        </TableContainer>
       </VStack>
     </Box>
   );
 }
+
+//   return (
+//     <Box
+//       as="form"
+//       w="full"
+//       mt={8}
+//       maxW="full"
+//       mx="auto"
+//       bg={useColorModeValue("white", "gray.700")}
+//       overflow="hidden">
+//       <VStack align="stretch" spacing={0}>
+//         <Flex
+//           justify="space-between"
+//           align="center"
+//           px={6}
+//           py={4}
+//           bg={useColorModeValue("gray.50", "gray.800")}
+//           borderBottomWidth="1px">
+//           <Heading
+//             size="lg"
+//             fontWeight="bold"
+//             color={useColorModeValue("gray.900", "white")}>
+//             Products
+//           </Heading>
+//         </Flex>
+//         <Flex
+//           justify="space-between"
+//           align="center"
+//           px={6}
+//           py={4}
+//           bg={useColorModeValue("gray.50", "gray.800")}
+//           borderBottomWidth="1px">
+//           <InputGroup>
+//             <Input
+//               placeholder="Search"
+//               variant="filled"
+//               _placeholder={{ color: "gray.500" }}
+//             />
+//             <InputRightElement pointerEvents="none">
+//               <SearchIcon color="gray.300" />
+//             </InputRightElement>
+//           </InputGroup>
+//         </Flex>
+//       </VStack>
+//     </Box>
+//   );
+// }
 
 {
   /* <VStack align="stretch" spacing={0}>

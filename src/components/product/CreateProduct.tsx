@@ -49,7 +49,7 @@ export function CreateProduct() {
   );
   const [featureLocal, setFeatures] = useState<any[]>(product?.feature || []);
   const [description, setDescription] = useState(product?.description || "");
-  const [category, setCategory] = useState(product?.category || "");
+  const [category, setCategory] = useState<any[]>(product?.category || []);
   const [discount, setDiscount] = useState(product?.discount || 0);
   const [featureOptions, setFeatureOptions] = useState<any[]>([]);
   const [offer, setOffer] = useState<any[]>(product?.offer || []);
@@ -199,7 +199,7 @@ export function CreateProduct() {
   const previewHandler = () => {
     if (
       name === "" ||
-      category === "" ||
+      category.length === 0 ||
       description === "" ||
       brand === "" ||
       price === "" ||
@@ -224,7 +224,7 @@ export function CreateProduct() {
     e.preventDefault();
     if (
       name === "" ||
-      category === "" ||
+      category.length === 0 ||
       description === "" ||
       brand === "" ||
       price === "" ||
@@ -309,12 +309,19 @@ export function CreateProduct() {
             </FormControl>
             <FormControl id="category" isRequired>
               <FormLabel>Category</FormLabel>
-              <Input
-                type="text"
-                placeholder="Electronics"
-                bg={useColorModeValue("alphaWhite", "gray.800")}
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
+              <Select
+                selectedOptionColor="teal"
+                colorScheme="teal"
+                onChange={(e: any) => {
+                  setCategory(e);
+                }}
+                placeholder="Select Category"
+                options={[
+                  { value: "Shirt", label: "Shirt" },
+                  { value: "Pants", label: "Pants" },
+                  { value: "Shoes", label: "Shoes" },
+                  { value: "Accessories", label: "Accessories" },
+                ]}
               />
             </FormControl>
           </SimpleGrid>
