@@ -17,7 +17,7 @@ import {
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import { Login } from "./Login"; //
-import { SignUp } from "./SingUp"; //
+import { SignUp } from "./SignUp"; //
 import { IoBagCheckOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
@@ -87,7 +87,8 @@ export default function Acordion() {
                   colorScheme="teal"
                   variant="ghost"
                   size="md"
-                  aria-label={""}></IconButton>
+                  aria-label={""}
+                ></IconButton>
               </MenuItem>
             </MenuList>
             {/* <Button
@@ -114,7 +115,8 @@ export default function Acordion() {
               as={IconButton}
               aria-label="Options"
               icon={<HamburgerIcon />}
-              variant="outline">
+              variant="outline"
+            >
               <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
                 <Text>{user?.name}</Text>
                 <Avatar size={"sm"} src={user?.avatar?.url} />
@@ -141,7 +143,8 @@ export default function Acordion() {
                   colorScheme="teal"
                   variant="ghost"
                   size="sm"
-                  aria-label={""}></IconButton>
+                  aria-label={""}
+                ></IconButton>
                 <Text>{text}</Text>
               </MenuItem>
             </MenuList>
