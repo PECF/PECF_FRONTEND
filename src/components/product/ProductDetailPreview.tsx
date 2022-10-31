@@ -20,27 +20,22 @@ import { CarouselDetailProducts } from "./carouselDetailProductPreview";
 export function ProductDetailPreview({ product }: any) {
   return (
     <Center
-      py={
-        {
-          base: 1,
-          md: 10,
-        }
-      }
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
-      < VStack
+      py={{
+        base: 1,
+        md: 10,
+      }}
+      bg={useColorModeValue("gray.50", "gray.800")}>
+      <VStack
         w="full"
         maxW="7xl"
         mx="auto"
         rounded="lg"
         shadow="lg"
-        overflow="hidden"
-      >
+        overflow="hidden">
         <Grid
           templateColumns={{ base: "1fr", md: "1fr 1fr" }}
           w="full"
-          h="full"
-        >
+          h="full">
           <Heading
             as="h1"
             size="2xl"
@@ -53,21 +48,13 @@ export function ProductDetailPreview({ product }: any) {
             spacing={2}
             align="center"
             justify={{ base: "left", md: "flex-end" }}
-            p={2}
-          >
+            p={2}>
             {Array(5)
               .fill("")
               .map((_, i) => (
-                <StarIcon
-                  key={i}
-                />
+                <StarIcon key={i} />
               ))}
-            <Box
-              as="span"
-              ml="2"
-              color="gray.600"
-              fontSize="lg"
-            >
+            <Box as="span" ml="2" color="gray.600" fontSize="lg">
               reviews
             </Box>
           </HStack>
@@ -76,36 +63,28 @@ export function ProductDetailPreview({ product }: any) {
           direction={{ base: "column", md: "row" }}
           w="full"
           h="full"
-          p={1}
-        >
-          <Text
-            fontSize="lg"
-            color="gray.600"
-            textAlign="center"
-          >
+          p={1}>
+          <Text fontSize="lg" color="gray.600" textAlign="center">
             <Badge
               colorScheme="teal"
               borderRadius="full"
               px="4"
               py="1"
-              fontSize="md"
-            >
-              {product.category}
+              fontSize="md">
+              {product.category.value}
             </Badge>
           </Text>
           <Text
             fontSize="lg"
             color="gray.600"
             textAlign="center"
-            display={{ base: "none", md: "block" }}
-          >
+            display={{ base: "none", md: "block" }}>
             <Badge
               colorScheme="teal"
               borderRadius="full"
               px="4"
               py="1"
-              fontSize="md"
-            >
+              fontSize="md">
               {product?.brand}
             </Badge>
           </Text>
@@ -113,58 +92,43 @@ export function ProductDetailPreview({ product }: any) {
             fontSize="lg"
             color="gray.600"
             textAlign="center"
-            display={{ base: "none", md: "block" }}
-          >
+            display={{ base: "none", md: "block" }}>
             <Badge
               colorScheme="teal"
               borderRadius="full"
               px="4"
               py="1"
-              fontSize="md"
-            >
+              fontSize="md">
               only {product?.stock} units
             </Badge>
           </Text>
-          {
-            (product.offer[0]?.value === "discount" ||
-              product.offer[1]?.value === "discount" ||
-              product.offer[2]?.value === "discount") &&
-              product.discount !== 0
-              ?
-              <Text
-                fontSize="lg"
-                color="gray.600"
-                textAlign="center"
-                display={{ base: "none", md: "block" }}
-              >
-                <Badge
-                  colorScheme="teal"
-                  borderRadius="full"
-                  px="4"
-                  py="1"
-                  fontSize="md"
-                >
-                  {`${product.discount}% OFF`}
-                </Badge>
-              </Text>
-              : null
-          }
-
+          {(product.offer[0]?.value === "discount" ||
+            product.offer[1]?.value === "discount" ||
+            product.offer[2]?.value === "discount") &&
+          product.discount !== 0 ? (
+            <Text
+              fontSize="lg"
+              color="gray.600"
+              textAlign="center"
+              display={{ base: "none", md: "block" }}>
+              <Badge
+                colorScheme="teal"
+                borderRadius="full"
+                px="4"
+                py="1"
+                fontSize="md">
+                {`${product.discount}% OFF`}
+              </Badge>
+            </Text>
+          ) : null}
         </Stack>
         <CarouselDetailProducts image={product.image} />
-        <Stack
-          w="100%"
-          h="full"
-          p={5}
-          spacing={4}
-
-        >
+        <Stack w="100%" h="full" p={5} spacing={4}>
           <Text
             ml={5}
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={600}
-            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
-          >
+            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
             {product.price}€
           </Text>
           <Button
@@ -181,8 +145,7 @@ export function ProductDetailPreview({ product }: any) {
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
-            }}
-          >
+            }}>
             Add to cart
           </Button>
           <Stack
@@ -191,39 +154,31 @@ export function ProductDetailPreview({ product }: any) {
             h="full"
             p={1}
             justify="center"
-            align={{ base: "center", md: "center" }}
-          >
+            align={{ base: "center", md: "center" }}>
             <MdLocalShipping />
             <Text
               ml={2}
               color={useColorModeValue("gray.900", "gray.400")}
               fontWeight={600}
-
-              fontSize={{ base: "sm", sm: "md", lg: "lg" }}
-            >
-
+              fontSize={{ base: "sm", sm: "md", lg: "lg" }}>
               {product.offer[0]?.value === "freeShipping" ||
-                product.offer[1]?.value === "freeShipping" ||
-                product.offer[2]?.value === "freeShipping"
-                ?
-                "Free shipping" : "Delivery in 72hs"}
-
+              product.offer[1]?.value === "freeShipping" ||
+              product.offer[2]?.value === "freeShipping"
+                ? "Free shipping"
+                : "Delivery in 72hs"}
             </Text>
-
           </Stack>
         </Stack>
         <Box
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-        >
+          bg={useColorModeValue("gray.50", "gray.900")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"600"}
-            textTransform={"uppercase"}
-          >
+            textTransform={"uppercase"}>
             Features
           </Text>
           <SimpleGrid
@@ -231,8 +186,7 @@ export function ProductDetailPreview({ product }: any) {
             spacing={10}
             w="full"
             h="full"
-            p={5}
-          >
+            p={5}>
             {product.feature?.map((f: { value: string }, index: number) => (
               <Box
                 key={index}
@@ -251,16 +205,14 @@ export function ProductDetailPreview({ product }: any) {
                 _hover={{
                   transform: "translateY(-2px)",
                   shadow: "lg",
-                }}
-              >
+                }}>
                 <Text
                   fontSize="xl"
                   color={useColorModeValue("teal.500", "teal.300")}
                   fontWeight={"500"}
                   align={"center"}
                   textAlign={"center"}
-                  textTransform={"uppercase"}
-                >
+                  textTransform={"uppercase"}>
                   {f.value}
                 </Text>
               </Box>
@@ -271,14 +223,12 @@ export function ProductDetailPreview({ product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-        >
+          bg={useColorModeValue("gray.50", "gray.900")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"600"}
-            textTransform={"uppercase"}
-          >
+            textTransform={"uppercase"}>
             Description
           </Text>
           <Text
@@ -286,8 +236,7 @@ export function ProductDetailPreview({ product }: any) {
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={300}
             align={"center"}
-            textAlign="justify"
-          >
+            textAlign="justify">
             {product.description}
           </Text>
         </Box>
@@ -295,14 +244,12 @@ export function ProductDetailPreview({ product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-        >
+          bg={useColorModeValue("gray.50", "gray.900")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"600"}
-            textTransform={"uppercase"}
-          >
+            textTransform={"uppercase"}>
             Tags
           </Text>
           <SimpleGrid
@@ -310,8 +257,7 @@ export function ProductDetailPreview({ product }: any) {
             spacing={5}
             w="full"
             h="full"
-            p={5}
-          >
+            p={5}>
             {product.tag?.map((t: { value: string }, index: number) => (
               <Box
                 key={index}
@@ -323,15 +269,13 @@ export function ProductDetailPreview({ product }: any) {
                 _hover={{
                   transform: "translateY(-2px)",
                   shadow: "lg",
-                }}
-              >
+                }}>
                 <Text
                   fontSize="xl"
                   color={useColorModeValue("teal.500", "teal.300")}
                   fontWeight={"500"}
                   align={"center"}
-                  textTransform={"uppercase"}
-                >
+                  textTransform={"uppercase"}>
                   {t.value}
                 </Text>
               </Box>
@@ -339,7 +283,6 @@ export function ProductDetailPreview({ product }: any) {
           </SimpleGrid>
         </Box>
       </VStack>
-
     </Center>
   );
 }

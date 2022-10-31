@@ -14,30 +14,21 @@ import {
   useColorModeValue,
   VStack,
   Tr,
+  Text,
   Heading,
   Th,
   Td,
   Switch,
   TableCaption,
   TableContainer,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  Button,
-  useDisclosure,
   Grid,
 } from "@chakra-ui/react";
 
 import { useRecoveryData } from "../../hooks/useRecoveryData";
+import { Link } from "react-router-dom";
 export function ProductsDashboard() {
   const { products } = useRecoveryData("productList");
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  //searchbar filter function for products
   const [searchTerm, setSearchTerm] = useState("");
   const [contextSearch, setContextSearch] = useState(0);
 
@@ -177,7 +168,7 @@ export function ProductsDashboard() {
           gap={6}
           px={6}
           py={4}
-          bg={useColorModeValue("gray.50", "gray.800")}
+          bg={useColorModeValue("white", "gray.800")}
           borderBottomWidth="1px">
           <InputGroup size="md">
             <Input
@@ -186,6 +177,7 @@ export function ProductsDashboard() {
               placeholder="Search"
               value={searchTerm}
               onChange={handleChange}
+              bg={useColorModeValue("gray.50", "gray.700")}
             />
             <InputRightElement width="4.5rem">
               <SearchIcon color="gray.300" />
@@ -224,7 +216,11 @@ export function ProductsDashboard() {
             <Tbody>
               {results.map((product: any) => (
                 <Tr key={product._id}>
-                  <Td>{product.name}</Td>
+                  <Td>
+                    <Text as={Link} to={`/profile/admin/updateProduct/${product._id}`}>
+                      {product.name}
+                    </Text>
+                  </Td>
                   <Td>{product.price}</Td>
                   <Td>{product.stock}</Td>
                   <Td>{product.rating}</Td>
@@ -239,6 +235,7 @@ export function ProductsDashboard() {
                 </Tr>
               ))}
             </Tbody>
+
             <Tfoot>
               <Tr>
                 <Th>Product</Th>
