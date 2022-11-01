@@ -14,6 +14,11 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 //  import { CookiesPolicy } from "../pages/CookiesPolicy";
 //import { Products } from "../pages/Products";
 //import { ProductReview } from '../components/ProductReview';
+//import { Cart } from "../pages/Cart";
+//import { Wishlist } from "../pages/Wishlist";
+//import { Checkout } from "../pages/Checkout";
+//import { Order } from "../pages/Order";
+
 
 const Profile = lazy(() => import("../pages/user/profile"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
@@ -28,6 +33,7 @@ const CookiesPolicy = lazy(() => import("../pages/CookiesPolicy"));
 const ProductReview = lazy(() => import("../components/ProductReview"));
 const Products = lazy(() => import("../pages/Products"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const WishList = lazy(() => import("../components/Wishlist"));
 
 
 export const AppRoutes: React.FC = () => {
@@ -47,6 +53,12 @@ export const AppRoutes: React.FC = () => {
           <Route path="/forgot-password" element={<Navigate to="/" />} />
         )}
 
+        {user?.role ? (
+          <Route path="/wishlist" element={<WishList />} />
+          ) : (
+            <Route path="/wishlist" element={<Navigate to="/" />} />
+            )}
+            
         {user?.role ? (
           <Route path="/profile" element={<Profile index={1} />} />
         ) : (
