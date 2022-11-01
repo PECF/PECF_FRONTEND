@@ -13,7 +13,8 @@ export const useLoad = () => {
   useEffect(() => {
     if (user?.role === "admin") {
       dispatch(getAllProductsAdmin());
-    } else {
+    }
+    else{
       dispatch(getAllProducts());
     }
   }, [dispatch, user?.role]);

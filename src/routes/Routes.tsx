@@ -24,6 +24,7 @@ export const AppRoutes: React.FC = () => {
       {/* <Route path="/product/:id" element={<ProductReview />} /> */}
       <Route path="/product/" element={<ProductDetail />} />
 
+      <Route path="/products/:category" element={<Products />} />
       {!user?.role ? (
         <Route path="/forgot-password" element={<ForgotPassword />} />
       ) : (
