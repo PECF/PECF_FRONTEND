@@ -17,6 +17,7 @@ import React from "react";
 import Menu from "./Menu";
 import Cart from "./Cart";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { SearchBarInput } from "./SearchBarInput";
 
 export function Header() {
   const { toggleColorMode } = useColorMode();
@@ -62,7 +63,7 @@ export function Header() {
         <Menu />
         <Text
           // mr={70}
-          ml={9}
+          ml={7}
           justify="center"
           align="center"
           fontSize="3xl"
@@ -74,6 +75,7 @@ export function Header() {
         >
           {companyName}
         </Text>
+        <SearchBarInput display={isHidden ? "none" : "flex"} />
         {/* <IconButton
           icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
           colorScheme="teal"
@@ -94,6 +96,7 @@ export function Header() {
         <Flex>
           <Logged />
           <IconButton
+            ml={8}
             display={isHidden ? "none" : "flex"}
             icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
             colorScheme="teal"
@@ -105,12 +108,16 @@ export function Header() {
         {/* <SearchBar /> */}
 
         {userInfo ? (
-          <Flex ml={-8}>
-            <SearchBar />
+          <Flex>
+            <Flex ml={-8} display={isHidden ? "flex" : "none"}>
+              <SearchBar />
+            </Flex>
             <Cart />
           </Flex>
         ) : (
-          <SearchBar />
+          <Flex display={isHidden ? "flex" : "none"}>
+            <SearchBar />
+          </Flex>
         )}
       </Flex>
     </Container>
