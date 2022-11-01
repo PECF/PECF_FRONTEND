@@ -1,9 +1,8 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
-//import { ForgotPassword } from "../pages/user/ForgotPassword";
-import { NotFound } from "../pages/NotFound";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+//import { NotFound } from "../pages/NotFound";
 //import { Profile } from "../pages/user/profile";
 // import { ProductDetail } from "../pages/ProductDetail";
 //  import { TermsOfService } from '../pages/TermsOfService';
@@ -13,18 +12,23 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 //  import { Refund } from "../pages/Refund";
 //  import { PrivacyPolicy } from "../pages/PrivacyPolicy";
 //  import { CookiesPolicy } from "../pages/CookiesPolicy";
-import { Products } from "../pages/Products";
+//import { Products } from "../pages/Products";
+//import { ProductReview } from '../components/ProductReview';
 
-const ReturnPolicy = lazy(() => import("../pages/ReturnPolicy"));
-const Refund = lazy(() => import("../pages/Refund"));
+const Profile = lazy(() => import("../pages/user/profile"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const TermsOfService = lazy(() => import("../pages/TermsOfService"));
+const ForgotPassword = lazy(() => import("../pages/user/ForgotPassword"));
 const AboutUs = lazy(() => import("../pages/AboutUs"));
 const ContactUs = lazy(() => import("../pages/ContactUs"));
+const ReturnPolicy = lazy(() => import("../pages/ReturnPolicy"));
+const Refund = lazy(() => import("../pages/Refund"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const CookiesPolicy = lazy(() => import("../pages/CookiesPolicy"));
-//const ForgotPassword = lazy(() => import("../pages/user/ForgotPassword"));
-//const ResetPassword = lazy(() => import("../pages/user/ResetPassword"));
+const ProductReview = lazy(() => import("../components/ProductReview"));
+const Products = lazy(() => import("../pages/Products"));
+const NotFound = lazy(() => import("../pages/NotFound"));
+
 
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
@@ -33,9 +37,9 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
-        {/* <Route path="/product/:id" element={<ProductReview />} /> */}
         <Route path="/product/" element={<ProductDetail />} />
-{/* 
+        <Route path="/product/:id" element={<ProductReview />} />
+
         <Route path="/products/:category" element={<Products />} />
         {!user?.role ? (
           <Route path="/forgot-password" element={<ForgotPassword />} />
@@ -93,7 +97,7 @@ export const AppRoutes: React.FC = () => {
           />
         ) : (
           <Route path="/create-product" element={<Navigate to="/" />} />
-        )} */}
+        )}
         <Route path="/pages/TermsOfService" element={<TermsOfService />} />
         <Route path="/pages/AboutUs" element={<AboutUs />} />
         <Route path="/pages/ContactUs" element={<ContactUs />} />

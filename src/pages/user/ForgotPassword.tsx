@@ -19,7 +19,7 @@ import { forgotPassword } from "../../redux/actions/authActions";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { emailRegex } from "../../constant/Regex";
 
-export const ForgotPassword = () => {
+export default function ForgotPassword() {
   const send = useToast();
 
   const [email, setEmail] = useState("");
@@ -105,4 +105,4 @@ export const ForgotPassword = () => {
       </Box>
     </Container>
   );
-};
+}

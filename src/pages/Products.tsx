@@ -5,7 +5,7 @@ import { Box } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import * as React from "react";
 
-export const Products = () => {
+export default function Products (){
   const { products } = useRecoveryData("productList");
   const location = useLocation();
   const [filteredProducts, setFilteredProducts] = React.useState(products);
@@ -38,7 +38,7 @@ export const Products = () => {
       </ProductGrid>
     </Box>
   );
-};
+}
 
 /*
   return (

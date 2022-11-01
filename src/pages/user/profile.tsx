@@ -40,7 +40,8 @@ import { AppDispatch } from "../../redux/rootStore";
 import { CreateProduct } from "../../components/product/CreateProduct";
 import { UpdateProduct } from "../../components/product/UpdateProduct";
 import { UsersDashboard } from "../../components/UsersDashboard";
-export function Profile({ index }: { index?: number }) {
+
+export default function Profile({ index }: { index?: number }) {
   const { user } = useRecoveryData("userDetails");
   const [show, setShow] = useState(index || 1);
   const { isOpen, onToggle } = useDisclosure();
