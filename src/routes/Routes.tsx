@@ -20,10 +20,10 @@ export const AppRoutes: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      {/* <Route path="/products" element={<Products />} />
-      <Route path="/product/:id" element={<ProductReview />} /> */}
-      <Route path="/product/" element={<ProductDetail />} />
+      <Route path="/products" element={<Products />} />
+      <Route path="/product/:id" element={<ProductDetail />} />
 
+      <Route path="/products/:category" element={<Products />} />
       {!user?.role ? (
         <Route path="/forgot-password" element={<ForgotPassword />} />
       ) : (

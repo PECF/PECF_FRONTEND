@@ -1,9 +1,8 @@
 import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 import "slick-carousel/slick/slick-theme.css";
-import { Card } from "../../components/Card";
 import "slick-carousel/slick/slick.css";
 import Slider from "react-slick";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -15,9 +14,10 @@ import {
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 
 import { SecondSlider } from "../../constant/Home";
+import { ProductCard } from "./ProductCard";
 
-export function Carousel({ text, name }: any) {
-  const [slider, setSlider] = React.useState<Slider | null>(null);
+export function Carousel({ text, name }: { text: string; name: string }) {
+  const [slider, setSlider] = useState<Slider | null>(null);
 
   const { products } = useRecoveryData(name);
 
@@ -34,7 +34,6 @@ export function Carousel({ text, name }: any) {
       transform="translate(-50%)"
       borderRadius="20px"
       width="90%"
-      mb="5rem"
       mt="5rem">
       <Heading
         ml={"1rem"}
@@ -85,7 +84,7 @@ export function Carousel({ text, name }: any) {
 
         <Slider {...SecondSlider} ref={(slider) => setSlider(slider)}>
           {products.map((product: any, index: any) => (
-            <Card key={index} product={product} />
+            <ProductCard key={index} product={product} />
           ))}
         </Slider>
       </Box>

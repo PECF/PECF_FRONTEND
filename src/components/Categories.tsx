@@ -1,110 +1,122 @@
 import { Link } from "react-router-dom";
-import { Box, Container, Text, SimpleGrid,  Heading } from '@chakra-ui/react';
-import {IoShirtSharp, } from 'react-icons/io5'
-import {GiArmoredPants, GiUnderwearShorts, GiRunningShoe, GiHoodie,GiBilledCap, GiDoubleNecklace, GiMonclerJacket} from 'react-icons/gi'
-import {GrStackOverflow} from 'react-icons/gr'
-import React from "react";
-
+import {
+  Box,
+  Container,
+  Text,
+  SimpleGrid,
+  Heading,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { IoShirtSharp } from "react-icons/io5";
+import {
+  GiArmoredPants,
+  GiUnderwearShorts,
+  GiRunningShoe,
+  GiHoodie,
+  GiBilledCap,
+  GiMonclerJacket,
+} from "react-icons/gi";
+import { GrStackOverflow } from "react-icons/gr";
+import React, { useState } from "react";
 
 export function Categories() {
-    
-return (
-    <Container maxW={"90%"} m={0} p="0" w="100%" h={'100%'} mt='2rem'>
-        <Heading fontWeight={'light'} fontSize='24' ml='1rem'>Product Categories:</Heading>
-        <SimpleGrid
-            mb='2rem'
-            columns={{ sm: 2, md: 4 }}
-            spacing="4"
-            
-            p="5"
-            textAlign="center"
-            rounded="lg"
-            color="gray.400"
-            h={'100%'}
-            >
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GrStackOverflow size={'100%'}/ >
-                </Box>
-                <Text fontSize={'small'}>ALL</Text>
-            </Box>
-            
-        </Box>
+  const [categories, setCategories] = useState([
+    {
+      name: "Shirts",
+      icon: <IoShirtSharp />,
+      filter: "Shirts",
+    },
+    {
+      name: "Pants",
+      icon: <GiArmoredPants />,
+      filter: "Pants",
+    },
+    {
+      name: "Underwear",
+      icon: <GiUnderwearShorts />,
+      filter: "underwear",
+    },
+    {
+      name: "Shoes",
+      icon: <GiRunningShoe />,
+      filter: "shoes",
+    },
+    {
+      name: "Hoodies",
+      icon: <GiHoodie />,
+      filter: "Hoodies",
+    },
+    {
+      name: "Caps",
+      icon: <GiBilledCap />,
+      filter: "Caps",
+    },
+    {
+      name: "Jackets",
+      icon: <GiMonclerJacket />,
+      filter: "Jackets",
+    },
+    {
+      name: "All",
+      icon: <GrStackOverflow />,
+      filter: "all",
+    },
+  ]);
 
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%' _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <IoShirtSharp size={'100%'}></IoShirtSharp>
+  return (
+    <Box
+      w="100%"
+      h="100%"
+      p={4}
+      display="flex"
+      justifyContent="center"
+      alignItems="center">
+      <Container maxW="container.xl">
+        <Heading as="h2" size="lg" textAlign="center" mb={4} fontWeight="bold">
+          Categories
+        </Heading>
+        <SimpleGrid columns={[2, null, 4]} spacing={4}>
+          {categories.map((category) => (
+            <Box
+              key={category.name}
+              as={Link}
+              to={`/products/${category.name.toLowerCase()}`}
+              w="100%"
+              h="100%"
+              p={4}
+              borderRadius="md"
+              boxShadow="md"
+              display="flex"
+              bg={useColorModeValue("white", "gray.800")}
+              justifyContent="center"
+              alignItems="center"
+              flexDirection="column"
+              cursor="pointer">
+              <Box
+                w="100%"
+                h="100%"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column">
+                <Box
+                  w="100%"
+                  h="100%"
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  flexDirection="column"
+                  mb={2}>
+                  {category.icon}
                 </Box>
-                <Text fontSize={'small'}>SHIRTS</Text>
+                <Text as="h3" size="md" textAlign="center" fontWeight="bold">
+                  {category.name}
+                </Text>
+              </Box>
             </Box>
-            
-        </Box>
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GiArmoredPants size={'100%'} ></GiArmoredPants>
-                </Box>
-                <Text fontSize={'small'}>PANTS</Text>
-            </Box>
-            
-        </Box>
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GiUnderwearShorts size={'100%'} ></GiUnderwearShorts>
-                </Box>
-                <Text fontSize={'small'}>UNDERWEAR</Text>
-            </Box>
-            
-        </Box>
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GiRunningShoe size={'100%'} ></GiRunningShoe>
-                </Box>
-                <Text fontSize={'small'}>SHOES</Text>
-            </Box>
-            
-        </Box>
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GiHoodie size={'100%'} ></GiHoodie>
-                </Box>
-                <Text fontSize={'small'}>HOODIES</Text>
-            </Box>
-            
-        </Box>
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GiMonclerJacket size={'100%'} />
-                </Box>
-                <Text fontSize={'small'}>JACKETS</Text>
-            </Box>
-            
-        </Box>
-        
-        <Box boxShadow="dark-lg"  rounded="md" bg="white" role='group'>
-            
-            <Box as={Link} to='/products' display={'flex'} alignItems='center' p={'10px'} flexDir={'column'} justifyContent={'center'} w={'100%'}  h='100%'    _groupHover={{visibility: 'visible', background: 'radial-gradient(circle, rgba(255,255,255,1) 73%, rgba(152,152,152,1) 100%)' }}>
-                <Box borderRadius={'full'} bgColor='grey' color={'white'} p='1' w={'2rem'} h='2rem'>
-                <GiBilledCap size={'100%'}/>
-                </Box>
-                <Text fontSize={'small'}>CAPS</Text>
-            </Box>
-            
-        </Box>
+          ))}
         </SimpleGrid>
-    </Container>
-    );
+      </Container>
+    </Box>
+  );
 }
