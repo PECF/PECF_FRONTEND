@@ -1,7 +1,6 @@
 import { ProductCard } from "../components/product/ProductCard";
 import { ProductGrid } from "../components/product/ProductGrid";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-
 import {
   Grid,
   GridItem,
@@ -9,19 +8,36 @@ import {
   Container,
   CheckboxGroup,
   Checkbox,
-  RangeSlider,
-  RangeSliderTrack,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
 } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
-
 import * as React from "react";
 
 export const Products = () => {
   const { products } = useRecoveryData("productList");
   const location = useLocation();
   const [filteredProducts, setFilteredProducts] = React.useState(products);
+  const [categories, setCategories] = React.useState([]);
+  console.log(categories);
+
+  /*React.useEffect(() => {
+    if (categories.length === 0) {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter((product) =>
+        categories.includes(product.category[0].value)
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [categories]);*/
+
+  const handleFilter = (e) => {
+    const filtered = products.filter((product) => {
+      return product.category[0].value
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+    setFilteredProducts(filtered);
+  };
 
   React.useEffect(() => {
     if (location.pathname) {
@@ -57,26 +73,23 @@ export const Products = () => {
       <GridItem bg="blackAlpha.300" width="2xs" area={"filter"}>
         <Container centerContent>
           <Stack mt="5">
-            <CheckboxGroup colorScheme="teal" name="category">
-              <Checkbox value="Shirts">Shirts</Checkbox>
-              <Checkbox value="Pants">Pants</Checkbox>
-              <Checkbox value="Caps">Caps</Checkbox>
-              <Checkbox value="Underware">Underware</Checkbox>
-              <Checkbox value="Hodies">Hodies</Checkbox>
-              <Checkbox value="Jackets">Jackets</Checkbox>
+            {/*filter by category*/}
+            <CheckboxGroup colorScheme="green">
+              <Stack direction="column">
+                <Checkbox value="shirts" onChange={handleFilter}>
+                  Shirts
+                </Checkbox>
+                <Checkbox value="pants" onChange={handleFilter}>
+                  Pants
+                </Checkbox>
+                <Checkbox value="shoes" onChange={handleFilter}>
+                  Shoes
+                </Checkbox>
+                <Checkbox value="caps" onChange={handleFilter}>
+                  Caps
+                </Checkbox>
+              </Stack>
             </CheckboxGroup>
-
-            <RangeSlider
-              aria-label={["min", "max"]}
-              colorScheme="teal"
-              defaultValue={[10, 30]}
-            >
-              <RangeSliderTrack>
-                <RangeSliderFilledTrack />
-              </RangeSliderTrack>
-              <RangeSliderThumb index={0} />
-              <RangeSliderThumb index={1} />
-            </RangeSlider>
           </Stack>
         </Container>
       </GridItem>

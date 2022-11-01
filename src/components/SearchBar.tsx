@@ -68,12 +68,12 @@ export function SearchBar() {
               />
               <InputRightElement mr={2}>
                 <SearchIcon
+                  color="gray.900"
                   onClick={handleSearch}
                   as={Link}
                   to={`/products/search/${search}`}
-                  color="gray.300"
                   _hover={{
-                    color: useColorModeValue("gray.600", "gray.200"),
+                    color: "gray.900",
                     cursor: "pointer",
                   }}
                 />
