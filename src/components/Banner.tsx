@@ -1,9 +1,7 @@
-import {Flex,useBreakpointValue,Box,IconButton}from "@chakra-ui/react";
+import { Flex, useBreakpointValue, Box, IconButton } from "@chakra-ui/react";
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
 import Slider from "react-slick";
 import React from "react";
-
-
 
 const settings = {
   dots: true,
@@ -17,21 +15,20 @@ const settings = {
   slidesToScroll: 1,
 };
 
-
 export function Banner() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const cards = [
-    "https://images.unsplash.com/photo-1612852098516-55d01c75769a?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDR8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1627875764093-315831ac12f7?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
-    "https://images.unsplash.com/photo-1571432248690-7fd6980a1ae2?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1yZWxhdGVkfDl8fHxlbnwwfHx8fA%3D%3D&auto=format&fit=crop&w=900&q=60",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/1_jqwyco.png",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/2_urfpk4.png",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/3_znw81l.png",
   ];
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={"full"} h={"30vh"} mb='10rem' mt={'5rem'}>
+    <Flex w={"full"} h={"30vh"} mb="10rem" mt={"5rem"}>
       <Box
         position={"relative"}
         height={"50vh"}

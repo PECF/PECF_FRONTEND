@@ -1,13 +1,15 @@
 
-import { ProductCard } from '../components/ProductCard'
-import { Box, Text } from '@chakra-ui/react'
+import { ProductCard } from '../components/product/ProductCard'
+import { Box, Button, Menu, MenuButton, MenuItem, MenuList, Text } from '@chakra-ui/react'
 import * as React from 'react'
-import { ProductGrid } from '../components/ProductGrid'
+import { ProductGrid } from '../components/product/ProductGrid'
 import { useRecoveryData } from '../hooks/useRecoveryData'
 import { useState } from 'react'
 import { useEffect } from 'react'
 import {Pagination} from '../components/Pagination'
 import { Link } from 'react-router-dom'
+import { ChevronDownIcon } from '@chakra-ui/icons'
+
 
 export const Products = () => {
   
@@ -36,8 +38,48 @@ export const Products = () => {
 
 
   return (
-    <>
-      
+    <Box width={'100%'} m='0' p={'0'}>
+      <Box width={'100%'} h='20vh' mb={'10px'} pt={'30px'} backgroundColor='white' display={'flex'} alignItems='center' justifyContent={'space-around'}>
+        <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                 Categories
+            </MenuButton>
+             <MenuList>
+                <MenuItem to={'/products'} as={Link}>All</MenuItem>
+                <MenuItem to='/' as={Link}>Shirts</MenuItem>
+             </MenuList>
+        </Menu>
+        <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                 Categories
+            </MenuButton>
+             <MenuList>
+                <MenuItem to={'/products'} as={Link}>All</MenuItem>
+                <MenuItem to='/' as={Link}>Shirts</MenuItem>
+                <MenuItem to='/' as={Link}>Pants</MenuItem>
+                <MenuItem to='/' as={Link}>UnderWear</MenuItem>
+                <MenuItem to='/' as={Link}>Shoes</MenuItem>
+                <MenuItem to='/' as={Link}>Hoodies</MenuItem>
+                <MenuItem to='/' as={Link}>Jackets</MenuItem>
+                <MenuItem to='/' as={Link}>Caps</MenuItem>
+             </MenuList>
+        </Menu>
+        <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                 Categories
+            </MenuButton>
+             <MenuList>
+                <MenuItem to={'/products'} as={Link}>All</MenuItem>
+                <MenuItem to='/' as={Link}>Shirts</MenuItem>
+                <MenuItem to='/' as={Link}>Pants</MenuItem>
+                <MenuItem to='/' as={Link}>UnderWear</MenuItem>
+                <MenuItem to='/' as={Link}>Shoes</MenuItem>
+                <MenuItem to='/' as={Link}>Hoodies</MenuItem>
+                <MenuItem to='/' as={Link}>Jackets</MenuItem>
+                <MenuItem to='/' as={Link}>Caps</MenuItem>
+             </MenuList>
+        </Menu>
+      </Box>
       
        <Box
           maxW="7xl"
@@ -79,7 +121,7 @@ export const Products = () => {
           />
         )}
       </Box>
-    </>
+    </Box>
   );
 }
 

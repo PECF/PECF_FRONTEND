@@ -1,77 +1,85 @@
-import {
-  AspectRatio,
-  Box,
-  Button,
-  HStack,
-  Image,
-  
-  Skeleton,
-  Stack,
-  StackProps,
-  Text,
-  useBreakpointValue,
-  useColorModeValue,
-} from '@chakra-ui/react'
-import * as React from 'react'
-import { Rating } from './Rating'
-import { FavouriteButton } from './FavouriteButton'
-import { PriceTag } from './PriceTag'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Box, Badge, Text, Stack, Spacer } from "@chakra-ui/react";
+import { StarIcon } from "@chakra-ui/icons";
 
-
-interface Props {
-  product: any
-  rootProps?: StackProps
-}
-
-export const Card = (props: Props) => {
-  const { product, rootProps } = props
-  const { name, image, price, rating } = product
-  
+export const Card = ({ product }: any) => {
+  console.log(product)
   return (
-    <Stack mr='17px' pt='1rem' pb='2rem' spacing={useBreakpointValue({ base: '4', md: '5' })} {...rootProps} _hover={{transform: 'scale(1.1)', zIndex:'100'}}>
-
-      <Box position="relative" >
-          
-        <Link to={`/product/${product._id}`}>
-          <AspectRatio ratio={4 / 3}>
-            <Image
-              position={'absolute'}
-              src={image[0].url}
-              alt={name}
-              draggable="false"
-              fallback={<Skeleton />}
-              borderRadius={useBreakpointValue({ base: 'md', md: 'xl' })}
-              />
-          </AspectRatio>
-        </Link>
-        
-        <FavouriteButton
-          position="absolute"
-          top="4"
-          right="4"
-          aria-label={`Add ${name} to your favourites`}
-          />
-      
-      </Box>
-      
-      <Link to={`/product/${product._id}`} >
-        <Stack>
-          <Stack zIndex={'1'} spacing="1" >
-            <Text fontWeight="medium" noOfLines={[1]} maxHeight={'2rem'} overflow='hidden' color={useColorModeValue('gray.700', 'gray.400')}>
-              {name}
-            </Text>
-            <PriceTag price={price} currency="USD" />
+    <Box
+      w="12.5rem"
+      h="16rem"
+      rounded="20px"
+      boxShadow="xs"
+      bg="lightgrey"
+      bgImage={product.image[0].url}
+      bgSize="cover"
+      bgRepeat="no-repeat"
+      display="flex"
+      role="group">
+      <Box
+        h="100%"
+        w="100%"
+        p={5}
+        display="flex"
+        flexDirection="column"
+        visibility={"hidden"}
+        opacity="0"
+        justifyContent="center"
+        alignItems={"center"}
+        _groupHover={{
+          transition: "ease",
+          visibility: "visible",
+          opacity: "0.9",
+        }}
+        transition={"visibility 0.8s linear 0.2s"}>
+        <Box display="flex" flexDir="column">
+          <Stack isInline align="center">
+            <Badge variant="solid" colorScheme="teal" rounded="full" px={2}>
+              70% OFF!
+            </Badge>
+            <Spacer />
+            <Badge variant="solid" colorScheme="teal" rounded="full" px={2}>
+              FREE SHIPING!
+            </Badge>
           </Stack>
-        </Stack>
-      </Link>
-          
-      <Stack align="center">
-        <Button colorScheme="blue" width="full">
-          Add to cart
-        </Button>
-        
-      </Stack>
-    </Stack>
-  )
-}
+        </Box>
+        <Spacer />
+
+        <Spacer />
+        <Box display={"flex"} flexDir="column" alignItems={"center"}>
+          <Text
+            color="black"
+            fontWeight="semibold"
+            fontSize="l"
+            backgroundColor={"white"}
+            borderRadius="2xl"
+            p={"5px"}>
+            ${product.price}
+          </Text>
+          <Text
+            as="h2"
+            backgroundColor={"white"}
+            borderRadius="2xl"
+            p={"5px"}
+            fontWeight="semibold"
+            fontSize="sm"
+            my={2}
+            textAlign="center"
+            textTransform="uppercase"
+            color="black">
+            {product.name}
+          </Text>
+          <Stack isInline justify="space-between">
+            <Box as="span">
+              {/* {Array(product.rating)
+                .fill("")
+                .map((_, i) => (
+                  <StarIcon color="teal.500" key={i} />
+                ))} */}
+            </Box>
+          </Stack>
+        </Box>
+      </Box>
+    </Box>
+  );
+};

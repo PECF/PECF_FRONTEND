@@ -13,6 +13,8 @@ export const App: React.FC = () => {
         maxW="container.xxl"
         bg={useColorModeValue("gray.100", "gray.900")}
         minH="100vh"
+        m={'0'}
+        p='0'
         mt="5vh"
         shadow={"xl"}>
         <AppRoutes />

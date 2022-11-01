@@ -1,5 +1,5 @@
 import React, { FormEvent, useEffect, useState } from "react";
-import { Select, CreatableSelect } from "chakra-react-select";
+import { Select } from "chakra-react-select";
 import {
   Text,
   Box,
@@ -41,14 +41,11 @@ export function CreateProduct() {
   const [stock, setStock] = useState("");
   const [tags, setTags] = useState<string[]>([]);
 
-
   const [image, setImages] = useState<any[]>([]);
   const [imagesPreview, setImagesPreview] = useState<any[]>([null]);
   const createTags = (str: string) => {
-    setTags(str.split(" "))
-  }
-
-
+    setTags(str.split(" "));
+  };
 
   const createProductImagesChange = (e: any) => {
     const files = Array.from(e?.target?.files);
@@ -62,13 +59,11 @@ export function CreateProduct() {
           setImagesPreview(imagesPreview);
           image?.push(reader.result);
           setImages(image);
-
         }
       };
       reader.readAsDataURL(file);
     });
-  }
-
+  };
 
   const previewHandler = () => {
     if (
@@ -77,7 +72,6 @@ export function CreateProduct() {
       description === "" ||
       price === "" ||
       stock === ""
-
     ) {
       toast({
         title: "Error",
@@ -90,7 +84,6 @@ export function CreateProduct() {
       onOpen();
     }
   };
-
 
   const submitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -106,7 +99,6 @@ export function CreateProduct() {
     // );
   };
 
-
   return (
     <Box
       as="form"
@@ -116,7 +108,8 @@ export function CreateProduct() {
       mx="auto"
       bg={useColorModeValue("white", "gray.700")}
       overflow="hidden"
-      onSubmit={submitHandler}>
+      onSubmit={submitHandler}
+    >
       <VStack align="stretch" spacing={0}>
         <Flex
           justify="space-between"
@@ -124,11 +117,13 @@ export function CreateProduct() {
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.800")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <Heading
             size="lg"
             fontWeight="bold"
-            color={useColorModeValue("gray.900", "white")}>
+            color={useColorModeValue("gray.900", "white")}
+          >
             Create Product
           </Heading>
         </Flex>
@@ -138,7 +133,8 @@ export function CreateProduct() {
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <SimpleGrid columns={2} spacing={4} w="full">
             <FormControl id="name" isRequired>
               <FormLabel>Name</FormLabel>
@@ -168,7 +164,8 @@ export function CreateProduct() {
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <SimpleGrid columns={2} spacing={4} w="full">
             <FormControl id="price" isRequired>
               <FormLabel>Price</FormLabel>
@@ -198,7 +195,8 @@ export function CreateProduct() {
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <FormControl id="description" isRequired>
             <FormLabel>Description</FormLabel>
             <Textarea
@@ -216,7 +214,8 @@ export function CreateProduct() {
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <FormControl id="tags" isRequired>
             <FormLabel>Tags</FormLabel>
             <Text
@@ -226,16 +225,19 @@ export function CreateProduct() {
               color="gray.500"
               fontSize="sm"
               fontWeight="medium"
-              lineHeight="short">
-              Tags are used to help customers find your products. Add up to 3 tags for better results.
-              Must include spaces between tags.
+              lineHeight="short"
+            >
+              Tags are used to help customers find your products. Add up to 3
+              tags for better results. Must include spaces between tags.
             </Text>
-            <CreatableSelect selectedOptionColor="purple"
-            
+            <CreatableSelect
+              selectedOptionColor="purple"
               isMulti
-              onChange={(e) => createTags(e?.map((item: any) => item.value).join(" "))}
+              onChange={(e) =>
+                createTags(e?.map((item: any) => item.value).join(" "))
+              }
               placeholder="Add tags"
-            />  
+            />
           </FormControl>
         </Flex>
 
@@ -245,7 +247,8 @@ export function CreateProduct() {
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <FormControl id="images" isRequired>
             <FormLabel>Images</FormLabel>
             <Text
@@ -255,9 +258,10 @@ export function CreateProduct() {
               color="gray.500"
               fontSize="sm"
               fontWeight="medium"
-              lineHeight="short">
-              Add up to 3 images for better results.
-              All formats are accepted, but we recommend using PNG.
+              lineHeight="short"
+            >
+              Add up to 3 images for better results. All formats are accepted,
+              but we recommend using PNG.
             </Text>
             <Input
               type="file"
@@ -275,12 +279,13 @@ export function CreateProduct() {
             px={6}
             py={4}
             bg={useColorModeValue("gray.50", "gray.700")}
-            borderBottomWidth="1px">
+            borderBottomWidth="1px"
+          >
             <FormControl id="images">
               <FormLabel>Images Preview</FormLabel>
               <SimpleGrid columns={3} spacing={4} w="full">
                 {imagesPreview.map((img, index) => {
-                  console.log(image)
+                  console.log(image);
                   if (img !== null) {
                     return (
                       <Image
@@ -290,7 +295,7 @@ export function CreateProduct() {
                         w="100px"
                         objectFit="cover"
                       />
-                    )
+                    );
                   }
                 })}
               </SimpleGrid>
@@ -298,14 +303,14 @@ export function CreateProduct() {
           </Flex>
         )}
 
-
         <Flex
           justify="space-between"
           align="center"
           px={6}
           py={4}
           bg={useColorModeValue("gray.50", "gray.700")}
-          borderBottomWidth="1px">
+          borderBottomWidth="1px"
+        >
           <Button type="submit" colorScheme="teal" mr={3}>
             Create
           </Button>
@@ -314,29 +319,31 @@ export function CreateProduct() {
             colorScheme="teal"
             variant="outline"
             onClick={previewHandler}
-          >Preview</Button>
+          >
+            Preview
+          </Button>
           <Modal
             isOpen={isOpen}
             onClose={onClose}
             size="full"
-            scrollBehavior="inside">
+            scrollBehavior="inside"
+          >
             <ModalOverlay />
             <ModalContent>
               <ModalHeader>Product Preview</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <ProductDetailPreview product={
-
-                  {
+                <ProductDetailPreview
+                  product={{
                     name,
                     category,
                     description,
                     price,
                     stock,
                     image,
-                    tags
-                  }
-                } />
+                    tags,
+                  }}
+                />
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onClose}>
@@ -350,7 +357,3 @@ export function CreateProduct() {
     </Box>
   );
 }
-
-
-
-
