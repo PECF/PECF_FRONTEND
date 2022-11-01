@@ -33,7 +33,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
 import {
-  getDetailsProduct,
+  getAdminProductDetails,
   updateProduct,
 } from "../../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
@@ -43,8 +43,8 @@ import { RiImageAddLine } from "react-icons/ri";
 
 export function UpdateProduct() {
   const dispatch = useDispatch<AppDispatch>();
-  const { feature } = useRecoveryData("productFeature");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { feature } = useRecoveryData("productFeature");
   const { tags } = useRecoveryData("productTag");
   const toast = useToast();
   const location = useLocation();
@@ -74,13 +74,13 @@ export function UpdateProduct() {
 
   useEffect(() => {
     if (_productById) {
-      dispatch(getDetailsProduct(_productById));
+      dispatch(getAdminProductDetails(_productById));
       setIsChange(true);
     }
   }, [_productById]);
 
   const selectProduct = (e: any) => {
-    dispatch(getDetailsProduct(e.value));
+    dispatch(getAdminProductDetails(e.value));
     setIsChange(true);
   };
 
@@ -233,6 +233,12 @@ export function UpdateProduct() {
       });
     }
   }, [product, success, error, _product, isChange]);
+
+  const deleteHandler = (id: string) => {
+    if (window.confirm("Are you sure")) {
+      console.log("click");
+    }
+  };
 
   const previewHandler = () => {
     if (
@@ -634,6 +640,16 @@ export function UpdateProduct() {
             onClick={() => submitHandler}>
             Update
           </Button>
+
+          <Button
+            type="button"
+            colorScheme="red"
+            mr={3}
+            // isLoading={loading}
+            onClick={() => deleteHandler}>
+            Delete
+          </Button>
+
           <Button
             type="button"
             colorScheme="teal"

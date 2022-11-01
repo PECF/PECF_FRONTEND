@@ -149,10 +149,6 @@ export const updateProductVisibility =
   (id: string, visibility: boolean): AppThunk =>
   async (dispatch, getState) => {
     try {
-      dispatch({
-        type: ProductUpdateActionTypes.PRODUCT_UPDATE_REQUEST,
-      });
-
       const {
         userLogin: { userInfo },
       } = getState();
@@ -163,16 +159,8 @@ export const updateProductVisibility =
         },
       };
 
-      const { data } = await axios.put(
-        `/admin/product/visibility/${id}`,
-        visibility,
-        config
-      );
+      await axios.put(`/admin/product/visibility/${id}`, visibility, config);
 
-      dispatch({
-        type: ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS,
-        payload: data.newProduct,
-      });
       dispatch(getAllProductsAdmin());
     } catch (error) {
       dispatch({
@@ -206,6 +194,36 @@ export const getAllProductsAdmin =
     } catch (error) {
       dispatch({
         type: ProductListActionTypes.PRODUCT_LIST_FAILURE,
+        payload: errorHandler(error),
+      });
+    }
+  };
+
+export const getAdminProductDetails =
+  (id: string): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: ProductDetailsActionTypes.PRODUCT_DETAILS_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      const config = {
+        headers: {
+          Authorization: `${userInfo}`,
+        },
+      };
+
+      const { data } = await axios.get(`/admin/product/${id}`, config);
+
+      dispatch({
+        type: ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS,
+        payload: data.product,
+      });
+    } catch (error) {
+      dispatch({
+        type: ProductDetailsActionTypes.PRODUCT_DETAILS_FAILURE,
         payload: errorHandler(error),
       });
     }
