@@ -23,14 +23,17 @@ import {
   TableContainer,
   Grid,
 } from "@chakra-ui/react";
-
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/rootStore";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { Link } from "react-router-dom";
+import { updateProductVisibility } from "../../redux/actions/productsActions";
 export function ProductsDashboard() {
   const { products } = useRecoveryData("productList");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [contextSearch, setContextSearch] = useState(0);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleChange = (event: {
     target: { value: SetStateAction<string> };
@@ -199,7 +202,11 @@ export function ProductsDashboard() {
             onChange={(e) => (e ? setContextSearch(e.value) : 0)}
           />
         </Grid>
-        <TableContainer>
+        <TableContainer
+          as={Box}
+          maxW="full"
+          overflowX="auto"
+          bg={useColorModeValue("white", "gray.800")}>
           <Table variant="striped" colorScheme="teal">
             <TableCaption>Products</TableCaption>
             <Thead>
@@ -217,8 +224,11 @@ export function ProductsDashboard() {
               {results.map((product: any) => (
                 <Tr key={product._id}>
                   <Td>
-                    <Text as={Link} to={`/profile/admin/updateProduct/${product._id}`}>
-                      {product.name}
+                    <Text
+                      as={Link}
+                      to={`/profile/admin/updateProduct/${product._id}`}
+                      overflow="hidden">
+                      {product.name.substring(0, 20) + "..."}
                     </Text>
                   </Td>
                   <Td>{product.price}</Td>
@@ -230,6 +240,14 @@ export function ProductsDashboard() {
                     <Switch
                       colorScheme="teal"
                       defaultChecked={product.visibility}
+                      onChange={() => {
+                        dispatch(
+                          updateProductVisibility(
+                            product._id,
+                            !product.visibility
+                          )
+                        );
+                      }}
                     />
                   </Td>
                 </Tr>

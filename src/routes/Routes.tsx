@@ -1,18 +1,11 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { PrivateRoute } from "./PrivateRoute";
-import { AdminRoute } from "./AdminRoute";
 import { Home } from "../pages/Home";
-// import { UpdatePassword } from "../pages/user/UpdatePassword";
-// import { Login } from "../pages/Login";
-// import { Register } from "../pages/Register";
 import { ForgotPassword } from "../pages/user/ForgotPassword";
 import { NotFound } from "../pages/NotFound";
-import { CreateProduct } from "../components/CreateProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Profile } from "../pages/user/profile";
 import { ProductDetail } from "../pages/ProductDetail";
-// import AuthContext from "../contexts/authContext";
 import { TermsOfService } from "../pages/TermsOfService";
 import { AboutUs } from "../pages/AboutUs";
 import { ContactUs } from "../pages/ContactUs";
