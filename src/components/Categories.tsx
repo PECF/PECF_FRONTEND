@@ -20,14 +20,14 @@ export function Categories() {
 
   const [categories, setCategories] = useState([
     {
-      name: "Tops",
+      name: "Shirts",
       icon: <IoShirtSharp />,
-      filter: "tops",
+      filter: "Shirts",
     },
     {
-      name: "Bottoms",
+      name: "Pants",
       icon: <GiArmoredPants />,
-      filter: "bottoms",
+      filter: "Pants",
     },
     {
       name: "Underwear",
@@ -40,24 +40,19 @@ export function Categories() {
       filter: "shoes",
     },
     {
-      name: "Outerwear",
+      name: "Hoodies",
       icon: <GiHoodie />,
-      filter: "outerwear",
+      filter: "Hoodies",
     },
     {
-      name: "Accessories",
+      name: "Caps",
       icon: <GiBilledCap />,
-      filter: "accessories",
+      filter: "Caps",
     },
     {
-      name: "Jewelry",
-      icon: <GiDoubleNecklace />,
-      filter: "jewelry",
-    },
-    {
-      name: "Brands",
+      name: "Jackets",
       icon: <GiMonclerJacket />,
-      filter: "brands",
+      filter: "Jackets",
     },
     {
       name: "All",
@@ -66,9 +61,10 @@ export function Categories() {
     },
   ]);
 
-  const handleClick = (filter) => {
+  /*  const handleClick = (filter: string) => {
+    console.log(filter);
     dispatch(filterReducer(filter));
-  };
+  };*/
 
   return (
     <Box
@@ -91,10 +87,12 @@ export function Categories() {
         >
           Categories
         </Heading>
-        <SimpleGrid columns={[1, 2, 3, 4, 5, 6, 7, 8, 9]} spacing={4}>
+        <SimpleGrid columns={[2, null, 4]} spacing={4}>
           {categories.map((category) => (
             <Box
               key={category.name}
+              as={Link}
+              to={`/products/${category.name.toLowerCase()}`}
               w="100%"
               h="100%"
               p={4}

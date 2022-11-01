@@ -14,7 +14,7 @@ export const useLoad = () => {
     if (user?.role === "admin") {
       dispatch(getAllProductsAdmin());
     }
-    if (user?.role === "user") {
+    else{
       dispatch(getAllProducts());
     }
   }, [dispatch, user?.role]);

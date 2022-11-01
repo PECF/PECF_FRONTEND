@@ -1,28 +1,18 @@
 import { filterByCategory } from "../actions/filterActions";
+import { useRecoveryData } from "../../hooks/useRecoveryData";
 
-const initialState = {
+const initialFilterState: any = {
   category: "",
-  price: "",
-  brand: "",
-  color: "",
-  rating: "",
-  shipping: "",
-  keyword: "",
-  products: [],
   filteredProducts: [],
-  loading: false,
-  error: null,
 };
 
-export const filterReducer = (state = initialState, action) => {
+export const filterReducer = (state = initialFilterState, action) => {
   switch (action.type) {
-    case "FILTER_BY_CATEGORY":
+    case filterByCategory:
       return {
         ...state,
         category: action.payload,
-        filteredProducts: filterByCategory(action.payload),
       };
-
     default:
       return state;
   }
