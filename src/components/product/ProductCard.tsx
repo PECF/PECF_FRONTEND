@@ -1,12 +1,10 @@
+import { Link } from "react-router-dom";
 import {
-  AspectRatio,
   Box,
   HStack,
   Image,
-  Link,
   Skeleton,
   Stack,
-  StackProps,
   Text,
   useBreakpointValue,
   useColorModeValue,
@@ -16,35 +14,28 @@ import { Rating } from "./Rating";
 import { FavouriteButton } from "./FavouriteButton";
 import { PriceTag } from "./PriceTag";
 
-interface Props {
-  product: any;
-  rootProps?: StackProps;
-}
-
-export const ProductCard = (props: Props) => {
-  const { product, rootProps } = props;
+export const ProductCard = ({ product }: any) => {
   const { name, image, price, rating, numReviews } = product;
-  console.log(product);
   return (
     <Stack
-      spacing={useBreakpointValue({ base: "4", md: "5" })}
-      {...rootProps}
+      maxW="sm"
+      borderRadius="lg"
+      overflow="hidden"
+      boxShadow="lg"
+      _hover={{ shadow: "xl" }}
+      transition="all 0.2s"
+      cursor="pointer"
       as={Link}
       ml="2rem"
-      to={`/product/${product._id}`}
-      _hover={{
-        textDecoration: "none",
-      }}>
+      to={`/product/${product._id}`}>
       <Box position="relative">
-        <AspectRatio ratio={4 / 3}>
-          <Image
-            src={image[0].url}
-            alt={name}
-            draggable="false"
-            fallback={<Skeleton />}
-            borderRadius={useBreakpointValue({ base: "md", md: "xl" })}
-          />
-        </AspectRatio>
+        <Image
+          src={image[0].url}
+          alt={name}
+          draggable="false"
+          fallback={<Skeleton />}
+          borderRadius={useBreakpointValue({ base: "md", md: "xl" })}
+        />
         <FavouriteButton
           position="absolute"
           top="4"

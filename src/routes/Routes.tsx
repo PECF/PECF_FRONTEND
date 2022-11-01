@@ -79,14 +79,14 @@ export const AppRoutes: React.FC = () => {
       ) : (
         <Route path="/create-product" element={<Navigate to="/" />} />
       )}
-      <Route path="/pages/TermsOfService" element={<TermsOfService />} />
-      <Route path="/pages/AboutUs" element={<AboutUs />} />
-      <Route path="/pages/ContactUs" element={<ContactUs />} />
-      <Route path="/pages/ReturnPolicy" element={<ReturnPolicy />} />
-      <Route path="/pages/PrivacyPolicy" element={<PrivacyPolicy />} />
-      <Route path="/pages/Refund" element={<Refund />} />
-      <Route path="/pages/CookiesPolicy" element={<CookiesPolicy />} />
-      <Route path="/pages/HelpCenter" element={<HelpCenter />} />
+      <Route path="/TermsOfService" element={<TermsOfService />} />
+      <Route path="/AboutUs" element={<AboutUs />} />
+      <Route path="/ContactUs" element={<ContactUs />} />
+      <Route path="/ReturnPolicy" element={<ReturnPolicy />} />
+      <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+      <Route path="/Refund" element={<Refund />} />
+      <Route path="/CookiesPolicy" element={<CookiesPolicy />} />
+      <Route path="/HelpCenter" element={<HelpCenter />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

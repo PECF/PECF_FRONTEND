@@ -20,8 +20,6 @@ const settings = {
   infinite: true,
   speed: 500,
   slidesToScroll: 1,
-  autoplay: true,
-  autoplaySpeed: 2000,
   pauseOnHover: true,
   slidesToShow: 6.01,
   initialSlide: 1,
@@ -31,15 +29,19 @@ const settings = {
       breakpoint: 1360,
       settings: {
         dots: false,
+        autoplay: true,
+        autoplaySpeed: 2000,
         slidesToShow: 4,
         slidesToScroll: 1,
-        initialSlide: 2,
+        initialSlide: 1,
       },
     },
     {
       breakpoint: 1030,
       settings: {
         dots: false,
+        autoplay: true,
+        autoplaySpeed: 2000,
         slidesToShow: 3,
         slidesToScroll: 1,
       },
@@ -56,9 +58,10 @@ const settings = {
       breakpoint: 600,
       settings: {
         dots: false,
-        centerMode: true,
-        slidesToShow: 0.7,
+        slidesToShow: 1.1,
         slidesToScroll: 1,
+        centerMode: true,
+        centerPadding: "20px",
       },
     },
   ],
@@ -94,7 +97,7 @@ export function Carousel({ text, name }: { text: string; name: string }) {
         alignSelf={"center"}
         marginTop="10px"
         width="100%">
-        {/* <Box
+        <Box
           className="arrows"
           height={"100%"}
           _hover={{
@@ -130,7 +133,7 @@ export function Carousel({ text, name }: { text: string; name: string }) {
               </IconButton>
             </>
           ) : null}
-        </Box> */}
+        </Box>
 
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {products.map((product: any, index: any) => (
