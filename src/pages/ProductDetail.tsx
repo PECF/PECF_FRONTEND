@@ -15,7 +15,6 @@ import {
   HStack,
   Grid,
   Flex,
-  Input,
   Textarea,
   useToast,
 } from "@chakra-ui/react";
@@ -30,18 +29,22 @@ export function ProductDetail() {
   // console.log(product);
 
   const [value, setValue] = useState("");
-  const send = useToast();
+  const toast = useToast();
+  const id = 1;
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    setValue(inputValue);
-    send({
-      title: "Success",
-      description: "Question sent",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setValue(e.target.value);
+    if (!toast.isActive(id)) {
+      toast({
+        id: 1,
+        title: "Success",
+        description: "Question sent",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -248,13 +251,14 @@ export function ProductDetail() {
           <Text>Make him the seller a question</Text>
           <Flex direction={"column"}>
             <Textarea
-              maxlength="400"
-              value={value}
+              maxLength="400"
+              defaultValue={value}
               size="sm"
               placeholder="what do you need to know?"
+              _placeholder={{ color: useColorModeValue("black", "white") }}
             />
             <Button
-              onClick={handleInputChange}
+              onClick={handleSubmit}
               rounded={"none"}
               w={"full"}
               mt={6}

@@ -1,7 +1,6 @@
 import { useColorMode, useColorModeValue } from "@chakra-ui/color-mode";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { logout } from "../redux/actions/authActions";
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { AppDispatch } from "../redux/rootStore";
 import { CgProfile } from "react-icons/cg";
@@ -10,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { SignUp } from "./SignUp";
 import { Login } from "./Login";
-import Cart from "./Cart";
 import React from "react";
 
 import {
@@ -24,9 +22,7 @@ import {
   MenuButton,
   MenuItem,
   useToast,
-  IconButton,
 } from "@chakra-ui/react";
-import { BsMoonFill, BsSunFill } from "react-icons/bs";
 
 export function Logged() {
   const { toggleColorMode } = useColorMode();

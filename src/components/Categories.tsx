@@ -81,7 +81,7 @@ export function Categories() {
           as="h2"
           size="lg"
           textAlign="center"
-          mb={4}
+          mb={5}
           // color="gray.700"
           fontWeight="bold"
         >
