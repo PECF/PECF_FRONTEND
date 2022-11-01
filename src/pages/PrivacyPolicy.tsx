@@ -30,8 +30,6 @@ export const PrivacyPolicy: React.FC = () => {
         <Box
           mt={8}
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           boxShadow="lg"
@@ -81,8 +79,6 @@ export const PrivacyPolicy: React.FC = () => {
         </Box>
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           marginTop={10}
@@ -188,8 +184,6 @@ export const PrivacyPolicy: React.FC = () => {
         </Box>
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           marginTop={10}

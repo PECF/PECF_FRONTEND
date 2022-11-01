@@ -32,8 +32,6 @@ export const Refund = () => {
           // ml={"450"}
           // maxW="500"
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           boxShadow="lg"

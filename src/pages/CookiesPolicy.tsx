@@ -21,8 +21,6 @@ export const CookiesPolicy: React.FC = () => {
         <Flex>
           <Box
             bg={"whiteAlpha.100"}
-            borderWidth="2px"
-            borderRadius="lg"
             overflow="hidden"
             p={50}
             boxShadow="lg"

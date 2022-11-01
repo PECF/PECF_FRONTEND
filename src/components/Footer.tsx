@@ -20,7 +20,6 @@ import {
   copyright,
   kalu,
   newsletter,
-  blog,
   careers,
   company,
   support,
@@ -86,14 +85,13 @@ export function Footer() {
           <Stack align={"flex-start"}>
             <ListHeader>{company}</ListHeader>
             <Link href={"../pages/AboutUs"}>{aboutUs}</Link>
-            <Link href={"#"}>{blog}</Link>
             <Link href={"#"}>{careers}</Link>
             <Link href={"../pages/ContactUs"}>{contactUs}</Link>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>{support}</ListHeader>
-            <Link href={"#"}>{helpCenter}</Link>
+            <Link href={"../pages/HelpCenter"}>{helpCenter}</Link>
             <Link href={"#"}>{safetyCenter}</Link>
             <Link href={"../pages/Refund"}>{refundPolicy}</Link>
           </Stack>

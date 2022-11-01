@@ -53,7 +53,6 @@ export function EditProfile() {
   const { isOpen: isOpenAvatar, onOpen: onOpenAvatar, onClose: onCloseAvatar } = useDisclosure();
   const { isOpen: isOpenConfirm, onOpen: onOpenConfirm, onClose: onCloseConfirm } = useDisclosure();
 
-
   useEffect(() => {
     if (success) {
       toast({
