@@ -1,4 +1,3 @@
-
 import {
   Flex,
   useBreakpointValue,
@@ -30,17 +29,9 @@ export function CarouselDetailProducts({ image }: any) {
   const side = useBreakpointValue({ base: "20%", md: "10px" });
 
   return (
-    <Flex
-      w={"full"}
-      mt={5}
-      maxH={top}
-      mb={30}
-    >
-      <Box
-        position={"relative"}
-        width={"full"}
-      >
-        {image.length > 0 ? (
+    <Flex w={"full"} mt={5} maxH={top} mb={30}>
+      <Box position={"relative"} width={"full"}>
+        {image?.length > 0 ? (
           <>
             <IconButton
               aria-label="left-arrow"
@@ -50,8 +41,7 @@ export function CarouselDetailProducts({ image }: any) {
               zIndex={10}
               top={top}
               left={side}
-              onClick={() => slider?.slickPrev()}
-            >
+              onClick={() => slider?.slickPrev()}>
               <BiLeftArrow />
             </IconButton>
             <IconButton
@@ -62,25 +52,28 @@ export function CarouselDetailProducts({ image }: any) {
               zIndex={10}
               top={top}
               right={side}
-              onClick={() => slider?.slickNext()}
-            >
+              onClick={() => slider?.slickNext()}>
               <BiRightArrow />
             </IconButton>
           </>
-        ) : (
-          null)
-        }
+        ) : null}
+
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {image.map((img: any, index: number) => {
-            const src = img?.url ? img.url : img;
-            return (
-              <Box key={index} w="full" h="full" position="relative"
-              >
-                <Image src={src} w="full" maxH="full" h={
-                  useBreakpointValue({ base: "full", md: "full" })
-                } objectFit="cover" />
-              </Box>
-            );
+          {image?.map((img: any, index: number) => {
+            const src = img?.url ? img?.url : img;
+            if (src) {
+              return (
+                <Box key={index} width={"full"}>
+                  <Image
+                    src={src}
+                    alt="image"
+                    width={"full"}
+                    height={"xl"}
+                    objectFit="cover"
+                  />
+                </Box>
+              );
+            }
           })}
         </Slider>
       </Box>

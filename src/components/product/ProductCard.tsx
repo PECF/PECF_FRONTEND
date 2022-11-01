@@ -26,7 +26,14 @@ export const ProductCard = (props: Props) => {
   const { product, rootProps } = props;
   const { name, image, price, rating } = product;
   return (
-    <Stack spacing={useBreakpointValue({ base: "4", md: "5" })} {...rootProps}>
+    <Stack
+      spacing={useBreakpointValue({ base: "4", md: "5" })}
+      {...rootProps}
+      as={Link}
+      href={`/product/${product._id}`}
+      _hover={{
+        textDecoration: "none",
+      }}>
       <Box position="relative">
         <AspectRatio ratio={4 / 3}>
           <Image
@@ -49,7 +56,7 @@ export const ProductCard = (props: Props) => {
           <Text
             fontWeight="medium"
             color={useColorModeValue("gray.700", "gray.400")}>
-            {name}
+            {name.length > 20 ? name.substring(0, 40) + "..." : name}
           </Text>
           <PriceTag price={price} currency="USD" />
         </Stack>
@@ -61,7 +68,7 @@ export const ProductCard = (props: Props) => {
         </HStack>
       </Stack>
       <Stack align="center">
-        <Button colorScheme="blue" width="full">
+        {/* <Button colorScheme="blue" width="full">
           Add to cart
         </Button>
         <Link
@@ -69,7 +76,7 @@ export const ProductCard = (props: Props) => {
           fontWeight="medium"
           color={useColorModeValue("gray.600", "gray.400")}>
           Quick shop
-        </Link>
+        </Link> */}
       </Stack>
     </Stack>
   );

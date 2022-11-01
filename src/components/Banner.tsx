@@ -19,7 +19,7 @@ export function Banner() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const cards = [
-    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/1_jqwyco.png",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667320191/banner/3_zjyhrw.png",
     "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/2_urfpk4.png",
     "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/3_znw81l.png",
   ];
