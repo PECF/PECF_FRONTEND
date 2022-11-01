@@ -12,19 +12,29 @@ export const Products = () => {
 
   React.useEffect(() => {
     if (location.pathname) {
-      const category = location.pathname.split("/")[2];
-      console.log(category);
-      if (category === "all") {
-        setFilteredProducts(products);
-        console.log(filteredProducts);
-        //console.log(filteredProducts[0].category[0].value);
-      } else {
+      const path = location.pathname.split("/")[2];
+      if (path === "search") {
+        const search = location.pathname.split("/")[3];
+        console.log(search);
         const filtered = products.filter((product) => {
-          console.log(product.category[0].value.toLowerCase());
-          return product.category[0].value.toLowerCase() === category;
+          return product.name.toLowerCase().includes(search.toLowerCase());
         });
         setFilteredProducts(filtered);
-        console.log(filteredProducts);
+      } else {
+        const category = location.pathname.split("/")[2];
+        console.log(category);
+        if (category === "all") {
+          setFilteredProducts(products);
+          console.log(filteredProducts);
+          //console.log(filteredProducts[0].category[0].value);
+        } else {
+          const filtered = products.filter((product) => {
+            console.log(product.category[0].value.toLowerCase());
+            return product.category[0].value.toLowerCase() === category;
+          });
+          setFilteredProducts(filtered);
+          console.log(filteredProducts);
+        }
       }
     }
   }, [location.pathname, products]);
