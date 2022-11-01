@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 
-import { ProductCard } from "./ProductCard";
+import { ProductCard } from "./Card";
 
 const settings = {
   dots: false,

@@ -18,6 +18,7 @@ export const ProductCard = ({ product }: any) => {
   const { name, image, price, rating, numReviews } = product;
   return (
     <Stack
+      backgroundColor={'white'}
       maxW="sm"
       borderRadius="lg"
       overflow="hidden"
@@ -43,7 +44,7 @@ export const ProductCard = ({ product }: any) => {
           aria-label={`Add ${name} to your favourites`}
         />
       </Box>
-      <Stack>
+      <Stack p={'10px'}>
         <Stack spacing="1">
           <Text
             fontWeight="medium"
