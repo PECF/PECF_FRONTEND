@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
-import { CarouselDetailProducts } from "../components/product/carouselDetailProductPreview";
+import { CarouselDetailProducts } from "../components/product/carouselDetailProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";

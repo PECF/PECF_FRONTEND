@@ -15,6 +15,7 @@ import {
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 
 import { SecondSlider } from "../../constant/Home";
+import { ProductCard } from "./ProductCard";
 
 export function Carousel({ text, name }: any) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
@@ -85,7 +86,7 @@ export function Carousel({ text, name }: any) {
 
         <Slider {...SecondSlider} ref={(slider) => setSlider(slider)}>
           {products.map((product: any, index: any) => (
-            <Card key={index} product={product} />
+            <ProductCard key={index} product={product} />
           ))}
         </Slider>
       </Box>

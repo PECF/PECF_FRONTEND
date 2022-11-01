@@ -1,9 +1,7 @@
 import React from "react";
 import { Box, Badge, Text, Stack, Spacer } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
 
 export const Card = ({ product }: any) => {
-  console.log(product)
   return (
     <Box
       w="12.5rem"
