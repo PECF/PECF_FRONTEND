@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Stack,
@@ -14,6 +14,10 @@ import {
   Badge,
   HStack,
   Grid,
+  Flex,
+  Input,
+  Textarea,
+  useToast,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
@@ -22,8 +26,24 @@ import { CarouselDetailProducts } from "../components/product/carouselDetailProd
 
 export function ProductDetail() {
   const { products } = useRecoveryData("productList");
-  const product = products[4];
-  console.log(product);
+  const product = products[3];
+  // console.log(product);
+
+  const [value, setValue] = useState("");
+  const send = useToast();
+
+  const handleInputChange = (e) => {
+    const inputValue = e.target.value;
+    setValue(inputValue);
+    send({
+      title: "Success",
+      description: "Question sent",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  };
+
   return (
     <Center>
       <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
@@ -32,10 +52,12 @@ export function ProductDetail() {
             base: "repeat(1, 1fr)",
             md: "repeat(2, 1fr)",
           }}
-          gap={6}>
+          gap={6}
+        >
           <Heading
             fontWeight={400}
-            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
+            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
+          >
             {product?.name}
           </Heading>
 
@@ -45,7 +67,8 @@ export function ProductDetail() {
             justifyContent={{
               base: "center",
               md: "flex-end",
-            }}>
+            }}
+          >
             {Array(5)
               .fill("")
               .map((_, i) => (
@@ -72,13 +95,15 @@ export function ProductDetail() {
           }}
           justifyContent="space-between"
           mt={4}
-          width="100%">
+          width="100%"
+        >
           <Text fontSize={"lg"} py={2}>
             <Badge
               borderRadius="full"
               px="2"
               colorScheme="teal"
-              fontSize={{ base: "sm", sm: "lg" }}>
+              fontSize={{ base: "sm", sm: "lg" }}
+            >
               {product?.category?.value}
             </Badge>
           </Text>
@@ -91,7 +116,8 @@ export function ProductDetail() {
             ml={5}
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={600}
-            fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}>
+            fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}
+          >
             {product?.price}€
           </Text>
 
@@ -110,7 +136,8 @@ export function ProductDetail() {
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
-            }}>
+            }}
+          >
             Add to cart
           </Button>
 
@@ -118,13 +145,15 @@ export function ProductDetail() {
             direction="row"
             alignItems="center"
             justifyContent={"center"}
-            mt={8}>
+            mt={8}
+          >
             <MdLocalShipping />
             <Text
               ml={2}
               color={useColorModeValue("gray.900", "gray.400")}
               fontWeight={600}
-              fontSize={{ base: "sm", sm: "md", lg: "lg" }}>
+              fontSize={{ base: "sm", sm: "md", lg: "lg" }}
+            >
               2-3 business days delivery{" "}
             </Text>
           </Stack>
@@ -135,13 +164,15 @@ export function ProductDetail() {
           mt={5}
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}>
+          rounded={"md"}
+        >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"500"}
             textTransform={"uppercase"}
-            mb={"4"}>
+            mb={"4"}
+          >
             Features
           </Text>
         </Box>
@@ -152,7 +183,8 @@ export function ProductDetail() {
           mt={5}
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}>
+          rounded={"md"}
+        >
           <List spacing={5}>
             <ListItem>White</ListItem>
             <ListItem>Electronics</ListItem>
@@ -170,13 +202,15 @@ export function ProductDetail() {
           mt={5}
           p={5}
           bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}>
+          rounded={"md"}
+        >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"500"}
             textTransform={"uppercase"}
-            mb={"4"}>
+            mb={"4"}
+          >
             Description
           </Text>
         </Box>
@@ -189,9 +223,58 @@ export function ProductDetail() {
           rounded={"md"}
           fontSize={{ base: "sm", sm: "md", lg: "lg" }}
           fontWeight={"300"}
-          align={"justify"}>
+          align={"justify"}
+        >
           {product?.description}
         </Text>
+
+        {/* ------------------------------ */}
+        <Box
+          w="100%"
+          mt={5}
+          p={5}
+          bg={useColorModeValue("gray.50", "gray.900")}
+          rounded={"md"}
+        >
+          <Text
+            fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
+            color={useColorModeValue("teal.500", "teal.300")}
+            fontWeight={"500"}
+            textTransform={"uppercase"}
+            mb={"4"}
+          >
+            Questions and answers
+          </Text>
+          <Text>Make him the seller a question</Text>
+          <Flex direction={"column"}>
+            <Textarea
+              maxlength="400"
+              value={value}
+              size="sm"
+              placeholder="what do you need to know?"
+            />
+            <Button
+              onClick={handleInputChange}
+              rounded={"none"}
+              w={"full"}
+              mt={6}
+              mb={8}
+              size={"lg"}
+              py={"7"}
+              colorScheme={"teal"}
+              fontSize={"md"}
+              fontWeight={"bold"}
+              color={useColorModeValue("white", "gray.900")}
+              textTransform={"uppercase"}
+              _hover={{
+                transform: "translateY(2px)",
+                boxShadow: "lg",
+              }}
+            >
+              SEND QUESTION
+            </Button>
+          </Flex>
+        </Box>
       </VStack>
     </Center>
   );
