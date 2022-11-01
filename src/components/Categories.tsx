@@ -68,21 +68,23 @@ export function Categories() {
 
   return (
     <Box
-      bg="gray.100"
+      // bg="gray.100"
       w="100%"
       h="100%"
       p={4}
       display="flex"
       justifyContent="center"
-      alignItems="center">
+      alignItems="center"
+    >
       <Container maxW="container.xl">
         <Heading
           as="h2"
           size="lg"
           textAlign="center"
           mb={4}
-          color="gray.700"
-          fontWeight="bold">
+          // color="gray.700"
+          fontWeight="bold"
+        >
           Categories
         </Heading>
         <SimpleGrid columns={[2, null, 4]} spacing={4}>
@@ -94,21 +96,24 @@ export function Categories() {
               w="100%"
               h="100%"
               p={4}
-              bg="white"
+              borderWidth="2px"
+              // bg="blackAlpha.100"
               borderRadius="md"
               boxShadow="md"
               display="flex"
               justifyContent="center"
               alignItems="center"
               flexDirection="column"
-              cursor="pointer">
+              cursor="pointer"
+            >
               <Box
                 w="100%"
                 h="100%"
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                flexDirection="column">
+                flexDirection="column"
+              >
                 <Box
                   w="100%"
                   h="100%"
@@ -116,15 +121,17 @@ export function Categories() {
                   justifyContent="center"
                   alignItems="center"
                   flexDirection="column"
-                  mb={2}>
+                  mb={2}
+                >
                   {category.icon}
                 </Box>
                 <Text
                   as="h3"
                   size="md"
                   textAlign="center"
-                  color="gray.700"
-                  fontWeight="bold">
+                  // color="gray.700"
+                  fontWeight="bold"
+                >
                   {category.name}
                 </Text>
               </Box>
