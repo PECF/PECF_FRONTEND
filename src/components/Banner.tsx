@@ -18,17 +18,21 @@ const settings = {
 export function Banner() {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
-  const cards = [
-    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/1_jqwyco.png",
-    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/2_urfpk4.png",
-    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667261197/banner/3_znw81l.png",
+  const cardsComputer = [
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667327495/banner/1_caomnr.png",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667327494/banner/3_yfuxt6.png",
+  ];
+  const cardsCellPhone = [
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667327484/banner/1_g6kfse.png",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667327484/banner/2_ba6zmt.png",
+    "https://res.cloudinary.com/dlcilp6vw/image/upload/v1667327484/banner/3_t6jjxi.png",
   ];
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={"full"} h={"30vh"} mb="10rem" mt={"5rem"}>
+    <Flex w={{ base: "100%", md: "95%" }} h={"35vh"} mb="10rem" mt={"3rem"}>
       <Box
         position={"relative"}
         height={"50vh"}
@@ -71,17 +75,18 @@ export function Banner() {
           <BiRightArrow />
         </IconButton>
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {cards.map((url, index) => (
-            <Box
-              key={index}
-              height={"2xl"}
-              width={"full"}
-              position="relative"
-              backgroundPosition="center"
-              backgroundRepeat="no-repeat"
-              backgroundSize="cover"
-              backgroundImage={`url(${url})`}
-            />
+          
+          {useBreakpointValue({ base: cardsCellPhone, md: cardsComputer })?.map((url, index) => (
+             <Box
+             key={index}
+             height={"50vh"}
+             width={"full"}
+             position="relative"
+             backgroundPosition="center"
+             backgroundRepeat="no-repeat"
+             backgroundSize="cover"
+             backgroundImage={`url(${url})`}
+           />
           ))}
         </Slider>
       </Box>

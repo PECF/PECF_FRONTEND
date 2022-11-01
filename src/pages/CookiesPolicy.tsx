@@ -9,7 +9,7 @@ import {
   Link,
 } from "@chakra-ui/react";
 
-export const CookiesPolicy: React.FC = () => {
+export default function CookiesPolicy() {
   return (
     <Box>
       <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
@@ -121,4 +121,4 @@ export const CookiesPolicy: React.FC = () => {
       </Box>
     </Box>
   );
-};
+}

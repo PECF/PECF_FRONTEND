@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export const Refund = () => {
+export default function Refund() {
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">
@@ -131,4 +131,4 @@ export const Refund = () => {
       {/* <Footer/>  */}
     </Box>
   );
-};
+}

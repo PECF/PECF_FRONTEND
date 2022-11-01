@@ -20,7 +20,7 @@ import { MdLocalShipping } from "react-icons/md";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { CarouselDetailProducts } from "../components/product/carouselDetailProduct";
 
-export function ProductDetail() {
+export default function ProductDetail() {
   const { products } = useRecoveryData("productList");
   const product = products[4];
   console.log(product);

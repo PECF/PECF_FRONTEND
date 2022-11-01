@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Heading, Text, Flex } from "@chakra-ui/react";
 
-export const TermsOfService: React.FC = () => {
+export default function TermsOfService(){
   return (
     <Box>
       <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
@@ -169,4 +169,4 @@ export const TermsOfService: React.FC = () => {
       </Box>
     </Box>
   );
-};
+}
