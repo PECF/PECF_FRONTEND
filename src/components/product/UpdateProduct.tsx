@@ -33,7 +33,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
 import {
-  listProductDetails,
+  getDetailsProduct,
   updateProduct,
 } from "../../redux/actions/productsActions";
 import { ProductDetailPreview } from "./ProductDetailPreview";
@@ -74,13 +74,13 @@ export function UpdateProduct() {
 
   useEffect(() => {
     if (_productById) {
-      dispatch(listProductDetails(_productById));
+      dispatch(getDetailsProduct(_productById));
       setIsChange(true);
     }
   }, [_productById]);
 
   const selectProduct = (e: any) => {
-    dispatch(listProductDetails(e.value));
+    dispatch(getDetailsProduct(e.value));
     setIsChange(true);
   };
 
