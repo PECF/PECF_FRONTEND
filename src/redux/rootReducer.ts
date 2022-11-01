@@ -51,7 +51,7 @@ export const rootReducer = combineReducers<ReduxState>({
   productFeature: productFeature,
   productList: productListReducer,
   productCreate: productCreateReducer,
-  // productDelete: productDeleteReducer,
+  productDelete: productDeleteReducer,
   productUpdate: productUpdateReducer,
   productDetails: productDetailsReducer,
   // productTopRated: productTopRatedReducer,

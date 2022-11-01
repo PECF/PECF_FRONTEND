@@ -13,14 +13,15 @@ import { ReturnPolicy } from "../pages/ReturnPolicy";
 import { Refund } from "../pages/Refund";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
 import { CookiesPolicy } from "../pages/CookiesPolicy";
+import { Products } from "../pages/Products";
 
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      {/* <Route path="/products" element={<Products />} />
-      <Route path="/product/:id" element={<ProductReview />} /> */}
+      <Route path="/products" element={<Products />} />
+      {/* <Route path="/product/:id" element={<ProductReview />} /> */}
       <Route path="/product/" element={<ProductDetail />} />
 
       {!user?.role ? (

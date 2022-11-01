@@ -33,6 +33,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../../redux/rootStore";
 import {
+  deleteProduct,
   getAdminProductDetails,
   updateProduct,
 } from "../../redux/actions/productsActions";
@@ -43,9 +44,20 @@ import { RiImageAddLine } from "react-icons/ri";
 
 export function UpdateProduct() {
   const dispatch = useDispatch<AppDispatch>();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenPreview,
+    onOpen: onOpenPreview,
+    onClose: onClosePreview,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenDelete,
+    onOpen: onOpenDelete,
+    onClose: onCloseDelete,
+  } = useDisclosure();
   const { feature } = useRecoveryData("productFeature");
   const { tags } = useRecoveryData("productTag");
+  const productDelete = useRecoveryData("productDelete");
   const toast = useToast();
   const location = useLocation();
 
@@ -54,7 +66,7 @@ export function UpdateProduct() {
   const { products } = useRecoveryData("productList");
   const { product } = useRecoveryData("productDetails");
   const { loading, error, success } = useRecoveryData("productUpdate");
-
+  console.log(product);
   const [imagesPreview, setImagesPreview] = useState<any[]>([]);
   const [featureLocal, setFeatures] = useState<any[]>([]);
   const [description, setDescription] = useState("");
@@ -71,13 +83,15 @@ export function UpdateProduct() {
   const [name, setName] = useState("");
   const [isCharge, setIsCharge] = useState(false);
   const [isChange, setIsChange] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
 
   useEffect(() => {
     if (_productById) {
       dispatch(getAdminProductDetails(_productById));
       setIsChange(true);
     }
-  }, [_productById]);
+  }, [_productById, dispatch]);
 
   const selectProduct = (e: any) => {
     dispatch(getAdminProductDetails(e.value));
@@ -232,12 +246,39 @@ export function UpdateProduct() {
         isClosable: true,
       });
     }
-  }, [product, success, error, _product, isChange]);
-
-  const deleteHandler = (id: string) => {
-    if (window.confirm("Are you sure")) {
-      console.log("click");
+    if (productDelete.success) {
+      toast({
+        title: "Product deleted.",
+        description: "We've deleted your product for you.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+      productDelete.success = false;
+      onCloseDelete();
     }
+    if (productDelete.error) {
+      toast({
+        title: "An error occurred.",
+        description: "We've deleted your product for you.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }, [isChange, success, error, productDelete.success, productDelete.error]);
+
+  const deleteProductHandler = (id: string) => {
+    if (id === "" || (id === undefined && password !== passwordConfirmation)) {
+      toast({
+        title: "An error occurred.",
+        description: "We can't delete this product.",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+    dispatch(deleteProduct(id));
   };
 
   const previewHandler = () => {
@@ -260,7 +301,7 @@ export function UpdateProduct() {
         isClosable: true,
       });
     } else {
-      onOpen();
+      onOpenPreview();
     }
   };
   const submitHandler = (e: any) => {
@@ -642,11 +683,11 @@ export function UpdateProduct() {
           </Button>
 
           <Button
+            isLoading={productDelete.loading}
             type="button"
             colorScheme="red"
             mr={3}
-            // isLoading={loading}
-            onClick={() => deleteHandler}>
+            onClick={onOpenDelete}>
             Delete
           </Button>
 
@@ -658,9 +699,8 @@ export function UpdateProduct() {
             Preview
           </Button>
           <Modal
-            isOpen={isOpen}
-            onClose={onClose}
-            size="full"
+            isOpen={isOpenPreview}
+            onClose={onClosePreview}
             scrollBehavior="inside">
             <ModalOverlay />
             <ModalContent>
@@ -670,8 +710,60 @@ export function UpdateProduct() {
                 <ProductDetailPreview product={_product} />
               </ModalBody>
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={onClose}>
+                <Button colorScheme="blue" mr={3} onClick={onClosePreview}>
                   Close
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+          <Modal
+            isOpen={isOpenDelete}
+            onClose={onCloseDelete}
+            scrollBehavior="inside">
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Confirm Delete</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <FormControl id="password" isRequired>
+                  <FormLabel>Password</FormLabel>
+                  <Input
+                    type="password"
+                    name="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter your password"
+                  />
+                </FormControl>
+                <FormControl mt={4} id="password_confirmation" isRequired>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <Input
+                    type="password"
+                    name="password_confirmation"
+                    value={passwordConfirmation}
+                    onChange={(e) => setPasswordConfirmation(e.target.value)}
+                    placeholder="Enter your password confirmation"
+                  />
+                </FormControl>
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  colorScheme="teal"
+                  variant="ghost"
+                  onClick={() => {
+                    onCloseDelete();
+                  }}>
+                  Cancel
+                </Button>
+                <Button
+                  colorScheme="red"
+                  variant="solid"
+                  ml={3}
+                  isLoading={productDelete.loading}
+                  onClick={() => {
+                    deleteProductHandler(_product._id);
+                  }}>
+                  Delete
                 </Button>
               </ModalFooter>
             </ModalContent>
