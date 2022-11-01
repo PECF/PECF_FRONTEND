@@ -14,6 +14,7 @@ import { Refund } from "../pages/Refund";
 import { PrivacyPolicy } from "../pages/PrivacyPolicy";
 import { CookiesPolicy } from "../pages/CookiesPolicy";
 import { HelpCenter } from "../pages/HelpCenter";
+import { Products } from "../pages/Products";
 
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");

@@ -13,14 +13,9 @@ export const SecondSlider = {
   dots: true,
   infinite: false,
   speed: 300,
-
   slidesToShow: 5.9,
-  
-  
   slidesToScroll: 1,
-
   initialSlide: 3,
-
   responsive: [
     
     {

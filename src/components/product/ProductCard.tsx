@@ -31,7 +31,7 @@ export const ProductCard = (props: Props) => {
       {...rootProps}
       as={Link}
       ml="2rem"
-      href={`/product/${product._id}`}
+      to={`/product/${product._id}`}
       _hover={{
         textDecoration: "none",
       }}>
