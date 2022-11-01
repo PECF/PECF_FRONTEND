@@ -1,7 +1,6 @@
 import {
   AspectRatio,
   Box,
-  Button,
   HStack,
   Image,
   Link,
@@ -24,12 +23,14 @@ interface Props {
 
 export const ProductCard = (props: Props) => {
   const { product, rootProps } = props;
-  const { name, image, price, rating } = product;
+  const { name, image, price, rating, numReviews } = product;
+  console.log(product);
   return (
     <Stack
       spacing={useBreakpointValue({ base: "4", md: "5" })}
       {...rootProps}
       as={Link}
+      ml="2rem"
       href={`/product/${product._id}`}
       _hover={{
         textDecoration: "none",
@@ -56,27 +57,16 @@ export const ProductCard = (props: Props) => {
           <Text
             fontWeight="medium"
             color={useColorModeValue("gray.700", "gray.400")}>
-            {name.length > 20 ? name.substring(0, 40) + "..." : name}
+            {name.length > 20 ? name.substring(0, 30) + "..." : name}
           </Text>
           <PriceTag price={price} currency="USD" />
         </Stack>
         <HStack>
           <Rating defaultValue={rating} size="sm" />
           <Text fontSize="sm" color={useColorModeValue("gray.600", "gray.400")}>
-            12 Reviews
+            {numReviews} reviews
           </Text>
         </HStack>
-      </Stack>
-      <Stack align="center">
-        {/* <Button colorScheme="blue" width="full">
-          Add to cart
-        </Button>
-        <Link
-          textDecoration="underline"
-          fontWeight="medium"
-          color={useColorModeValue("gray.600", "gray.400")}>
-          Quick shop
-        </Link> */}
       </Stack>
     </Stack>
   );
