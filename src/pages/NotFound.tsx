@@ -1,19 +1,32 @@
 import React from "react";
-import { Stack, Image, Button } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { Home } from "./Home";
+
+import { Button, Box, Center } from "@chakra-ui/react";
 
 export function NotFound() {
   return (
-    <Stack align="center">
-      <Image
-        src="https://res.cloudinary.com/dlcilp6vw/image/upload/v1666296254/Error/404-error-template-3_gkxfbj.png"
-        alt="error"
-      />
-      <Button as={Link} to="/" colorScheme="gray" size="lg">
-        Go to Home
-      </Button>
-    </Stack>
+    //https://media.tenor.com/PPOe9MawAvsAAAAM/404-not-found.gif
+    <Center>
+      <Box>
+        <img
+          width="900px"
+          height="500px"
+          src="https://miro.medium.com/max/1400/1*zBFBJktPD3_z0S_35kO5Hg.gif"
+          alt="NotFound"
+        />
+        <Button
+          bg="teal"
+          color="white"
+          ml="635PX"
+          mt="-155px"
+          w="232px"
+          _hover={{
+            background: "white",
+            color: "teal.500",
+          }}
+        >
+          Back to go home
+        </Button>
+      </Box>
+    </Center>
   );
 }
-  
