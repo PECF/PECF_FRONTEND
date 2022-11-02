@@ -30,6 +30,10 @@ export function UsersDashboard() {
     dispatch(listUsers());
   }, [dispatch]);
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <Box
       as="form"

@@ -16,4 +16,3 @@ export const filterByCategory = (category) => {
     errorHandler(err);
   }
 };
-

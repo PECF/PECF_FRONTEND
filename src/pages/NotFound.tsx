@@ -1,19 +1,58 @@
 import React from "react";
-import { Stack, Image, Button } from "@chakra-ui/react";
+import { Stack, Image, Button, Center, Box, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import { Home } from "./Home";
+import notFound from "../types/404notFound.png";
 
-export function NotFound() {
+export default function NotFound() {
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
-    <Stack align="center">
-      <Image
-        src="https://res.cloudinary.com/dlcilp6vw/image/upload/v1666296254/Error/404-error-template-3_gkxfbj.png"
-        alt="error"
-      />
-      <Button as={Link} to="/" colorScheme="gray" size="lg">
-        Go to Home
-      </Button>
-    </Stack>
+    <Center>
+      <Box>
+        <Stack
+        mt={35}
+          direction="column"
+          spacing={4}
+          align="center"
+          justify="center"
+          w="100%"
+          h="100%"
+          p={4}
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <Text
+            fontSize= {{base: "2xl", md: "4xl", lg: "6xl"}}
+            fontWeight="bold"
+            textAlign="center"
+            color="teal.500"
+          >
+            404
+          </Text>
+          <Text fontSize="2xl" fontWeight="bold" textAlign="center">
+            Page Not Found
+          </Text>
+          <Image
+            src={notFound}
+            alt="404 Not Found"
+            maxWidth={{ base: "15%", md: "30%", lg: "20%" }}
+            maxHeight={{ base: "15%", md: "30%", lg: "20%" }}
+            alignSelf="center"
+
+          />
+          <Link to="/">
+            <Button colorScheme="teal"
+             variant="outline"
+             alignSelf={{ base: "center", md: "center", lg: "center" }}
+             >
+              Go Home
+            </Button>
+          </Link>
+        </Stack>
+      </Box>
+    </Center>
   );
 }
-  

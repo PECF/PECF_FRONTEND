@@ -1,15 +1,16 @@
 import React, { ReactNode } from "react";
+import { Link } from "react-router-dom";
 import {
   Box,
   Container,
   Stack,
   SimpleGrid,
   Text,
-  Link,
   VisuallyHidden,
   chakra,
   useColorModeValue,
   Input,
+  Button,
   IconButton,
 } from "@chakra-ui/react";
 import { FaFacebook, FaYoutube, FaInstagram } from "react-icons/fa";
@@ -20,7 +21,6 @@ import {
   copyright,
   kalu,
   newsletter,
-  blog,
   careers,
   company,
   support,
@@ -70,8 +70,7 @@ const SocialButton = ({
       transition={"background 0.3s ease"}
       _hover={{
         bg: useColorModeValue("blackAlpha.200", "whiteAlpha.200"),
-      }}
-    >
+      }}>
       <VisuallyHidden>{label}</VisuallyHidden>
       {children}
     </chakra.button>
@@ -85,25 +84,39 @@ export function Footer() {
         <SimpleGrid columns={{ base: 1, sm: 2, md: 4 }} spacing={8}>
           <Stack align={"flex-start"}>
             <ListHeader>{company}</ListHeader>
-            <Link href={"../pages/AboutUs"}>{aboutUs}</Link>
-            <Link href={"#"}>{blog}</Link>
-            <Link href={"#"}>{careers}</Link>
-            <Link href={"../pages/ContactUs"}>{contactUs}</Link>
+
+            <Text as={Link} to={"/AboutUs"}>
+              {aboutUs}
+            </Text>
+            <Text as={Link} to={"/ContactUs"}>
+              {contactUs}
+            </Text>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>{support}</ListHeader>
-            <Link href={"#"}>{helpCenter}</Link>
-            <Link href={"#"}>{safetyCenter}</Link>
-            <Link href={"../pages/Refund"}>{refundPolicy}</Link>
+            <Text as={Link} to={"/HelpCenter"}>
+              {helpCenter}
+            </Text>
+            <Text as={Link} to={"/Refund"}>
+              {refundPolicy}
+            </Text>
           </Stack>
 
           <Stack align={"flex-start"}>
             <ListHeader>{legal}</ListHeader>
-            <Link href={"../pages/CookiesPolicy"}>{cookiesPolicy}</Link>
-            <Link href={"../pages/PrivacyPolicy"}>{privacyPolicy}</Link>
-            <Link href={"../pages/TermsOfService"}>{termsOfService}</Link>
-            <Link href={"../pages/ReturnPolicy"}>{returnPolicy}</Link>
+            <Text as={Link} to={"/CookiesPolicy"}>
+              {cookiesPolicy}
+            </Text>
+            <Text as={Link} to={"/PrivacyPolicy"}>
+              {privacyPolicy}
+            </Text>
+            <Text as={Link} to={"/TermsOfService"}>
+              {termsOfService}
+            </Text>
+            <Text as={Link} to={"/ReturnPolicy"}>
+              {returnPolicy}
+            </Text>
           </Stack>
 
           <Stack align={"flex-start"}>
@@ -120,8 +133,7 @@ export function Footer() {
               <IconButton
                 colorScheme="teal"
                 variant="solid"
-                aria-label="Subscribe"
-              >
+                aria-label="Subscribe">
                 <BiMailSend
                   color={useColorModeValue("blackAlpha.100", "gray.800")}
                 />
@@ -140,8 +152,7 @@ export function Footer() {
       <Box
         borderTopWidth={1}
         borderStyle={"solid"}
-        borderColor={useColorModeValue("gray.200", "gray.700")}
-      >
+        borderColor={useColorModeValue("gray.200", "gray.700")}>
         <Container
           as={Stack}
           maxW={"6xl"}
@@ -149,20 +160,17 @@ export function Footer() {
           direction={{ base: "column", md: "row" }}
           spacing={4}
           justify={{ md: "space-around" }}
-          align={{ md: "center" }}
-        >
+          align={{ md: "center" }}>
           <Text
             fontSize="sm"
             color={useColorModeValue("gray.700", "gray.200")}
-            textAlign="center"
-          >
+            textAlign="center">
             {copyright} &copy; {new Date().getFullYear()} {kalu}
           </Text>
           <Stack direction={"row"} spacing={6} justify={"center"}>
             <SocialButton
               label={"Instagram"}
-              href={"https://www.instagram.com"}
-            >
+              href={"https://www.instagram.com"}>
               <FaInstagram />
             </SocialButton>
             <SocialButton label={"Facebook"} href={"https://www.facebook.com"}>

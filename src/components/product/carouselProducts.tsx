@@ -1,9 +1,8 @@
 import { BiRightArrow, BiLeftArrow } from "react-icons/bi";
 import "slick-carousel/slick/slick-theme.css";
-import { Card } from "../../components/Card";
 import "slick-carousel/slick/slick.css";
 import Slider from "react-slick";
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Box,
@@ -14,10 +13,62 @@ import {
 } from "@chakra-ui/react";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 
-import { SecondSlider } from "../../constant/Home";
+import { ProductCard } from "./Card";
 
-export function Carousel({ text, name }: any) {
-  const [slider, setSlider] = React.useState<Slider | null>(null);
+const settings = {
+  dots: false,
+  infinite: true,
+  speed: 500,
+  slidesToScroll: 1,
+  pauseOnHover: true,
+  slidesToShow: 6.1,
+  initialSlide: 1,
+
+  responsive: [
+    {
+      breakpoint: 1360,
+      settings: {
+        dots: false,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        initialSlide: 1,
+      },
+    },
+    {
+      breakpoint: 1030,
+      settings: {
+        dots: false,
+        autoplay: true,
+        autoplaySpeed: 2000,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 800,
+      settings: {
+        dots: false,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      },
+    },
+    {
+      breakpoint: 600,
+      settings: {
+        dots: false,
+        slidesToShow: 1.1,
+        slidesToScroll: 1,
+        centerMode: true,
+        centerPadding: "20px",
+      },
+    },
+  ],
+};
+
+export function Carousel({ text, name }: { text: string; name: string }) {
+  const [slider, setSlider] = useState<Slider | null>(null);
 
   const { products } = useRecoveryData(name);
 
@@ -30,17 +81,15 @@ export function Carousel({ text, name }: any) {
       alignItems="center"
       justifyContent={"center"}
       position={"relative"}
-      left="44%"
+      left="50%"
       transform="translate(-50%)"
       borderRadius="20px"
-      width="90%"
-      mb="5rem"
-      mt="5rem">
-      <Heading
-        ml={"1rem"}
-        width={"100%"}
-        fontSize="24"
-        fontWeight="light">{`${text}:`}</Heading>
+      width="100%"
+      mt={"2.5rem"}
+      mb={"2.5rem"}>
+      <Heading ml={"1rem"} width={"100%"} fontSize="24" fontWeight="light">
+        {`${text}:`}
+      </Heading>
 
       <Box
         overflow={"hidden"}
@@ -54,38 +103,41 @@ export function Carousel({ text, name }: any) {
           _hover={{
             visibility: "visible",
           }}>
-          <IconButton
-            aria-label="left-arrow"
-            colorScheme="messenger"
-            borderRadius="full"
-            position="absolute"
-            left={side}
-            top={top}
-            transform={"translate(0%, -50%)"}
-            zIndex={2}
-            bgColor="teal.500"
-            onClick={() => slider?.slickPrev()}>
-            <BiLeftArrow />
-          </IconButton>
-
-          <IconButton
-            aria-label="right-arrow"
-            colorScheme="messenger"
-            borderRadius="full"
-            position="absolute"
-            right={side}
-            top={top}
-            transform={"translate(0%, -50%)"}
-            zIndex={2}
-            bgColor="teal.500"
-            onClick={() => slider?.slickNext()}>
-            <BiRightArrow />
-          </IconButton>
+          {useBreakpointValue({ base: false, md: true }) ? (
+            <>
+              <IconButton
+                aria-label="left-arrow"
+                colorScheme="messenger"
+                borderRadius="full"
+                position="absolute"
+                left={side}
+                top={top}
+                transform={"translate(0%, -50%)"}
+                zIndex={2}
+                bgColor="teal.500"
+                onClick={() => slider?.slickPrev()}>
+                <BiLeftArrow />
+              </IconButton>
+              <IconButton
+                aria-label="right-arrow"
+                colorScheme="messenger"
+                borderRadius="full"
+                position="absolute"
+                right={side}
+                top={top}
+                transform={"translate(0%, -50%)"}
+                zIndex={2}
+                bgColor="teal.500"
+                onClick={() => slider?.slickNext()}>
+                <BiRightArrow />
+              </IconButton>
+            </>
+          ) : null}
         </Box>
 
-        <Slider {...SecondSlider} ref={(slider) => setSlider(slider)}>
+        <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {products.map((product: any, index: any) => (
-            <Card key={index} product={product} />
+            <ProductCard key={index} product={product} />
           ))}
         </Slider>
       </Box>

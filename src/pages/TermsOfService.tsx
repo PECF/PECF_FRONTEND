@@ -1,7 +1,10 @@
 import React from "react";
 import { Box, Heading, Text, Flex } from "@chakra-ui/react";
 
-export const TermsOfService: React.FC = () => {
+export default function TermsOfService(){
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <Box>
       <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
@@ -13,8 +16,6 @@ export const TermsOfService: React.FC = () => {
         <Flex>
           <Box
             bg={"whiteAlpha.100"}
-            borderWidth="2px"
-            borderRadius="lg"
             overflow="hidden"
             p={50}
             boxShadow="lg"
@@ -169,4 +170,4 @@ export const TermsOfService: React.FC = () => {
       </Box>
     </Box>
   );
-};
+}

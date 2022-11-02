@@ -9,7 +9,10 @@ import {
   Link,
 } from "@chakra-ui/react";
 
-export const CookiesPolicy: React.FC = () => {
+export default function CookiesPolicy() {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <Box>
       <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
@@ -21,8 +24,6 @@ export const CookiesPolicy: React.FC = () => {
         <Flex>
           <Box
             bg={"whiteAlpha.100"}
-            borderWidth="2px"
-            borderRadius="lg"
             overflow="hidden"
             p={50}
             boxShadow="lg"
@@ -121,4 +122,4 @@ export const CookiesPolicy: React.FC = () => {
       </Box>
     </Box>
   );
-};
+}

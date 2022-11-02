@@ -14,7 +14,8 @@ import {
 
 import { RepeatIcon } from "@chakra-ui/icons";
 
-export const UpdatePassword = () => {
+
+export default function UpdatePassword(){
   const send = useToast();
 
   // const { error, isUpdated, loading } = useSelector((state) => state.profile);
@@ -29,6 +30,10 @@ export const UpdatePassword = () => {
     setNewPassword(e.target.value);
   const handleConfirm = (e: React.ChangeEvent<HTMLInputElement>) =>
     setConfirmPassword(e.target.value);
+
+    React.useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
 
   return (
     <Box>
@@ -112,4 +117,4 @@ export const UpdatePassword = () => {
       </Box>
     </Box>
   );
-};
+}

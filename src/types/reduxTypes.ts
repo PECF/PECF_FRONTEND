@@ -29,8 +29,11 @@ import {
   UserUpdateProfileState,
   UserForgotPassword,
 } from "./authTypes";
+import { WishlistState } from "./wishlistTypes";
 
 export interface ReduxState {
+  [x: string]: any;
+  wishlist?: WishlistState;
   cart?: CartState;
   userLogin: UserLoginState;
   userRegister?: UserRegisterState;

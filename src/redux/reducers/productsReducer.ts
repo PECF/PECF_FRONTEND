@@ -26,7 +26,6 @@ import {
   productTagAction,
   ProductTagState,
   ProductTagActionTypes,
-
 } from "../../types/productsTypes";
 
 const initialProductListState: ProductListState = {
@@ -80,19 +79,19 @@ export const productDetailsReducer = (
       return {
         loading: true,
         product: initialProductDetailsState.product,
-        error: false
+        error: false,
       };
     case ProductDetailsActionTypes.PRODUCT_DETAILS_SUCCESS:
       return {
         loading: false,
         product: action.payload,
-        error: false
+        error: false,
       };
     case ProductDetailsActionTypes.PRODUCT_DETAILS_FAILURE:
       return {
         loading: false,
         error: action.payload,
-        product: undefined
+        product: undefined,
       };
     default:
       return state;
@@ -101,6 +100,8 @@ export const productDetailsReducer = (
 
 const initialProductDeleteState: ProductDeleteState = {
   loading: false,
+  success: false,
+  error: false,
 };
 
 /**
@@ -112,11 +113,11 @@ export const productDeleteReducer = (
 ) => {
   switch (action.type) {
     case ProductDeleteActionTypes.PRODUCT_DELETE_REQUEST:
-      return { loading: true };
+      return { loading: true, success: false, error: false };
     case ProductDeleteActionTypes.PRODUCT_DELETE_SUCCESS:
-      return { loading: false, success: true };
+      return { loading: false, success: true, error: false };
     case ProductDeleteActionTypes.PRODUCT_DELETE_FAILURE:
-      return { loading: false, error: action.payload };
+      return { loading: false, error: action.payload, success: false };
     default:
       return state;
   }
@@ -141,14 +142,14 @@ export const productCreateReducer = (
         loading: true,
         success: initialProductCreateState.success,
         product: initialProductCreateState.product,
-        error: initialProductCreateState.error
+        error: initialProductCreateState.error,
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_SUCCESS:
       return {
         loading: false,
         success: true,
         product: action.payload,
-        error: initialProductCreateState.error
+        error: initialProductCreateState.error,
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_FAILURE:
       return {
@@ -162,14 +163,14 @@ export const productCreateReducer = (
         loading: initialProductCreateState.loading,
         success: initialProductCreateState.success,
         product: initialProductCreateState.product,
-        error: initialProductCreateState.error
+        error: initialProductCreateState.error,
       };
     case ProductCreateActionTypes.PRODUCT_CREATE_PREVIEW:
       return {
         loading: initialProductCreateState.loading,
         success: initialProductCreateState.success,
         product: action.payload,
-        error: initialProductCreateState.error
+        error: initialProductCreateState.error,
       };
 
     default:
@@ -197,14 +198,14 @@ export const productUpdateReducer = (
         loading: true,
         success: false,
         product: initialProductUpdateState.product,
-        error: null
+        error: null,
       };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_SUCCESS:
       return {
         loading: false,
         success: true,
         product: action.payload,
-        error: null
+        error: null,
       };
     case ProductUpdateActionTypes.PRODUCT_UPDATE_FAILURE:
       return {
@@ -218,7 +219,7 @@ export const productUpdateReducer = (
         loading: initialProductUpdateState.loading,
         success: initialProductUpdateState.success,
         product: initialProductUpdateState.product,
-        error: initialProductUpdateState.error
+        error: initialProductUpdateState.error,
       };
 
     case ProductUpdateActionTypes.PRODUCT_UPDATE_PREVIEW:
@@ -226,7 +227,7 @@ export const productUpdateReducer = (
         loading: initialProductUpdateState.loading,
         success: initialProductUpdateState.success,
         product: action.payload,
-        error: initialProductUpdateState.error
+        error: initialProductUpdateState.error,
       };
     default:
       return state;
@@ -293,8 +294,6 @@ export const productTopRatedReducer = (
   }
 };
 
-
-
 const initialProductFeatureState: ProductFeatureState = {
   feature: [],
 };
@@ -318,7 +317,7 @@ export const productFeature = (
     default:
       return state;
   }
-}
+};
 
 const initialProductTagState: ProductTagState = {
   tag: [],
@@ -343,5 +342,4 @@ export const productTag = (
     default:
       return state;
   }
-}
-
+};

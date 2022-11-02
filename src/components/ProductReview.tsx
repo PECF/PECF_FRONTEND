@@ -4,7 +4,7 @@ import { StarIcon } from "@chakra-ui/icons";
 import { createProductReview } from "../redux/actions/productsActions";
 import { useDispatch } from "react-redux";
 
-export function ProductReview() {
+export default function ProductReview() {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(null);
@@ -19,6 +19,9 @@ export function ProductReview() {
     console.log(rating);
     dispatch(createProductReview(review, rating));
   };
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <Container

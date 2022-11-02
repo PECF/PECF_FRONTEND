@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useLocation } from "react-router";
 import {
   Box,
   Stack,
@@ -8,8 +9,6 @@ import {
   Heading,
   SimpleGrid,
   useColorModeValue,
-  List,
-  ListItem,
   Center,
   Badge,
   HStack,
@@ -17,94 +16,151 @@ import {
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
-import { useRecoveryData } from "../hooks/useRecoveryData";
 import { CarouselDetailProducts } from "../components/product/carouselDetailProduct";
+import { useRecoveryData } from "../hooks/useRecoveryData";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/rootStore";
+import { getDetailsProduct } from "../redux/actions/productsActions";
 
-export function ProductDetail() {
-  const { products } = useRecoveryData("productList");
-  const product = products[4];
-  console.log(product);
+export default function ProductDetail({ _product }: any) {
+  const location = useLocation();
+
+  const productByID = location.pathname.split("/")[2];
+
+  const dispatch: AppDispatch = useDispatch();
+  const { product } = useRecoveryData("productDetails");
+
+  useEffect(() => {
+    if (productByID) {
+      dispatch(getDetailsProduct(productByID));
+        window.scrollTo(0, 0)
+    }
+  }, [productByID, dispatch]);
+
+  const productDetails = _product ? _product : product;
+
   return (
-    <Center>
-      <VStack mt={10} maxW="5xl" bg={"whiteAlpha.100"} py={3}>
+    <Center
+      py={{
+        base: 1,
+        md: 10,
+      }}
+      bg={useColorModeValue("gray.50", "gray.800")}>
+      <VStack
+        w="full"
+        maxW="7xl"
+        mx="auto"
+        rounded="lg"
+        shadow="lg"
+        overflow="hidden">
         <Grid
-          templateColumns={{
-            base: "repeat(1, 1fr)",
-            md: "repeat(2, 1fr)",
-          }}
-          gap={6}>
+          templateColumns={{ base: "1fr", md: "1fr 1fr" }}
+          w="full"
+          h="full">
           <Heading
-            fontWeight={400}
-            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
-            {product?.name}
+            as="h1"
+            size="2xl"
+            fontWeight="extrabold"
+            textAlign={{ base: "left", md: "left" }}
+            p={2}>
+            {productDetails?.name}
           </Heading>
-
           <HStack
-            spacing={1}
-            alignItems="center"
-            justifyContent={{
-              base: "center",
-              md: "flex-end",
-            }}>
+            spacing={2}
+            align="center"
+            justify={{ base: "left", md: "flex-end" }}
+            p={2}>
             {Array(5)
               .fill("")
               .map((_, i) => (
-                <StarIcon
-                  key={i}
-                  color={i < product?.rating ? "teal.500" : "gray.300"}
-                />
+                <StarIcon key={i} />
               ))}
             <Box as="span" ml="2" color="gray.600" fontSize="lg">
-              {product?.numReviews}
+              reviews
             </Box>
           </HStack>
         </Grid>
-
         <Stack
-          direction={{
-            base: "column",
-            md: "column",
-          }}
-          spacing={4}
-          alignItems={{
-            base: "center",
-            md: "flex-start",
-          }}
-          justifyContent="space-between"
-          mt={4}
-          width="100%">
-          <Text fontSize={"lg"} py={2}>
+          direction={{ base: "column", md: "row" }}
+          w="full"
+          h="full"
+          p={1}>
+          <Text fontSize="lg" color="gray.600" textAlign="center">
             <Badge
-              borderRadius="full"
-              px="2"
               colorScheme="teal"
-              fontSize={{ base: "sm", sm: "lg" }}>
-              {product?.category?.value}
+              borderRadius="full"
+              px="4"
+              py="1"
+              fontSize="md">
+              {productDetails?.category.value}
             </Badge>
           </Text>
-
-          <CarouselDetailProducts product={product} />
+          <Text
+            fontSize="lg"
+            color="gray.600"
+            textAlign="center"
+            display={{ base: "none", md: "block" }}>
+            <Badge
+              colorScheme="teal"
+              borderRadius="full"
+              px="4"
+              py="1"
+              fontSize="md">
+              {productDetails?.brand}
+            </Badge>
+          </Text>
+          <Text
+            fontSize="lg"
+            color="gray.600"
+            textAlign="center"
+            display={{ base: "none", md: "block" }}>
+            <Badge
+              colorScheme="teal"
+              borderRadius="full"
+              px="4"
+              py="1"
+              fontSize="md">
+              only {productDetails?.stock} units
+            </Badge>
+          </Text>
+          {(productDetails?.offer[0]?.value === "discount" ||
+            productDetails?.offer[1]?.value === "discount" ||
+            productDetails?.offer[2]?.value === "discount") &&
+          productDetails?.discount !== 0 ? (
+            <Text
+              fontSize="lg"
+              color="gray.600"
+              textAlign="center"
+              display={{ base: "none", md: "block" }}>
+              <Badge
+                colorScheme="teal"
+                borderRadius="full"
+                px="4"
+                py="1"
+                fontSize="md">
+                {`${productDetails?.discount}% OFF`}
+              </Badge>
+            </Text>
+          ) : null}
         </Stack>
-
-        <Stack w="100%" mt={5}>
+        <CarouselDetailProducts image={productDetails?.image} />
+        <Stack w="100%" h="full" p={5} spacing={4}>
           <Text
             ml={5}
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={600}
-            fontSize={{ base: "2xl", sm: "3xl", lg: "4xl" }}>
-            {product?.price}€
+            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
+            {productDetails?.price}€
           </Text>
-
           <Button
-            rounded={"none"}
-            w={"full"}
-            mt={8}
-            mb={8}
-            size={"lg"}
-            py={"7"}
-            colorScheme={"teal"}
-            fontSize={"md"}
-            fontWeight={"bold"}
+            w="full"
+            mt={5}
+            colorScheme="teal"
+            borderRadius="0"
+            fontSize="xl"
+            fontWeight={600}
+            letterSpacing="wide"
+            boxShadow="lg"
             color={useColorModeValue("white", "gray.900")}
             textTransform={"uppercase"}
             _hover={{
@@ -113,85 +169,142 @@ export function ProductDetail() {
             }}>
             Add to cart
           </Button>
-
           <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent={"center"}
-            mt={8}>
+            direction={{ base: "row", md: "row" }}
+            w="full"
+            h="full"
+            p={1}
+            justify="center"
+            align={{ base: "center", md: "center" }}>
             <MdLocalShipping />
             <Text
               ml={2}
               color={useColorModeValue("gray.900", "gray.400")}
               fontWeight={600}
               fontSize={{ base: "sm", sm: "md", lg: "lg" }}>
-              2-3 business days delivery{" "}
+              {productDetails?.offer[0]?.value === "freeShipping" ||
+              productDetails?.offer[1]?.value === "freeShipping" ||
+              productDetails?.offer[2]?.value === "freeShipping"
+                ? "Free shipping"
+                : "Delivery in 72hs"}
             </Text>
           </Stack>
         </Stack>
-
         <Box
-          w="100%"
-          mt={5}
+          w="full"
+          h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}>
+          bg={useColorModeValue("gray.50", "gray.900")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
-            fontWeight={"500"}
-            textTransform={"uppercase"}
-            mb={"4"}>
+            fontWeight={"600"}
+            textTransform={"uppercase"}>
             Features
           </Text>
+          <SimpleGrid
+            columns={{ base: 1, md: 6 }}
+            spacing={10}
+            w="full"
+            h="full"
+            p={5}>
+            {productDetails?.feature?.map(
+              (f: { value: string }, index: number) => (
+                <Box
+                  key={index}
+                  w="full"
+                  h="full"
+                  p={1}
+                  bg={useColorModeValue("gray.50", "gray.800")}
+                  rounded="xl"
+                  alignContent={"center"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  alignSelf={"center"}
+                  textAlign={"center"}
+                  shadow="lg"
+                  cursor="pointer"
+                  _hover={{
+                    transform: "translateY(-2px)",
+                    shadow: "lg",
+                  }}>
+                  <Text
+                    fontSize="xl"
+                    color={useColorModeValue("teal.500", "teal.300")}
+                    fontWeight={"500"}
+                    align={"center"}
+                    textAlign={"center"}
+                    textTransform={"uppercase"}>
+                    {f?.value}
+                  </Text>
+                </Box>
+              )
+            )}
+          </SimpleGrid>
         </Box>
-        <SimpleGrid
-          columns={{ base: 2 }}
-          spacing={"11rem"}
-          w="100%"
-          mt={5}
-          p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}>
-          <List spacing={5}>
-            <ListItem>White</ListItem>
-            <ListItem>Electronics</ListItem>
-            <ListItem>1 TB</ListItem>
-          </List>
-          <List spacing={5}>
-            <ListItem>PlayStation</ListItem>
-            <ListItem>PS4</ListItem>
-            <ListItem>Joystick</ListItem>
-          </List>
-        </SimpleGrid>
-
         <Box
-          w="100%"
-          mt={5}
+          w="full"
+          h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}>
+          bg={useColorModeValue("gray.50", "gray.900")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
-            fontWeight={"500"}
-            textTransform={"uppercase"}
-            mb={"4"}>
+            fontWeight={"600"}
+            textTransform={"uppercase"}>
             Description
           </Text>
+          <Text
+            fontSize="xl"
+            color={useColorModeValue("gray.900", "gray.400")}
+            fontWeight={300}
+            align={"center"}
+            textAlign="justify">
+            {productDetails?.description}
+          </Text>
         </Box>
-
-        <Text
-          w="100%"
-          mt={5}
+        <Box
+          w="full"
+          h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}
-          rounded={"md"}
-          fontSize={{ base: "sm", sm: "md", lg: "lg" }}
-          fontWeight={"300"}
-          align={"justify"}>
-          {product?.description}
-        </Text>
+          bg={useColorModeValue("gray.50", "gray.900")}>
+          <Text
+            fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
+            color={useColorModeValue("teal.500", "teal.300")}
+            fontWeight={"600"}
+            textTransform={"uppercase"}>
+            Tags
+          </Text>
+          <SimpleGrid
+            columns={{ base: 1, md: 6 }}
+            spacing={5}
+            w="full"
+            h="full"
+            p={5}>
+            {productDetails?.tag?.map((t: { value: string }, index: number) => (
+              <Box
+                key={index}
+                p={1}
+                bg={useColorModeValue("gray.50", "gray.800")}
+                rounded="xl"
+                shadow="lg"
+                cursor="pointer"
+                _hover={{
+                  transform: "translateY(-2px)",
+                  shadow: "lg",
+                }}>
+                <Text
+                  fontSize="xl"
+                  color={useColorModeValue("teal.500", "teal.300")}
+                  fontWeight={"500"}
+                  align={"center"}
+                  textTransform={"uppercase"}>
+                  {t?.value}
+                </Text>
+              </Box>
+            ))}
+          </SimpleGrid>
+        </Box>
       </VStack>
     </Center>
   );

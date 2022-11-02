@@ -8,9 +8,14 @@ import {
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
-import React from "react";
+import React, {useEffect} from "react";
 
-export const PrivacyPolicy: React.FC = () => {
+export default function PrivacyPolicy(){
+  
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">
@@ -30,8 +35,6 @@ export const PrivacyPolicy: React.FC = () => {
         <Box
           mt={8}
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           boxShadow="lg"
@@ -81,8 +84,6 @@ export const PrivacyPolicy: React.FC = () => {
         </Box>
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           marginTop={10}
@@ -188,8 +189,6 @@ export const PrivacyPolicy: React.FC = () => {
         </Box>
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
           marginTop={10}
@@ -252,4 +251,4 @@ export const PrivacyPolicy: React.FC = () => {
       </Flex>
     </Box>
   );
-};
+}

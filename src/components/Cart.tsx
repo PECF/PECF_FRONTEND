@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import {
   Box,
@@ -20,57 +20,60 @@ import {
   Td,
   TableContainer,
   useDisclosure,
+  IconButton,
+  useToast,
 } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { updateCart } from "../redux/actions/cartActions";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { productCreateReducer } from "../redux/reducers/productsReducer";
 export default function Cart() {
-  // const btnRef = React.useRef();
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { cartItems } = useRecoveryData("cart");
 
-  async function payCartProducts() {
-    const carryProductsToMap = cartItems.map((element: any) => {
-      const newProduct = {
-        title: element.product.name,
-        unit_price: element.product.price,
-        price: element.product.price,
-        quantity: element.quantity,
-        id: element.product._id,
-      };
-      return newProduct;
-    });
+  // async function payCartProducts() {
+  //   const carryProductsToMap = cartItems.map((element: any) => {
+  //     const newProduct = {
+  //       title: element.product.name,
+  //       unit_price: element.product.price,
+  //       price: element.product.price,
+  //       quantity: element.quantity,
+  //       id: element.product._id,
+  //     };
+  //     return newProduct;
+  //   });
 
-    const response = await fetch(
-      "https://api.mercadopago.com/checkout/preferences",
-      {
-        method: "POST",
-        headers: {
-          Authorization:
-            "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
-        },
-        body: JSON.stringify({
-          items: carryProductsToMap,
-        }),
-      }
-    );
+  //   const response = await fetch(
+  //     "https://api.mercadopago.com/checkout/preferences",
+  //     {
+  //       method: "POST",
+  //       headers: {
+  //         Authorization:
+  //           "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
+  //       },
+  //       body: JSON.stringify({
+  //         items: carryProductsToMap,
+  //       }),
+  //     }
+  //   );
 
-    const data = await response.json();
+  //   const data = await response.json();
 
-    window.open(data.init_point, "_blank");
-  }
+  //   window.open(data.init_point, "_blank");
+  // }
 
   return (
-    <Box>
-      <Button onClick={onOpen} colorScheme="teal" variant="ghost" size="md">
+    <Box onClick={onOpen}>
+      <Button colorScheme="teal" variant="ghost" size="md">
         <FiShoppingCart />
-        {/* <Text ml="2"> Cart </Text> */}
       </Button>
 
-      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="lg">
+      <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xl">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
@@ -132,12 +135,11 @@ export default function Cart() {
               onClick={
                 cartItems?.length > 0
                   ? () => {
-                      payCartProducts();
+                      // payCartProducts();
                       onClose();
                     }
                   : onClose
-              }
-            >
+              }>
               Pay
             </Button>
           </DrawerFooter>

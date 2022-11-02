@@ -14,7 +14,10 @@ export const ResetPassword: React.FC = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+  
   return (
     <Center h="100vh">
       <Flex

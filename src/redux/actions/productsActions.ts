@@ -233,27 +233,24 @@ export const deleteProduct =
   (id: string): AppThunk =>
   async (dispatch, getState) => {
     try {
-      dispatch({
-        type: ProductDeleteActionTypes.PRODUCT_DELETE_REQUEST,
-      });
+      dispatch({ type: ProductDeleteActionTypes.PRODUCT_DELETE_REQUEST });
 
-      // Get user info from the userLogin object (from getState)
       const {
         userLogin: { userInfo },
       } = getState();
 
-      // Axios config
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${userInfo?.token}`,
-      //   },
-      // };
+      const config = {
+        headers: {
+          Authorization: `${userInfo}`,
+        },
+      };
 
-      // await axios.delete(`/api/products/${id}`, config);
+      await axios.delete(`/admin/product/${id}`, config);
 
       dispatch({
         type: ProductDeleteActionTypes.PRODUCT_DELETE_SUCCESS,
       });
+      dispatch(getAllProductsAdmin());
     } catch (error) {
       dispatch({
         type: ProductDeleteActionTypes.PRODUCT_DELETE_FAILURE,

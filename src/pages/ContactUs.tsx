@@ -12,7 +12,10 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 
-export const ContactUs = () => {
+export default function ContactUs() {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       {/* <Box marginTop={"10"} ml={5} w="100%" bg="teal" px="100px" py="40px">
@@ -50,8 +53,6 @@ export const ContactUs = () => {
         mr={"5"}
         maxW="100%"
         bg={"whiteAlpha.100"}
-        borderWidth="2px"
-        borderRadius="lg"
         overflow="hidden"
         p={50}
         boxShadow="lg"
@@ -81,4 +82,4 @@ export const ContactUs = () => {
       </Box>
     </Box>
   );
-};
+}

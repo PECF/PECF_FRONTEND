@@ -31,8 +31,11 @@ import { ReduxState } from "../types/reduxTypes";
 //   orderDeliverReducer,
 // } from "./reducers/ordersReducer";
 
+import { wishlistReducer } from "./reducers/wishlistReducer";
+
 export const rootReducer = combineReducers<ReduxState>({
   cart: cartReducer,
+  wishlist: wishlistReducer,
   userLogin: userLoginReducer,
   userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
@@ -51,7 +54,7 @@ export const rootReducer = combineReducers<ReduxState>({
   productFeature: productFeature,
   productList: productListReducer,
   productCreate: productCreateReducer,
-  // productDelete: productDeleteReducer,
+  productDelete: productDeleteReducer,
   productUpdate: productUpdateReducer,
   productDetails: productDetailsReducer,
   // productTopRated: productTopRatedReducer,
@@ -90,11 +93,20 @@ const productUpdateFromLocalStorage = localStorage.getItem("productUpdate")
   ? JSON.parse(localStorage.getItem("productUpdate") as string)
   : {};
 
+const wishlistItemsFromLocalStorage = localStorage.getItem("wishlistItems")
+  ? JSON.parse(localStorage.getItem("wishlistItems") as string)
+  : [];
+
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
     shippingAddress: shippingAddressFromLocalStorage,
   },
+  
+  wishlist: {
+    wishlistItems: wishlistItemsFromLocalStorage,
+  },
+
   userLogin: { userInfo: userInfoFromLocalStorage },
   userDetails: { user: userDetailsFromLocalStorage },
   productCreate: {
