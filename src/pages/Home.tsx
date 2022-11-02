@@ -18,7 +18,6 @@ export function Home() {
       color={useColorModeValue("grey.100", "grey.800")}
       bg={useColorModeValue("gray.100", "grey.800")}
       alignItems="center"
-      mt="1.5rem"
       mb="1rem">
       <Banner />
       <Categories />

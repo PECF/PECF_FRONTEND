@@ -1,97 +1,239 @@
+import React, { useState } from "react";
 import {
   Flex,
   Text,
-  Button,
+  //Button,
   useColorMode,
   useColorModeValue,
   IconButton,
   Box,
+  Input,
+  InputGroup,
+  //InputLeftElement,
+  InputRightElement,
+  useBreakpointValue,
+  useToast,
+  Grid,
 } from "@chakra-ui/react";
-import { companyName } from "../constant/general";
-import { Container } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { SearchBar } from "./SearchBar";
-import { Logged } from "./Logged";
+
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
-import React from "react";
-import Menu from "./Menu";
+import { BiSearch } from "react-icons/bi";
+import { MdFavorite } from "react-icons/md";
+import { companyName } from "../constant/general";
+
 import Cart from "./Cart";
+import Menu from "./Menu";
+import { SearchBar } from "./SearchBar";
+import Login from "../components/Login";
+import SignUp from "../components/SignUp";
+import { logout } from "../redux/actions/authActions";
+import { AppDispatch } from "../redux/rootStore";
+import { useDispatch } from "react-redux";
+
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { Link } from "react-router-dom";
 
 export function Header() {
+  const { products } = useRecoveryData("productList");
+  const [filteredProducts, setFilteredProducts] = React.useState(products);
+  const [search, setSearch] = useState("");
   const { toggleColorMode } = useColorMode();
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  const { wishlistItems } = useRecoveryData("wishlist");
+  /*   const { user } = useRecoveryData("userDetails") */
   const { userInfo } = useRecoveryData("userLogin");
+  /*   const dispatch = useDispatch<AppDispatch>();
+  const send = useToast(); */
 
-  const [width, setWidth] = React.useState(window.innerWidth);
-  const breakpoint = 768;
+  /*   const logoutHandler = () => {
+    dispatch(logout());
+    send({
+      title: "Success",
+      description: "You are logged out",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+  }; */
 
-  React.useEffect(() => {
-    window.addEventListener("resize", () => setWidth(window.innerWidth));
-  }, []);
-  const [isHidden, setIsHidden] = React.useState(false);
-  React.useEffect(() => {
-    if (width < breakpoint) {
-      setIsHidden(true);
-    } else {
-      setIsHidden(false);
-    }
-  }, [width]);
+  const handleSearch = (e: any) => {
+    setSearch(e.target.value);
+    const filtered = products.filter((product: any) => {
+      console.log(search);
+      return product.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredProducts(filtered);
+    console.log(filteredProducts);
+  };
 
   return (
-    <Container
-      maxW="full"
-      bg={useColorModeValue("white", "gray.800")}
-      color={useColorModeValue("gray.600", "white")}
-      px={4}
-      py={4}
-      shadow="md"
-      position="fixed"
-      top={0}
-      left={0}
-      right={0}
-      zIndex={1000}
-      justifyContent={"space-between"}>
-      <Flex
-        maxW="container.lg"
-        mx="auto"
-        alignItems={"center"}
-        gap="10"
-        justifyContent={"space-between"}>
-        <Menu />
-        <Text
-          ml={9}
-          textAlign={"justify"}
+    <>
+      {isMobile ? (
+        <Flex
+          as="nav"
           align="center"
-          fontSize="3xl"
-          fontWeight="bold"
-          letterSpacing={"wide"}
-          color={useColorModeValue("gray.800", "white")}
-          as={Link}
-          to={"/"}>
-          {companyName}
-        </Text>
-        <Flex>
-          <Logged />
-          {isHidden ? (
-            <IconButton
-              icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-              colorScheme="teal"
-              aria-label="Search..."
-              variant="ghost"
-              size="md"
-              onClick={toggleColorMode}></IconButton>
-          ) : null}
-        </Flex>
-
-        {userInfo ? (
-          <Flex ml={-8}>
-            <SearchBar />
-            <Cart />
+          justify="space-between"
+          wrap="wrap"
+          padding="1rem"
+          bg={useColorModeValue("white", "gray.800")}
+          color={useColorModeValue("gray.600", "white")}
+          boxShadow="md"
+        >
+          <Box>
+            <Menu />
+          </Box>
+          <Flex align="center" mr={5}>
+            <Text
+              ml={10}
+              textAlign={"justify"}
+              align="center"
+              fontSize="3xl"
+              fontWeight="bold"
+              letterSpacing={"wide"}
+              color={useColorModeValue("gray.800", "white")}
+              as={Link}
+              to={"/"}
+            >
+              {companyName}
+            </Text>
           </Flex>
-        ) : (
-          <SearchBar />
-        )}
-      </Flex>
-    </Container>
+          <Box>
+            <IconButton
+              gap={6}
+              className="Wishlist"
+              as={Link}
+              to="/wishlist"
+              aria-label="Wishlist"
+              icon={<MdFavorite />}
+              variant="ghost"
+              colorScheme="teal"
+            />
+            <IconButton
+              gap={6}
+              aria-label="SearchBar"
+              icon={<SearchBar />}
+              variant="ghost"
+              colorScheme="teal"
+            />
+            <IconButton
+              gap={6}
+              aria-label="Cart"
+              icon={<Cart />}
+              variant="ghost"
+              colorScheme="teal"
+            />
+          </Box>
+        </Flex>
+      ) : (
+        <Flex
+          as="nav"
+          align="center"
+          justify="space-between"
+          wrap="wrap"
+          padding="0.5rem"
+          bg={useColorModeValue("white", "gray.800")}
+          color={useColorModeValue("gray.600", "white")}
+          boxShadow="md"
+        >
+          <Flex align="center" mr={5}>
+            <Text
+              ml={10}
+              textAlign={"justify"}
+              align="center"
+              fontSize="3xl"
+              fontWeight="bold"
+              letterSpacing={"wide"}
+              color={useColorModeValue("gray.800", "white")}
+              as={Link}
+              to={"/"}
+            >
+              {companyName}
+            </Text>
+          </Flex>
+          <Box>
+            <InputGroup>
+              <Input
+                type="text"
+                borderRadius={"999px"}
+                maxWidth={"560px"}
+                width={{ base: "100%", xl: "560px" }}
+                placeholder="Search"
+                value={search}
+                onChange={handleSearch}
+                variant="filled"
+                overflow={"hidden"}
+                bg={useColorModeValue("gray.100", "gray.700")}
+                _hover={{
+                  bg: useColorModeValue("gray.200", "gray.600"),
+                }}
+                _focus={{
+                  bg: useColorModeValue("gray.200", "gray.600"),
+                  borderColor: useColorModeValue("gray.300", "gray.500"),
+                }}
+              />
+              <InputRightElement mr={2} height={"100%"}>
+                <IconButton
+                  overflow={"hidden"}
+                  aria-label="SearchBar"
+                  icon={<BiSearch />}
+                  color="gray.900"
+                  variant="ghost"
+                  colorScheme="teal"
+                  onClick={handleSearch}
+                  as={Link}
+                  to={`/products/search/${search}`}
+                  _hover={{
+                    color: "gray.900",
+                    cursor: "pointer",
+                  }}
+                  _focus={{
+                    bg: useColorModeValue("gray.200", "gray.600"),
+                    borderColor: useColorModeValue("gray.300", "gray.500"),
+                  }}
+                />
+              </InputRightElement>
+            </InputGroup>
+          </Box>
+          <Box>
+            {!userInfo ? (
+              <>
+                <IconButton aria-label="Login" variant={"ghost"} ml={3}>
+                  <Login />
+                </IconButton>
+                <IconButton aria-label="SingUp" variant={"ghost"} mr={3}>
+                  <SignUp />
+                </IconButton>
+              </>
+            ) : (
+              <>
+                <IconButton
+                  mr={3}
+                  className="Wishlist"
+                  as={Link}
+                  to="/wishlist"
+                  aria-label="Wishlist"
+                  icon={<MdFavorite />}
+                  variant="ghost"
+                  colorScheme="teal"
+                >
+                  {wishlistItems.length}
+                </IconButton>
+                <IconButton aria-label="Search database" variant="ghost">
+                  <Menu />
+                </IconButton>
+                <IconButton
+                  mr={4}
+                  aria-label="Search database"
+                  icon={<Cart />}
+                  variant="ghost"
+                  colorScheme="teal"
+                />
+              </>
+            )}
+          </Box>
+        </Flex>
+      )}
+    </>
   );
 }
