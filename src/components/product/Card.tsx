@@ -31,12 +31,7 @@ export const ProductCard = ({ product }: any) => {
       ml="2rem">
       <Box position="relative">
         <Box as={Link} to={`/product/${product._id}`}>
-          <Image
-            src={image[0].url}
-            alt={name}
-            objectFit="cover"
-            borderRadius={useBreakpointValue({ base: "md", md: "xl" })}
-          />
+          <Image src={image[0].url} alt={name} objectFit="contain" />
         </Box>
 
         <FavouriteButton

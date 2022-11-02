@@ -15,6 +15,8 @@ import {
   GiHoodie,
   GiBilledCap,
   GiMonclerJacket,
+  GiBracer,
+  GiUnderwear,
 } from "react-icons/gi";
 import { GrStackOverflow } from "react-icons/gr";
 import React, { useState } from "react";
@@ -33,7 +35,7 @@ export function Categories() {
     },
     {
       name: "Underwear",
-      icon: <GiUnderwearShorts />,
+      icon: <GiUnderwear />,
       filter: "underwear",
     },
     {
@@ -55,6 +57,11 @@ export function Categories() {
       name: "Jackets",
       icon: <GiMonclerJacket />,
       filter: "Jackets",
+    },
+    {
+      name: "Accessories",
+      icon: <GiBracer />,
+      filter: "Accessories",
     },
     {
       name: "All",

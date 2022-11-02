@@ -11,7 +11,6 @@ export const Pagination = ({
   functionPagination,
   productsLength,
   productsPage,
-  currentPage,
 }: any) => {
   const pageNumbers = [];
 
