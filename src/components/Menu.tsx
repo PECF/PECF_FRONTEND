@@ -97,7 +97,7 @@ export default function Acordion() {
 
             <MenuList>
               <MenuItem as={Link} to={"/profile"}>
-                <Avatar size={"sm"} src={user?.avatar?.url} />
+                <Avatar size={"xs"} src={user?.avatar?.url} />
                 <Text ml="2">Profile</Text>
               </MenuItem>
               <MenuItem as={Link} to={"/orders"}>
