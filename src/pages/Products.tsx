@@ -11,6 +11,8 @@ import {
   IconButton,
   useDisclosure,
   Stack,
+  Grid,
+  Button,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
@@ -54,6 +56,7 @@ export default function Products() {
   //filter with URL by category
   useEffect(() => {
     const path = location.pathname.split("/")[2];
+    console.log(path);
     if (path === undefined) {
       setFilteredProducts(products);
     }
@@ -113,8 +116,7 @@ export default function Products() {
       );
       setFilteredProducts(filtered);
     }
-
-    if (path !== "search" && path !== undefined) {
+    if (path !== "search" && path !== undefined && path !== "composeFilter") {
       const filtered = products.filter(
         (product: {
           name: string;
@@ -139,6 +141,12 @@ export default function Products() {
     }
   }, [products, location]);
 
+  const changeBgFilter = (e: string) => {
+    const filter = categories.filter((category) => category === e);
+    console.log(filter);
+  };
+  
+
   const handleFilter = (e: { target: { value: string } }) => {
     const filtered = products.filter(
       (product: { category: { value: string }[] }) => {
@@ -147,9 +155,15 @@ export default function Products() {
           .includes(e.target.value.toLowerCase());
       }
     );
-    setCategories((oldArray) => [...oldArray, filtered]);
-    const newFilter = filtered.concat(...categories);
-    setFilteredProducts(newFilter);
+
+    const filteredCategories = filtered.filter(
+      (product: { category: { value: string }[] }) => {
+        return !categories.includes(product.category[0].value);
+      }
+    );
+
+    setCategories([...categories, ...filteredCategories]);
+    setFilteredProducts(filtered);
   };
   return (
     <Container
@@ -202,6 +216,21 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}>
               Categories
             </Text>
+            {categories.length > 0 && (
+              <Text
+                mt={2}
+                mb={4}
+                fontSize="md"
+                fontWeight="semibold"
+                color={useColorModeValue("gray.600", "gray.400")}
+                cursor="pointer"
+                onClick={() => {
+                  setFilteredProducts(products);
+                  setCategories([]);
+                }}>
+                CLEAR FILTER
+              </Text>
+            )}
 
             <Flex
               mt={2}
@@ -209,6 +238,11 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
+              as={Link}
+              to="/products/composeFilter"
+              onClick={() => {
+                setFilteredProducts(products);
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -228,6 +262,11 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
+              as={Link}
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "shirts" } });
+              }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
@@ -245,8 +284,11 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
-              // as={Link}
-              // to="/products/pants"
+              as={Link}
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "pants" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -265,7 +307,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/underwear"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "underwear" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -285,7 +330,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/shoes"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "shoes" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -305,7 +353,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/hoodies"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "hoodies" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -325,7 +376,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/caps"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "caps" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -345,7 +399,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/jackets"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "jackets" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -365,7 +422,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/accesories"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "accesories" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
