@@ -10,7 +10,6 @@ import {
   Text,
   IconButton,
   useDisclosure,
-  useToast,
   Stack,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
@@ -33,13 +32,7 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Categories } from "../components/Categories";
-import {
-  FiUser,
-  FiSettings,
-  FiShoppingCart,
-  FiCreditCard,
-  FiLogOut,
-} from "react-icons/fi";
+
 import { FaChild } from "react-icons/fa";
 
 export default function Products() {
@@ -61,11 +54,12 @@ export default function Products() {
 
   useEffect(() => {
     const path = location.pathname.split("/")[2];
+
     if (path === "all") {
       setFilteredProducts(products);
     }
     if (path === "search") {
-      const search = location.search.split("/")[3];
+      const search = location.search.split("/")[1];
 
       const filtered = products.filter(
         (product: {
@@ -123,10 +117,25 @@ export default function Products() {
 
     if (path !== "all" && path !== "search") {
       const filtered = products.filter(
-        (product: { category: { value: string } }) => {
-          return product.category.value === path;
+        (product: {
+          name: string;
+          description: string;
+          category: { value: string }[];
+          brand: string;
+        }) => {
+          return product.category[0].value
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(
+              path
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+            );
         }
       );
+
       setFilteredProducts(filtered);
     }
   }, [products, location]);
@@ -140,8 +149,6 @@ export default function Products() {
     const uniqueCategories = [...new Set(categories)];
     setCategories(uniqueCategories);
   }, [products]);
-
-  const toast = useToast();
 
   const handleCategory = (category: string) => {
     const filtered = products.filter(
@@ -384,6 +391,13 @@ export default function Products() {
               </Flex>
             </Flex>
 
+            <Text
+              fontSize="sm"
+              fontWeight="semibold"
+              color={useColorModeValue("gray.600", "gray.400")}
+              mt={6}>
+              Genres
+            </Text>
             <Flex
               mt={2}
               justify="space-between"
@@ -535,6 +549,7 @@ export default function Products() {
 
         <Box>
           <Box
+            maxW="11xl"
             display="flex"
             justifyContent="center"
             alignItems="center"
