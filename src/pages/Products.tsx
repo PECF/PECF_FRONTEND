@@ -43,7 +43,6 @@ export default function Products() {
   const [productsPerPage, setProductsPerPage] = useState(10);
   const [categories, setCategories] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>(products);
-  const [render, setRender] = useState(true);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
@@ -52,13 +51,13 @@ export default function Products() {
   );
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  //filter with URL by category
   useEffect(() => {
     const path = location.pathname.split("/")[2];
-
-    if (path === "all") {
+    if (path === undefined) {
       setFilteredProducts(products);
     }
-    if (path === "search") {
+    if (path === "search" && path !== undefined) {
       const search = location.search.split("/")[1];
 
       const filtered = products.filter(
@@ -115,7 +114,7 @@ export default function Products() {
       setFilteredProducts(filtered);
     }
 
-    if (path !== "all" && path !== "search") {
+    if (path !== "search" && path !== undefined) {
       const filtered = products.filter(
         (product: {
           name: string;
@@ -140,26 +139,18 @@ export default function Products() {
     }
   }, [products, location]);
 
-  useEffect(() => {
-    const categories = products.map(
-      (product: { category: { value: string } }) => {
-        return product.category.value;
-      }
-    );
-    const uniqueCategories = [...new Set(categories)];
-    setCategories(uniqueCategories);
-  }, [products]);
-
-  const handleCategory = (category: string) => {
+  const handleFilter = (e: { target: { value: string } }) => {
     const filtered = products.filter(
-      (product: { category: { value: string } }) => {
-        return product.category.value === category;
+      (product: { category: { value: string }[] }) => {
+        return product.category[0].value
+          .toLowerCase()
+          .includes(e.target.value.toLowerCase());
       }
     );
-    setFilteredProducts(filtered);
-    setRender(!render);
+    setCategories((oldArray) => [...oldArray, filtered]);
+    const newFilter = filtered.concat(...categories);
+    setFilteredProducts(newFilter);
   };
-
   return (
     <Container
       maxW="container.xxl"
@@ -218,8 +209,6 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
-              as={Link}
-              to="/products/all"
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -238,8 +227,6 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
-              as={Link}
-              to="/products/shirts"
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -258,8 +245,8 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
-              as={Link}
-              to="/products/pants"
+              // as={Link}
+              // to="/products/pants"
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
