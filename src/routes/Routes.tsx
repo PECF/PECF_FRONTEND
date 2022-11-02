@@ -33,7 +33,7 @@ const CookiesPolicy = lazy(() => import("../pages/CookiesPolicy"));
 const ProductReview = lazy(() => import("../components/ProductReview"));
 const Products = lazy(() => import("../pages/Products"));
 const NotFound = lazy(() => import("../pages/NotFound"));
-const WishList = lazy(() => import("../components/Wishlist"));
+const WishList = lazy(() => import("../components/WishList"));
 
 
 export const AppRoutes: React.FC = () => {

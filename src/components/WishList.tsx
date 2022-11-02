@@ -106,7 +106,7 @@ export default function WishList() {
           mt={50}>
             <Heading as="h1" size="2xl" mb={10}
             mt={4}
-            >Your Wishlist is Empty</Heading>
+            >Your wishlist</Heading>
           </Box>
         )}
       </Flex>
