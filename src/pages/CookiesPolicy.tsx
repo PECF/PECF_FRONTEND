@@ -10,6 +10,9 @@ import {
 } from "@chakra-ui/react";
 
 export default function CookiesPolicy() {
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <Box>
       <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>

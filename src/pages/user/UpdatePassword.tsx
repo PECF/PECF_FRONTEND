@@ -31,6 +31,10 @@ export default function UpdatePassword(){
   const handleConfirm = (e: React.ChangeEvent<HTMLInputElement>) =>
     setConfirmPassword(e.target.value);
 
+    React.useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
+
   return (
     <Box>
       <Box

@@ -19,6 +19,9 @@ export default function ProductReview() {
     console.log(rating);
     dispatch(createProductReview(review, rating));
   };
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <Container

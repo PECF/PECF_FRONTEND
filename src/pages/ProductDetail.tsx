@@ -22,7 +22,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { getDetailsProduct } from "../redux/actions/productsActions";
 
-export function ProductDetail({ _product }: any) {
+export default function ProductDetail({ _product }: any) {
   const location = useLocation();
 
   const productByID = location.pathname.split("/")[2];
@@ -33,6 +33,7 @@ export function ProductDetail({ _product }: any) {
   useEffect(() => {
     if (productByID) {
       dispatch(getDetailsProduct(productByID));
+        window.scrollTo(0, 0)
     }
   }, [productByID, dispatch]);
 

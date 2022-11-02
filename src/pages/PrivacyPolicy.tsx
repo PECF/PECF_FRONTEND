@@ -8,9 +8,14 @@ import {
   UnorderedList,
   ListItem,
 } from "@chakra-ui/react";
-import React from "react";
+import React, {useEffect} from "react";
 
 export default function PrivacyPolicy(){
+  
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">

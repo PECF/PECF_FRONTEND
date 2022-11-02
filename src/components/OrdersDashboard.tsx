@@ -17,6 +17,10 @@ import {
 import React from "react";
 
 export const OrdersDashboard = () => {
+
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   return (
     <Flex>
       <Box
