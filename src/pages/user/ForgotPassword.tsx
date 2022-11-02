@@ -29,6 +29,10 @@ export default function ForgotPassword() {
   const { error, userInfo, loading } = useRecoveryData("userForgotPassword");
   const data = useRecoveryData("userForgotPassword");
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   useEffect(() => {
     if (error) {
       send({

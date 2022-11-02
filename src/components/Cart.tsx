@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import {
   Box,
@@ -23,12 +23,15 @@ import {
   IconButton,
   useToast,
 } from "@chakra-ui/react";
-import { useDispatch } from "react-redux";
+import { useDispatch} from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { updateCart } from "../redux/actions/cartActions";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { productCreateReducer } from "../redux/reducers/productsReducer";
 export default function Cart() {
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { cartItems } = useRecoveryData("cart");

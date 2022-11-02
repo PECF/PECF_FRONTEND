@@ -86,6 +86,9 @@ export function Categories() {
       filter: "Kids",
     },
   ]);
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   return (
     <Box

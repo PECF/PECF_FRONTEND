@@ -53,6 +53,8 @@ export default function Products() {
 
   const toast = useToast();
 
+  
+
   useEffect(() => {
     if (location.pathname) {
       const path = location.pathname.split("/")[2];

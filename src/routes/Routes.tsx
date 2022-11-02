@@ -29,7 +29,7 @@ const ReturnPolicy = lazy(() => import("../pages/ReturnPolicy"));
 const Refund = lazy(() => import("../pages/Refund"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const CookiesPolicy = lazy(() => import("../pages/CookiesPolicy"));
-const ProductReview = lazy(() => import("../components/ProductReview"));
+//const ProductReview = lazy(() => import("../components/ProductReview"));
 const Products = lazy(() => import("../pages/Products"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const WishList = lazy(() => import("../components/WishList"));
@@ -41,6 +41,7 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/products" element={<Products />} />
+       {/*  <Route path="/product/" element={<ProductDetail />} /> */}
         <Route path="/product/:id" element={<ProductDetail />} />
 
         <Route path="/products/:category" element={<Products />} />

@@ -78,6 +78,10 @@ export default function Profile({ index }: { index?: number }) {
     });
   };
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
   return (
     <Container
       maxW="container.xxl"

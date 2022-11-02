@@ -24,6 +24,10 @@ const ResetPassword = () => {
   const handleChangeNewAgain = (e: React.ChangeEvent<HTMLInputElement>) =>
   setInputNewAgain(e.target.value);
 
+  React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
 
     return (
       <Box>

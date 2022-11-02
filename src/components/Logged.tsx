@@ -40,6 +40,10 @@ export function Logged() {
   const breakpoint = 768;
 
   React.useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
+
+  React.useEffect(() => {
     window.addEventListener("resize", () => setWidth(window.innerWidth));
   }, []);
   const [isHidden, setIsHidden] = React.useState(false);

@@ -33,6 +33,7 @@ export default function ProductDetail({ _product }: any) {
   useEffect(() => {
     if (productByID) {
       dispatch(getDetailsProduct(productByID));
+        window.scrollTo(0, 0)
     }
   }, [productByID, dispatch]);
 
