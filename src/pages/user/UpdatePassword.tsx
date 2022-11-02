@@ -14,7 +14,8 @@ import {
 
 import { RepeatIcon } from "@chakra-ui/icons";
 
-export const UpdatePassword = () => {
+
+export default function UpdatePassword(){
   const send = useToast();
 
   // const { error, isUpdated, loading } = useSelector((state) => state.profile);
@@ -112,4 +113,4 @@ export const UpdatePassword = () => {
       </Box>
     </Box>
   );
-};
+}

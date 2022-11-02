@@ -68,20 +68,19 @@ export function Banner() {
         ) : null}
 
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {useBreakpointValue({ base: cardsCellPhone, md: cardsComputer })?.map(
-            (url, index) => (
-              <Box
-                key={index}
-                height={"50vh"}
-                width={"full"}
-                position="relative"
-                backgroundPosition="center"
-                backgroundRepeat="no-repeat"
-                backgroundSize="cover"
-                backgroundImage={`url(${url})`}
-              />
-            )
-          )}
+          
+          {useBreakpointValue({ base: cardsCellPhone, md: cardsComputer })?.map((url, index) => (
+             <Box
+             key={index}
+             height={"50vh"}
+             width={"full"}
+             position="relative"
+             backgroundPosition="center"
+             backgroundRepeat="no-repeat"
+             backgroundSize="cover"
+             backgroundImage={`url(${url})`}
+           />
+          ))}
         </Slider>
       </Box>
     </Flex>

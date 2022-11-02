@@ -37,7 +37,7 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Categories } from "../components/Categories";
 
-export const Products = () => {
+export default function Products (){
   const { products } = useRecoveryData("productList");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const location = useLocation();
@@ -483,7 +483,7 @@ export const Products = () => {
       </Flex>
     </Container>
   );
-};
+}
 
 /* 
           </Box>
