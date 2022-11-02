@@ -198,6 +198,14 @@ export function Header() {
           <Box>
             {!userInfo ? (
               <>
+               <IconButton onClick={toggleColorMode}
+                  ml={-2}
+                  icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+                  colorScheme="teal"
+                  variant="ghost"
+                  size="sm"
+                  aria-label={""}
+                ></IconButton>
                 <IconButton aria-label="Login" variant={"ghost"} ml={3}>
                   <Login />
                 </IconButton>
