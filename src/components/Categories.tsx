@@ -7,7 +7,7 @@ import {
   Heading,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { IoShirtSharp } from "react-icons/io5";
+import { IoShirtSharp, IoWomanSharp } from "react-icons/io5";
 import {
   GiArmoredPants,
   GiUnderwearShorts,
@@ -19,10 +19,17 @@ import {
   GiUnderwear,
 } from "react-icons/gi";
 import { GrStackOverflow } from "react-icons/gr";
+import { IoMan } from "react-icons/io5";
+import { FaChild } from "react-icons/fa";
 import React, { useState } from "react";
 
 export function Categories() {
   const [categories, setCategories] = useState([
+    {
+      name: "All",
+      icon: <GrStackOverflow />,
+      filter: "all",
+    },
     {
       name: "Shirts",
       icon: <IoShirtSharp />,
@@ -59,14 +66,24 @@ export function Categories() {
       filter: "Jackets",
     },
     {
-      name: "Accessories",
+      name: "Accesories",
       icon: <GiBracer />,
-      filter: "Accessories",
+      filter: "Accesories",
     },
     {
-      name: "All",
-      icon: <GrStackOverflow />,
-      filter: "all",
+      name: "Men",
+      icon: <IoMan />,
+      filter: "Men",
+    },
+    {
+      name: "Women",
+      icon: <IoWomanSharp />,
+      filter: "Women",
+    },
+    {
+      name: "Kids",
+      icon: <FaChild />,
+      filter: "Kids",
     },
   ]);
   React.useEffect(() => {

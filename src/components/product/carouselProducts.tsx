@@ -21,7 +21,7 @@ const settings = {
   speed: 500,
   slidesToScroll: 1,
   pauseOnHover: true,
-  slidesToShow: 6,
+  slidesToShow: 6.1,
   initialSlide: 1,
 
   responsive: [

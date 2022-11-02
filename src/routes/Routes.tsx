@@ -19,7 +19,6 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 //import { Checkout } from "../pages/Checkout";
 //import { Order } from "../pages/Order";
 
-
 const Profile = lazy(() => import("../pages/user/profile"));
 const ProductDetail = lazy(() => import("../pages/ProductDetail"));
 const TermsOfService = lazy(() => import("../pages/TermsOfService"));
@@ -34,7 +33,6 @@ const CookiesPolicy = lazy(() => import("../pages/CookiesPolicy"));
 const Products = lazy(() => import("../pages/Products"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const WishList = lazy(() => import("../components/WishList"));
-
 
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
@@ -55,10 +53,10 @@ export const AppRoutes: React.FC = () => {
 
         {user?.role ? (
           <Route path="/wishlist" element={<WishList />} />
-          ) : (
-            <Route path="/wishlist" element={<Navigate to="/" />} />
-            )}
-            
+        ) : (
+          <Route path="/wishlist" element={<Navigate to="/" />} />
+        )}
+
         {user?.role ? (
           <Route path="/profile" element={<Profile index={1} />} />
         ) : (
