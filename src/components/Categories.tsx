@@ -24,6 +24,11 @@ import React, { useState } from "react";
 export function Categories() {
   const [categories, setCategories] = useState([
     {
+      name: "All",
+      icon: <GrStackOverflow />,
+      filter: "all",
+    },
+    {
       name: "Shirts",
       icon: <IoShirtSharp />,
       filter: "Shirts",
@@ -57,16 +62,6 @@ export function Categories() {
       name: "Jackets",
       icon: <GiMonclerJacket />,
       filter: "Jackets",
-    },
-    {
-      name: "Accessories",
-      icon: <GiBracer />,
-      filter: "Accessories",
-    },
-    {
-      name: "All",
-      icon: <GrStackOverflow />,
-      filter: "all",
     },
   ]);
 
