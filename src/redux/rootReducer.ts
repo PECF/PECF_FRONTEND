@@ -102,6 +102,7 @@ export const initialState = {
     cartItems: cartItemsFromLocalStorage,
     shippingAddress: shippingAddressFromLocalStorage,
   },
+  
   wishlist: {
     wishlistItems: wishlistItemsFromLocalStorage,
   },
