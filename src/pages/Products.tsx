@@ -13,7 +13,7 @@ import {
   useToast,
   Stack,
 } from "@chakra-ui/react";
-import { IoShirtSharp } from "react-icons/io5";
+import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
   GiArmoredPants,
   GiUnderwearShorts,
@@ -36,8 +36,16 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Categories } from "../components/Categories";
+import {
+  FiUser,
+  FiSettings,
+  FiShoppingCart,
+  FiCreditCard,
+  FiLogOut,
+} from "react-icons/fi";
+import { FaChild } from "react-icons/fa";
 
-export default function Products (){
+export default function Products() {
   const { products } = useRecoveryData("productList");
   const [filteredProducts, setFilteredProducts] = useState(products);
   const location = useLocation();
@@ -50,9 +58,36 @@ export default function Products (){
       const path = location.pathname.split("/")[2];
       if (path === "search") {
         const search = location.pathname.split("/")[3];
-        const filtered = products.filter((product: { name: string }) => {
-          return product.name.toLowerCase().includes(search.toLowerCase());
-        });
+        const filtered = products.filter(
+          (product: {
+            name: string;
+            description: string;
+            category: string;
+          }) => {
+            const _filter = search
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "");
+            return (
+              product.name
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .includes(_filter) ||
+              product.description
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .includes(_filter) ||
+              product.category
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+                .includes(_filter)
+            );
+          }
+        );
+
         setFilteredProducts(filtered);
       } else {
         const category = location.pathname.split("/")[2];
@@ -205,6 +240,25 @@ export default function Products (){
                 </Text>
               </Flex>
             </Flex>
+            <Flex
+              mt={2}
+              justify="space-between"
+              align="center"
+              color={useColorModeValue("gray.600", "gray.400")}
+              cursor="pointer"
+              as={Link}
+              to="/products/underwear"
+              borderRadius="md"
+              _hover={{
+                bg: useColorModeValue("gray.100", "gray.700"),
+              }}>
+              <Flex align="center">
+                <Icon as={GiUnderwear} w={5} h={5} />
+                <Text ml={2} fontSize="sm">
+                  Underwear
+                </Text>
+              </Flex>
+            </Flex>
 
             <Flex
               mt={2}
@@ -233,75 +287,35 @@ export default function Products (){
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/accessories"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
-              <Flex align="center">
-                <Icon as={GiBracer} w={5} h={5} />
-                <Text ml={2} fontSize="sm">
-                  Accessories
-                </Text>
-              </Flex>
-            </Flex>
-
-            <Flex
-              mt={2}
-              justify="space-between"
-              align="center"
-              color={useColorModeValue("gray.600", "gray.400")}
-              cursor="pointer"
-              as={Link}
-              to="/products/underwear"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
-              <Flex align="center">
-                <Icon as={GiUnderwear} w={5} h={5} />
-                <Text ml={2} fontSize="sm">
-                  Underwear
-                </Text>
-              </Flex>
-            </Flex>
-
-            <Flex
-              mt={2}
-              justify="space-between"
-              align="center"
-              color={useColorModeValue("gray.600", "gray.400")}
-              cursor="pointer"
-              as={Link}
-              to="/products/socks"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
-              <Flex align="center">
-                <Icon as={GiSocks} w={5} h={5} />
-                <Text ml={2} fontSize="sm">
-                  Socks
-                </Text>
-              </Flex>
-            </Flex>
-
-            <Flex
-              mt={2}
-              justify="space-between"
-              align="center"
-              color={useColorModeValue("gray.600", "gray.400")}
-              cursor="pointer"
-              as={Link}
               to="/products/hoodies"
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
               <Flex align="center">
-                <Icon as={GiHoodedFigure} w={5} h={5} />
+                <Icon as={GiHoodie} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
                   Hoodies
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Flex
+              mt={2}
+              justify="space-between"
+              align="center"
+              color={useColorModeValue("gray.600", "gray.400")}
+              cursor="pointer"
+              as={Link}
+              to="/products/caps"
+              borderRadius="md"
+              _hover={{
+                bg: useColorModeValue("gray.100", "gray.700"),
+              }}>
+              <Flex align="center">
+                <Icon as={GiBilledCap} w={5} h={5} />
+                <Text ml={2} fontSize="sm">
+                  Caps
                 </Text>
               </Flex>
             </Flex>
@@ -326,25 +340,85 @@ export default function Products (){
               </Flex>
             </Flex>
 
-            {/* <Flex
+            <Flex
               mt={2}
               justify="space-between"
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/sweaters"
+              to="/products/accesories"
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
               <Flex align="center">
-                <Icon as={GiSweater} w={5} h={5} />
+                <Icon as={GiBracer} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
-                  Sweaters
+                  Accesories
                 </Text>
               </Flex>
-            </Flex> */}
+            </Flex>
+
+            <Flex
+              mt={2}
+              justify="space-between"
+              align="center"
+              color={useColorModeValue("gray.600", "gray.400")}
+              cursor="pointer"
+              as={Link}
+              to="/products/men"
+              borderRadius="md"
+              _hover={{
+                bg: useColorModeValue("gray.100", "gray.700"),
+              }}>
+              <Flex align="center">
+                <Icon as={IoMan} w={5} h={5} />
+                <Text ml={2} fontSize="sm">
+                  Men
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Flex
+              mt={2}
+              justify="space-between"
+              align="center"
+              color={useColorModeValue("gray.600", "gray.400")}
+              cursor="pointer"
+              as={Link}
+              to="/products/woman"
+              borderRadius="md"
+              _hover={{
+                bg: useColorModeValue("gray.100", "gray.700"),
+              }}>
+              <Flex align="center">
+                <Icon as={IoWoman} w={5} h={5} />
+                <Text ml={2} fontSize="sm">
+                  Women
+                </Text>
+              </Flex>
+            </Flex>
+
+            <Flex
+              mt={2}
+              justify="space-between"
+              align="center"
+              color={useColorModeValue("gray.600", "gray.400")}
+              cursor="pointer"
+              as={Link}
+              to="/products/kids"
+              borderRadius="md"
+              _hover={{
+                bg: useColorModeValue("gray.100", "gray.700"),
+              }}>
+              <Flex align="center">
+                <Icon as={FaChild} w={5} h={5} />
+                <Text ml={2} fontSize="sm">
+                  Kids
+                </Text>
+              </Flex>
+            </Flex>
           </Box>
 
           <Stack
