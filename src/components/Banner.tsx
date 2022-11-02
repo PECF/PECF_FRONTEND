@@ -4,15 +4,13 @@ import Slider from "react-slick";
 import React from "react";
 
 const settings = {
-  dots: true,
-  arrows: false,
-  fade: true,
+  dots: false,
   infinite: true,
-  autoplay: true,
   speed: 500,
-  autoplaySpeed: 4000,
-  slidesToShow: 1,
   slidesToScroll: 1,
+  autoplay: true,
+  autoplaySpeed: 2000,
+  pauseOnHover: true,
 };
 
 export function Banner() {
@@ -38,42 +36,37 @@ export function Banner() {
         height={"50vh"}
         width={"full"}
         overflow={"hidden"}>
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
-        <IconButton
-          aria-label="left-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          bgColor="teal.500"
-          left={side}
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          onClick={() => slider?.slickPrev()}>
-          <BiLeftArrow />
-        </IconButton>
-        <IconButton
-          aria-label="right-arrow"
-          colorScheme="messenger"
-          borderRadius="full"
-          position="absolute"
-          right={side}
-          bgColor="teal.500"
-          top={top}
-          transform={"translate(0%, -50%)"}
-          zIndex={2}
-          onClick={() => slider?.slickNext()}>
-          <BiRightArrow />
-        </IconButton>
+        {useBreakpointValue({ base: false, md: true }) ? (
+          <>
+            <IconButton
+              aria-label="left-arrow"
+              colorScheme="messenger"
+              borderRadius="full"
+              position="absolute"
+              bgColor="teal.500"
+              left={side}
+              top={top}
+              transform={"translate(0%, -50%)"}
+              zIndex={2}
+              onClick={() => slider?.slickPrev()}>
+              <BiLeftArrow />
+            </IconButton>
+            <IconButton
+              aria-label="right-arrow"
+              colorScheme="messenger"
+              borderRadius="full"
+              position="absolute"
+              right={side}
+              bgColor="teal.500"
+              top={top}
+              transform={"translate(0%, -50%)"}
+              zIndex={2}
+              onClick={() => slider?.slickNext()}>
+              <BiRightArrow />
+            </IconButton>
+          </>
+        ) : null}
+
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           
           {useBreakpointValue({ base: cardsCellPhone, md: cardsComputer })?.map((url, index) => (

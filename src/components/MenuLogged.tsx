@@ -17,6 +17,8 @@ import { IoBagCheckOutline } from "react-icons/io5";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { logout } from "../redux/actions/authActions";
+import { AppDispatch } from "../redux/store";
 
 export default function MenuLogged() {
   const { user } = useRecoveryData("userDetails");
@@ -57,8 +59,7 @@ export default function MenuLogged() {
           as={Button}
           rounded={"full"}
           variant={"link"}
-          cursor={"pointer"}
-        >
+          cursor={"pointer"}>
           <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
             <Text>{user?.name}</Text>
             <Avatar size={"sm"} src={user?.avatar?.url} />

@@ -48,9 +48,23 @@ export default function Profile({ index }: { index?: number }) {
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
   const locate = useLocation();
-  
+  if (locate.pathname.includes("/profile/admin/orders/") && show !== 9) {
+    setShow(9);
+  }
   if (locate.pathname.includes("/profile/admin/updateProduct/") && show !== 8) {
     setShow(8);
+  }
+  if (locate.pathname.includes("/profile/admin/createProduct/") && show !== 7) {
+    setShow(7);
+  }
+  if (locate.pathname.includes("/profile/admin/products/") && show !== 6) {
+    setShow(6);
+  }
+  if (locate.pathname.includes("/profile/admin/users/") && show !== 5) {
+    setShow(5);
+  }
+  if (locate.pathname.includes("/profile/admin/profile/") && show !== 1) {
+    setShow(1);
   }
 
   const logoutHandler = () => {

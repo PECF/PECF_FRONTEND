@@ -37,7 +37,7 @@ import {
   getAdminProductDetails,
   updateProduct,
 } from "../../redux/actions/productsActions";
-import { ProductDetailPreview } from "./ProductDetailPreview";
+import { ProductDetail } from "../../pages/ProductDetail";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { RiImageAddLine } from "react-icons/ri";
@@ -707,7 +707,7 @@ export function UpdateProduct() {
               <ModalHeader>Product Preview</ModalHeader>
               <ModalCloseButton />
               <ModalBody>
-                <ProductDetailPreview product={_product} />
+                <ProductDetail product={_product} />
               </ModalBody>
               <ModalFooter>
                 <Button colorScheme="blue" mr={3} onClick={onClosePreview}>

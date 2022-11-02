@@ -1,10 +1,9 @@
-
 import {
   Flex,
   useBreakpointValue,
   Box,
   IconButton,
-  Text,
+  Image,
 } from "@chakra-ui/react";
 
 import { BiLeftArrow, BiRightArrow } from "react-icons/bi";
@@ -18,90 +17,64 @@ const settings = {
   infinite: true,
   autoplay: true,
   speed: 500,
-  autoplaySpeed: 4000,
+  autoplaySpeed: 3000,
   slidesToShow: 1,
   slidesToScroll: 1,
 };
 
-export function CarouselDetailProducts({ product }: any) {
+export function CarouselDetailProducts({ image }: any) {
   const [slider, setSlider] = React.useState<Slider | null>(null);
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
-  const side = useBreakpointValue({ base: "30%", md: "10px" });
+  const side = useBreakpointValue({ base: "20%", md: "10px" });
 
   return (
-    <Flex w={"full"} mt={5}
-      maxH={top}
-
-      mb={30}
-    >
-      <Box
-
-        position={"relative"}
-        width={"full"}
-        overflow={"hidden"}
-      >
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.min.css"
-        />
-        <link
-          rel="stylesheet"
-          type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick-theme.min.css"
-        />
-        {product && product.images && product.images.length > 0 ? (
+    <Flex w={"full"} mt={5} maxH={top} mb={30}>
+      <Box position={"relative"} width={"full"}>
+        {image?.length > 0 ? (
           <>
             <IconButton
               aria-label="left-arrow"
-              colorScheme="messenger"
+              colorScheme="teal"
               borderRadius="full"
               position="absolute"
-              bgColor="teal.500"
-              left={side}
+              zIndex={10}
               top={top}
-              transform={"translate(0%, -50%)"}
-              zIndex={2}
-              onClick={() => slider?.slickPrev()}
-            >
+              left={side}
+              onClick={() => slider?.slickPrev()}>
               <BiLeftArrow />
             </IconButton>
             <IconButton
               aria-label="right-arrow"
-              colorScheme="messenger"
+              colorScheme="teal"
               borderRadius="full"
               position="absolute"
-              right={side}
-              bgColor="teal.500"
+              zIndex={10}
               top={top}
-              transform={"translate(0%, -50%)"}
-              zIndex={2}
-              onClick={() => slider?.slickNext()}
-            >
+              right={side}
+              onClick={() => slider?.slickNext()}>
               <BiRightArrow />
             </IconButton>
           </>
+        ) : null}
 
-        ) : (
-          null)
-        }
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
-          {product &&
-            product.image.map((item: any) => {
+          {image?.map((img: any, index: number) => {
+            const src = img?.url ? img?.url : img;
+            if (src) {
               return (
-                <Box
-                  key={item._id}
-                  height={"2xl"}
-                  width={"full"}
-                  position="relative"
-                  backgroundPosition="center"
-                  backgroundRepeat="no-repeat"
-                  // backgroundSize="cover"
-                  backgroundImage={`url(${item.url})`}
-                />
+                <Box key={index} width={"full"}>
+                  <Image
+                    src={src}
+                    alt="image"
+                    width={"full"}
+                    height={"xl"}
+                    objectFit="cover"
+                  />
+                </Box>
               );
-            })}
+            }
+          })}
         </Slider>
       </Box>
     </Flex>

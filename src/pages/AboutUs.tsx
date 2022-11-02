@@ -21,11 +21,9 @@ export default function AboutUs() {
       <Flex direction={"column"} justifyContent="center" alignItems="center">
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
-          marginTop={"20"}
+          marginTop={"7"}
           boxShadow="lg"
         >
           <Heading textAlign={"center"} fontSize={34} letterSpacing="2px">
@@ -63,11 +61,9 @@ export default function AboutUs() {
         </Box>
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
-          marginTop={"20"}
+          marginTop={"7"}
           boxShadow="lg"
         >
           <Box>
@@ -101,11 +97,9 @@ export default function AboutUs() {
         </Box>
         <Box
           bg={"whiteAlpha.100"}
-          borderWidth="2px"
-          borderRadius="lg"
           overflow="hidden"
           p={50}
-          marginTop={"20"}
+          marginTop={"7"}
           boxShadow="lg"
         >
           <Box>
