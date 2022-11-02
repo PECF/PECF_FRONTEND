@@ -7,7 +7,7 @@ import {
   Heading,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { IoShirtSharp } from "react-icons/io5";
+import { IoShirtSharp, IoWomanSharp } from "react-icons/io5";
 import {
   GiArmoredPants,
   GiUnderwearShorts,
@@ -19,6 +19,8 @@ import {
   GiUnderwear,
 } from "react-icons/gi";
 import { GrStackOverflow } from "react-icons/gr";
+import {IoMan} from 'react-icons/io5'
+import {FaChild} from 'react-icons/fa'
 import React, { useState } from "react";
 
 export function Categories() {
@@ -63,6 +65,27 @@ export function Categories() {
       icon: <GiMonclerJacket />,
       filter: "Jackets",
     },
+    {
+      name:'Accesories',
+      icon: <GiBracer/>,
+      filter: 'Accesories'
+    },
+    {
+      name: 'Men',
+      icon: <IoMan/>,
+      filter: 'Men'
+    },
+    {
+      name:'Women',
+      icon: <IoWomanSharp/>,
+      filter: 'Women'
+    },
+    {
+      name: 'Children',
+      icon: <FaChild/>,
+      filter:'Children'
+    }
+
   ]);
 
   return (
