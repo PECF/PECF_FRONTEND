@@ -326,7 +326,7 @@ export const Products = () => {
               </Flex>
             </Flex>
 
-            <Flex
+            {/* <Flex
               mt={2}
               justify="space-between"
               align="center"
@@ -344,9 +344,7 @@ export const Products = () => {
                   Sweaters
                 </Text>
               </Flex>
-            </Flex>
-            
-
+            </Flex> */}
           </Box>
 
           <Stack
