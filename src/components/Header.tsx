@@ -50,59 +50,38 @@ export function Header() {
       left={0}
       right={0}
       zIndex={1000}
-      justifyContent={"space-between"}
-    >
+      justifyContent={"space-between"}>
       <Flex
         maxW="container.lg"
         mx="auto"
         alignItems={"center"}
         gap="10"
-        justifyContent={"space-between"}
-      >
+        justifyContent={"space-between"}>
         <Menu />
         <Text
-          // mr={70}
           ml={9}
-          justify="center"
+          textAlign={"justify"}
           align="center"
           fontSize="3xl"
           fontWeight="bold"
           letterSpacing={"wide"}
           color={useColorModeValue("gray.800", "white")}
           as={Link}
-          to={"/"}
-        >
+          to={"/"}>
           {companyName}
         </Text>
-        {/* <IconButton
-          icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-          colorScheme="teal"
-          variant="ghost"
-          size="md"
-          onClick={toggleColorMode}
-        ></IconButton> */}
-        {/* <Flex>
-          <IconButton
-            ml={0}
-            icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-            colorScheme="teal"
-            variant="ghost"
-            size="sm"
-            onClick={toggleColorMode}
-          ></IconButton>
-        </Flex> */}
         <Flex>
           <Logged />
-          <IconButton
-            display={isHidden ? "none" : "flex"}
-            icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-            colorScheme="teal"
-            variant="ghost"
-            size="md"
-            onClick={toggleColorMode}
-          ></IconButton>
+          {isHidden ? (
+            <IconButton
+              icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+              colorScheme="teal"
+              aria-label="Search..."
+              variant="ghost"
+              size="md"
+              onClick={toggleColorMode}></IconButton>
+          ) : null}
         </Flex>
-        {/* <SearchBar /> */}
 
         {userInfo ? (
           <Flex ml={-8}>
