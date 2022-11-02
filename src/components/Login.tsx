@@ -24,7 +24,7 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export default function Login() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { error } = useRecoveryData("userLogin");
+  const { loading, error, isLogged } = useRecoveryData("userLogin");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch<AppDispatch>();
   const [email, setEmail] = useState("");
@@ -40,11 +40,8 @@ export default function Login() {
         isClosable: true,
       });
     }
-  }, [error]);
-
-  const submitHandler = () => {
-    if (emailRegex.test(email)) {
-      dispatch(login(email, password));
+    if (isLogged) {
+      onClose();
       send({
         title: "Success",
         description: "You are logged in",
@@ -52,7 +49,12 @@ export default function Login() {
         duration: 9000,
         isClosable: true,
       });
-      onClose();
+    }
+  }, [error, isLogged]);
+
+  const submitHandler = () => {
+    if (emailRegex.test(email)) {
+      dispatch(login(email, password));
     } else {
       send({
         title: "Error",
@@ -102,16 +104,15 @@ export default function Login() {
               colorScheme="teal"
               variant="solid"
               mr={3}
-              onClick={onClose}
-            >
+              onClick={onClose}>
               Forgot Password
             </Button>
             <Button
               colorScheme="teal"
               variant="solid"
               mr={3}
-              onClick={submitHandler}
-            >
+              isLoading={loading}
+              onClick={submitHandler}>
               Log In
             </Button>
           </ModalFooter>

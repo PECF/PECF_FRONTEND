@@ -2,7 +2,8 @@ import React, { lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { Spinner, Center } from '@chakra-ui/react';
+import { Spinner } from '@chakra-ui/react';
+import { HelpCenter } from "../pages/HelpCenter";
 //import { NotFound } from "../pages/NotFound";
 //import { Profile } from "../pages/user/profile";
 // import { ProductDetail } from "../pages/ProductDetail";
@@ -60,9 +61,9 @@ export const AppRoutes: React.FC = () => {
         <Route path="/products" element={<Products />} />
         {/*  <Route path="/product/" element={<ProductDetail />} /> */}
         <Route path="/product/:id" element={<ProductDetail />} />
+        <Route path="/products/search/:search" element={<Products />} />
+        <Route path="/products/category/:category" element={<Products />} />
 
-        <Route path="/products/:category" element={<Products />} />
-        <Route path="/products/search/:text" element={<Products />} />
         {!user?.role ? (
           <Route path="/forgot-password" element={<ForgotPassword />} />
         ) : (
@@ -126,13 +127,14 @@ export const AppRoutes: React.FC = () => {
         ) : (
           <Route path="/create-product" element={<Navigate to="/" />} />
         )}
-        <Route path="/pages/TermsOfService" element={<TermsOfService />} />
-        <Route path="/pages/AboutUs" element={<AboutUs />} />
-        <Route path="/pages/ContactUs" element={<ContactUs />} />
-        <Route path="/pages/ReturnPolicy" element={<ReturnPolicy />} />
-        <Route path="/pages/PrivacyPolicy" element={<PrivacyPolicy />} />
-        <Route path="/pages/Refund" element={<Refund />} />
-        <Route path="/pages/CookiesPolicy" element={<CookiesPolicy />} />
+        <Route path="/TermsOfService" element={<TermsOfService />} />
+        <Route path="/AboutUs" element={<AboutUs />} />
+        <Route path="/ContactUs" element={<ContactUs />} />
+        <Route path="/ReturnPolicy" element={<ReturnPolicy />} />
+        <Route path="/PrivacyPolicy" element={<PrivacyPolicy />} />
+        <Route path="/HelpCenter" element={<HelpCenter />} />
+        <Route path="/Refund" element={<Refund />} />
+        <Route path="/CookiesPolicy" element={<CookiesPolicy />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>
