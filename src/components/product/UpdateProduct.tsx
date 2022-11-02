@@ -37,7 +37,7 @@ import {
   getAdminProductDetails,
   updateProduct,
 } from "../../redux/actions/productsActions";
-import { ProductDetail } from "../../pages/ProductDetail";
+import ProductDetail from "../../pages/ProductDetail";
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { RiImageAddLine } from "react-icons/ri";

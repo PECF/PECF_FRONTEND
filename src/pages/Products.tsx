@@ -10,21 +10,19 @@ import {
   Text,
   IconButton,
   useDisclosure,
-  useToast,
   Stack,
+  Grid,
+  Button,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
   GiArmoredPants,
-  GiUnderwearShorts,
   GiRunningShoe,
   GiHoodie,
   GiBilledCap,
   GiMonclerJacket,
   GiBracer,
-  GiSocks,
   GiUnderwear,
-  GiHoodedFigure,
 } from "react-icons/gi";
 import { GrStackOverflow } from "react-icons/gr";
 import { useLocation } from "react-router-dom";
@@ -36,13 +34,7 @@ import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
 import { Categories } from "../components/Categories";
-import {
-  FiUser,
-  FiSettings,
-  FiShoppingCart,
-  FiCreditCard,
-  FiLogOut,
-} from "react-icons/fi";
+
 import { FaChild } from "react-icons/fa";
 
 export default function Products() {
@@ -52,54 +44,108 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(10);
   const [categories, setCategories] = useState<any[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState(products);
-  const [render, setRender] = useState(true);
-
+  const [filteredProducts, setFilteredProducts] = useState<any[]>(products);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const filterProducts = (category: string) => {
-    const filtered = products.filter((product: { category: string; }) => {
-      return product.category === category;
-    });
-    setFilteredProducts(filtered);
-    setRender(!render);
-  };
-
-  const filterAllProducts = () => {
-    setFilteredProducts(products);
-    setRender(!render);
-  };
-
+  //filter with URL by category
   useEffect(() => {
-    const categories = products.map((product: { category: string; }) => {
-      return product.category;
-    });
-    const uniqueCategories = [...new Set(categories)];
-    setCategories(uniqueCategories);
-  }, [products]);
+    const path = location.pathname.split("/")[2];
+    console.log(path);
+    if (path === undefined) {
+      setFilteredProducts(products);
+    }
+    if (path === "search" && path !== undefined) {
+      const search = location.search.split("/")[1];
+
+      const filtered = products.filter(
+        (product: {
+          name: string;
+          description: string;
+          category: { value: string };
+          brand: string;
+        }) => {
+          return (
+            product.name
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.description
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.category.value
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.brand
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              )
+          );
+        }
+      );
+      setFilteredProducts(filtered);
+    }
+    if (path !== "search" && path !== undefined && path !== "composeFilter") {
+      const filtered = products.filter(
+        (product: {
+          name: string;
+          description: string;
+          category: { value: string }[];
+          brand: string;
+        }) => {
+          return product.category[0].value
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(
+              path
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+            );
+        }
+      );
+
+      setFilteredProducts(filtered);
+    }
+  }, [products, location]);
+
+  const changeBgFilter = (e: string) => {
+    const filter = categories.filter((category) => category === e);
+    console.log(filter);
+  };
   
-    
-  useEffect(() => {
-    if (filteredProducts.length < 10) {
-      setProductsPerPage(filteredProducts.length);
-    }
-    if (filteredProducts.length > 10) {
-      setProductsPerPage(10);
-    }
-  }, [filteredProducts]);
-
-  const indexLastProduct = currentPage * productsPerPage;
-  const indexFirstProduct = indexLastProduct - productsPerPage;
-  const currentProduct =
-    filteredProducts.slice(indexFirstProduct, indexLastProduct) || products;
-  const _Pagination = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const handleFilter = (e: { target: { value: string } }) => {
     const filtered = products.filter(
@@ -109,11 +155,16 @@ export default function Products() {
           .includes(e.target.value.toLowerCase());
       }
     );
-    setCategories((oldArray) => [...oldArray, filtered]);
-    const newFilter = filtered.concat(...categories);
-    setFilteredProducts(newFilter);
-  };
 
+    const filteredCategories = filtered.filter(
+      (product: { category: { value: string }[] }) => {
+        return !categories.includes(product.category[0].value);
+      }
+    );
+
+    setCategories([...categories, ...filteredCategories]);
+    setFilteredProducts(filtered);
+  };
   return (
     <Container
       maxW="container.xxl"
@@ -165,6 +216,21 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}>
               Categories
             </Text>
+            {categories.length > 0 && (
+              <Text
+                mt={2}
+                mb={4}
+                fontSize="md"
+                fontWeight="semibold"
+                color={useColorModeValue("gray.600", "gray.400")}
+                cursor="pointer"
+                onClick={() => {
+                  setFilteredProducts(products);
+                  setCategories([]);
+                }}>
+                CLEAR FILTER
+              </Text>
+            )}
 
             <Flex
               mt={2}
@@ -173,7 +239,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/all"
+              to="/products/composeFilter"
+              onClick={() => {
+                setFilteredProducts(products);
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -192,9 +261,12 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
-              as={Link}
-              to="/products/shirts"
               borderRadius="md"
+              as={Link}
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "shirts" } });
+              }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
@@ -213,7 +285,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/pants"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "pants" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -232,7 +307,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/underwear"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "underwear" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -252,7 +330,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/shoes"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "shoes" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -272,7 +353,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/hoodies"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "hoodies" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -292,7 +376,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/caps"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "caps" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -312,7 +399,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/jackets"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "jackets" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -332,7 +422,10 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/accesories"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter({ target: { value: "accesories" } });
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -345,6 +438,13 @@ export default function Products() {
               </Flex>
             </Flex>
 
+            <Text
+              fontSize="sm"
+              fontWeight="semibold"
+              color={useColorModeValue("gray.600", "gray.400")}
+              mt={6}>
+              Genres
+            </Text>
             <Flex
               mt={2}
               justify="space-between"
@@ -494,8 +594,9 @@ export default function Products() {
           </Stack>
         </Box>
 
-        <Box mt="82">
+        <Box>
           <Box
+            maxW="11xl"
             display="flex"
             justifyContent="center"
             alignItems="center"
@@ -504,7 +605,7 @@ export default function Products() {
             px={{ base: "4", md: "8", lg: "12" }}
             py={{ base: "6", md: "8", lg: "12" }}>
             <ProductGrid>
-              {currentProduct.length === 0 ? (
+              {currentProducts.length === 0 ? (
                 <Box>
                   <span>
                     <Text fontSize="2xl" fontWeight="bold">
@@ -513,8 +614,8 @@ export default function Products() {
                   </span>
                 </Box>
               ) : (
-                currentProduct.length > 0 &&
-                currentProduct.map((product: { _id: string }) => {
+                currentProducts.length > 0 &&
+                currentProducts.map((product: { _id: string }) => {
                   return <ProductCard key={product._id} product={product} />;
                 })
               )}
@@ -528,9 +629,9 @@ export default function Products() {
             flexDir="column"
             justifyContent={"center"}
             alignItems="center">
-            {filteredProducts.length > 10 && (
+            {currentProducts.length > 10 && (
               <Pagination
-                functionPagination={_Pagination}
+                functionPagination={paginate}
                 productsLength={products.length}
                 productsPage={productsPerPage}
               />
@@ -541,6 +642,11 @@ export default function Products() {
     </Container>
   );
 }
+
+//   return (
+
+//   );
+// }
 
 /* 
           </Box>

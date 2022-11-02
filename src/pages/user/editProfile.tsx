@@ -1,9 +1,8 @@
 import { useRecoveryData } from "../../hooks/useRecoveryData";
 import React, { useState, useEffect } from "react";
-import { updateUserProfile } from '../../redux/actions/authActions';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../../redux/rootStore';
-
+import { updateUserProfile } from "../../redux/actions/authActions";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "../../redux/rootStore";
 
 import {
   useToast,
@@ -29,14 +28,19 @@ import {
   GridItem,
   Icon,
   InputGroup,
-  InputLeftElement
+  InputLeftElement,
 } from "@chakra-ui/react";
 import { RiImageAddLine } from "react-icons/ri";
 
 export function EditProfile() {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useRecoveryData("userDetails");
-  const { loading, success, error, }: { loading: boolean, success: boolean, error: boolean | string } = useRecoveryData("userUpdateProfile")
+  const {
+    loading,
+    success,
+    error,
+  }: { loading: boolean; success: boolean; error: boolean | string } =
+    useRecoveryData("userUpdateProfile");
   const [name, setName] = useState(user?.name);
   const [email, setEmail] = useState(user?.email);
   const [phone, setPhone] = useState(user?.phone || "");
@@ -50,12 +54,24 @@ export function EditProfile() {
   const [avatar, setAvatar] = useState(user?.avatar.url);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar.url);
   const toast = useToast();
-  const { isOpen: isOpenAvatar, onOpen: onOpenAvatar, onClose: onCloseAvatar } = useDisclosure();
-  const { isOpen: isOpenConfirm, onOpen: onOpenConfirm, onClose: onCloseConfirm } = useDisclosure();
+  const {
+    isOpen: isOpenAvatar,
+    onOpen: onOpenAvatar,
+    onClose: onCloseAvatar,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenConfirm,
+    onOpen: onOpenConfirm,
+    onClose: onCloseConfirm,
+  } = useDisclosure();
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
+
+  const resetUpdateProfile = async () => {
+    await dispatch(updateUserProfile("Reset"));
+  };
 
   useEffect(() => {
     if (success) {
@@ -66,6 +82,7 @@ export function EditProfile() {
         duration: 9000,
         isClosable: true,
       });
+      resetUpdateProfile();
     }
     if (error) {
       toast({
@@ -76,14 +93,9 @@ export function EditProfile() {
         isClosable: true,
       });
     }
-  }, [success, error])
+  }, [success, error]);
 
-
-
-
-  const updateProfileDataChange = (e:
-    React.ChangeEvent<HTMLInputElement>) => {
-
+  const updateProfileDataChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const reader = new FileReader();
 
     reader.onload = () => {
@@ -98,9 +110,7 @@ export function EditProfile() {
     }
   };
 
-
   const handleSubmit = async () => {
-
     if (password !== passwordConfirmation) {
       toast({
         title: "Passwords do not match.",
@@ -111,9 +121,7 @@ export function EditProfile() {
       return;
     }
 
-
     try {
-
       const _user = {
         name,
         email,
@@ -124,18 +132,14 @@ export function EditProfile() {
         zipCode,
         country,
         password,
-        avatar
+        avatar,
       };
 
       await dispatch(updateUserProfile(_user));
-
-
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
   };
-
-
 
   return (
     <Box
@@ -196,12 +200,10 @@ export function EditProfile() {
                           color="gray.500"
                           fontSize="sm"
                           fontWeight="medium"
-                          lineHeight="short"
-
-                        >
-                          <InputLeftElement
-                            pointerEvents="none"
-                          ><Icon as={RiImageAddLine} color="gray.300" /></InputLeftElement>
+                          lineHeight="short">
+                          <InputLeftElement pointerEvents="none">
+                            <Icon as={RiImageAddLine} color="gray.300" />
+                          </InputLeftElement>
                           <Input
                             type="file"
                             name="avatar"
@@ -222,11 +224,7 @@ export function EditProfile() {
                       </FormControl>
                     </ModalBody>
                     <ModalFooter>
-                      <Grid
-                        templateColumns="repeat(2, 1fr)"
-                        gap={4}
-                      >
-
+                      <Grid templateColumns="repeat(2, 1fr)" gap={4}>
                         <Button
                           colorScheme="teal"
                           variant="ghost"
@@ -241,9 +239,7 @@ export function EditProfile() {
                           colorScheme="teal"
                           variant="solid"
                           mr={3}
-                          onClick={
-                            onCloseAvatar
-                          }>
+                          onClick={onCloseAvatar}>
                           Save
                         </Button>
                       </Grid>
@@ -319,11 +315,9 @@ export function EditProfile() {
                   md: "repeat(2, 1fr)",
                   lg: "repeat(2, 1fr)",
                 }}
-                gap={6}
-              >
+                gap={6}>
                 <GridItem colSpan={1}>
-                  <FormControl id="country"
-                  >
+                  <FormControl id="country">
                     <FormLabel>Country</FormLabel>
                     <Input
                       type="text"
@@ -397,9 +391,7 @@ export function EditProfile() {
                   <ModalHeader>Confirm</ModalHeader>
                   <ModalCloseButton />
                   <ModalBody>
-                    <FormControl id="password"
-                      isRequired
-                    >
+                    <FormControl id="password" isRequired>
                       <FormLabel>Password</FormLabel>
                       <Input
                         type="password"
@@ -407,22 +399,18 @@ export function EditProfile() {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter your password"
-
                       />
                     </FormControl>
-                    <FormControl
-                      mt={4}
-                      id="password_confirmation"
-                      isRequired
-                    >
+                    <FormControl mt={4} id="password_confirmation" isRequired>
                       <FormLabel>Confirm Password</FormLabel>
                       <Input
                         type="password"
                         name="password_confirmation"
                         value={passwordConfirmation}
-                        onChange={(e) => setPasswordConfirmation(e.target.value)}
+                        onChange={(e) =>
+                          setPasswordConfirmation(e.target.value)
+                        }
                         placeholder="Enter your password confirmation"
-
                       />
                     </FormControl>
                   </ModalBody>
@@ -440,12 +428,10 @@ export function EditProfile() {
                       variant="solid"
                       ml={3}
                       loadingText="Updating"
-                      onClick={
-                        () => {
-                          handleSubmit();
-                          onCloseConfirm();
-                        }
-                      }>
+                      onClick={() => {
+                        handleSubmit();
+                        onCloseConfirm();
+                      }}>
                       Save
                     </Button>
                   </ModalFooter>
@@ -454,7 +440,7 @@ export function EditProfile() {
             </Box>
           </VStack>
         </Box>
-      </VStack >
-    </Box >
+      </VStack>
+    </Box>
   );
 }

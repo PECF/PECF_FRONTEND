@@ -197,40 +197,46 @@ export const getUserDetails = (): AppThunk => async (dispatch, getState) => {
 };
 
 export const updateUserProfile =
-  (user: User): AppThunk =>
+  (user: User | string): AppThunk =>
   async (dispatch, getState) => {
-    try {
+    if (typeof user === "string") {
       dispatch({
-        type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST,
+        type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_RESET,
       });
-
-      const {
-        userLogin: { userInfo },
-      } = getState();
-
-      if (userInfo) {
-        const config = {
-          withCredentials: true,
-
-          headers: {
-            Authorization: `${userInfo}`,
-          },
-        };
-
-        const { data } = await axios.put("/user/update", user, config);
-
+    } else {
+      try {
         dispatch({
-          type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS,
-          payload: data.user,
+          type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_REQUEST,
         });
-        dispatch(getUserDetails());
-        dispatch(updateCart());
+
+        const {
+          userLogin: { userInfo },
+        } = getState();
+
+        if (userInfo) {
+          const config = {
+            withCredentials: true,
+
+            headers: {
+              Authorization: `${userInfo}`,
+            },
+          };
+
+          const { data } = await axios.put("/user/update", user, config);
+
+          dispatch({
+            type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_SUCCESS,
+            payload: data.user,
+          });
+          dispatch(getUserDetails());
+          dispatch(updateCart());
+        }
+      } catch (error) {
+        dispatch({
+          type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE,
+          payload: errorHandler(error),
+        });
       }
-    } catch (error) {
-      dispatch({
-        type: UserUpdateProfileActionTypes.USER_UPDATE_PROFILE_FAILURE,
-        payload: errorHandler(error),
-      });
     }
   };
 

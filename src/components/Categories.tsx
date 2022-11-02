@@ -87,8 +87,8 @@ export function Categories() {
     },
   ]);
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Box
@@ -107,7 +107,11 @@ export function Categories() {
             <Box
               key={category.name}
               as={Link}
-              to={`/products/${category.name.toLowerCase()}`}
+              to={
+                category.name === "All"
+                  ? "/products"
+                  : `/products/${category.filter}`
+              }
               w="100%"
               h="100%"
               p={4}
