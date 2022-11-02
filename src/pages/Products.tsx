@@ -16,15 +16,12 @@ import {
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
   GiArmoredPants,
-  GiUnderwearShorts,
   GiRunningShoe,
   GiHoodie,
   GiBilledCap,
   GiMonclerJacket,
   GiBracer,
-  GiSocks,
   GiUnderwear,
-  GiHoodedFigure,
 } from "react-icons/gi";
 import { GrStackOverflow } from "react-icons/gr";
 import { useLocation } from "react-router-dom";
@@ -52,66 +49,108 @@ export default function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(10);
   const [categories, setCategories] = useState<any[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState<any[]>(products);
   const [render, setRender] = useState(true);
-
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  const filterProducts = (category: string) => {
-    const filtered = products.filter((product: { category: string; }) => {
-      return product.category === category;
-    });
-    setFilteredProducts(filtered);
-    setRender(!render);
-  };
+  useEffect(() => {
+    const path = location.pathname.split("/")[2];
+    if (path === "all") {
+      setFilteredProducts(products);
+    }
+    if (path === "search") {
+      const search = location.search.split("/")[3];
 
-  const filterAllProducts = () => {
-    setFilteredProducts(products);
-    setRender(!render);
-  };
+      const filtered = products.filter(
+        (product: {
+          name: string;
+          description: string;
+          category: { value: string };
+          brand: string;
+        }) => {
+          return (
+            product.name
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.description
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.category.value
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.brand
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              )
+          );
+        }
+      );
+      setFilteredProducts(filtered);
+    }
+
+    if (path !== "all" && path !== "search") {
+      const filtered = products.filter(
+        (product: { category: { value: string } }) => {
+          return product.category.value === path;
+        }
+      );
+      setFilteredProducts(filtered);
+    }
+  }, [products, location]);
 
   useEffect(() => {
-    const categories = products.map((product: { category: string; }) => {
-      return product.category;
-    });
+    const categories = products.map(
+      (product: { category: { value: string } }) => {
+        return product.category.value;
+      }
+    );
     const uniqueCategories = [...new Set(categories)];
     setCategories(uniqueCategories);
   }, [products]);
-  
-    
-  useEffect(() => {
-    if (filteredProducts.length < 10) {
-      setProductsPerPage(filteredProducts.length);
-    }
-    if (filteredProducts.length > 10) {
-      setProductsPerPage(10);
-    }
-  }, [filteredProducts]);
 
-  const indexLastProduct = currentPage * productsPerPage;
-  const indexFirstProduct = indexLastProduct - productsPerPage;
-  const currentProduct =
-    filteredProducts.slice(indexFirstProduct, indexLastProduct) || products;
-  const _Pagination = (pageNumber: number) => setCurrentPage(pageNumber);
+  const toast = useToast();
 
-  const handleFilter = (e: { target: { value: string } }) => {
+  const handleCategory = (category: string) => {
     const filtered = products.filter(
-      (product: { category: { value: string }[] }) => {
-        return product.category[0].value
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase());
+      (product: { category: { value: string } }) => {
+        return product.category.value === category;
       }
     );
-    setCategories((oldArray) => [...oldArray, filtered]);
-    const newFilter = filtered.concat(...categories);
-    setFilteredProducts(newFilter);
+    setFilteredProducts(filtered);
+    setRender(!render);
   };
 
   return (
@@ -494,7 +533,7 @@ export default function Products() {
           </Stack>
         </Box>
 
-        <Box mt="82">
+        <Box>
           <Box
             display="flex"
             justifyContent="center"
@@ -504,7 +543,7 @@ export default function Products() {
             px={{ base: "4", md: "8", lg: "12" }}
             py={{ base: "6", md: "8", lg: "12" }}>
             <ProductGrid>
-              {currentProduct.length === 0 ? (
+              {currentProducts.length === 0 ? (
                 <Box>
                   <span>
                     <Text fontSize="2xl" fontWeight="bold">
@@ -513,8 +552,8 @@ export default function Products() {
                   </span>
                 </Box>
               ) : (
-                currentProduct.length > 0 &&
-                currentProduct.map((product: { _id: string }) => {
+                currentProducts.length > 0 &&
+                currentProducts.map((product: { _id: string }) => {
                   return <ProductCard key={product._id} product={product} />;
                 })
               )}
@@ -528,9 +567,9 @@ export default function Products() {
             flexDir="column"
             justifyContent={"center"}
             alignItems="center">
-            {filteredProducts.length > 10 && (
+            {currentProducts.length > 10 && (
               <Pagination
-                functionPagination={_Pagination}
+                functionPagination={paginate}
                 productsLength={products.length}
                 productsPage={productsPerPage}
               />
@@ -541,6 +580,11 @@ export default function Products() {
     </Container>
   );
 }
+
+//   return (
+
+//   );
+// }
 
 /* 
           </Box>
