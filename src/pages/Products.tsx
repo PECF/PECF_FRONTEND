@@ -38,133 +38,99 @@ import { Categories } from "../components/Categories";
 import { FaChild } from "react-icons/fa";
 
 export default function Products() {
-  const location = useLocation();
-  const { isOpen, onToggle } = useDisclosure();
   const { products } = useRecoveryData("productList");
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const location = useLocation();
+  const [render, setRender] = useState(true);
+
+  const path = location.pathname.split("/")[2];
+  const pathSearchOrCategory = location.pathname.split("/")[3];
+
+  useEffect(() => {
+    if (path === undefined && location.pathname !== "/products" && render) {
+      window.location.href = "/products";
+      setFilteredProducts(products);
+      setRender(false);
+    }
+    if (path === "search") {
+      if (pathSearchOrCategory && render) {
+        const _search = location.pathname.split("/")[3];
+        const filtered = products.filter(
+          (product: {
+            name: string;
+            description: string;
+            category: { value: string }[];
+            brand: string;
+          }) =>
+            product.name.toLowerCase().includes(_search.toLowerCase()) ||
+            product.description.toLowerCase().includes(_search.toLowerCase()) ||
+            product.category[0].value
+              .toLowerCase()
+              .includes(_search.toLowerCase()) ||
+            product.brand.toLowerCase().includes(_search.toLowerCase())
+        );
+        setFilteredProducts(filtered);
+        setRender(false);
+      }
+    } else if (path === "category") {
+      if (pathSearchOrCategory && render) {
+        const filtered = products.filter(
+          (product: { category: { value: string }[] }) =>
+            product.category[0].value.toLowerCase() ===
+            pathSearchOrCategory.toLowerCase()
+        );
+        setFilteredProducts(filtered);
+        setRender(false);
+      }
+    } else {
+      setFilteredProducts(products);
+      setRender(false);
+    }
+  }, [products, path, location.pathname, render, pathSearchOrCategory]);
+
+  //pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [productsPerPage, setProductsPerPage] = useState(10);
-  const [categories, setCategories] = useState<any[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<any[]>(products);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
+
+  console.log(filteredProducts);
+
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  //filter with URL by category
+  const [Categories, setCategories] = useState<any[]>([]);
+
+  const handleFilter = (e: string) => {
+    if (location.pathname.split("/")[2] !== "composeFilter") {
+      window.location.href = "/products/composeFilter";
+    }
+    if (Categories.includes(e)) {
+      const filtered = Categories.filter((category) => category !== e);
+      setCategories(filtered);
+    } else {
+      setCategories([...Categories, e]);
+    }
+  };
+
   useEffect(() => {
-    const path = location.pathname.split("/")[2];
-    console.log(path);
-    if (path === undefined) {
+    if (Categories.length > 0) {
+      const filtered = products.filter((product: { category: any[] }) => {
+        return product.category.some((category: { value: string }) =>
+          Categories.includes(category.value)
+        );
+      });
+      setFilteredProducts(filtered);
+    } else {
       setFilteredProducts(products);
     }
-    if (path === "search" && path !== undefined) {
-      const search = location.search.split("/")[1];
+  }, [Categories]);
 
-      const filtered = products.filter(
-        (product: {
-          name: string;
-          description: string;
-          category: { value: string };
-          brand: string;
-        }) => {
-          return (
-            product.name
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              ) ||
-            product.description
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              ) ||
-            product.category.value
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              ) ||
-            product.brand
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              )
-          );
-        }
-      );
-      setFilteredProducts(filtered);
-    }
-    if (path !== "search" && path !== undefined && path !== "composeFilter") {
-      const filtered = products.filter(
-        (product: {
-          name: string;
-          description: string;
-          category: { value: string }[];
-          brand: string;
-        }) => {
-          return product.category[0].value
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .includes(
-              path
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-            );
-        }
-      );
+  // const { isOpen, onToggle } = useDisclosure();
 
-      setFilteredProducts(filtered);
-    }
-  }, [products, location]);
-
-  const changeBgFilter = (e: string) => {
-    const filter = categories.filter((category) => category === e);
-    console.log(filter);
-  };
-  
-
-  const handleFilter = (e: { target: { value: string } }) => {
-    const filtered = products.filter(
-      (product: { category: { value: string }[] }) => {
-        return product.category[0].value
-          .toLowerCase()
-          .includes(e.target.value.toLowerCase());
-      }
-    );
-
-    const filteredCategories = filtered.filter(
-      (product: { category: { value: string }[] }) => {
-        return !categories.includes(product.category[0].value);
-      }
-    );
-
-    setCategories([...categories, ...filteredCategories]);
-    setFilteredProducts(filtered);
-  };
   return (
     <Container
       maxW="container.xxl"
@@ -189,7 +155,7 @@ export default function Products() {
             bg={useColorModeValue("gray.50", "gray.900")}
             w={"auto"}
             display={{ base: "flex", md: "none" }}>
-            <IconButton
+            {/* <IconButton
               onClick={onToggle}
               icon={
                 isOpen ? (
@@ -200,7 +166,7 @@ export default function Products() {
               }
               variant={"ghost"}
               aria-label={"Toggle Navigation"}
-            />
+            /> */}
           </Flex>
 
           <Box
@@ -216,7 +182,8 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}>
               Categories
             </Text>
-            {categories.length > 0 && (
+
+            {/* {categories.length > 0 && (
               <Text
                 mt={2}
                 mb={4}
@@ -230,7 +197,7 @@ export default function Products() {
                 }}>
                 CLEAR FILTER
               </Text>
-            )}
+            )} */}
 
             <Flex
               mt={2}
@@ -262,11 +229,11 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
-              as={Link}
-              to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "shirts" } });
-              }}
+              // as={Link}
+              // to="/products/composeFilter"
+              // onClick={() => {
+              //   handleFilter("shirts");
+              // }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
@@ -286,9 +253,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "pants" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("pants");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -308,9 +275,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "underwear" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("underwear");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -331,9 +298,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "shoes" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("shoes");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -354,9 +321,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "hoodies" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("hoodies");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -377,9 +344,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "caps" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("caps");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -400,9 +367,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "jackets" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("jackets");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -423,9 +390,9 @@ export default function Products() {
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              onClick={() => {
-                handleFilter({ target: { value: "accesories" } });
-              }}
+              // onClick={() => {
+              //   handleFilter("accesories");
+              // }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -506,7 +473,7 @@ export default function Products() {
             </Flex>
           </Box>
 
-          <Stack
+          {/* <Stack
             spacing={1}
             align="center"
             justify="center"
@@ -591,7 +558,7 @@ export default function Products() {
                 Logout
               </Text>
             </Flex>
-          </Stack>
+          </Stack> */}
         </Box>
 
         <Box>
@@ -629,13 +596,13 @@ export default function Products() {
             flexDir="column"
             justifyContent={"center"}
             alignItems="center">
-            {currentProducts.length > 10 && (
+            {/* {currentProducts.length > 10 && (
               <Pagination
                 functionPagination={paginate}
                 productsLength={products.length}
                 productsPage={productsPerPage}
               />
-            )}
+            )} */}
           </Box>
         </Box>
       </Flex>
@@ -851,3 +818,60 @@ export default function Products() {
   );
 }; */
 }
+
+// if (path === "search" && path !== undefined) {
+//   const search = location.search.split("/")[1];
+
+//   const filtered = products.filter(
+//     (product: {
+//       name: string;
+//       description: string;
+//       category: { value: string };
+//       brand: string;
+//     }) => {
+//       return (
+//         product.name
+//           .toLowerCase()
+//           .normalize("NFD")
+//           .replace(/[\u0300-\u036f]/g, "")
+//           .includes(
+//             search
+//               .toLowerCase()
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//           ) ||
+//         product.description
+//           .toLowerCase()
+//           .normalize("NFD")
+//           .replace(/[\u0300-\u036f]/g, "")
+//           .includes(
+//             search
+//               .toLowerCase()
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//           ) ||
+//         product.category.value
+//           .toLowerCase()
+//           .normalize("NFD")
+//           .replace(/[\u0300-\u036f]/g, "")
+//           .includes(
+//             search
+//               .toLowerCase()
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//           ) ||
+//         product.brand
+//           .toLowerCase()
+//           .normalize("NFD")
+//           .replace(/[\u0300-\u036f]/g, "")
+//           .includes(
+//             search
+//               .toLowerCase()
+//               .normalize("NFD")
+//               .replace(/[\u0300-\u036f]/g, "")
+//           )
+//       );
+//     }
+//   );
+//   setFilteredProducts(filtered);
+// }
