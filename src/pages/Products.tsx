@@ -11,13 +11,15 @@ import {
 } from "@chakra-ui/react";
 import { useLocation } from "react-router-dom";
 import * as React from "react";
+import { Categories } from "../components/Categories";
 
 export const Products = () => {
   const { products } = useRecoveryData("productList");
   const location = useLocation();
   const [filteredProducts, setFilteredProducts] = React.useState(products);
-  const [categories, setCategories] = React.useState([]);
-  console.log(categories);
+  const [categories, setCategories] = React.useState<any[]>([]);
+  //console.log(categories);
+  console.log(filteredProducts);
 
   /*React.useEffect(() => {
     if (categories.length === 0) {
@@ -30,13 +32,25 @@ export const Products = () => {
     }
   }, [categories]);*/
 
+  /*const handleFilter = (e) => {
+    const filtered = products.filter((product) => {
+      return product.category[0].value
+        .toLowerCase()
+        .includes(e.target.value.toLowerCase());
+    });
+    setCategories(filtered);
+  };*/
+
   const handleFilter = (e) => {
     const filtered = products.filter((product) => {
       return product.category[0].value
         .toLowerCase()
         .includes(e.target.value.toLowerCase());
     });
-    setFilteredProducts(filtered);
+    setCategories((oldArray) => [...oldArray, filtered]);
+    const otroMas = filtered.concat(...categories);
+    console.log(otroMas);
+    setFilteredProducts(otroMas);
   };
 
   React.useEffect(() => {
