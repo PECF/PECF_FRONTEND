@@ -80,6 +80,8 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
     localStorage.removeItem("cartItems");
     localStorage.removeItem("shippingAddress");
     localStorage.removeItem("userDetails");
+    localStorage.removeItem("productCreate");
+    localStorage.removeItem("productUpdate");
   } catch (error) {
     dispatch({
       type: UserLoginActionTypes.USER_LOGIN_FAILURE,
