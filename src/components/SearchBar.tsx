@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Drawer,
   DrawerBody,
@@ -21,17 +21,11 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 export function SearchBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [search, setSearch] = useState("");
-  const { products } = useRecoveryData("productList");
-  const [filteredProducts, setFilteredProducts] = React.useState(products);
+  const navigate = useNavigate();
 
   const handleSearch = (e: any) => {
-    setSearch(e.target.value);
-    const filtered = products.filter((product: any) => {
-      console.log(search);
-      return product.name.toLowerCase().includes(search.toLowerCase());
-    });
-    setFilteredProducts(filtered);
-    console.log(filteredProducts);
+    e.preventDefault();
+    navigate(`/products/search/${search}`);
   };
 
   return (
@@ -66,7 +60,7 @@ export function SearchBar() {
                 borderRadius={"999px"}
                 placeholder="Search"
                 value={search}
-                onChange={handleSearch}
+                onChange={(e) => setSearch(e.target.value)}
                 variant="filled"
                 bg={useColorModeValue("gray.100", "gray.700")}
                 _hover={{
@@ -79,7 +73,8 @@ export function SearchBar() {
               />
               <InputRightElement mr={2}>
                 <SearchIcon
-                  color="gray.300"
+                  color={useColorModeValue("gray.600", "white")}
+                  type="submit"
                   onClick={handleSearch}
                   as={Link}
                   to={`/products/search/${search}`}
