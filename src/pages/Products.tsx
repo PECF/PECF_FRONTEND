@@ -11,11 +11,18 @@ import {
   Text,
   IconButton,
   useDisclosure,
-  Stack,
-  Grid,
-  Button,
-  Heading,
   VStack,
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+  Spacer,
+  Menu,
+  Button,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Grid,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
@@ -37,7 +44,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
 
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { FaChild } from "react-icons/fa";
 
 export default function Products() {
@@ -48,10 +55,11 @@ export default function Products() {
 
   const [Categories, setCategories] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [priceFilterProducts, setPriceFilterProducts] = useState<any[]>([]);
   const [currentProducts, setCurrentProducts] = useState<any[]>([]);
   const [productsPerPage, setProductsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const [value, setValue] = useState([0, 50]);
   const handleFilter = (e: string) => {
     if (location.pathname.split("/")[2] !== "composeFilter") {
       navigate("/products/composeFilter");
@@ -78,7 +86,6 @@ export default function Products() {
     ?.toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
-  const { isOpen, onToggle } = useDisclosure();
 
   useEffect(() => {
     if (path === "search") {
@@ -157,22 +164,22 @@ export default function Products() {
 
   useEffect(() => {
     if (
-      filteredProducts.length < 8 &&
-      productsPerPage !== filteredProducts.length
+      priceFilterProducts.length < 8 &&
+      productsPerPage !== priceFilterProducts.length
     ) {
-      setProductsPerPage(filteredProducts.length);
+      setProductsPerPage(priceFilterProducts.length);
     }
-    if (filteredProducts.length > 8 && productsPerPage !== 8) {
+    if (priceFilterProducts.length > 8 && productsPerPage !== 8) {
       setProductsPerPage(8);
     }
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = filteredProducts.slice(
+    const currentProducts = priceFilterProducts.slice(
       indexOfFirstProduct,
       indexOfLastProduct
     );
     setCurrentProducts(currentProducts);
-  }, [filteredProducts, currentPage, productsPerPage]);
+  }, [priceFilterProducts, currentPage, productsPerPage]);
 
   const CleanAndRedirect = () => {
     setCategories([]);
@@ -182,6 +189,19 @@ export default function Products() {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  useEffect(() => {
+    const arrayTest = [0, 50];
+    if (value[0] !== arrayTest[0] || value[1] !== arrayTest[1]) {
+      const filtered = filteredProducts.filter(
+        (product: { price: number }) =>
+          product.price >= value[0] && product.price <= value[1]
+      );
+      setPriceFilterProducts(filtered);
+    } else {
+      setPriceFilterProducts(filteredProducts);
+    }
+  }, [value, filteredProducts]);
 
   return (
     <Container
@@ -197,29 +217,6 @@ export default function Products() {
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
           overflow="hidden">
-          {/* <Flex
-            justify="center"
-            align="center"
-            direction="column"
-            py={12}
-            px={6}
-            bg={useColorModeValue("gray.50", "gray.900")}
-            w={"auto"}
-            display={{ base: "flex", md: "none" }}>
-            <IconButton
-              onClick={onToggle}
-              icon={
-                isOpen ? (
-                  <CloseIcon w={3} h={3} />
-                ) : (
-                  <HamburgerIcon w={5} h={5} />
-                )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Flex> */}
-
           <Box
             display={{ base: "none", md: "block" }}
             py={4}
@@ -230,7 +227,8 @@ export default function Products() {
             <Text
               fontSize="sm"
               fontWeight="semibold"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              mb={2}>
               Categories
             </Text>
 
@@ -560,6 +558,25 @@ export default function Products() {
               </Flex>
             </Flex>
           </Box>
+          <Grid templateColumns={"repeat(1, 1fr)"} gap={6} m={6}>
+            <RangeSlider
+              min={0}
+              max={50}
+              step={1}
+              value={value}
+              onChange={setValue}
+              colorScheme="teal">
+              <RangeSliderTrack>
+                <RangeSliderFilledTrack />
+              </RangeSliderTrack>
+              <RangeSliderThumb index={0} />
+              <RangeSliderThumb index={1} />
+            </RangeSlider>
+
+            <Text fontSize="sm" fontWeight="semibold" w={"full"}>
+              {value[0]} - {value[1]}$
+            </Text>
+          </Grid>
         </Box>
 
         <Box
