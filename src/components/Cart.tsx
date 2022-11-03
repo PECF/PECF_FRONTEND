@@ -81,10 +81,10 @@ export default function Cart() {
                         cartItems?.map((element: any) => (
                           <Tr key={element.product._id}>
                             <Td>{element.product.name}</Td>
-                            <Td isNumeric>{element.product.price}</Td>
+                            <Td isNumeric>${element.product.price}</Td>
                             <Td isNumeric>{element.quantity}</Td>
                             <Td isNumeric>
-                              {element.product.price * element.quantity}
+                              ${element.product.price * element.quantity}
                             </Td>
                           </Tr>
                         ))

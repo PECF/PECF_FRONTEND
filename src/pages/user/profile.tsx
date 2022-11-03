@@ -409,6 +409,8 @@ export default function Profile({ index }: { index?: number }) {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
+              as={Link}
+              to="/helpcenter"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
@@ -431,6 +433,8 @@ export default function Profile({ index }: { index?: number }) {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
+              as={Link}
+              to="/contactus"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
