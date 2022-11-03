@@ -11,8 +11,8 @@ import React from "react";
 
 export default function ReturnPolicy() {
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">
@@ -26,7 +26,7 @@ export default function ReturnPolicy() {
         <Box
           //   mt={5}
           //   ml={"450"}
-          //   maxW="500"
+          w="full"
           bg={"whiteAlpha.100"}
           overflow="hidden"
           p={50}
@@ -75,7 +75,7 @@ export default function ReturnPolicy() {
               </Text>
               <Text fontSize="lg">
                 For more information on refund after returning a product,{" "}
-                <Link color="teal.500" href="/pages/Refund">
+                <Link color="teal.500" href="/Refund">
                   you can check when and where you will receive your money
                   according to the means you used to pay.
                 </Link>

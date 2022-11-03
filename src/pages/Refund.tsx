@@ -18,8 +18,8 @@ import React from "react";
 
 export default function Refund() {
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Box marginRight={"10"} paddingTop={"5"} marginLeft={"5"}>
       <Box marginTop={"10"} w="full" bg="teal" px="100px" py="40px">
@@ -46,7 +46,7 @@ export default function Refund() {
             <Text fontSize="lg">
               We will make the refund 3 working days after the product arrives,
               once we check if it meets with
-              <Link color="teal.500" href="../pages/ReturnPolicy">
+              <Link color="teal.500" href="/ReturnPolicy">
                 {" "}
                 return policies.
               </Link>{" "}
