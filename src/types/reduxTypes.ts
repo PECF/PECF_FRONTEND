@@ -6,7 +6,6 @@ import {
   OrderListState,
   OrderListMyState,
   OrderPayState,
-
 } from "./ordersTypes";
 import {
   ProductDetailsState,
@@ -16,7 +15,6 @@ import {
   ProductDeleteState,
   ProductTopState,
   ProductUpdateState,
-
 } from "./productsTypes";
 
 import {
@@ -32,9 +30,8 @@ import {
 import { WishlistState } from "./wishlistTypes";
 
 export interface ReduxState {
-  [x: string]: any;
-  wishlist?: WishlistState;
   cart?: CartState;
+  wishlist?: WishlistState;
   userLogin: UserLoginState;
   userRegister?: UserRegisterState;
   productList?: ProductListState;

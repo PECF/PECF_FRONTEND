@@ -35,7 +35,7 @@ import { wishlistReducer } from "./reducers/wishlistReducer";
 
 export const rootReducer = combineReducers<ReduxState>({
   cart: cartReducer,
-  wishlist: wishlistReducer,
+  // wishlist: wishlistReducer,
   userLogin: userLoginReducer,
   userDetails: userDetailsReducer,
   userRegister: userRegisterReducer,
@@ -65,10 +65,6 @@ const userInfoFromLocalStorage = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo") as string)
   : null;
 
-const shippingAddressFromLocalStorage = localStorage.getItem("shippingAddress")
-  ? JSON.parse(localStorage.getItem("shippingAddress") as string)
-  : {};
-
 const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems") as string)
   : [];
@@ -93,19 +89,18 @@ const productUpdateFromLocalStorage = localStorage.getItem("productUpdate")
   ? JSON.parse(localStorage.getItem("productUpdate") as string)
   : {};
 
-const wishlistItemsFromLocalStorage = localStorage.getItem("wishlistItems")
-  ? JSON.parse(localStorage.getItem("wishlistItems") as string)
-  : [];
+// const wishlistItemsFromLocalStorage = localStorage.getItem("wishlistItems")
+//   ? JSON.parse(localStorage.getItem("wishlistItems") as string)
+//   : [];
 
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
-    shippingAddress: shippingAddressFromLocalStorage,
   },
-  
-  wishlist: {
-    wishlistItems: wishlistItemsFromLocalStorage,
-  },
+
+  // wishlist: {
+  //   wishlistItems: wishlistItemsFromLocalStorage,
+  // },
 
   userLogin: { userInfo: userInfoFromLocalStorage },
   userDetails: { user: userDetailsFromLocalStorage },
