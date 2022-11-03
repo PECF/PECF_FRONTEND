@@ -8,7 +8,7 @@ import { App } from "./App";
 import React from "react";
 import axios from "axios";
 
-axios.defaults.baseURL = "http://127.0.0.1:3443";
+axios.defaults.baseURL = "https://pecfbackend-production.up.railway.app:3443";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
