@@ -54,26 +54,41 @@ export default function Products() {
   const location = useLocation();
 
   const [Categories, setCategories] = useState<any[]>([]);
+  const [Tags, setTags] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const [priceFilterProducts, setPriceFilterProducts] = useState<any[]>([]);
   const [currentProducts, setCurrentProducts] = useState<any[]>([]);
   const [productsPerPage, setProductsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
   const [value, setValue] = useState([0, 50]);
-  const handleFilter = (e: string) => {
+  const handleFilter = (e: string, type: string) => {
     if (location.pathname.split("/")[2] !== "composeFilter") {
       navigate("/products/composeFilter");
     }
-    if (Categories.includes(e)) {
+    if (Categories.includes(e) && type === "category") {
       const filtered = Categories.filter((category) => category !== e);
       setCategories(filtered);
     } else {
       setCategories([...Categories, e]);
     }
+
+    if (Tags.includes(e) && type === "tag") {
+      const filtered = Tags.filter((tag) => tag !== e);
+      setTags(filtered);
+    } else {
+      setTags([...Tags, e]);
+    }
   };
 
   const checkExistCategory = (e: string) => {
     if (Categories.includes(e)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const checkExistTags = (e: string) => {
+    if (Tags.includes(e)) {
       return true;
     } else {
       return false;
@@ -155,6 +170,35 @@ export default function Products() {
 
         setFilteredProducts(filtered);
       } else if (Categories.length === 0 && path === "composeFilter") {
+        setFilteredProducts(products);
+      }
+
+      if (Tags.length > 0) {
+        const filtered = products.filter(
+          (product: { tag: { value: string }[] }) => {
+            let flag = false;
+            Tags.forEach((tag) => {
+              product.tag.forEach((productTag) => {
+                if (
+                  productTag.value
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "") ===
+                  tag
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                ) {
+                  flag = true;
+                }
+              });
+            });
+            return flag;
+          }
+        );
+
+        setFilteredProducts(filtered);
+      } else if (Tags.length === 0 && path === "composeFilter") {
         setFilteredProducts(products);
       }
     } else {
@@ -283,7 +327,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("shirts");
+                handleFilter("shirts", "category");
               }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -310,7 +354,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("pants");
+                handleFilter("pants", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -337,7 +381,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("underwear");
+                handleFilter("underwear", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -365,7 +409,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("shoes");
+                handleFilter("shoes", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -393,7 +437,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("hoodies");
+                handleFilter("hoodies", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -421,7 +465,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("caps");
+                handleFilter("caps", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -449,7 +493,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("jackets");
+                handleFilter("jackets", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -477,7 +521,7 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("accesories");
+                handleFilter("accesories", "category");
               }}
               borderRadius="md"
               _hover={{
@@ -505,8 +549,16 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/men"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("men", "tag");
+              }}
               borderRadius="md"
+              bg={
+                checkExistTags("men")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
@@ -525,7 +577,15 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/woman"
+              bg={
+                checkExistTags("women")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("women", "tag");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -545,7 +605,15 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/kids"
+              bg={
+                checkExistTags("kids")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("kids", "tag");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
