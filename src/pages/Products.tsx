@@ -204,9 +204,8 @@ export default function Products() {
           w={{ base: "100%", md: "20%" }}
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
-          overflow="hidden"
-        >
-          <Flex
+          overflow="hidden">
+          {/* <Flex
             justify="center"
             align="center"
             direction="column"
@@ -228,7 +227,7 @@ export default function Products() {
               variant={"ghost"}
               aria-label={"Toggle Navigation"}
             />
-          </Flex>
+          </Flex> */}
 
           <Box
             display={{ base: "none", md: "block" }}
@@ -727,93 +726,4 @@ export default function Products() {
       </Flex>
     </Container>
   );
-}
-
-{
-  /* <Stack
-            spacing={1}
-            align="center"
-            justify="center"
-            display={{ base: isOpen ? "flex" : "none", md: "none" }}>
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Text ml={4} fontWeight="medium">
-                Profile
-              </Text>
-            </Flex>
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Text ml={4} fontWeight="medium">
-                Settings
-              </Text>
-            </Flex>
-
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Text ml={4} fontWeight="medium">
-                Orders
-              </Text>
-            </Flex>
-
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Text ml={4} fontWeight="medium">
-                Payment
-              </Text>
-            </Flex>
-
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
-              <Text ml={4} fontWeight="medium">
-                Logout
-              </Text>
-            </Flex>
-          </Stack> */
 }
