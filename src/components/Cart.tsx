@@ -37,15 +37,25 @@ export default function Cart() {
   const { loading, error, success, cartItems } = useRecoveryData("cart");
   const { user } = useRecoveryData("userDetails");
   const [checkOut, setCheckOut] = useState(false);
-  const [name, setName] = useState(user.name);
+  const [name, setName] = useState(user?.name);
   const [shippingOption, setShippingOption] = useState("1");
-  const [address, setAddress] = useState(user.address.address);
-  const [city, setCity] = useState(user.address.city);
-  const [postalCode, setPostalCode] = useState(user.address.postalCode);
+  const [address, setAddress] = useState(user?.address?.address);
+  const [city, setCity] = useState(user?.address?.city);
+  const [postalCode, setPostalCode] = useState(user?.address?.postalCode);
   const [paymentMethod, setPaymentMethod] = useState("1");
   const [comment, setComment] = useState("");
   const [state, setState] = useState("");
   const toast = useToast();
+  const [totalitems, setTotalItems] = useState(0);
+  useEffect(() => {
+    if (cartItems) {
+      const _items = cartItems.reduce(
+        (acc: any, item: { quantity: any }) => acc + item.quantity,
+        0
+      );
+      setTotalItems(_items);
+    }
+  }, [cartItems]);
 
   async function payCartProducts(paymentMethod: string) {
     if (paymentMethod === "1") {
@@ -137,9 +147,7 @@ export default function Cart() {
         <DrawerContent>
           <DrawerCloseButton />
           <DrawerHeader>
-            {!checkOut
-              ? `Your order (${cartItems.length})`
-              : `Complete your order`}
+            {!checkOut ? `Your order (${totalitems})` : `Complete your order`}
           </DrawerHeader>
           {!checkOut ? (
             <>

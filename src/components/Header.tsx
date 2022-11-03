@@ -37,7 +37,7 @@ export default function Header() {
 
   const handleSearch = (e: any) => {
     e.preventDefault();
-    navigate(`/search/${search}`);
+    navigate(`/products/search/${search}`);
   };
 
   return (
