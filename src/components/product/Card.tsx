@@ -5,7 +5,6 @@ import {
   Image,
   Stack,
   Text,
-  useBreakpointValue,
   useColorModeValue,
 } from "@chakra-ui/react";
 import React from "react";
@@ -16,13 +15,11 @@ import { PriceTag } from "./PriceTag";
 export const ProductCard = ({ product }: any) => {
   const { name, image, price, rating, numReviews } = product;
 
- 
-
   return (
     <Stack
       mt="2rem"
       mb="2rem"
-      spacing={useBreakpointValue({ base: "4", md: "5" })}
+      // spacing={useBreakpointValue({ base: "4", md: "5" })}
       backgroundColor={useColorModeValue("white", "gray.800")}
       borderRadius="lg"
       overflow="hidden"
@@ -30,19 +27,26 @@ export const ProductCard = ({ product }: any) => {
       _hover={{ transform: "scale(1.1)" }}
       transition="all 0.2s"
       cursor="pointer"
-      ml="2rem">
+      ml="1rem">
       <Box position="relative">
-        <Box as={Link} to={`/product/${product._id}`}>
-          <Image src={image[0].url} alt={name} objectFit="contain" />
+        <Box as={Link} to={`/product/${product._id}`} h={10}>
+          <Image
+            src={image[0].url}
+            alt={name}
+            objectFit="cover"
+            maxH={"30vh"}
+            minH={"30vh"}
+            w={"100%"}
+          />
         </Box>
 
-        {/* <FavouriteButton
-          onClick={handleFavorite}
+        <FavouriteButton
+          // onClick={handleFavorite}
           position="absolute"
           top="4"
           right="4"
           aria-label={`Add ${name} to your favourites`}
-        /> */}
+        />
       </Box>
 
       <Link to={`/product/${product._id}`}>

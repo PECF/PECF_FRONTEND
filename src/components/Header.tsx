@@ -154,6 +154,16 @@ export default function Header() {
               </Grid>
             ) : (
               <Grid templateColumns={"repeat(3, 1fr)"} gap={3}>
+                {/* <IconButton
+                  className="Wishlist"
+                  as={Link}
+                  to="/wishlist"
+                  aria-label="Wishlist"
+                  icon={<MdFavorite />}
+                  variant="ghost"
+                  colorScheme="teal"> */}
+                {/* {wishlistItems.length} */}
+                {/* </IconButton> */}
                 <Cart />
                 <Menu />
               </Grid>
@@ -164,14 +174,3 @@ export default function Header() {
     </>
   );
 }
-
-                // <IconButton
-                //   className="Wishlist"
-                //   as={Link}
-                //   to="/wishlist"
-                //   aria-label="Wishlist"
-                //   icon={<MdFavorite />}
-                //   variant="ghost"
-                //   colorScheme="teal">
-                //   {/* {wishlistItems.length} */}
-                // </IconButton>
