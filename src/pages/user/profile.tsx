@@ -79,9 +79,10 @@ export default function Profile({ index }: { index?: number }) {
   };
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
+  const url = `https://web.whatsapp.com/send?phone=+1234567890`;
   return (
     <Container
       maxW="container.xxl"
@@ -188,7 +189,7 @@ export default function Profile({ index }: { index?: number }) {
               </Flex>
               <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
             </Flex>
-
+            {/* 
             <Flex
               mt={2}
               justify="space-between"
@@ -211,9 +212,9 @@ export default function Profile({ index }: { index?: number }) {
                 </Text>
               </Flex>
               <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
-            </Flex>
+            </Flex> */}
 
-            <Flex
+            {/* <Flex
               mt={2}
               justify="space-between"
               align="center"
@@ -235,9 +236,9 @@ export default function Profile({ index }: { index?: number }) {
                 </Text>
               </Flex>
               <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
-            </Flex>
+            </Flex> */}
 
-            <Flex
+            {/* <Flex
               mt={2}
               justify="space-between"
               align="center"
@@ -259,7 +260,7 @@ export default function Profile({ index }: { index?: number }) {
                 </Text>
               </Flex>
               <Icon as={MdOutlineKeyboardArrowRight} w={5} h={5} />
-            </Flex>
+            </Flex> */}
 
             {user?.role === "admin" && (
               <>
@@ -461,7 +462,7 @@ export default function Profile({ index }: { index?: number }) {
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}
               onClick={() => {
-                setShow(13);
+                window.open(url, "_blank");
               }}>
               <Flex align="center">
                 <Icon as={FiPhone} w={5} h={5} />

@@ -22,22 +22,19 @@ import {
   Textarea,
   Text,
   Grid,
+  useToast,
 } from "@chakra-ui/react";
-import { updateCart } from "../redux/actions/cartActions";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
-import { useStripe } from "@stripe/react-stripe-js";
-import { useElements } from "@stripe/react-stripe-js";
-import { CardElement } from "@stripe/react-stripe-js";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import { IconButton } from "@chakra-ui/react";
-import { PaymentElement } from "@stripe/react-stripe-js";
+import { addToCart } from "../redux/actions/cartActions";
 
 export default function Cart() {
   const dispatch = useDispatch<AppDispatch>();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { cartItems } = useRecoveryData("cart");
+  const { loading, error, success, cartItems } = useRecoveryData("cart");
   const { user } = useRecoveryData("userDetails");
   const [checkOut, setCheckOut] = useState(false);
   const [name, setName] = useState(user.name);
@@ -48,6 +45,7 @@ export default function Cart() {
   const [paymentMethod, setPaymentMethod] = useState("1");
   const [comment, setComment] = useState("");
   const [state, setState] = useState("");
+  const toast = useToast();
 
   async function payCartProducts(paymentMethod: string) {
     if (paymentMethod === "1") {
@@ -103,22 +101,29 @@ export default function Cart() {
 
       window.open(url, "_blank");
     }
-
-    // if (paymentMethod === "3") {
-    //   const stripe = await useStripe();
-    //   const elements = await useElements();
-
-    //   const { error, paymentMethod } = await stripe.createPaymentMethod({
-    //     type: "card",
-    //     card: elements.getElement(CardElement),
-    //   });
-
-    //   if (!error) {
-    //     const { id } = paymentMethod;
-    //     console.log(id);
-    //   }
-    // }
   }
+
+  useEffect(() => {
+    if (success) {
+      toast({
+        title: "Product added to cart",
+        description: "We've added the product to your cart",
+        status: "success",
+        duration: 1000,
+        isClosable: true,
+      });
+    }
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  }, [success, error, toast]);
+
   return (
     <>
       <Box onClick={onOpen}>
@@ -143,57 +148,63 @@ export default function Cart() {
                   <Text>Your cart is empty</Text>
                 ) : (
                   <Grid templateColumns="repeat(1, 1fr)">
-                    {cartItems.map((item: any) => (
-                      <Box
-                        key={item.product._id}
-                        p={5}
-                        shadow="md"
-                        bg={useColorModeValue("white", "gray.800")}>
-                        <Grid templateColumns="repeat(2, 1fr)">
-                          <Text fontSize="xl" fontWeight="bold">
-                            {item.product.name}
-                          </Text>
-                          <Text
-                            fontSize="xl"
-                            fontWeight="bold"
-                            textAlign="right"
-                            color="teal.500">
-                            ${item.product.price * item.quantity},00
-                          </Text>
-                        </Grid>
-                        <Grid
-                          templateColumns="repeat(3, 1fr)"
-                          w={"20%"}
-                          mt={2}
-                          gap={2}>
-                          <IconButton
-                            colorScheme="teal"
-                            variant={"ghost"}
-                            size="2xl"
-                            borderRadius={"999px"}
-                            onClick={() =>
-                              dispatch(updateCart(item.product._id, "remove"))
-                            }
-                            aria-label={""}>
-                            <BsCaretDown />
-                          </IconButton>
-                          <Text fontSize="xl" textAlign="center">
-                            {item.quantity}
-                          </Text>
-                          <IconButton
-                            colorScheme="teal"
-                            variant={"ghost"}
-                            size="2xl"
-                            borderRadius={"999px"}
-                            onClick={() =>
-                              dispatch(updateCart(item.product._id, "add"))
-                            }
-                            aria-label={""}>
-                            <BsCaretUp />
-                          </IconButton>
-                        </Grid>
-                      </Box>
-                    ))}
+                    {cartItems.map((item: any) => {
+                      if (item.quantity > 0) {
+                        return (
+                          <Box
+                            key={item.product._id}
+                            p={5}
+                            shadow="md"
+                            bg={useColorModeValue("white", "gray.800")}>
+                            <Grid templateColumns="repeat(2, 1fr)">
+                              <Text fontSize="xl" fontWeight="bold">
+                                {item.product.name}
+                              </Text>
+                              <Text
+                                fontSize="xl"
+                                fontWeight="bold"
+                                textAlign="right"
+                                color="teal.500">
+                                ${item.product.price * item.quantity},00
+                              </Text>
+                            </Grid>
+                            <Grid
+                              templateColumns="repeat(3, 1fr)"
+                              w={"20%"}
+                              mt={2}
+                              gap={2}>
+                              <IconButton
+                                colorScheme="teal"
+                                variant={"ghost"}
+                                size="2xl"
+                                isLoading={loading}
+                                borderRadius={"999px"}
+                                onClick={() =>
+                                  dispatch(addToCart(item.product._id, -1))
+                                }
+                                aria-label={""}>
+                                <BsCaretDown />
+                              </IconButton>
+                              <Text fontSize="xl" textAlign="center">
+                                {item.quantity}
+                              </Text>
+                              <IconButton
+                                colorScheme="teal"
+                                variant={"ghost"}
+                                size="2xl"
+                                isLoading={loading}
+                                borderRadius={"999px"}
+                                onClick={() =>
+                                  dispatch(addToCart(item.product._id, 1))
+                                }
+                                aria-label={""}>
+                                <BsCaretUp />
+                              </IconButton>
+                            </Grid>
+                          </Box>
+                        );
+                      }
+                    })}
                   </Grid>
                 )}
               </DrawerBody>

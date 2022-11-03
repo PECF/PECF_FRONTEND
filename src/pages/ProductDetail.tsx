@@ -16,7 +16,6 @@ import {
   useToast,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
 import { CarouselDetailProducts } from "../components/product/carouselDetailProduct";
 import { useRecoveryData } from "../hooks/useRecoveryData";
