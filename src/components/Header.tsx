@@ -68,7 +68,7 @@ export default function Header() {
             </Text>
           </Flex>
           <Grid templateColumns="repeat(3, 1fr)">
-            <IconButton
+            {/* <IconButton
               gap={6}
               className="Wishlist"
               as={Link}
@@ -77,7 +77,7 @@ export default function Header() {
               icon={<MdFavorite />}
               variant="ghost"
               colorScheme="teal"
-            />
+            /> */}
             <SearchBar />
             <Cart />
           </Grid>
@@ -154,16 +154,6 @@ export default function Header() {
               </Grid>
             ) : (
               <Grid templateColumns={"repeat(3, 1fr)"} gap={3}>
-                <IconButton
-                  className="Wishlist"
-                  as={Link}
-                  to="/wishlist"
-                  aria-label="Wishlist"
-                  icon={<MdFavorite />}
-                  variant="ghost"
-                  colorScheme="teal">
-                  {/* {wishlistItems.length} */}
-                </IconButton>
                 <Cart />
                 <Menu />
               </Grid>
@@ -174,3 +164,14 @@ export default function Header() {
     </>
   );
 }
+
+                // <IconButton
+                //   className="Wishlist"
+                //   as={Link}
+                //   to="/wishlist"
+                //   aria-label="Wishlist"
+                //   icon={<MdFavorite />}
+                //   variant="ghost"
+                //   colorScheme="teal">
+                //   {/* {wishlistItems.length} */}
+                // </IconButton>
