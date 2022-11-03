@@ -11,11 +11,17 @@ import {
   Text,
   IconButton,
   useDisclosure,
-  Stack,
-  Grid,
-  Button,
-  Heading,
   VStack,
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+  Spacer,
+  Menu,
+  Button,
+  MenuButton,
+  MenuItem,
+  MenuList,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
@@ -37,7 +43,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
 
-import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
+import { ChevronDownIcon, CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { FaChild } from "react-icons/fa";
 
 export default function Products() {
@@ -187,16 +193,19 @@ export default function Products() {
     <Container
       maxW="container.xxl"
       bg={useColorModeValue("gray.100", "gray.900")}
-      minH="100vh">
+      minH="100vh"
+    >
       <Flex
         direction={{ base: "column", md: "row" }}
         shadow={{ md: "xl" }}
-        rounded={{ md: "lg" }}>
+        rounded={{ md: "lg" }}
+      >
         <Box
           w={{ base: "100%", md: "20%" }}
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
-          overflow="hidden">
+          overflow="hidden"
+        >
           <Flex
             justify="center"
             align="center"
@@ -205,7 +214,8 @@ export default function Products() {
             px={6}
             bg={useColorModeValue("gray.50", "gray.900")}
             w={"auto"}
-            display={{ base: "flex", md: "none" }}>
+            display={{ base: "flex", md: "none" }}
+          >
             <IconButton
               onClick={onToggle}
               icon={
@@ -226,11 +236,14 @@ export default function Products() {
             px={6}
             bg={useColorModeValue("white", "gray.800")}
             borderBottomWidth={1}
-            borderColor={useColorModeValue("gray.200", "gray.700")}>
+            borderColor={useColorModeValue("gray.200", "gray.700")}
+          >
             <Text
               fontSize="sm"
               fontWeight="semibold"
-              color={useColorModeValue("gray.600", "gray.400")}>
+              color={useColorModeValue("gray.600", "gray.400")}
+              mb={2} 
+            >
               Categories
             </Text>
 
@@ -244,10 +257,56 @@ export default function Products() {
                 cursor="pointer"
                 onClick={() => {
                   CleanAndRedirect();
-                }}>
+                }}
+              >
                 CLEAR FILTER
               </Text>
             )}
+            <Flex
+              direction="column"
+              justify="center"
+              align="center"
+              w="100%"
+              h="100%"
+            >
+              <Menu
+                isLazy
+              >
+                <MenuButton
+                  as={Button}
+                  rightIcon={<ChevronDownIcon />}
+                  colorScheme="teal"
+                  variant="outline"
+                  w="90%"
+                  h="auto"
+                  mb={4}
+                  p={2}
+
+                >
+                  Filter by price
+                </MenuButton>
+                <MenuList>
+                  <MenuItem
+                    onClick={() => {
+                      /* setPath("price");
+                      setPathSearchOrCategory("highToLow");
+                      navigate("/products/price/highToLow"); */
+                    }}
+                  >
+                    High to low
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                     /*  asd */
+                    }}
+                  >
+                    Low to high
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+          
+                        
 
             <Flex
               mt={2}
@@ -261,7 +320,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GrStackOverflow} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -289,7 +349,8 @@ export default function Products() {
               }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={IoShirtSharp} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -317,7 +378,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiArmoredPants} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -344,7 +406,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiUnderwear} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -372,7 +435,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiRunningShoe} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -400,7 +464,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiHoodie} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -428,7 +493,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiBilledCap} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -456,7 +522,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiMonclerJacket} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -484,7 +551,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={GiBracer} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -497,7 +565,8 @@ export default function Products() {
               fontSize="sm"
               fontWeight="semibold"
               color={useColorModeValue("gray.600", "gray.400")}
-              mt={6}>
+              mt={6}
+            >
               Genres
             </Text>
             <Flex
@@ -511,7 +580,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={IoMan} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -531,7 +601,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={IoWoman} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -551,7 +622,8 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
+              }}
+            >
               <Flex align="center">
                 <Icon as={FaChild} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -560,6 +632,31 @@ export default function Products() {
               </Flex>
             </Flex>
           </Box>
+     {/*      <Flex
+            my={7}
+            justify="space-between"
+            align="center"
+            color={useColorModeValue("gray.600", "gray.400")}
+            cursor="pointer"
+          >
+            <RangeSlider aria-label={["min", "max"]} defaultValue={[10, 80]} colorScheme={"teal"}
+            onChangeEnd={(e) => { setRange[] }} >
+            
+              <RangeSliderTrack>
+                <RangeSliderFilledTrack />
+              </RangeSliderTrack>
+              <RangeSliderThumb index={0}
+              onChange= {(e) => { console.log(e) }}>
+                <Text
+                mt={10}
+                >a</Text>
+                </RangeSliderThumb>
+              <RangeSliderThumb index={1} />
+
+            </RangeSlider>
+          </Flex>
+ */}
+
         </Box>
 
         <Box
@@ -568,14 +665,16 @@ export default function Products() {
           mx="auto"
           bg={useColorModeValue("white", "gray.700")}
           overflow="hidden"
-          shadow="base">
+          shadow="base"
+        >
           <VStack align="stretch" spacing={0}>
             <Flex
               justify="space-between"
               align="center"
               px={6}
               bg={useColorModeValue("gray.50", "gray.800")}
-              borderBottomWidth="1px"></Flex>
+              borderBottomWidth="1px"
+            ></Flex>
             <Box>
               <Box
                 maxW="11xl"
@@ -585,7 +684,8 @@ export default function Products() {
                 flexDirection="column"
                 mx="auto"
                 px={{ base: "4", md: "8", lg: "12" }}
-                py={{ base: "6", md: "8", lg: "12" }}>
+                py={{ base: "6", md: "8", lg: "12" }}
+              >
                 <ProductGrid>
                   {currentProducts.length === 0 ? (
                     <Box>
@@ -612,7 +712,8 @@ export default function Products() {
                 display={"flex"}
                 flexDir="column"
                 justifyContent={"center"}
-                alignItems="center">
+                alignItems="center"
+              >
                 <Pagination
                   totalProducts={filteredProducts.length}
                   productsPerPage={productsPerPage}
