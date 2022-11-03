@@ -15,6 +15,7 @@ import {
   Flex,
   Button,
 } from "@chakra-ui/react";
+import { CgProfile } from "react-icons/cg";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import Login from "./Login"; //
@@ -34,6 +35,7 @@ export default function Acordion() {
   const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
+  const isMobile = useBreakpointValue({ base: true, md: false });
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -48,7 +50,7 @@ export default function Acordion() {
 
   return (
     <Box display={"flex"}>
-      {!userInfo ? (
+      {!userInfo && (
         <>
           <Menu>
             <MenuButton
@@ -58,25 +60,17 @@ export default function Acordion() {
               variant="outline"
             />
             <MenuList>
-              <MenuItem /* as={Link} to={"/login"} */>
-                <Login />
-              </MenuItem>
-              <MenuItem /* as={Link} to={"/register"} */>
-                <SignUp />
-              </MenuItem>
-              <MenuItem onClick={toggleColorMode}>
-                <IconButton
-                  ml={5}
-                  icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-                  colorScheme="teal"
-                  variant="ghost"
-                  size="md"
-                  aria-label={""}></IconButton>
+              <Login />
+              <SignUp />
+
+              <MenuItem icon={<BsMoonFill />} onClick={toggleColorMode}>
+                {text}
               </MenuItem>
             </MenuList>
           </Menu>
         </>
-      ) : (
+      )}
+      {userInfo && (
         <>
           <Menu>
             {useBreakpointValue({ base: false, md: true }) ? (
@@ -95,7 +89,11 @@ export default function Acordion() {
             )}
             <MenuList>
               <MenuItem as={Link} to={"/profile"}>
-                <Avatar size={"xs"} src={user?.avatar?.url} />
+                {useBreakpointValue({ base: true, md: false }) ? (
+                  <Avatar size={"xs"} src={user?.avatar?.url} />
+                ) : (
+                  <CgProfile />
+                )}
                 <Text ml="2">Profile</Text>
               </MenuItem>
               <MenuItem as={Link} to={"/orders"}>
@@ -106,16 +104,12 @@ export default function Acordion() {
                 <MdLogout />
                 <Text ml="2">Log Out</Text>
               </MenuItem>
-
-              <MenuItem onClick={toggleColorMode}>
-                <IconButton
-                  ml={-2}
-                  icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-                  colorScheme="teal"
-                  variant="ghost"
-                  size="sm"
-                  aria-label={""}></IconButton>
-                <Text>{text}</Text>
+              <MenuItem
+                onClick={toggleColorMode}
+                width="100%"
+                aria-label="colorMode">
+                {isMobile ? <BsMoonFill /> : <BsSunFill />}
+                <Text ml="2">{text}</Text>
               </MenuItem>
             </MenuList>
           </Menu>

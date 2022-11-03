@@ -13,6 +13,7 @@ import {
   useColorModeValue,
   InputRightElement,
   InputLeftElement,
+  DrawerOverlay,
 } from "@chakra-ui/react";
 import { SearchIcon, ArrowBackIcon } from "@chakra-ui/icons";
 import { useRecoveryData } from "../hooks/useRecoveryData";
@@ -46,6 +47,7 @@ export function SearchBar() {
         blockScrollOnMount={true}
         isOpen={isOpen}
         onClose={onClose}>
+        <DrawerOverlay />
         <DrawerContent>
           <DrawerBody className="searchBar">
             <InputGroup maxW="100%">

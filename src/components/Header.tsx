@@ -13,7 +13,6 @@ import {
   Grid,
   FormControl,
 } from "@chakra-ui/react";
-
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { MdFavorite } from "react-icons/md";
@@ -24,7 +23,6 @@ import Menu from "./Menu";
 import { SearchBar } from "./SearchBar";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
-
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
@@ -36,13 +34,15 @@ export default function Header() {
   const isMobile = useBreakpointValue({ base: true, md: false });
   const [search, setSearch] = useState("");
   const navigate = useNavigate();
+
   const handleSearch = (e: any) => {
-    console.log(e);
+    e.preventDefault();
+    navigate(`/search/${search}`);
   };
 
   return (
     <>
-      {isMobile ? (
+      {isMobile && (
         <Flex
           as="nav"
           align="center"
@@ -52,9 +52,7 @@ export default function Header() {
           bg={useColorModeValue("white", "gray.800")}
           color={useColorModeValue("gray.600", "white")}
           boxShadow="md">
-          <Box>
-            <Menu />
-          </Box>
+          <Menu />
           <Flex align="center" mr={5}>
             <Text
               ml={10}
@@ -69,7 +67,7 @@ export default function Header() {
               {companyName}
             </Text>
           </Flex>
-          <Box>
+          <Grid templateColumns="repeat(3, 1fr)">
             <IconButton
               gap={6}
               className="Wishlist"
@@ -80,22 +78,13 @@ export default function Header() {
               variant="ghost"
               colorScheme="teal"
             />
-            <IconButton
-              gap={6}
-              aria-label="SearchBar"
-              icon={<SearchBar />}
-              colorScheme="teal"
-            />
-            <IconButton
-              gap={6}
-              aria-label="Cart"
-              icon={<Cart />}
-              variant="ghost"
-              colorScheme="teal"
-            />
-          </Box>
+            <SearchBar />
+            <Cart />
+          </Grid>
         </Flex>
-      ) : (
+      )}
+
+      {!isMobile && (
         <Flex
           as="nav"
           align="center"
@@ -119,67 +108,50 @@ export default function Header() {
               {companyName}
             </Text>
           </Flex>
-          <Box as="form">
+          <Flex>
             <FormControl id="search">
               <InputGroup>
                 <Input
                   type="text"
                   borderRadius={"999px"}
-                  maxWidth={"560px"}
                   width={{ base: "100%", xl: "560px" }}
-                  placeholder="Search"
+                  placeholder="Search..."
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   variant="filled"
                   overflow={"hidden"}
-                  bg={useColorModeValue("gray.100", "gray.700")}
-                  _hover={{
-                    bg: useColorModeValue("gray.200", "gray.600"),
-                  }}
-                  _focus={{
-                    bg: useColorModeValue("gray.200", "gray.600"),
-                    borderColor: useColorModeValue("gray.300", "gray.500"),
-                  }}
                 />
-                <InputRightElement mr={2} height={"100%"}>
+                <InputRightElement>
                   <Button
                     type="submit"
+                    onClick={handleSearch}
+                    colorScheme="teal"
                     overflow={"hidden"}
-                    size={"sm"}
-                    aria-label="SearchBarButton"
-                    color={useColorModeValue("gray.500", "gray.200")}
-                    colorScheme="none"
-                    onClick={() => navigate(`/products/search/${search}`)}
-                    _focus={{
-                      boxShadow: "none",
-                    }}
-                    _hover={{
-                      bg: "none",
-                    }}>
+                    borderRadius={"999px"}
+                    size="base"
+                    variant="ghost"
+                    aria-label="searchButton">
                     <BiSearch />
                   </Button>
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-          </Box>
+          </Flex>
           <Box>
             {!userInfo ? (
-              <>
-                <IconButton
+              <Grid templateColumns="1fr 2fr 2fr" gap={2}>
+                <Button
                   onClick={toggleColorMode}
-                  ml={-2}
-                  icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
+                  width="100%"
                   colorScheme="teal"
                   variant="ghost"
-                  size="sm"
-                  aria-label={""}></IconButton>
-                <IconButton aria-label="Login" variant={"ghost"} ml={3}>
-                  <Login />
-                </IconButton>
-                <IconButton aria-label="SingUp" variant={"ghost"} mr={3}>
-                  <SignUp />
-                </IconButton>
-              </>
+                  aria-label="colorMode"
+                  size="md">
+                  {isMobile ? <BsMoonFill /> : <BsSunFill />}
+                </Button>
+                <Login />
+                <SignUp />
+              </Grid>
             ) : (
               <Grid templateColumns={"repeat(3, 1fr)"} gap={3}>
                 <IconButton
