@@ -15,12 +15,12 @@ export const ResetPassword: React.FC = () => {
   const [loading, setLoading] = useState(false);
 
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-  
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Center h="100vh">
-      <Flex
+      {/* <Flex
         direction="column"
         w="400px"
         h="500px"
@@ -60,7 +60,7 @@ export const ResetPassword: React.FC = () => {
             <Link to="/">Login</Link>
           </Text>
         </Box>
-      </Flex>
+      </Flex> */}
     </Center>
   );
 };

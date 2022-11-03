@@ -329,14 +329,14 @@ export const productTag = (
 ) => {
   switch (action.type) {
     case ProductTagActionTypes.PRODUCT_TAG_REQUEST:
-      return { feature: [] };
+      return { tag: [] };
     case ProductTagActionTypes.PRODUCT_TAG_SUCCESS:
       return {
-        feature: action.payload,
+        tag: action.payload,
       };
     case ProductTagActionTypes.PRODUCT_TAG_FAILURE:
       return {
-        feature: [],
+        tag: [],
         error: action.payload,
       };
     default:

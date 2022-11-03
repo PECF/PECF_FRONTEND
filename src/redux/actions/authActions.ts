@@ -9,7 +9,7 @@ import {
   PasswordUser,
   User,
 } from "../../types/authTypes";
-import { OrderListMyActionTypes } from "../../types/ordersTypes";
+// import { OrderListMyActionTypes } from "../../types/ordersTypes";
 import { UserListActionTypes } from "../../types/authTypes";
 import { errorHandler } from "./errorHandler";
 import { AppThunk } from "../rootStore";
@@ -71,7 +71,7 @@ export const logout = (): AppThunk => async (dispatch, getState) => {
 
     dispatch({ type: UserLoginActionTypes.USER_LOGOUT });
     dispatch({ type: UserDetailsActionTypes.USER_DETAILS_RESET });
-    dispatch({ type: OrderListMyActionTypes.ORDER_LIST_MY_RESET });
+    // dispatch({ type: OrderListMyActionTypes.ORDER_LIST_MY_RESET });
     dispatch({ type: UserListActionTypes.USER_LIST_RESET });
 
     await axios.get("/user/logout", config);
