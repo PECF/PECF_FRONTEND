@@ -13,6 +13,7 @@ import {
   Badge,
   HStack,
   Grid,
+  useToast,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
@@ -21,6 +22,7 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { getDetailsProduct } from "../redux/actions/productsActions";
+import { addToCart } from "../redux/actions/cartActions";
 
 export default function ProductDetail({ _product }: any) {
   const location = useLocation();
@@ -33,11 +35,23 @@ export default function ProductDetail({ _product }: any) {
   useEffect(() => {
     if (productByID) {
       dispatch(getDetailsProduct(productByID));
-        window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     }
   }, [productByID, dispatch]);
 
   const productDetails = _product ? _product : product;
+
+  const toast = useToast();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(productDetails._id, 1));
+    toast({
+      title: "Product added to cart.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
 
   return (
     <Center
@@ -166,7 +180,15 @@ export default function ProductDetail({ _product }: any) {
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
-            }}>
+            }}
+            _active={{
+              transform: "translateY(2px)",
+              boxShadow: "lg",
+            }}
+            _focus={{
+              boxShadow: "none",
+            }}
+            onClick={handleAddToCart}>
             Add to cart
           </Button>
           <Stack
