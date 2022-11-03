@@ -40,14 +40,12 @@ export function SearchBar() {
         icon={<SearchIcon />}
         variant="ghost"
         colorScheme="teal"
-        onClick={onOpen}
-      ></IconButton>
+        onClick={onOpen}></IconButton>
       <Drawer
         placement={"top"}
         blockScrollOnMount={true}
         isOpen={isOpen}
-        onClose={onClose}
-      >
+        onClose={onClose}>
         <DrawerContent>
           <DrawerBody className="searchBar">
             <InputGroup maxW="100%">
@@ -79,7 +77,7 @@ export function SearchBar() {
               />
               <InputRightElement mr={2}>
                 <SearchIcon
-                  color="gray.900"
+                  color="gray.300"
                   onClick={handleSearch}
                   as={Link}
                   to={`/products/search/${search}`}
@@ -96,4 +94,3 @@ export function SearchBar() {
     </Box>
   );
 }
-

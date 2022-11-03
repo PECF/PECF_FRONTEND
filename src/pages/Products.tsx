@@ -209,8 +209,7 @@ export default function Products() {
           w={{ base: "100%", md: "20%" }}
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
-          overflow="hidden"
-          mt="3vh">
+          overflow="hidden">
           <Flex
             justify="center"
             align="center"
@@ -667,7 +666,6 @@ export default function Products() {
         </Box>
 
         <Box
-          as="form"
           w="full"
           maxW="full"
           mx="auto"
@@ -679,7 +677,6 @@ export default function Products() {
               justify="space-between"
               align="center"
               px={6}
-              py={4}
               bg={useColorModeValue("gray.50", "gray.800")}
               borderBottomWidth="1px"></Flex>
             <Box>

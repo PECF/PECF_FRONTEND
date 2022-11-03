@@ -14,6 +14,7 @@ import {
   HStack,
   Grid,
   useToast,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
@@ -23,6 +24,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { getDetailsProduct } from "../redux/actions/productsActions";
 import { addToCart } from "../redux/actions/cartActions";
+import { Rating } from "../components/product/Rating";
+import { PriceTag } from "../components/product/PriceTag";
 
 export default function ProductDetail({ _product }: any) {
   const location = useLocation();
@@ -31,6 +34,7 @@ export default function ProductDetail({ _product }: any) {
 
   const dispatch: AppDispatch = useDispatch();
   const { product } = useRecoveryData("productDetails");
+  const { loading, error, success } = useRecoveryData("cart");
 
   useEffect(() => {
     if (productByID) {
@@ -43,30 +47,43 @@ export default function ProductDetail({ _product }: any) {
 
   const toast = useToast();
 
+  useEffect(() => {
+    if (success) {
+      toast({
+        title: "Product added to cart",
+        description: "We've added the product to your cart",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+    if (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  }, [success, toast]);
+
   const handleAddToCart = () => {
     dispatch(addToCart(productDetails._id, 1));
-    toast({
-      title: "Product added to cart.",
-      status: "success",
-      duration: 9000,
-      isClosable: true,
-    });
   };
+  const WToVStack = useBreakpointValue({
+    base: "100%",
+    md: "100%",
+  });
 
   return (
-    <Center
-      py={{
-        base: 1,
-        md: 10,
-      }}
-      bg={useColorModeValue("gray.50", "gray.800")}>
+    <Center w="100%" mb={useBreakpointValue({ base: "2rem", md: "2rem" })}>
       <VStack
-        w="full"
+        w={WToVStack}
         maxW="7xl"
         mx="auto"
-        rounded="lg"
-        shadow="lg"
-        overflow="hidden">
+        overflow="hidden"
+        bg={useColorModeValue("gray.50", "gray.700")}>
         <Grid
           templateColumns={{ base: "1fr", md: "1fr 1fr" }}
           w="full"
@@ -84,59 +101,64 @@ export default function ProductDetail({ _product }: any) {
             align="center"
             justify={{ base: "left", md: "flex-end" }}
             p={2}>
-            {Array(5)
-              .fill("")
-              .map((_, i) => (
-                <StarIcon key={i} />
-              ))}
-            <Box as="span" ml="2" color="gray.600" fontSize="lg">
-              reviews
-            </Box>
+            <Rating defaultValue={productDetails?.rating} size="sm" />
+            <Text
+              fontSize="sm"
+              color={useColorModeValue("gray.600", "gray.400")}>
+              {productDetails?.numReviews} reviews
+            </Text>
           </HStack>
         </Grid>
+
         <Stack
           direction={{ base: "column", md: "row" }}
           w="full"
           h="full"
           p={1}>
           <Text fontSize="lg" color="gray.600" textAlign="center">
-            <Badge
-              colorScheme="teal"
-              borderRadius="full"
-              px="4"
-              py="1"
-              fontSize="md">
-              {productDetails?.category.value}
-            </Badge>
+            {productDetails?.category?.value && (
+              <Badge
+                colorScheme="teal"
+                borderRadius="full"
+                px="4"
+                py="1"
+                fontSize="md">
+                {productDetails?.category.value}
+              </Badge>
+            )}
           </Text>
-          <Text
-            fontSize="lg"
-            color="gray.600"
-            textAlign="center"
-            display={{ base: "none", md: "block" }}>
-            <Badge
-              colorScheme="teal"
-              borderRadius="full"
-              px="4"
-              py="1"
-              fontSize="md">
-              {productDetails?.brand}
-            </Badge>
-          </Text>
-          <Text
-            fontSize="lg"
-            color="gray.600"
-            textAlign="center"
-            display={{ base: "none", md: "block" }}>
-            <Badge
-              colorScheme="teal"
-              borderRadius="full"
-              px="4"
-              py="1"
-              fontSize="md">
-              only {productDetails?.stock} units
-            </Badge>
-          </Text>
+          {productDetails?.brand && (
+            <Text
+              fontSize="lg"
+              color="gray.600"
+              textAlign="center"
+              display={{ base: "none", md: "block" }}>
+              <Badge
+                colorScheme="teal"
+                borderRadius="full"
+                px="4"
+                py="1"
+                fontSize="md">
+                {productDetails?.brand}
+              </Badge>
+            </Text>
+          )}
+          {productDetails?.stock && (
+            <Text
+              fontSize="lg"
+              color="gray.600"
+              textAlign="center"
+              display={{ base: "none", md: "block" }}>
+              <Badge
+                colorScheme="teal"
+                borderRadius="full"
+                px="4"
+                py="1"
+                fontSize="md">
+                only {productDetails?.stock} units
+              </Badge>
+            </Text>
+          )}
           {(productDetails?.offer[0]?.value === "discount" ||
             productDetails?.offer[1]?.value === "discount" ||
             productDetails?.offer[2]?.value === "discount") &&
@@ -157,15 +179,19 @@ export default function ProductDetail({ _product }: any) {
             </Text>
           ) : null}
         </Stack>
+
         <CarouselDetailProducts image={productDetails?.image} />
+
         <Stack w="100%" h="full" p={5} spacing={4}>
-          <Text
-            ml={5}
-            color={useColorModeValue("gray.900", "gray.400")}
-            fontWeight={600}
-            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
-            {productDetails?.price}€
-          </Text>
+          {productDetails?.price && (
+            <Text
+              ml={5}
+              color={useColorModeValue("gray.900", "gray.400")}
+              fontWeight={600}
+              fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
+              <PriceTag price={productDetails?.price} currency="USD" />
+            </Text>
+          )}
           <Button
             w="full"
             mt={5}
@@ -173,6 +199,7 @@ export default function ProductDetail({ _product }: any) {
             borderRadius="0"
             fontSize="xl"
             fontWeight={600}
+            isLoading={loading}
             letterSpacing="wide"
             boxShadow="lg"
             color={useColorModeValue("white", "gray.900")}
@@ -216,7 +243,7 @@ export default function ProductDetail({ _product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}>
+          bg={useColorModeValue("gray.50", "gray.800")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
@@ -237,7 +264,7 @@ export default function ProductDetail({ _product }: any) {
                   w="full"
                   h="full"
                   p={1}
-                  bg={useColorModeValue("gray.50", "gray.800")}
+                  bg={useColorModeValue("gray.50", "gray.900")}
                   rounded="xl"
                   alignContent={"center"}
                   justifyContent={"center"}
@@ -268,7 +295,7 @@ export default function ProductDetail({ _product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}>
+          bg={useColorModeValue("gray.50", "gray.800")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
@@ -289,7 +316,7 @@ export default function ProductDetail({ _product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}>
+          bg={useColorModeValue("gray.50", "gray.800")}>
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
@@ -307,7 +334,7 @@ export default function ProductDetail({ _product }: any) {
               <Box
                 key={index}
                 p={1}
-                bg={useColorModeValue("gray.50", "gray.800")}
+                bg={useColorModeValue("gray.50", "gray.900")}
                 rounded="xl"
                 shadow="lg"
                 cursor="pointer"

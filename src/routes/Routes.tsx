@@ -1,9 +1,9 @@
 import React, { lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { Home } from "../pages/Home";
+// import { Home } from '../pages/Home';
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { Spinner } from '@chakra-ui/react';
-import { HelpCenter } from "../pages/HelpCenter";
+import { Spinner } from "@chakra-ui/react";
+// import { HelpCenter } from "../pages/HelpCenter";
 //import { NotFound } from "../pages/NotFound";
 //import { Profile } from "../pages/user/profile";
 // import { ProductDetail } from "../pages/ProductDetail";
@@ -31,10 +31,12 @@ const ReturnPolicy = lazy(() => import("../pages/ReturnPolicy"));
 const Refund = lazy(() => import("../pages/Refund"));
 const PrivacyPolicy = lazy(() => import("../pages/PrivacyPolicy"));
 const CookiesPolicy = lazy(() => import("../pages/CookiesPolicy"));
-//const ProductReview = lazy(() => import("../components/ProductReview"));
 const Products = lazy(() => import("../pages/Products"));
+//const ProductReview = lazy(() => import("../components/ProductReview"));
+const Home = lazy(() => import("../pages/Home"));
 const NotFound = lazy(() => import("../pages/NotFound"));
 const WishList = lazy(() => import("../components/WishList"));
+const HelpCenter = lazy(() => import("../pages/HelpCenter"));
 
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
@@ -52,10 +54,8 @@ export const AppRoutes: React.FC = () => {
           emptyColor="gray.200"
           color="blue.500"
           size="xl"
-
         />
-      }
-    >
+      }>
       <Routes>
         <Route path="/" element={<Home />} />
 

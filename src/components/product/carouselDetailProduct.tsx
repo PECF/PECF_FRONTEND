@@ -1,6 +1,8 @@
 import {
   Flex,
   useBreakpointValue,
+  useBreakpoint,
+  UseBreakpointOptions,
   Box,
   IconButton,
   Image,
@@ -23,13 +25,19 @@ const settings = {
 };
 
 export function CarouselDetailProducts({ image }: any) {
-  const [slider, setSlider] = React.useState<Slider | null>(null);
+  const [slider, setSlider] = React.useState<Slider | null>();
+  const WToFlex = useBreakpointValue({
+    base: "100%",
+    sm: "30%",
+    md: "30%",
+    lg: "60%",
+    xl: "40%",
+  });
 
   const top = useBreakpointValue({ base: "90%", md: "50%" });
   const side = useBreakpointValue({ base: "20%", md: "10px" });
-
   return (
-    <Flex w={"full"} mt={5} maxH={top} mb={30}>
+    <Flex w={WToFlex} maxH={top}>
       <Box position={"relative"} width={"full"}>
         {image?.length > 0 ? (
           <>
@@ -57,23 +65,21 @@ export function CarouselDetailProducts({ image }: any) {
             </IconButton>
           </>
         ) : null}
-
         <Slider {...settings} ref={(slider) => setSlider(slider)}>
           {image?.map((img: any, index: number) => {
-            const src = img?.url ? img?.url : img;
-            if (src) {
-              return (
-                <Box key={index} width={"full"}>
-                  <Image
-                    src={src}
-                    alt="image"
-                    width={"full"}
-                    height={"xl"}
-                    objectFit="cover"
-                  />
-                </Box>
-              );
-            }
+            const src = img?.url ? img.url : img;
+            return (
+              <Box key={index} w="full" h="full" position="relative">
+                <Image
+                  src={src}
+                  alt="product"
+                  objectFit="cover"
+                  w={"full"}
+                  maxH="full"
+                  h={"full"}
+                />
+              </Box>
+            );
           })}
         </Slider>
       </Box>

@@ -96,6 +96,9 @@ const productUpdateFromLocalStorage = localStorage.getItem("productUpdate")
 export const initialState = {
   cart: {
     cartItems: cartItemsFromLocalStorage,
+    loading: false,
+    success: false,
+    error: null,
   },
 
   // wishlist: {

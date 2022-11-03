@@ -10,13 +10,15 @@ import {
   InputGroup,
   InputRightElement,
   useBreakpointValue,
+  Grid,
+  FormControl,
 } from "@chakra-ui/react";
 
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import { BiSearch } from "react-icons/bi";
 import { MdFavorite } from "react-icons/md";
 import { companyName } from "../constant/general";
-
+import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
 import Menu from "./Menu";
 import { SearchBar } from "./SearchBar";
@@ -25,26 +27,17 @@ import SignUp from "../components/SignUp";
 
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Link } from "react-router-dom";
+import { Button } from "@chakra-ui/react";
 
 export default function Header() {
-  const { products } = useRecoveryData("productList");
   //sconst { wishlistItems } = useRecoveryData("wishlist");
   const { userInfo } = useRecoveryData("userLogin");
-
-
-  const [filteredProducts, setFilteredProducts] = React.useState(products);
-  const [search, setSearch] = useState("");
   const { toggleColorMode } = useColorMode();
   const isMobile = useBreakpointValue({ base: true, md: false });
-  
+  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
   const handleSearch = (e: any) => {
-    setSearch(e.target.value);
-    const filtered = products.filter((product: any) => {
-      console.log(search);
-      return product.name.toLowerCase().includes(search.toLowerCase());
-    });
-    setFilteredProducts(filtered);
-    console.log(filteredProducts);
+    console.log(e);
   };
 
   return (
@@ -58,8 +51,7 @@ export default function Header() {
           padding="1rem"
           bg={useColorModeValue("white", "gray.800")}
           color={useColorModeValue("gray.600", "white")}
-          boxShadow="md"
-        >
+          boxShadow="md">
           <Box>
             <Menu />
           </Box>
@@ -73,8 +65,7 @@ export default function Header() {
               letterSpacing={"wide"}
               color={useColorModeValue("gray.800", "white")}
               as={Link}
-              to={"/"}
-            >
+              to={"/"}>
               {companyName}
             </Text>
           </Flex>
@@ -93,7 +84,6 @@ export default function Header() {
               gap={6}
               aria-label="SearchBar"
               icon={<SearchBar />}
-              variant="ghost"
               colorScheme="teal"
             />
             <IconButton
@@ -114,8 +104,7 @@ export default function Header() {
           padding="0.5rem"
           bg={useColorModeValue("white", "gray.800")}
           color={useColorModeValue("gray.600", "white")}
-          boxShadow="md"
-        >
+          boxShadow="md">
           <Flex align="center" mr={5}>
             <Text
               ml={10}
@@ -126,66 +115,62 @@ export default function Header() {
               letterSpacing={"wide"}
               color={useColorModeValue("gray.800", "white")}
               as={Link}
-              to={"/"}
-            >
+              to={"/"}>
               {companyName}
             </Text>
           </Flex>
-          <Box>
-            <InputGroup>
-              <Input
-                type="text"
-                borderRadius={"999px"}
-                maxWidth={"560px"}
-                width={{ base: "100%", xl: "560px" }}
-                placeholder="Search"
-                value={search}
-                onChange={handleSearch}
-                variant="filled"
-                overflow={"hidden"}
-                bg={useColorModeValue("gray.100", "gray.700")}
-                _hover={{
-                  bg: useColorModeValue("gray.200", "gray.600"),
-                }}
-                _focus={{
-                  bg: useColorModeValue("gray.200", "gray.600"),
-                  borderColor: useColorModeValue("gray.300", "gray.500"),
-                }}
-              />
-              <InputRightElement mr={2} height={"100%"}>
-                <IconButton
+          <Box as="form">
+            <FormControl id="search">
+              <InputGroup>
+                <Input
+                  type="text"
+                  borderRadius={"999px"}
+                  maxWidth={"560px"}
+                  width={{ base: "100%", xl: "560px" }}
+                  placeholder="Search"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  variant="filled"
                   overflow={"hidden"}
-                  aria-label="SearchBar"
-                  icon={<BiSearch />}
-                  color="gray.900"
-                  variant="ghost"
-                  colorScheme="teal"
-                  onClick={handleSearch}
-                  as={Link}
-                  to={`/products/search/${search}`}
+                  bg={useColorModeValue("gray.100", "gray.700")}
                   _hover={{
-                    color: "gray.900",
-                    cursor: "pointer",
+                    bg: useColorModeValue("gray.200", "gray.600"),
                   }}
                   _focus={{
                     bg: useColorModeValue("gray.200", "gray.600"),
                     borderColor: useColorModeValue("gray.300", "gray.500"),
                   }}
                 />
-              </InputRightElement>
-            </InputGroup>
+                <InputRightElement mr={2} height={"100%"}>
+                  <IconButton
+                    overflow={"hidden"}
+                    aria-label="SearchBarButton"
+                    type="submit"
+                    icon={<BiSearch />}
+                    color={useColorModeValue("gray.500", "gray.200")}
+                    colorScheme="none"
+                    onClick={() => navigate(`/products/search/${search}`)}
+                    as={Link}
+                    to={`/products/search/${search}`}
+                    _focus={{
+                      boxShadow: "none",
+                    }}  
+                  />
+                </InputRightElement>
+              </InputGroup>
+            </FormControl>
           </Box>
           <Box>
             {!userInfo ? (
               <>
-               <IconButton onClick={toggleColorMode}
+                <IconButton
+                  onClick={toggleColorMode}
                   ml={-2}
                   icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
                   colorScheme="teal"
                   variant="ghost"
                   size="sm"
-                  aria-label={""}
-                ></IconButton>
+                  aria-label={""}></IconButton>
                 <IconButton aria-label="Login" variant={"ghost"} ml={3}>
                   <Login />
                 </IconButton>
@@ -194,30 +179,20 @@ export default function Header() {
                 </IconButton>
               </>
             ) : (
-              <>
+              <Grid templateColumns={"repeat(3, 1fr)"} gap={3}>
                 <IconButton
-                  mr={3}
                   className="Wishlist"
                   as={Link}
                   to="/wishlist"
                   aria-label="Wishlist"
                   icon={<MdFavorite />}
                   variant="ghost"
-                  colorScheme="teal"
-                >
+                  colorScheme="teal">
                   {/* {wishlistItems.length} */}
                 </IconButton>
-                <IconButton aria-label="Search database" variant="ghost">
-                  <Menu />
-                </IconButton>
-                <IconButton
-                  mr={4}
-                  aria-label="Search database"
-                  icon={<Cart />}
-                  variant="ghost"
-                  colorScheme="teal"
-                />
-              </>
+                <Cart />
+                <Menu />
+              </Grid>
             )}
           </Box>
         </Flex>

@@ -9,14 +9,12 @@ import {
   Image,
   useToast,
   Center,
-
 } from "@chakra-ui/react";
 // import { updateWishlist } from "../redux/actions/wishlistAction";
 // import { AppDispatch } from "../redux/rootStore";
 
-
 export default function WishList() {
-  const { wishlistItems } = useRecoveryData("wishlist");
+  // const { wishlistItems } = useRecoveryData("wishlist");
   const toast = useToast();
 
   return (
@@ -28,9 +26,8 @@ export default function WishList() {
       mt={10}
       w="100%"
       h="100%"
-      p="10"
-    >
-      <Heading as="h1" size="2xl" mb={10}
+      p="10">
+      {/* <Heading as="h1" size="2xl" mb={10}
       >Wishlist</Heading>
       <Flex
         direction="column"
@@ -109,7 +106,7 @@ export default function WishList() {
             >Your wishlist</Heading>
           </Box>
         )}
-      </Flex>
+      </Flex> */}
     </Flex>
   );
 }

@@ -12,6 +12,8 @@ import {
   Avatar,
   useToast,
   useBreakpointValue,
+  Flex,
+  Button,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
@@ -45,7 +47,7 @@ export default function Acordion() {
   };
 
   return (
-    <Box display={"flex"} mr={5}>
+    <Box display={"flex"}>
       {!userInfo ? (
         <>
           <Menu>
@@ -69,8 +71,7 @@ export default function Acordion() {
                   colorScheme="teal"
                   variant="ghost"
                   size="md"
-                  aria-label={""}
-                ></IconButton>
+                  aria-label={""}></IconButton>
               </MenuItem>
             </MenuList>
           </Menu>
@@ -78,23 +79,20 @@ export default function Acordion() {
       ) : (
         <>
           <Menu>
-            {useBreakpointValue({ base: true, md: false }) ? (
+            {useBreakpointValue({ base: false, md: true }) ? (
+              <MenuButton aria-label="Options" cursor={"pointer"}>
+                <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
+                  <Avatar size={"sm"} src={user?.avatar?.url} />
+                </Flex>
+              </MenuButton>
+            ) : (
               <MenuButton
                 as={IconButton}
                 aria-label="Options"
                 icon={<HamburgerIcon />}
                 variant="outline"
               />
-            ) : (
-              <MenuButton
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-              >
-                <Avatar size="sm" name={user?.name} src={user?.avatar?.url} />
-              </MenuButton>
             )}
-
             <MenuList>
               <MenuItem as={Link} to={"/profile"}>
                 <Avatar size={"xs"} src={user?.avatar?.url} />
@@ -116,8 +114,7 @@ export default function Acordion() {
                   colorScheme="teal"
                   variant="ghost"
                   size="sm"
-                  aria-label={""}
-                ></IconButton>
+                  aria-label={""}></IconButton>
                 <Text>{text}</Text>
               </MenuItem>
             </MenuList>

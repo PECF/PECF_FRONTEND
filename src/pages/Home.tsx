@@ -5,10 +5,10 @@ import { Carousel } from "../components/product/carouselProducts";
 import { Banner } from "../components/Banner";
 import { Categories } from "../components/Categories";
 
-export function Home() {
+export default function Home() {
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container
       maxW="100%"
