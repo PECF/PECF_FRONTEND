@@ -1,5 +1,6 @@
 import { ProductCard } from "../components/product/Card";
 import { ProductGrid } from "../components/product/ProductGrid";
+
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import {
   Box,
@@ -13,6 +14,8 @@ import {
   Stack,
   Grid,
   Button,
+  Heading,
+  VStack,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
@@ -25,10 +28,14 @@ import {
   GiUnderwear,
 } from "react-icons/gi";
 import { GrStackOverflow } from "react-icons/gr";
-import { useLocation } from "react-router-dom";
+import {
+  useLocation,
+  Link,
+  useNavigation,
+  useNavigate,
+} from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
-import { Link } from "react-router-dom";
 
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 
@@ -42,13 +49,14 @@ export default function Products() {
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
   const location = useLocation();
   const [render, setRender] = useState(true);
+  const navigate = useNavigate();
 
   const path = location.pathname.split("/")[2];
   const pathSearchOrCategory = location.pathname.split("/")[3];
 
   useEffect(() => {
     if (path === undefined && location.pathname !== "/products" && render) {
-      window.location.href = "/products";
+      navigate("/products");
       setFilteredProducts(products);
       setRender(false);
     }
@@ -62,12 +70,42 @@ export default function Products() {
             category: { value: string }[];
             brand: string;
           }) =>
-            product.name.toLowerCase().includes(_search.toLowerCase()) ||
-            product.description.toLowerCase().includes(_search.toLowerCase()) ||
+            product.name.toLowerCase().includes(
+              _search
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+            ) ||
+            product.description
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                _search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
             product.category[0].value
               .toLowerCase()
-              .includes(_search.toLowerCase()) ||
-            product.brand.toLowerCase().includes(_search.toLowerCase())
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                _search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) ||
+            product.brand
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(
+                _search
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              )
         );
         setFilteredProducts(filtered);
         setRender(false);
@@ -76,8 +114,14 @@ export default function Products() {
       if (pathSearchOrCategory && render) {
         const filtered = products.filter(
           (product: { category: { value: string }[] }) =>
-            product.category[0].value.toLowerCase() ===
-            pathSearchOrCategory.toLowerCase()
+            product.category[0].value
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "") ===
+            pathSearchOrCategory
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
         );
         setFilteredProducts(filtered);
         setRender(false);
@@ -88,9 +132,8 @@ export default function Products() {
     }
   }, [products, path, location.pathname, render, pathSearchOrCategory]);
 
-  //pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(10);
+  const [productsPerPage, setProductsPerPage] = useState(8);
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = filteredProducts.slice(
@@ -98,15 +141,13 @@ export default function Products() {
     indexOfLastProduct
   );
 
-  console.log(filteredProducts);
-
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   const [Categories, setCategories] = useState<any[]>([]);
 
   const handleFilter = (e: string) => {
     if (location.pathname.split("/")[2] !== "composeFilter") {
-      window.location.href = "/products/composeFilter";
+      navigate("/products/composeFilter");
     }
     if (Categories.includes(e)) {
       const filtered = Categories.filter((category) => category !== e);
@@ -116,27 +157,50 @@ export default function Products() {
     }
   };
 
+  const checkExistCategory = (e: string) => {
+    if (Categories.includes(e)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   useEffect(() => {
     if (Categories.length > 0) {
-      const filtered = products.filter((product: { category: any[] }) => {
-        return product.category.some((category: { value: string }) =>
-          Categories.includes(category.value)
-        );
-      });
+      const filtered = products.filter(
+        (product: { category: { value: string }[] }) => {
+          let flag = false;
+          Categories.forEach((category) => {
+            if (
+              product.category[0].value
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "") ===
+              category
+                .toLowerCase()
+                .normalize("NFD")
+                .replace(/[\u0300-\u036f]/g, "")
+            ) {
+              flag = true;
+            }
+          });
+          return flag;
+        }
+      );
+
       setFilteredProducts(filtered);
     } else {
       setFilteredProducts(products);
     }
   }, [Categories]);
 
-  // const { isOpen, onToggle } = useDisclosure();
+  const { isOpen, onToggle } = useDisclosure();
 
   return (
     <Container
       maxW="container.xxl"
       bg={useColorModeValue("gray.100", "gray.900")}
-      minH="100vh"
-      mt="8vh">
+      minH="100vh">
       <Flex
         direction={{ base: "column", md: "row" }}
         shadow={{ md: "xl" }}
@@ -145,7 +209,8 @@ export default function Products() {
           w={{ base: "100%", md: "20%" }}
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
-          overflow="hidden">
+          overflow="hidden"
+          mt="3vh">
           <Flex
             justify="center"
             align="center"
@@ -155,7 +220,7 @@ export default function Products() {
             bg={useColorModeValue("gray.50", "gray.900")}
             w={"auto"}
             display={{ base: "flex", md: "none" }}>
-            {/* <IconButton
+            <IconButton
               onClick={onToggle}
               icon={
                 isOpen ? (
@@ -166,7 +231,7 @@ export default function Products() {
               }
               variant={"ghost"}
               aria-label={"Toggle Navigation"}
-            /> */}
+            />
           </Flex>
 
           <Box
@@ -183,7 +248,7 @@ export default function Products() {
               Categories
             </Text>
 
-            {/* {categories.length > 0 && (
+            {Categories.length > 0 && (
               <Text
                 mt={2}
                 mb={4}
@@ -197,7 +262,7 @@ export default function Products() {
                 }}>
                 CLEAR FILTER
               </Text>
-            )} */}
+            )}
 
             <Flex
               mt={2}
@@ -226,14 +291,19 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("shirts")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               borderRadius="md"
-              // as={Link}
-              // to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("shirts");
-              // }}
+              as={Link}
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("shirts");
+              }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
               }}>
@@ -249,13 +319,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("pants")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("pants");
-              // }}
+              onClick={() => {
+                handleFilter("pants");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -271,13 +346,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("underwear")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("underwear");
-              // }}
+              onClick={() => {
+                handleFilter("underwear");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -294,13 +374,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("shoes")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("shoes");
-              // }}
+              onClick={() => {
+                handleFilter("shoes");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -317,13 +402,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("hoodies")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("hoodies");
-              // }}
+              onClick={() => {
+                handleFilter("hoodies");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -340,13 +430,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("caps")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("caps");
-              // }}
+              onClick={() => {
+                handleFilter("caps");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -363,13 +458,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("jackets")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("jackets");
-              // }}
+              onClick={() => {
+                handleFilter("jackets");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -386,13 +486,18 @@ export default function Products() {
               mt={2}
               justify="space-between"
               align="center"
+              bg={
+                checkExistCategory("accesories")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
               to="/products/composeFilter"
-              // onClick={() => {
-              //   handleFilter("accesories");
-              // }}
+              onClick={() => {
+                handleFilter("accesories");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
@@ -561,317 +666,71 @@ export default function Products() {
           </Stack> */}
         </Box>
 
-        <Box>
-          <Box
-            maxW="11xl"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-            mx="auto"
-            px={{ base: "4", md: "8", lg: "12" }}
-            py={{ base: "6", md: "8", lg: "12" }}>
-            <ProductGrid>
-              {currentProducts.length === 0 ? (
-                <Box>
-                  <span>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      No products found
-                    </Text>
-                  </span>
-                </Box>
-              ) : (
-                currentProducts.length > 0 &&
-                currentProducts.map((product: { _id: string }) => {
-                  return <ProductCard key={product._id} product={product} />;
-                })
-              )}
-            </ProductGrid>
-          </Box>
+        <Box
+          as="form"
+          w="full"
+          maxW="full"
+          mx="auto"
+          bg={useColorModeValue("white", "gray.700")}
+          overflow="hidden"
+          shadow="base">
+          <VStack align="stretch" spacing={0}>
+            <Flex
+              justify="space-between"
+              align="center"
+              px={6}
+              py={4}
+              bg={useColorModeValue("gray.50", "gray.800")}
+              borderBottomWidth="1px"></Flex>
+            <Box>
+              <Box
+                maxW="11xl"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
+                mx="auto"
+                px={{ base: "4", md: "8", lg: "12" }}
+                py={{ base: "6", md: "8", lg: "12" }}>
+                <ProductGrid>
+                  {currentProducts.length === 0 ? (
+                    <Box>
+                      <span>
+                        <Text fontSize="2xl" fontWeight="bold">
+                          No products found
+                        </Text>
+                      </span>
+                    </Box>
+                  ) : (
+                    currentProducts.length > 0 &&
+                    currentProducts.map((product: { _id: string }) => {
+                      return (
+                        <ProductCard key={product._id} product={product} />
+                      );
+                    })
+                  )}
+                </ProductGrid>
+              </Box>
 
-          <Box
-            pt={"30px"}
-            pb="30px"
-            display={"flex"}
-            flexDir="column"
-            justifyContent={"center"}
-            alignItems="center">
-            {/* {currentProducts.length > 10 && (
-              <Pagination
-                functionPagination={paginate}
-                productsLength={products.length}
-                productsPage={productsPerPage}
-              />
-            )} */}
-          </Box>
+              <Box
+                pt={"30px"}
+                pb="30px"
+                display={"flex"}
+                flexDir="column"
+                justifyContent={"center"}
+                alignItems="center">
+                {filteredProducts.length > 10 && (
+                  <Pagination
+                    functionPagination={paginate}
+                    productsLength={products.length}
+                    productsPage={productsPerPage}
+                  />
+                )}
+              </Box>
+            </Box>
+          </VStack>
         </Box>
       </Flex>
     </Container>
   );
 }
-
-//   return (
-
-//   );
-// }
-
-/* 
-          </Box>
-
-          <Stack
-            spacing={1}
-            align="center"
-            justify="center"
-            display={{ base: isOpen ? "flex" : "none", md: "none" }}>
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Icon as={FiUser} w={5} h={5} />
-              <Text ml={4} fontWeight="medium">
-                Profile
-              </Text>
-            </Flex>
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Icon as={FiSettings} w={5} h={5} />
-              <Text ml={4} fontWeight="medium">
-                Settings
-              </Text>
-            </Flex>
-
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Icon as={FiShoppingCart} w={5} h={5} />
-              <Text ml={4} fontWeight="medium">
-                Orders
-              </Text>
-            </Flex>
-
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-              onClick={() => {
-                onToggle();
-              }}>
-              <Icon as={FiCreditCard} w={5} h={5} />
-              <Text ml={4} fontWeight="medium">
-                Payment
-              </Text>
-            </Flex>
-
-            <Flex
-              align="center"
-              px={6}
-              py={3}
-              cursor="pointer"
-              borderRadius="md"
-              _hover={{
-                bg: useColorModeValue("gray.100", "gray.700"),
-              }}>
-              <Icon as={FiLogOut} w={5} h={5} />
-              <Text ml={4} fontWeight="medium">
-                Logout
-              </Text>
-            </Flex>
-          </Stack>
-        </Box>
-
-
-
-
-        <Box mt="82">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-            mx="auto"
-            px={{ base: "4", md: "8", lg: "12" }}
-            py={{ base: "6", md: "8", lg: "12" }}>
-            <ProductGrid>
-              {currentProduct.length === 0 && isLoading === true ? (
-                <Text>Loading</Text>
-              ) : currentProduct.length === 0 && isLoading === false ? (
-                <Box>
-                  <span>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      No products found
-                    </Text>
-                  </span>
-                </Box>
-              ) : (
-                currentProduct.length > 0 &&
-                currentProduct.map((product: { _id: string }) => {
-                  return <ProductCard key={product._id} product={product} />;
-                })
-              )}
-            </ProductGrid>
-          </Box>
-
-          <Box
-            pt={"30px"}
-            pb="30px"
-            display={"flex"}
-            flexDir="column"
-            justifyContent={"center"}
-            alignItems="center">
-            {filteredProducts.length > 10 && (
-              <Pagination
-                functionPagination={_Pagination}
-                productsLength={products.length}
-                productsPage={productsPerPage}
-              />
-            )}
-          </Box>
-        </Box>
-      </Flex>
-    </Container>
-  );
-}; */
-
-{
-  /* 
-        </Box>
-
-        <Box mt="82">
-          <Box
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            flexDirection="column"
-            mx="auto"
-            px={{ base: "4", md: "8", lg: "12" }}
-            py={{ base: "6", md: "8", lg: "12" }}>
-            <ProductGrid>
-              {currentProduct.length === 0 && isLoading === true ? (
-                <Text>Loading</Text>
-              ) : currentProduct.length === 0 && isLoading === false ? (
-                <Box>
-                  <span>
-                    <Text fontSize="2xl" fontWeight="bold">
-                      No products found
-                    </Text>
-                  </span>
-                </Box>
-              ) : (
-                currentProduct.length > 0 &&
-                currentProduct.map((product: { _id: string }) => {
-                  return <ProductCard key={product._id} product={product} />;
-                })
-              )}
-            </ProductGrid>
-          </Box>
-
-          <Box
-            pt={"30px"}
-            pb="30px"
-            display={"flex"}
-            flexDir="column"
-            justifyContent={"center"}
-            alignItems="center">
-            {filteredProducts.length > 10 && (
-              <Pagination
-                functionPagination={_Pagination}
-                productsLength={products.length}
-                productsPage={productsPerPage}
-              />
-            )}
-          </Box>
-        </Box>
-      </Flex>
-    </Container>
-  );
-}; */
-}
-
-// if (path === "search" && path !== undefined) {
-//   const search = location.search.split("/")[1];
-
-//   const filtered = products.filter(
-//     (product: {
-//       name: string;
-//       description: string;
-//       category: { value: string };
-//       brand: string;
-//     }) => {
-//       return (
-//         product.name
-//           .toLowerCase()
-//           .normalize("NFD")
-//           .replace(/[\u0300-\u036f]/g, "")
-//           .includes(
-//             search
-//               .toLowerCase()
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//           ) ||
-//         product.description
-//           .toLowerCase()
-//           .normalize("NFD")
-//           .replace(/[\u0300-\u036f]/g, "")
-//           .includes(
-//             search
-//               .toLowerCase()
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//           ) ||
-//         product.category.value
-//           .toLowerCase()
-//           .normalize("NFD")
-//           .replace(/[\u0300-\u036f]/g, "")
-//           .includes(
-//             search
-//               .toLowerCase()
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//           ) ||
-//         product.brand
-//           .toLowerCase()
-//           .normalize("NFD")
-//           .replace(/[\u0300-\u036f]/g, "")
-//           .includes(
-//             search
-//               .toLowerCase()
-//               .normalize("NFD")
-//               .replace(/[\u0300-\u036f]/g, "")
-//           )
-//       );
-//     }
-//   );
-//   setFilteredProducts(filtered);
-// }
