@@ -2,18 +2,14 @@ import React, { useState } from "react";
 import {
   Flex,
   Text,
-  //Button,
   useColorMode,
   useColorModeValue,
   IconButton,
   Box,
   Input,
   InputGroup,
-  //InputLeftElement,
   InputRightElement,
   useBreakpointValue,
-  useToast,
-  Grid,
 } from "@chakra-ui/react";
 
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
@@ -26,37 +22,21 @@ import Menu from "./Menu";
 import { SearchBar } from "./SearchBar";
 import Login from "../components/Login";
 import SignUp from "../components/SignUp";
-import { logout } from "../redux/actions/authActions";
-import { AppDispatch } from "../redux/rootStore";
-import { useDispatch } from "react-redux";
 
 import { useRecoveryData } from "../hooks/useRecoveryData";
 import { Link } from "react-router-dom";
 
-export function Header() {
+export default function Header() {
   const { products } = useRecoveryData("productList");
+  const { wishlistItems } = useRecoveryData("wishlist");
+  const { userInfo } = useRecoveryData("userLogin");
+
+
   const [filteredProducts, setFilteredProducts] = React.useState(products);
   const [search, setSearch] = useState("");
   const { toggleColorMode } = useColorMode();
   const isMobile = useBreakpointValue({ base: true, md: false });
-
-  const { wishlistItems } = useRecoveryData("wishlist");
-  /*   const { user } = useRecoveryData("userDetails") */
-  const { userInfo } = useRecoveryData("userLogin");
-  /*   const dispatch = useDispatch<AppDispatch>();
-  const send = useToast(); */
-
-  /*   const logoutHandler = () => {
-    dispatch(logout());
-    send({
-      title: "Success",
-      description: "You are logged out",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-  }; */
-
+  
   const handleSearch = (e: any) => {
     setSearch(e.target.value);
     const filtered = products.filter((product: any) => {
