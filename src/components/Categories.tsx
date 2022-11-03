@@ -110,7 +110,7 @@ export function Categories() {
               to={
                 category.name === "All"
                   ? "/products"
-                  : `/products/${category.filter}`
+                  : `/products/category/${category.filter}`
               }
               w="100%"
               h="100%"
