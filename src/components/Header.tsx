@@ -142,20 +142,22 @@ export default function Header() {
                   }}
                 />
                 <InputRightElement mr={2} height={"100%"}>
-                  <IconButton
-                    overflow={"hidden"}
-                    aria-label="SearchBarButton"
+                  <Button
                     type="submit"
-                    icon={<BiSearch />}
+                    overflow={"hidden"}
+                    size={"sm"}
+                    aria-label="SearchBarButton"
                     color={useColorModeValue("gray.500", "gray.200")}
                     colorScheme="none"
                     onClick={() => navigate(`/products/search/${search}`)}
-                    as={Link}
-                    to={`/products/search/${search}`}
                     _focus={{
                       boxShadow: "none",
-                    }}  
-                  />
+                    }}
+                    _hover={{
+                      bg: "none",
+                    }}>
+                    <BiSearch />
+                  </Button>
                 </InputRightElement>
               </InputGroup>
             </FormControl>

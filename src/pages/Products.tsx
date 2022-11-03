@@ -38,112 +38,19 @@ import React, { useEffect, useState } from "react";
 import { Pagination } from "../components/Pagination";
 
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
-
-import { MdOutlineKeyboardArrowRight } from "react-icons/md";
-import { Categories } from "../components/Categories";
-
 import { FaChild } from "react-icons/fa";
 
 export default function Products() {
   const { products } = useRecoveryData("productList");
-  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
-  const location = useLocation();
-  const [render, setRender] = useState(true);
+
   const navigate = useNavigate();
-
-  const path = location.pathname.split("/")[2];
-  const pathSearchOrCategory = location.pathname.split("/")[3];
-
-  useEffect(() => {
-    if (path === undefined && location.pathname !== "/products" && render) {
-      navigate("/products");
-      setFilteredProducts(products);
-      setRender(false);
-    }
-    if (path === "search") {
-      if (pathSearchOrCategory && render) {
-        const _search = location.pathname.split("/")[3];
-        const filtered = products.filter(
-          (product: {
-            name: string;
-            description: string;
-            category: { value: string }[];
-            brand: string;
-          }) =>
-            product.name.toLowerCase().includes(
-              _search
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-            ) ||
-            product.description
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                _search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              ) ||
-            product.category[0].value
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                _search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              ) ||
-            product.brand
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              .includes(
-                _search
-                  .toLowerCase()
-                  .normalize("NFD")
-                  .replace(/[\u0300-\u036f]/g, "")
-              )
-        );
-        setFilteredProducts(filtered);
-        setRender(false);
-      }
-    } else if (path === "category") {
-      if (pathSearchOrCategory && render) {
-        const filtered = products.filter(
-          (product: { category: { value: string }[] }) =>
-            product.category[0].value
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "") ===
-            pathSearchOrCategory
-              .toLowerCase()
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-        );
-        setFilteredProducts(filtered);
-        setRender(false);
-      }
-    } else {
-      setFilteredProducts(products);
-      setRender(false);
-    }
-  }, [products, path, location.pathname, render, pathSearchOrCategory]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [productsPerPage, setProductsPerPage] = useState(8);
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
-
-  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
+  const location = useLocation();
 
   const [Categories, setCategories] = useState<any[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [currentProducts, setCurrentProducts] = useState<any[]>([]);
+  const [productsPerPage, setProductsPerPage] = useState(8);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const handleFilter = (e: string) => {
     if (location.pathname.split("/")[2] !== "composeFilter") {
@@ -165,36 +72,116 @@ export default function Products() {
     }
   };
 
-  useEffect(() => {
-    if (Categories.length > 0) {
-      const filtered = products.filter(
-        (product: { category: { value: string }[] }) => {
-          let flag = false;
-          Categories.forEach((category) => {
-            if (
-              product.category[0].value
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "") ===
-              category
-                .toLowerCase()
-                .normalize("NFD")
-                .replace(/[\u0300-\u036f]/g, "")
-            ) {
-              flag = true;
-            }
-          });
-          return flag;
-        }
-      );
+  const path = location.pathname.split("/")[2];
+  const pathSearchOrCategory = location.pathname
+    .split("/")[3]
+    ?.toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+  const { isOpen, onToggle } = useDisclosure();
 
+  useEffect(() => {
+    if (path === "search") {
+      const filtered = products.filter(
+        (product: {
+          name: string;
+          description: string;
+          category: { value: string }[];
+          brand: string;
+        }) =>
+          product.name
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(pathSearchOrCategory) ||
+          product.description
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(pathSearchOrCategory) ||
+          product.category
+            .map((category) => category.value)
+            .join("")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(pathSearchOrCategory) ||
+          product.brand
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(pathSearchOrCategory)
+      );
       setFilteredProducts(filtered);
+    } else if (path === "category") {
+      const filtered = products.filter(
+        (product: { category: { value: string }[] }) =>
+          product.category[0].value
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(pathSearchOrCategory)
+      );
+      setFilteredProducts(filtered);
+    } else if (path === "composeFilter") {
+      if (Categories.length > 0) {
+        const filtered = products.filter(
+          (product: { category: { value: string }[] }) => {
+            let flag = false;
+            Categories.forEach((category) => {
+              if (
+                product.category[0].value
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "") ===
+                category
+                  .toLowerCase()
+                  .normalize("NFD")
+                  .replace(/[\u0300-\u036f]/g, "")
+              ) {
+                flag = true;
+              }
+            });
+            return flag;
+          }
+        );
+
+        setFilteredProducts(filtered);
+      } else if (Categories.length === 0 && path === "composeFilter") {
+        setFilteredProducts(products);
+      }
     } else {
       setFilteredProducts(products);
     }
-  }, [Categories]);
+  }, [path, pathSearchOrCategory, products, Categories]);
 
-  const { isOpen, onToggle } = useDisclosure();
+  useEffect(() => {
+    if (
+      filteredProducts.length < 8 &&
+      productsPerPage !== filteredProducts.length
+    ) {
+      setProductsPerPage(filteredProducts.length);
+    }
+    if (filteredProducts.length > 8 && productsPerPage !== 8) {
+      setProductsPerPage(8);
+    }
+    const indexOfLastProduct = currentPage * productsPerPage;
+    const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+    const currentProducts = filteredProducts.slice(
+      indexOfFirstProduct,
+      indexOfLastProduct
+    );
+    setCurrentProducts(currentProducts);
+  }, [filteredProducts, currentPage, productsPerPage]);
+
+  const CleanAndRedirect = () => {
+    setCategories([]);
+    navigate("/products");
+  };
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+  };
 
   return (
     <Container
@@ -256,8 +243,7 @@ export default function Products() {
                 color={useColorModeValue("gray.600", "gray.400")}
                 cursor="pointer"
                 onClick={() => {
-                  setFilteredProducts(products);
-                  setCategories([]);
+                  CleanAndRedirect();
                 }}>
                 CLEAR FILTER
               </Text>
@@ -269,10 +255,8 @@ export default function Products() {
               align="center"
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
-              as={Link}
-              to="/products/composeFilter"
               onClick={() => {
-                setFilteredProducts(products);
+                CleanAndRedirect();
               }}
               borderRadius="md"
               _hover={{
@@ -576,8 +560,76 @@ export default function Products() {
               </Flex>
             </Flex>
           </Box>
+        </Box>
 
-          {/* <Stack
+        <Box
+          w="full"
+          maxW="full"
+          mx="auto"
+          bg={useColorModeValue("white", "gray.700")}
+          overflow="hidden"
+          shadow="base">
+          <VStack align="stretch" spacing={0}>
+            <Flex
+              justify="space-between"
+              align="center"
+              px={6}
+              bg={useColorModeValue("gray.50", "gray.800")}
+              borderBottomWidth="1px"></Flex>
+            <Box>
+              <Box
+                maxW="11xl"
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                flexDirection="column"
+                mx="auto"
+                px={{ base: "4", md: "8", lg: "12" }}
+                py={{ base: "6", md: "8", lg: "12" }}>
+                <ProductGrid>
+                  {currentProducts.length === 0 ? (
+                    <Box>
+                      <span>
+                        <Text fontSize="2xl" fontWeight="bold">
+                          No products found
+                        </Text>
+                      </span>
+                    </Box>
+                  ) : (
+                    currentProducts.length > 0 &&
+                    currentProducts.map((product: { _id: string }) => {
+                      return (
+                        <ProductCard key={product._id} product={product} />
+                      );
+                    })
+                  )}
+                </ProductGrid>
+              </Box>
+
+              <Box
+                pt={"30px"}
+                pb="30px"
+                display={"flex"}
+                flexDir="column"
+                justifyContent={"center"}
+                alignItems="center">
+                <Pagination
+                  totalProducts={filteredProducts.length}
+                  productsPerPage={productsPerPage}
+                  currentPage={currentPage}
+                  onPageChange={handlePageChange}
+                />
+              </Box>
+            </Box>
+          </VStack>
+        </Box>
+      </Flex>
+    </Container>
+  );
+}
+
+{
+  /* <Stack
             spacing={1}
             align="center"
             justify="center"
@@ -662,72 +714,5 @@ export default function Products() {
                 Logout
               </Text>
             </Flex>
-          </Stack> */}
-        </Box>
-
-        <Box
-          w="full"
-          maxW="full"
-          mx="auto"
-          bg={useColorModeValue("white", "gray.700")}
-          overflow="hidden"
-          shadow="base">
-          <VStack align="stretch" spacing={0}>
-            <Flex
-              justify="space-between"
-              align="center"
-              px={6}
-              bg={useColorModeValue("gray.50", "gray.800")}
-              borderBottomWidth="1px"></Flex>
-            <Box>
-              <Box
-                maxW="11xl"
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                flexDirection="column"
-                mx="auto"
-                px={{ base: "4", md: "8", lg: "12" }}
-                py={{ base: "6", md: "8", lg: "12" }}>
-                <ProductGrid>
-                  {currentProducts.length === 0 ? (
-                    <Box>
-                      <span>
-                        <Text fontSize="2xl" fontWeight="bold">
-                          No products found
-                        </Text>
-                      </span>
-                    </Box>
-                  ) : (
-                    currentProducts.length > 0 &&
-                    currentProducts.map((product: { _id: string }) => {
-                      return (
-                        <ProductCard key={product._id} product={product} />
-                      );
-                    })
-                  )}
-                </ProductGrid>
-              </Box>
-
-              <Box
-                pt={"30px"}
-                pb="30px"
-                display={"flex"}
-                flexDir="column"
-                justifyContent={"center"}
-                alignItems="center">
-                {filteredProducts.length > 10 && (
-                  <Pagination
-                    functionPagination={paginate}
-                    productsLength={products.length}
-                    productsPage={productsPerPage}
-                  />
-                )}
-              </Box>
-            </Box>
-          </VStack>
-        </Box>
-      </Flex>
-    </Container>
-  );
+          </Stack> */
 }
