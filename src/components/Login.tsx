@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { login } from "../redux/actions/authActions";
+import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import {
   Button,
@@ -71,9 +71,6 @@ export default function Login() {
       <Button size="md" colorScheme="teal" variant="ghost" onClick={onOpen}>
         Log In
       </Button>
-      {/* <Text fontWeight="semibold" color="teal" as={Link} onClick={onOpen}>
-        Log In
-      </Text> */}
       <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent>
@@ -85,6 +82,7 @@ export default function Login() {
               <Input
                 type="email"
                 placeholder="Enter email"
+                mb={4}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </FormControl>

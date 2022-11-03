@@ -87,6 +87,7 @@ export default function SignUp() {
                 <FormLabel>Name</FormLabel>
                 <Input
                   type="text"
+                  mb={4}
                   placeholder="Enter your name"
                   onChange={(e) => setName(e.target.value)}
                 />
@@ -95,6 +96,7 @@ export default function SignUp() {
                 <FormLabel>Email</FormLabel>
                 <Input
                   type="email"
+                  mb={4}
                   placeholder="Enter your email"
                   onChange={(e) => setEmail(e.target.value)}
                 />
@@ -114,8 +116,7 @@ export default function SignUp() {
               colorScheme="teal"
               variant="solid"
               mr={3}
-              onClick={handleSubmit}
-            >
+              onClick={handleSubmit}>
               Sign Up
             </Button>
           </ModalFooter>
