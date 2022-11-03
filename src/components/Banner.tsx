@@ -30,7 +30,7 @@ export function Banner() {
   const side = useBreakpointValue({ base: "30%", md: "10px" });
 
   return (
-    <Flex w={{ base: "100%", md: "95%" }} h={"35vh"} mb="10rem" mt={"3rem"}>
+    <Flex w={{ base: "100%", md: "90%" }} h={"35vh"} mb="10rem" mt={"3rem"}>
       <Box
         position={"relative"}
         height={"50vh"}

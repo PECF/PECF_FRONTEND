@@ -8,24 +8,21 @@ import {
   useColorModeValue,
   useColorMode,
   Box,
-  Flex,
   Text,
   Avatar,
   useToast,
-  Button,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
 import { BsMoonFill, BsSunFill } from "react-icons/bs";
-import { Login } from "./Login"; //
-import { SignUp } from "./SignUp"; //
+import Login from "./Login"; //
+import SignUp from "./SignUp"; //
 import { IoBagCheckOutline } from "react-icons/io5";
 import { MdLogout } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { logout } from "../redux/actions/authActions";
 import { Link } from "react-router-dom";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import Cart from "./Cart";
 import { AppDispatch } from "../redux/rootStore";
 
 export default function Acordion() {
@@ -35,21 +32,6 @@ export default function Acordion() {
   const { userInfo } = useRecoveryData("userLogin");
   const dispatch = useDispatch<AppDispatch>();
   const send = useToast();
-
-  const [width, setWidth] = React.useState(window.innerWidth);
-  const breakpoint = 768;
-
-  React.useEffect(() => {
-    window.addEventListener("resize", () => setWidth(window.innerWidth));
-  }, []);
-  const [isHidden, setIsHidden] = React.useState(false);
-  React.useEffect(() => {
-    if (width < breakpoint) {
-      setIsHidden(true);
-    } else {
-      setIsHidden(false);
-    }
-  }, [width]);
 
   const logoutHandler = () => {
     dispatch(logout());
@@ -63,10 +45,10 @@ export default function Acordion() {
   };
 
   return (
-    <Box display={isHidden ? "flex" : "none"} mr={5}>
+    <Box display={"flex"} mr={5}>
       {!userInfo ? (
         <>
-          <Menu display={isHidden ? "none" : "flex"}>
+          <Menu>
             <MenuButton
               as={IconButton}
               aria-label="Options"
@@ -91,44 +73,35 @@ export default function Acordion() {
                 ></IconButton>
               </MenuItem>
             </MenuList>
-            {/* <Button
-          //   leftIcon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-          colorScheme="teal"
-          variant="outline"
-          size="md"
-          pl={6}
-          pr={6}
-          onClick={toggleColorMode}
-        >
-          {text}
-        </Button> */}
           </Menu>
         </>
       ) : (
         <>
-          <Menu display={isHidden ? "flex" : "none"}>
-            <MenuButton
-              // as={Button}
-              // rounded={"full"}
-              // variant={"link"}
-              // cursor={"pointer"}
-              as={IconButton}
-              aria-label="Options"
-              icon={<HamburgerIcon />}
-              variant="outline"
-            >
-              <Flex alignItems={"center"} justifyContent={"center"} gap={2}>
-                <Text>{user?.name}</Text>
-                <Avatar size={"sm"} src={user?.avatar?.url} />
-              </Flex>
-            </MenuButton>
+          <Menu>
+            {useBreakpointValue({ base: true, md: false }) ? (
+              <MenuButton
+                as={IconButton}
+                aria-label="Options"
+                icon={<HamburgerIcon />}
+                variant="outline"
+              />
+            ) : (
+              <MenuButton
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"center"}
+              >
+                <Avatar size="sm" name={user?.name} src={user?.avatar?.url} />
+              </MenuButton>
+            )}
+
             <MenuList>
               <MenuItem as={Link} to={"/profile"}>
-                <CgProfile />
+                <Avatar size={"xs"} src={user?.avatar?.url} />
                 <Text ml="2">Profile</Text>
               </MenuItem>
               <MenuItem as={Link} to={"/orders"}>
-                <IoBagCheckOutline ml={2} />
+                <IoBagCheckOutline />
                 <Text ml="2">Orders</Text>
               </MenuItem>
               <MenuItem onClick={logoutHandler}>
@@ -149,15 +122,6 @@ export default function Acordion() {
               </MenuItem>
             </MenuList>
           </Menu>
-          {/* <IconButton
-            ml={5}
-            icon={useColorModeValue(<BsMoonFill />, <BsSunFill />)}
-            colorScheme="teal"
-            variant="ghost"
-            size="md"
-            onClick={toggleColorMode}
-          ></IconButton> */}
-          {/* <Cart /> */}
         </>
       )}
     </Box>

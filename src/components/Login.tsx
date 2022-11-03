@@ -18,13 +18,11 @@ import {
   ModalFooter,
   useDisclosure,
   useToast,
-  useColorModeValue,
-  Text,
 } from "@chakra-ui/react";
 import { emailRegex } from "../constant/Regex";
 import { useRecoveryData } from "../hooks/useRecoveryData";
 
-export const Login = () => {
+export default function Login() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { loading, error, isLogged } = useRecoveryData("userLogin");
   const [password, setPassword] = useState("");
@@ -122,4 +120,4 @@ export const Login = () => {
       </Modal>
     </Box>
   );
-};
+}

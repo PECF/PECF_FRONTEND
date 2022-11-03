@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Home } from "../pages/Home";
 import { useRecoveryData } from "../hooks/useRecoveryData";
+import { Spinner } from '@chakra-ui/react';
 import { HelpCenter } from "../pages/HelpCenter";
 //import { NotFound } from "../pages/NotFound";
 //import { Profile } from "../pages/user/profile";
@@ -38,7 +39,23 @@ const WishList = lazy(() => import("../components/WishList"));
 export const AppRoutes: React.FC = () => {
   const { user } = useRecoveryData("userDetails");
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense
+      fallback={
+        <Spinner
+          alignItems={"center"}
+          justifyContent={"center"}
+          position={"absolute"}
+          top={"50%"}
+          left={"50%"}
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="blue.500"
+          size="xl"
+
+        />
+      }
+    >
       <Routes>
         <Route path="/" element={<Home />} />
 

@@ -1,46 +1,9 @@
-// import {
-//   Input,
-//   InputGroup,
-//   InputRightElement,
-//   useColorModeValue,
-// } from "@chakra-ui/react";
-// import { SearchIcon } from "@chakra-ui/icons";
-// import React from "react";
-
-// export const SearchBar = () => {
-//   return (
-//     <InputGroup
-//       // display={isHidden ? "none" : "flex"}
-//       ml={10}
-//       mr={10}
-//       w="full"
-//       maxW="full"
-//       minW="30%"
-//     >
-//       <Input
-//         placeholder="Search"
-//         variant="filled"
-//         bg={useColorModeValue("gray.100", "gray.700")}
-//         _hover={{
-//           bg: useColorModeValue("gray.200", "gray.600"),
-//         }}
-//         _focus={{
-//           bg: useColorModeValue("grawy.200", "gray.600"),
-//           borderColor: useColorModeValue("gray.300", "gray.500"),
-//         }}
-//       />
-//       <InputRightElement mr={2}>
-//         <SearchIcon color="gray.300" />
-//       </InputRightElement>
-//     </InputGroup>
-//   );
-// };
-
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Drawer,
   DrawerBody,
-  DrawerOverlay,
+  //DrawerOverlay,
   DrawerContent,
   useDisclosure,
   IconButton,
@@ -49,38 +12,61 @@ import {
   Input,
   useColorModeValue,
   InputRightElement,
+  InputLeftElement,
 } from "@chakra-ui/react";
-import { SearchIcon } from "@chakra-ui/icons";
+import { SearchIcon, ArrowBackIcon } from "@chakra-ui/icons";
+import { useRecoveryData } from "../hooks/useRecoveryData";
 
 export function SearchBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [placement, setPlacement] = React.useState("top");
+  const [search, setSearch] = useState("");
+  const { products } = useRecoveryData("productList");
+  const [filteredProducts, setFilteredProducts] = React.useState(products);
 
-  React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+  const handleSearch = (e: any) => {
+    setSearch(e.target.value);
+    const filtered = products.filter((product: any) => {
+      console.log(search);
+      return product.name.toLowerCase().includes(search.toLowerCase());
+    });
+    setFilteredProducts(filtered);
+    console.log(filteredProducts);
+  };
 
   return (
-    <Box justify="center">
+    <Box>
       <IconButton
+        aria-label="Search database"
         icon={<SearchIcon />}
         variant="ghost"
         colorScheme="teal"
         onClick={onOpen}
       ></IconButton>
       <Drawer
-        placement={placement}
-        onClose={onClose}
+        placement={"top"}
+        blockScrollOnMount={true}
         isOpen={isOpen}
-        justify="center"
+        onClose={onClose}
       >
-        <DrawerOverlay />
-        <DrawerContent justify="center">
-          <DrawerBody justify="center">
-            <InputGroup justify="center" align="center" maxW="100%">
+        <DrawerContent>
+          <DrawerBody className="searchBar">
+            <InputGroup maxW="100%">
+              <InputLeftElement>
+                <ArrowBackIcon
+                  color={useColorModeValue("gray.600", "white")}
+                  onClick={onClose}
+                  _hover={{
+                    color: useColorModeValue("gray.800", "white"),
+                    cursor: "pointer",
+                  }}
+                  boxSize={6}
+                />
+              </InputLeftElement>
               <Input
-                justify="center"
+                borderRadius={"999px"}
                 placeholder="Search"
+                value={search}
+                onChange={handleSearch}
                 variant="filled"
                 bg={useColorModeValue("gray.100", "gray.700")}
                 _hover={{
@@ -92,7 +78,16 @@ export function SearchBar() {
                 }}
               />
               <InputRightElement mr={2}>
-                <SearchIcon color="gray.300" />
+                <SearchIcon
+                  color="gray.900"
+                  onClick={handleSearch}
+                  as={Link}
+                  to={`/products/search/${search}`}
+                  _hover={{
+                    color: "gray.900",
+                    cursor: "pointer",
+                  }}
+                />
               </InputRightElement>
             </InputGroup>
           </DrawerBody>
@@ -101,3 +96,4 @@ export function SearchBar() {
     </Box>
   );
 }
+

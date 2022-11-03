@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 import { FiShoppingCart } from "react-icons/fi";
 import {
   Box,
@@ -14,58 +14,42 @@ import {
   Thead,
   Tbody,
   Tfoot,
-  Text,
   Tr,
   Th,
   Td,
   TableContainer,
   useDisclosure,
-  IconButton,
-  useToast,
+  FormControl,
+  FormLabel,
+  Heading,
+  Input,
+  Radio,
+  RadioGroup,
+  Stack,
+  Textarea,
 } from "@chakra-ui/react";
-import { useDispatch} from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { updateCart } from "../redux/actions/cartActions";
 import { useRecoveryData } from "../hooks/useRecoveryData";
-import { productCreateReducer } from "../redux/reducers/productsReducer";
+
 export default function Cart() {
   useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const { cartItems } = useRecoveryData("cart");
 
-  // async function payCartProducts() {
-  //   const carryProductsToMap = cartItems.map((element: any) => {
-  //     const newProduct = {
-  //       title: element.product.name,
-  //       unit_price: element.product.price,
-  //       price: element.product.price,
-  //       quantity: element.quantity,
-  //       id: element.product._id,
-  //     };
-  //     return newProduct;
-  //   });
+  const [checkOut, setCheckOut] = React.useState(false);
 
-  //   const response = await fetch(
-  //     "https://api.mercadopago.com/checkout/preferences",
-  //     {
-  //       method: "POST",
-  //       headers: {
-  //         Authorization:
-  //           "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
-  //       },
-  //       body: JSON.stringify({
-  //         items: carryProductsToMap,
-  //       }),
-  //     }
-  //   );
-
-  //   const data = await response.json();
-
-  //   window.open(data.init_point, "_blank");
-  // }
+  const [name , setName] = React.useState("");
+  const [shippingOption , setShippingOption] = React.useState("");
+  const [address , setAddress] = React.useState("");
+  const [city , setCity] = React.useState("");
+  const [postalCode , setPostalCode] = React.useState("");
+  const [paymentMethod , setPaymentMethod] = React.useState("");
+  const [comment , setComment] = React.useState("");
 
   return (
     <Box onClick={onOpen}>
@@ -79,70 +63,139 @@ export default function Cart() {
           <DrawerCloseButton />
 
           <DrawerHeader>Cart</DrawerHeader>
-
-          <DrawerBody>
-            <TableContainer>
-              <Table variant="simple">
-                <Thead>
-                  <Tr>
-                    <Th>Product</Th>
-                    <Th isNumeric>Price</Th>
-                    <Th isNumeric>Items</Th>
-                    <Th isNumeric>Total</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {cartItems?.length > 0 ? (
-                    cartItems?.map((element: any) => (
-                      <Tr key={element.product._id}>
-                        <Td>{element.product.name}</Td>
-                        <Td isNumeric>{element.product.price}</Td>
-                        <Td isNumeric>{element.quantity}</Td>
-                        <Td isNumeric>
-                          {element.product.price * element.quantity}
-                        </Td>
+          {!checkOut ? (
+            <>
+              <DrawerBody>
+                <TableContainer>
+                  <Table variant="simple">
+                    <Thead>
+                      <Tr>
+                        <Th>Product</Th>
+                        <Th isNumeric>Price</Th>
+                        <Th isNumeric>Items</Th>
+                        <Th isNumeric>Total</Th>
                       </Tr>
-                    ))
-                  ) : (
-                    <Tr>
-                      <Td>No products in cart</Td>
-                    </Tr>
-                  )}
-                </Tbody>
-                <Tfoot>
-                  <Tr>
-                    <Th></Th>
-                    <Th></Th>
-                    <Th isNumeric>Total</Th>
-                    <Th isNumeric>
+                    </Thead>
+                    <Tbody>
+                      {cartItems?.length > 0 ? (
+                        cartItems?.map((element: any) => (
+                          <Tr key={element.product._id}>
+                            <Td>{element.product.name}</Td>
+                            <Td isNumeric>{element.product.price}</Td>
+                            <Td isNumeric>{element.quantity}</Td>
+                            <Td isNumeric>
+                              {element.product.price * element.quantity}
+                            </Td>
+                          </Tr>
+                        ))
+                      ) : (
+                        <Tr>
+                          <Td>No products in cart</Td>
+                        </Tr>
+                      )}
+                    </Tbody>
+                    <Tfoot>
+                      <Tr>
+                        <Th></Th>
+                        <Th></Th>
+                        <Th isNumeric>Total</Th>
+                        <Th isNumeric>
+                          {cartItems?.reduce(
+                            (acc: any, element: any) =>
+                              acc + element.product.price * element.quantity,
+                            0
+                          )}
+                        </Th>
+                      </Tr>
+                    </Tfoot>
+                  </Table>
+                </TableContainer>
+              </DrawerBody>
+              <DrawerFooter>
+                <Button variant="outline" mr={3} onClick={onClose}>
+                  Cancel
+                </Button>
+
+                <Button
+                  colorScheme="teal"
+                  isDisabled={cartItems?.length === 0}
+                  onClick={() => {
+                    setCheckOut(true);
+                  }}
+                >
+                  Check Out
+                </Button>
+              </DrawerFooter>
+            </>
+          ) : (
+            <>
+              <DrawerBody>
+                <Box
+                  p="4"
+                  display="flex"
+                  flexDirection="column"
+                  justifyContent="space-between"
+                  height="100%"
+                >
+                  <Box>
+                    <Button
+                      display={"flex"}
+                      justifyContent={"flex-end"}
+                      colorScheme="teal"
+                      variant="ghost"
+                      size="md"
+                      onClick={onClose}
+                    />
+                    <Heading as={"h3"} fontSize="2xl" fontWeight="bold">
+                      Complete your Order ({cartItems.length})
+                    </Heading>
+                    <FormControl id="Name">
+                      <FormLabel>Please enter your Full Name</FormLabel>
+                      <Input type="text" onChange={(e)=> setName(e.target.value)} value={name} />
+                    </FormControl>
+                    <RadioGroup defaultValue="none" onChange={setShippingOption} value={shippingOption}>
+                      <Stack direction="column">
+                        <Radio value="1">Ship to your address</Radio>
+                        <Radio value="2">Pick up from the store</Radio>
+                      </Stack>
+                    </RadioGroup>
+                    <FormControl id="Address">
+                      <FormLabel>Please enter your Address</FormLabel>
+                      <Input type="text" onChange={(e)=> setAddress(e.target.value)} value={address} />
+                    </FormControl>
+                    <FormControl id="City">
+                      <FormLabel>Please enter your City</FormLabel>
+                      <Input type="text" onChange={(e)=> setCity(e.target.value)} value={city} />
+                    </FormControl>
+                    <FormControl id="PostalCode">
+                      <FormLabel>Please enter your Postal Code</FormLabel>
+                      <Input type="number" onChange={(e)=> setPostalCode(e.target.value)} value={postalCode} />
+                    </FormControl>
+                    <RadioGroup defaultValue="none" onChange={setPaymentMethod} value={paymentMethod} >
+                      <Stack direction="column">
+                        <Radio value="1">MercadoPago</Radio>
+                        <Radio value="2">Cash</Radio>
+                      </Stack>
+                    </RadioGroup>
+                    <FormLabel>Any details for delivery?</FormLabel>
+                    <Textarea onChange={(e)=> setComment(e.target.value)} value={comment}/>
+                  </Box>
+                  <DrawerFooter>
+                    <Heading as={"h3"} fontSize="2xl" fontWeight="bold">
+                      Your total is:{" "}
                       {cartItems?.reduce(
-                        (acc: any, element: any) =>
-                          acc + element.product.price * element.quantity,
+                        (a: any, c: any) => a + c.quantity * c.product.price,
                         0
                       )}
-                    </Th>
-                  </Tr>
-                </Tfoot>
-              </Table>
-            </TableContainer>
-          </DrawerBody>
-          <DrawerFooter>
-            <Button variant="outline" mr={3} onClick={onClose}>
-              Cancel
-            </Button>
-            <Button
-              colorScheme="blue"
-              onClick={
-                cartItems?.length > 0
-                  ? () => {
-                      // payCartProducts();
-                      onClose();
-                    }
-                  : onClose
-              }>
-              Pay
-            </Button>
-          </DrawerFooter>
+                    </Heading>
+                    <Button colorScheme="teal" variant="ghost" size="md">
+                      Finish my Order
+                    </Button>
+                  </DrawerFooter>
+                </Box>
+              </DrawerBody>
+            </>
+          )}
         </DrawerContent>
       </Drawer>
     </Box>
