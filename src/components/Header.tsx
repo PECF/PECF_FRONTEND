@@ -28,7 +28,7 @@ import { Link } from "react-router-dom";
 
 export default function Header() {
   const { products } = useRecoveryData("productList");
-  const { wishlistItems } = useRecoveryData("wishlist");
+  //sconst { wishlistItems } = useRecoveryData("wishlist");
   const { userInfo } = useRecoveryData("userLogin");
 
 
@@ -205,7 +205,7 @@ export default function Header() {
                   variant="ghost"
                   colorScheme="teal"
                 >
-                  {wishlistItems.length}
+                  {/* {wishlistItems.length} */}
                 </IconButton>
                 <IconButton aria-label="Search database" variant="ghost">
                   <Menu />
