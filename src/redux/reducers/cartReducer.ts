@@ -21,11 +21,32 @@ export const cartReducer = (
         cartItems: action.payload,
       };
 
-    case CartActionTypes.CART_ADD_ITEM:
+    /*case CartActionTypes.CART_ADD_ITEM:
       return {
         ...state,
         cartItems: [action.payload],
-      };
+      };*/
+    // add to cart reducer
+    case CartActionTypes.CART_ADD_ITEM:
+      // eslint-disable-next-line no-case-declarations
+      const item = action.payload;
+      // eslint-disable-next-line no-case-declarations
+      const existItem = state.cartItems.find((x) => x.product === item.product);
+      if (existItem) {
+        return {
+          ...state,
+          cartItems: state.cartItems.map((x) =>
+            x.product === existItem.product ? item : x
+          ),
+        };
+      } else {
+        return {
+          ...state,
+          cartItems: [...state.cartItems, item],
+        };
+      }
+
+      
 
     // case CartActionTypes.CART_REMOVE_ITEM:
     //   return {

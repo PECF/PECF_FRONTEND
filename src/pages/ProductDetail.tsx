@@ -13,6 +13,7 @@ import {
   Badge,
   HStack,
   Grid,
+  useToast,
 } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { MdLocalShipping } from "react-icons/md";
@@ -21,6 +22,7 @@ import { useRecoveryData } from "../hooks/useRecoveryData";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "../redux/rootStore";
 import { getDetailsProduct } from "../redux/actions/productsActions";
+import { addToCart } from "../redux/actions/cartActions";
 
 export default function ProductDetail({ _product }: any) {
   const location = useLocation();
@@ -33,11 +35,23 @@ export default function ProductDetail({ _product }: any) {
   useEffect(() => {
     if (productByID) {
       dispatch(getDetailsProduct(productByID));
-        window.scrollTo(0, 0)
+      window.scrollTo(0, 0);
     }
   }, [productByID, dispatch]);
 
   const productDetails = _product ? _product : product;
+
+  const toast = useToast();
+
+  const handleAddToCart = () => {
+    dispatch(addToCart(productDetails._id));
+    toast({
+      title: "Product added to cart.",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
 
   return (
     <Center
@@ -45,31 +59,36 @@ export default function ProductDetail({ _product }: any) {
         base: 1,
         md: 10,
       }}
-      bg={useColorModeValue("gray.50", "gray.800")}>
+      bg={useColorModeValue("gray.50", "gray.800")}
+    >
       <VStack
         w="full"
         maxW="7xl"
         mx="auto"
         rounded="lg"
         shadow="lg"
-        overflow="hidden">
+        overflow="hidden"
+      >
         <Grid
           templateColumns={{ base: "1fr", md: "1fr 1fr" }}
           w="full"
-          h="full">
+          h="full"
+        >
           <Heading
             as="h1"
             size="2xl"
             fontWeight="extrabold"
             textAlign={{ base: "left", md: "left" }}
-            p={2}>
+            p={2}
+          >
             {productDetails?.name}
           </Heading>
           <HStack
             spacing={2}
             align="center"
             justify={{ base: "left", md: "flex-end" }}
-            p={2}>
+            p={2}
+          >
             {Array(5)
               .fill("")
               .map((_, i) => (
@@ -84,14 +103,16 @@ export default function ProductDetail({ _product }: any) {
           direction={{ base: "column", md: "row" }}
           w="full"
           h="full"
-          p={1}>
+          p={1}
+        >
           <Text fontSize="lg" color="gray.600" textAlign="center">
             <Badge
               colorScheme="teal"
               borderRadius="full"
               px="4"
               py="1"
-              fontSize="md">
+              fontSize="md"
+            >
               {productDetails?.category.value}
             </Badge>
           </Text>
@@ -99,13 +120,15 @@ export default function ProductDetail({ _product }: any) {
             fontSize="lg"
             color="gray.600"
             textAlign="center"
-            display={{ base: "none", md: "block" }}>
+            display={{ base: "none", md: "block" }}
+          >
             <Badge
               colorScheme="teal"
               borderRadius="full"
               px="4"
               py="1"
-              fontSize="md">
+              fontSize="md"
+            >
               {productDetails?.brand}
             </Badge>
           </Text>
@@ -113,13 +136,15 @@ export default function ProductDetail({ _product }: any) {
             fontSize="lg"
             color="gray.600"
             textAlign="center"
-            display={{ base: "none", md: "block" }}>
+            display={{ base: "none", md: "block" }}
+          >
             <Badge
               colorScheme="teal"
               borderRadius="full"
               px="4"
               py="1"
-              fontSize="md">
+              fontSize="md"
+            >
               only {productDetails?.stock} units
             </Badge>
           </Text>
@@ -131,13 +156,15 @@ export default function ProductDetail({ _product }: any) {
               fontSize="lg"
               color="gray.600"
               textAlign="center"
-              display={{ base: "none", md: "block" }}>
+              display={{ base: "none", md: "block" }}
+            >
               <Badge
                 colorScheme="teal"
                 borderRadius="full"
                 px="4"
                 py="1"
-                fontSize="md">
+                fontSize="md"
+              >
                 {`${productDetails?.discount}% OFF`}
               </Badge>
             </Text>
@@ -149,7 +176,8 @@ export default function ProductDetail({ _product }: any) {
             ml={5}
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={600}
-            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}>
+            fontSize={{ base: "xl", sm: "2xl", lg: "3xl" }}
+          >
             {productDetails?.price}€
           </Text>
           <Button
@@ -166,7 +194,16 @@ export default function ProductDetail({ _product }: any) {
             _hover={{
               transform: "translateY(2px)",
               boxShadow: "lg",
-            }}>
+            }}
+            _active={{
+              transform: "translateY(2px)",
+              boxShadow: "lg",
+            }}
+            _focus={{
+              boxShadow: "none",
+            }}
+            onClick={handleAddToCart}
+          >
             Add to cart
           </Button>
           <Stack
@@ -175,13 +212,15 @@ export default function ProductDetail({ _product }: any) {
             h="full"
             p={1}
             justify="center"
-            align={{ base: "center", md: "center" }}>
+            align={{ base: "center", md: "center" }}
+          >
             <MdLocalShipping />
             <Text
               ml={2}
               color={useColorModeValue("gray.900", "gray.400")}
               fontWeight={600}
-              fontSize={{ base: "sm", sm: "md", lg: "lg" }}>
+              fontSize={{ base: "sm", sm: "md", lg: "lg" }}
+            >
               {productDetails?.offer[0]?.value === "freeShipping" ||
               productDetails?.offer[1]?.value === "freeShipping" ||
               productDetails?.offer[2]?.value === "freeShipping"
@@ -194,12 +233,14 @@ export default function ProductDetail({ _product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}>
+          bg={useColorModeValue("gray.50", "gray.900")}
+        >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"600"}
-            textTransform={"uppercase"}>
+            textTransform={"uppercase"}
+          >
             Features
           </Text>
           <SimpleGrid
@@ -207,7 +248,8 @@ export default function ProductDetail({ _product }: any) {
             spacing={10}
             w="full"
             h="full"
-            p={5}>
+            p={5}
+          >
             {productDetails?.feature?.map(
               (f: { value: string }, index: number) => (
                 <Box
@@ -227,14 +269,16 @@ export default function ProductDetail({ _product }: any) {
                   _hover={{
                     transform: "translateY(-2px)",
                     shadow: "lg",
-                  }}>
+                  }}
+                >
                   <Text
                     fontSize="xl"
                     color={useColorModeValue("teal.500", "teal.300")}
                     fontWeight={"500"}
                     align={"center"}
                     textAlign={"center"}
-                    textTransform={"uppercase"}>
+                    textTransform={"uppercase"}
+                  >
                     {f?.value}
                   </Text>
                 </Box>
@@ -246,12 +290,14 @@ export default function ProductDetail({ _product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}>
+          bg={useColorModeValue("gray.50", "gray.900")}
+        >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"600"}
-            textTransform={"uppercase"}>
+            textTransform={"uppercase"}
+          >
             Description
           </Text>
           <Text
@@ -259,7 +305,8 @@ export default function ProductDetail({ _product }: any) {
             color={useColorModeValue("gray.900", "gray.400")}
             fontWeight={300}
             align={"center"}
-            textAlign="justify">
+            textAlign="justify"
+          >
             {productDetails?.description}
           </Text>
         </Box>
@@ -267,12 +314,14 @@ export default function ProductDetail({ _product }: any) {
           w="full"
           h="full"
           p={5}
-          bg={useColorModeValue("gray.50", "gray.900")}>
+          bg={useColorModeValue("gray.50", "gray.900")}
+        >
           <Text
             fontSize={{ base: "-moz-initial", sm: "xl", lg: "2xl" }}
             color={useColorModeValue("teal.500", "teal.300")}
             fontWeight={"600"}
-            textTransform={"uppercase"}>
+            textTransform={"uppercase"}
+          >
             Tags
           </Text>
           <SimpleGrid
@@ -280,7 +329,8 @@ export default function ProductDetail({ _product }: any) {
             spacing={5}
             w="full"
             h="full"
-            p={5}>
+            p={5}
+          >
             {productDetails?.tag?.map((t: { value: string }, index: number) => (
               <Box
                 key={index}
@@ -292,13 +342,15 @@ export default function ProductDetail({ _product }: any) {
                 _hover={{
                   transform: "translateY(-2px)",
                   shadow: "lg",
-                }}>
+                }}
+              >
                 <Text
                   fontSize="xl"
                   color={useColorModeValue("teal.500", "teal.300")}
                   fontWeight={"500"}
                   align={"center"}
-                  textTransform={"uppercase"}>
+                  textTransform={"uppercase"}
+                >
                   {t?.value}
                 </Text>
               </Box>

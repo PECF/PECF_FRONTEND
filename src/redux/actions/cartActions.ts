@@ -89,3 +89,143 @@ export const savePaymentMethod =
 
     localStorage.setItem("paymentMethod", JSON.stringify(paymentMethod));
   };
+
+/**
+ * Add the product to cart
+ *
+ */
+export const addToCart =
+  (id: string, qty: number): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: CartActionTypes.CART_UPDATE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      if (userInfo) {
+        // Axios config
+        const config = {
+          withCredentials: true,
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${userInfo}`,
+          },
+        };
+
+        const { data } = await axios.post(
+          `/user/cart/add/${id}/${qty}`,
+          {},
+          config
+        );
+
+        dispatch({
+          type: CartActionTypes.CART_UPDATE_SUCCESS,
+          payload: data.cart,
+        });
+        localStorage.setItem("cartItems", JSON.stringify(data.cart));
+      }
+    } catch (error) {
+      dispatch({
+        type: CartActionTypes.CART_UPDATE_FAIL,
+        payload: errorHandler(error),
+      });
+    }
+  };
+
+/**
+ * Remove the product from cart
+ *
+ */
+export const removeProductFromCart =
+  (id: string): AppThunk =>
+  async (dispatch, getState) => {
+    try {
+      dispatch({ type: CartActionTypes.CART_UPDATE_REQUEST });
+
+      const {
+        userLogin: { userInfo },
+      } = getState();
+
+      if (userInfo) {
+        // Axios config
+        const config = {
+          withCredentials: true,
+
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `${userInfo}`,
+          },
+        };
+
+        const { data } = await axios.delete(`/user/cart/remove/${id}`, config);
+
+        dispatch({
+          type: CartActionTypes.CART_UPDATE_SUCCESS,
+          payload: data.cart,
+        });
+        localStorage.setItem("cartItems", JSON.stringify(data.cart));
+      }
+    } catch (error) {
+      dispatch({
+        type: CartActionTypes.CART_UPDATE_FAIL,
+        payload: errorHandler(error),
+      });
+    }
+  };
+
+/**
+ * Clear the cart
+ *
+ */
+export const clearCart = (): AppThunk => async (dispatch, getState) => {
+  try {
+    dispatch({ type: CartActionTypes.CART_UPDATE_REQUEST });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    if (userInfo) {
+      // Axios config
+      const config = {
+        withCredentials: true,
+
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `${userInfo}`,
+        },
+      };
+
+      const { data } = await axios.delete(`/user/cart/clear`, config);
+
+      dispatch({
+        type: CartActionTypes.CART_UPDATE_SUCCESS,
+        payload: data.cart,
+      });
+      localStorage.setItem("cartItems", JSON.stringify(data.cart));
+    }
+  } catch (error) {
+    dispatch({
+      type: CartActionTypes.CART_UPDATE_FAIL,
+      payload: errorHandler(error),
+    });
+  }
+};
+
+/*export const addToCartHandler = async () => {
+  try {
+    const { data } = await axios.post(
+      "/user/cart",
+      { productId: product._id, quantity },
+      config
+    );
+    dispatch(updateCart());
+    // toast.success("Added to cart");
+  } catch (error) {
+    //toast.error(errorHandler(error));
+    console.log(error);
+  }
+};*/
