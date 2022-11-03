@@ -32,6 +32,7 @@ import { useElements } from "@stripe/react-stripe-js";
 import { CardElement } from "@stripe/react-stripe-js";
 import { BsCaretDown, BsCaretUp } from "react-icons/bs";
 import { IconButton } from "@chakra-ui/react";
+import { PaymentElement } from "@stripe/react-stripe-js";
 
 export default function Cart() {
   const dispatch = useDispatch<AppDispatch>();
@@ -40,13 +41,84 @@ export default function Cart() {
   const { user } = useRecoveryData("userDetails");
   const [checkOut, setCheckOut] = useState(false);
   const [name, setName] = useState(user.name);
-  const [shippingOption, setShippingOption] = useState("");
+  const [shippingOption, setShippingOption] = useState("1");
   const [address, setAddress] = useState(user.address.address);
   const [city, setCity] = useState(user.address.city);
   const [postalCode, setPostalCode] = useState(user.address.postalCode);
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("1");
   const [comment, setComment] = useState("");
+  const [state, setState] = useState("");
 
+  async function payCartProducts(paymentMethod: string) {
+    if (paymentMethod === "1") {
+      const carryProductsToMap = cartItems.map((element: any) => {
+        const newProduct = {
+          title: element.product.name,
+          unit_price: element.product.price,
+          price: element.product.price,
+          quantity: element.quantity,
+          id: element.product._id,
+        };
+        return newProduct;
+      });
+
+      const response = await fetch(
+        "https://api.mercadopago.com/checkout/preferences",
+        {
+          method: "POST",
+          headers: {
+            Authorization:
+              "Bearer TEST-7728407952482902-102219-53baf2e2e232a5a9c628a9fc94f0d935-389442168", //Aca va el token individual luego del bearer: token individual
+          },
+          body: JSON.stringify({
+            items: carryProductsToMap,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      window.open(data.init_point, "_blank");
+    }
+    if (paymentMethod === "2") {
+      const number = "5493876282925 ";
+      let url = `https://web.whatsapp.com/send?phone=${number}`;
+      const carryProductsToMap = cartItems.map((element: any) => {
+        const newProduct = {
+          title: element.product.name,
+          unit_price: element.product.price,
+          price: element.product.price,
+          quantity: element.quantity,
+          id: element.product._id,
+        };
+        return newProduct;
+      });
+      const message = carryProductsToMap.map((element: any) => {
+        return `${element.title} x${element.quantity} $${element.price}
+        Total: $${element.price * element.quantity}
+        `;
+      });
+
+      url += `&text=${encodeURI(message)}&app_absent=0`;
+
+      window.open(url, "_blank");
+    }
+
+    // if (paymentMethod === "3") {
+    //   const stripe = await useStripe();
+    //   const elements = await useElements();
+
+    //   const { error, paymentMethod } = await stripe.createPaymentMethod({
+    //     type: "card",
+    //     card: elements.getElement(CardElement),
+    //   });
+
+    //   if (!error) {
+    //     const { id } = paymentMethod;
+    //     console.log(id);
+    //   }
+    // }
+  }
   return (
     <>
       <Box onClick={onOpen}>
@@ -71,7 +143,7 @@ export default function Cart() {
                   <Text>Your cart is empty</Text>
                 ) : (
                   <Grid templateColumns="repeat(1, 1fr)">
-                    {cartItems.map((item) => (
+                    {cartItems.map((item: any) => (
                       <Box
                         key={item.product._id}
                         p={5}
@@ -148,12 +220,13 @@ export default function Cart() {
                   shadow="md"
                   bg={useColorModeValue("white", "gray.800")}>
                   <FormControl id="Name">
-                    <FormLabel>Full Name</FormLabel>
+                    <FormLabel fontSize="xl" fontWeight="bold" textAlign="left">
+                      Full Name
+                    </FormLabel>
                     <Input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      
                     />
                   </FormControl>
                   <RadioGroup
@@ -171,43 +244,88 @@ export default function Cart() {
                       </Radio>
                     </Stack>
                   </RadioGroup>
-                  <FormControl id="Address">
-                    <FormLabel mt={5}>Please enter your Address</FormLabel>
-                    <Input
-                      type="text"
-                      value={address}
-                      onChange={(e) => setAddress(e.target.value)}
-                    />
-                  </FormControl>
-                  <FormControl id="City">
-                    <FormLabel mt={5}>Please enter your City</FormLabel>
-                    <Input
-                      type="text"
-                      onChange={(e) => setCity(e.target.value)}
-                      value={city}
-                    />
-                  </FormControl>
-                  <FormControl id="PostalCode">
-                    <FormLabel mt={5}>Please enter your Postal Code</FormLabel>
-                    <Input
-                      type="number"
-                      onChange={(e) => setPostalCode(e.target.value)}
-                      value={postalCode}
-                    />
-                  </FormControl>
+                  {shippingOption === "2" && (
+                    <>
+                      <FormControl id="Address">
+                        <FormLabel
+                          mt={5}
+                          fontSize="xl"
+                          fontWeight="bold"
+                          textAlign="left">
+                          Address
+                        </FormLabel>
+                        <Input
+                          type="text"
+                          value={address}
+                          onChange={(e) => setAddress(e.target.value)}
+                        />
+                      </FormControl>
+                      <FormControl id="City">
+                        <FormLabel
+                          mt={5}
+                          fontSize="xl"
+                          fontWeight="bold"
+                          textAlign="left">
+                          City
+                        </FormLabel>
+                        <Input
+                          type="text"
+                          onChange={(e) => setCity(e.target.value)}
+                          value={city}
+                        />
+                      </FormControl>
+                      <FormControl id="State">
+                        <FormLabel
+                          mt={5}
+                          fontSize="xl"
+                          fontWeight="bold"
+                          textAlign="left">
+                          State
+                        </FormLabel>
+                        <Input
+                          type="text"
+                          onChange={(e) => setState(e.target.value)}
+                          value={state}
+                        />
+                      </FormControl>
+                      <FormControl id="PostalCode">
+                        <FormLabel
+                          mt={5}
+                          fontSize="xl"
+                          fontWeight="bold"
+                          textAlign="left">
+                          Postal Code
+                        </FormLabel>
+                        <Input
+                          type="number"
+                          onChange={(e) => setPostalCode(e.target.value)}
+                          value={postalCode}
+                        />
+                      </FormControl>
+                    </>
+                  )}
+
                   <RadioGroup
                     defaultValue="none"
                     onChange={setPaymentMethod}
                     value={paymentMethod}>
                     <Stack mt={5} direction="column">
                       <Radio value="1">MercadoPago</Radio>
-                      <Radio value="2">Cash</Radio>
+                      {/* <Radio value="2">Cash</Radio>
                       <Radio value="3">Stripe</Radio>
                       <Radio value="4">PayPal</Radio>
-                      <Radio value="5">Bitcoin</Radio>
+                      <Radio value="5">CryptoCurrency</Radio> */}
+                      <Radio value="2">Coordinate with the store to pay</Radio>
                     </Stack>
                   </RadioGroup>
-                  <FormLabel mt={5}>Any details for delivery?</FormLabel>
+
+                  <FormLabel
+                    mt={5}
+                    fontSize="xl"
+                    fontWeight="bold"
+                    textAlign="left">
+                    Any details for Delivery or Product?
+                  </FormLabel>
                   <Textarea
                     onChange={(e) => setComment(e.target.value)}
                     value={comment}
@@ -215,13 +333,17 @@ export default function Cart() {
                 </Box>
                 <DrawerFooter>
                   <Heading as={"h3"} fontSize="2xl" fontWeight="bold">
-                    Your total is:{" "}
+                    Your total is: $
                     {cartItems?.reduce(
                       (a: any, c: any) => a + c.quantity * c.product.price,
                       0
                     )}
                   </Heading>
-                  <Button colorScheme="teal" variant="ghost" size="md">
+                  <Button
+                    ml={5}
+                    colorScheme="teal"
+                    size="md"
+                    onClick={() => payCartProducts(paymentMethod)}>
                     Finish my Order
                   </Button>
                 </DrawerFooter>
@@ -233,201 +355,3 @@ export default function Cart() {
     </>
   );
 }
-// export default Cart;
-
-// export default function Cart() {
-//   useEffect(() => {
-//     window.scrollTo(0, 0);
-//   }, []);
-//   const { isOpen, onOpen, onClose } = useDisclosure();
-//   const { cartItems } = useRecoveryData("cart");
-//   const [checkOut, setCheckOut] = useState(false);
-//   const [name, setName] = useState("");
-//   const [shippingOption, setShippingOption] = useState("");
-//   const [address, setAddress] = useState("");
-//   const [city, setCity] = useState("");
-//   const [postalCode, setPostalCode] = useState("");
-//   const [paymentMethod, setPaymentMethod] = useState("");
-//   const [comment, setComment] = useState("");
-
-//   const dispatch: AppDispatch = useDispatch();
-
-//   return (
-//     <Box onClick={onOpen}>
-//       <Button colorScheme="teal" variant="ghost" size="md">
-//         <FiShoppingCart />
-//       </Button>
-
-//       <Drawer isOpen={isOpen} placement="right" onClose={onClose} size="xl">
-//         <DrawerOverlay />
-//         <DrawerContent>
-//           <DrawerCloseButton />
-
-//           <DrawerHeader>Cart</DrawerHeader>
-//           {!checkOut ? (
-//             <>
-//               <DrawerBody>
-
-//               </DrawerBody>
-
-//               <DrawerFooter>
-//                 <Button variant="outline" mr={3} onClick={onClose}>
-//                   Cancel
-//                 </Button>
-
-//                 <Button
-//                   colorScheme="teal"
-//                   isDisabled={cartItems?.length === 0}
-//                   onClick={() => {
-//                     setCheckOut(true);
-//                   }}>
-//                   Check Out
-//                 </Button>
-//               </DrawerFooter>
-//             </>
-//           ) : (
-//             <>
-//               <DrawerBody>
-//                 <Box
-//                   p="4"
-//                   display="flex"
-//                   flexDirection="column"
-//                   justifyContent="space-between"
-//                   height="100%">
-//                   <Box>
-//                     <Button
-//                       display={"flex"}
-//                       justifyContent={"flex-end"}
-//                       colorScheme="teal"
-//                       variant="ghost"
-//                       size="md"
-//                       onClick={onClose}
-//                     />
-//                     <Heading as={"h3"} fontSize="2xl" fontWeight="bold" mb={10}>
-//                       Complete your Order ({cartItems.length})
-//                     </Heading>
-//                     <FormControl id="Name">
-//                       <FormLabel>Please enter your Full Name</FormLabel>
-//                       <Input
-//                         type="text"
-//                         onChange={(e) => setName(e.target.value)}
-//                         value={name}
-//                       />
-//                     </FormControl>
-//                     <RadioGroup
-//                       mt={5}
-//                       defaultValue="none"
-//                       onChange={setShippingOption}
-//                       value={shippingOption}>
-//                       <Stack direction="column">
-//                         <Radio value="1">Ship to your address</Radio>
-//                         <Radio value="2">Pick up from the store</Radio>
-//                       </Stack>
-//                     </RadioGroup>
-//                     <FormControl id="Address">
-//                       <FormLabel mt={5}>Please enter your Address</FormLabel>
-//                       <Input
-//                         type="text"
-//                         onChange={(e) => setAddress(e.target.value)}
-//                         value={address}
-//                       />
-//                     </FormControl>
-//                     <FormControl id="City">
-//                       <FormLabel mt={5}>Please enter your City</FormLabel>
-//                       <Input
-//                         type="text"
-//                         onChange={(e) => setCity(e.target.value)}
-//                         value={city}
-//                       />
-//                     </FormControl>
-//                     <FormControl id="PostalCode">
-//                       <FormLabel mt={5}>
-//                         Please enter your Postal Code
-//                       </FormLabel>
-//                       <Input
-//                         type="number"
-//                         onChange={(e) => setPostalCode(e.target.value)}
-//                         value={postalCode}
-//                       />
-//                     </FormControl>
-//                     <RadioGroup
-//                       defaultValue="none"
-//                       onChange={setPaymentMethod}
-//                       value={paymentMethod}>
-//                       <Stack mt={5} direction="column">
-//                         <Radio value="1">MercadoPago</Radio>
-//                         <Radio value="2">Cash</Radio>
-//                       </Stack>
-//                     </RadioGroup>
-//                     <FormLabel mt={5}>Any details for delivery?</FormLabel>
-//                     <Textarea
-//                       onChange={(e) => setComment(e.target.value)}
-//                       value={comment}
-//                     />
-//                   </Box>
-//                   <DrawerFooter>
-//                     <Heading as={"h3"} fontSize="2xl" fontWeight="bold">
-//                       Your total is:{" "}
-//                       {cartItems?.reduce(
-//                         (a: any, c: any) => a + c.quantity * c.product.price,
-//                         0
-//                       )}
-//                     </Heading>
-//                     <Button colorScheme="teal" variant="ghost" size="md">
-//                       Finish my Order
-//                     </Button>
-//                   </DrawerFooter>
-//                 </Box>
-//               </DrawerBody>
-//             </>
-//           )}
-//         </DrawerContent>
-//       </Drawer>
-//     </Box>
-//   );
-// }
-// {
-//   /* <TableContainer>
-//                   <Table variant="striped" colorScheme="teal">
-//                     <Thead>
-//                       <Tr>
-//                         <Th>Product</Th>
-//                         <Th isNumeric>Price</Th>
-//                         <Th isNumeric>Items</Th>
-//                         <Th isNumeric>Total</Th>
-//                       </Tr>
-//                     </Thead>
-//                     <Tbody>
-//                       {cartItems?.length > 0 ? (
-//                         cartItems?.map((element: any) => (
-//                           <Tr key={element.product._id}>
-//                             <Td>{element.product.name}</Td>
-//                             <Td isNumeric>${element.product.price}</Td>
-//                             <Td isNumeric>{element.quantity}</Td>
-//                             <Td isNumeric>
-//                               ${element.product.price * element.quantity}
-//                             </Td>
-//                           </Tr>
-//                         ))
-//                       ) : (
-//                         <Tr>
-//                           <Td>No products in cart</Td>
-//                         </Tr>
-//                       )}
-//                     </Tbody>
-//                     <Tfoot>
-//                       <Tr>
-//                         <Th></Th>
-//                         <Th></Th>
-//                         <Th isNumeric>Total</Th>
-//                         <Th isNumeric>
-//                           {cartItems?.reduce(
-//                             (acc: any, element: any) =>
-//                               acc + element.product.price * element.quantity,
-//                             0
-//                           )}
-//                         </Th>
-//                       </Tr>
-//                     </Tfoot>
-//                   </Table>
-//                 </TableContainer> */

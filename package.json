@@ -15,6 +15,7 @@
     "@emotion/styled": "^11.10.4",
     "@reduxjs/toolkit": "^1.8.6",
     "@stripe/react-stripe-js": "^1.14.2",
+    "@stripe/stripe-js": "^1.42.1",
     "@types/jest": "^29.2.0",
     "@types/node": "^18.11.0",
     "@types/react-router": "^5.1.19",
