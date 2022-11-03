@@ -40,13 +40,13 @@ export const ProductCard = ({ product }: any) => {
           />
         </Box>
 
-        <FavouriteButton
+        {/* <FavouriteButton
           // onClick={handleFavorite}
           position="absolute"
           top="4"
           right="4"
           aria-label={`Add ${name} to your favourites`}
-        />
+        /> */}
       </Box>
 
       <Link to={`/product/${product._id}`}>

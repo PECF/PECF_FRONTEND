@@ -22,6 +22,7 @@ import {
   MenuButton,
   MenuItem,
   MenuList,
+  Grid,
 } from "@chakra-ui/react";
 import { IoMan, IoShirtSharp, IoWoman } from "react-icons/io5";
 import {
@@ -53,25 +54,41 @@ export default function Products() {
   const location = useLocation();
 
   const [Categories, setCategories] = useState<any[]>([]);
+  const [Tags, setTags] = useState<any[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<any[]>([]);
+  const [priceFilterProducts, setPriceFilterProducts] = useState<any[]>([]);
   const [currentProducts, setCurrentProducts] = useState<any[]>([]);
   const [productsPerPage, setProductsPerPage] = useState(8);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const handleFilter = (e: string) => {
+  const [value, setValue] = useState([0, 50]);
+  const handleFilter = (e: string, type: string) => {
     if (location.pathname.split("/")[2] !== "composeFilter") {
       navigate("/products/composeFilter");
     }
-    if (Categories.includes(e)) {
+    if (Categories.includes(e) && type === "category") {
       const filtered = Categories.filter((category) => category !== e);
       setCategories(filtered);
     } else {
       setCategories([...Categories, e]);
     }
+
+    if (Tags.includes(e) && type === "tag") {
+      const filtered = Tags.filter((tag) => tag !== e);
+      setTags(filtered);
+    } else {
+      setTags([...Tags, e]);
+    }
   };
 
   const checkExistCategory = (e: string) => {
     if (Categories.includes(e)) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+  const checkExistTags = (e: string) => {
+    if (Tags.includes(e)) {
       return true;
     } else {
       return false;
@@ -84,7 +101,6 @@ export default function Products() {
     ?.toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "");
-  const { isOpen, onToggle } = useDisclosure();
 
   useEffect(() => {
     if (path === "search") {
@@ -156,6 +172,35 @@ export default function Products() {
       } else if (Categories.length === 0 && path === "composeFilter") {
         setFilteredProducts(products);
       }
+
+      if (Tags.length > 0) {
+        const filtered = products.filter(
+          (product: { tag: { value: string }[] }) => {
+            let flag = false;
+            Tags.forEach((tag) => {
+              product.tag.forEach((productTag) => {
+                if (
+                  productTag.value
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "") ===
+                  tag
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                ) {
+                  flag = true;
+                }
+              });
+            });
+            return flag;
+          }
+        );
+
+        setFilteredProducts(filtered);
+      } else if (Tags.length === 0 && path === "composeFilter") {
+        setFilteredProducts(products);
+      }
     } else {
       setFilteredProducts(products);
     }
@@ -163,22 +208,22 @@ export default function Products() {
 
   useEffect(() => {
     if (
-      filteredProducts.length < 8 &&
-      productsPerPage !== filteredProducts.length
+      priceFilterProducts.length < 8 &&
+      productsPerPage !== priceFilterProducts.length
     ) {
-      setProductsPerPage(filteredProducts.length);
+      setProductsPerPage(priceFilterProducts.length);
     }
-    if (filteredProducts.length > 8 && productsPerPage !== 8) {
+    if (priceFilterProducts.length > 8 && productsPerPage !== 8) {
       setProductsPerPage(8);
     }
     const indexOfLastProduct = currentPage * productsPerPage;
     const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-    const currentProducts = filteredProducts.slice(
+    const currentProducts = priceFilterProducts.slice(
       indexOfFirstProduct,
       indexOfLastProduct
     );
     setCurrentProducts(currentProducts);
-  }, [filteredProducts, currentPage, productsPerPage]);
+  }, [priceFilterProducts, currentPage, productsPerPage]);
 
   const CleanAndRedirect = () => {
     setCategories([]);
@@ -189,60 +234,45 @@ export default function Products() {
     setCurrentPage(page);
   };
 
+  useEffect(() => {
+    const arrayTest = [0, 50];
+    if (value[0] !== arrayTest[0] || value[1] !== arrayTest[1]) {
+      const filtered = filteredProducts.filter(
+        (product: { price: number }) =>
+          product.price >= value[0] && product.price <= value[1]
+      );
+      setPriceFilterProducts(filtered);
+    } else {
+      setPriceFilterProducts(filteredProducts);
+    }
+  }, [value, filteredProducts]);
+
   return (
     <Container
       maxW="container.xxl"
       bg={useColorModeValue("gray.100", "gray.900")}
-      minH="100vh"
-    >
+      minH="100vh">
       <Flex
         direction={{ base: "column", md: "row" }}
         shadow={{ md: "xl" }}
-        rounded={{ md: "lg" }}
-      >
+        rounded={{ md: "lg" }}>
         <Box
           w={{ base: "100%", md: "20%" }}
           h={{ base: "100%", md: "100%" }}
           bg={useColorModeValue("white", "gray.800")}
           overflow="hidden">
-          {/* <Flex
-            justify="center"
-            align="center"
-            direction="column"
-            py={12}
-            px={6}
-            bg={useColorModeValue("gray.50", "gray.900")}
-            w={"auto"}
-            display={{ base: "flex", md: "none" }}
-          >
-            <IconButton
-              onClick={onToggle}
-              icon={
-                isOpen ? (
-                  <CloseIcon w={3} h={3} />
-                ) : (
-                  <HamburgerIcon w={5} h={5} />
-                )
-              }
-              variant={"ghost"}
-              aria-label={"Toggle Navigation"}
-            />
-          </Flex> */}
-
           <Box
             display={{ base: "none", md: "block" }}
             py={4}
             px={6}
             bg={useColorModeValue("white", "gray.800")}
             borderBottomWidth={1}
-            borderColor={useColorModeValue("gray.200", "gray.700")}
-          >
+            borderColor={useColorModeValue("gray.200", "gray.700")}>
             <Text
               fontSize="sm"
               fontWeight="semibold"
               color={useColorModeValue("gray.600", "gray.400")}
-              mb={2} 
-            >
+              mb={2}>
               Categories
             </Text>
 
@@ -256,56 +286,10 @@ export default function Products() {
                 cursor="pointer"
                 onClick={() => {
                   CleanAndRedirect();
-                }}
-              >
+                }}>
                 CLEAR FILTER
               </Text>
             )}
-            <Flex
-              direction="column"
-              justify="center"
-              align="center"
-              w="100%"
-              h="100%"
-            >
-              <Menu
-                isLazy
-              >
-                <MenuButton
-                  as={Button}
-                  rightIcon={<ChevronDownIcon />}
-                  colorScheme="teal"
-                  variant="outline"
-                  w="90%"
-                  h="auto"
-                  mb={4}
-                  p={2}
-
-                >
-                  Filter by price
-                </MenuButton>
-                <MenuList>
-                  <MenuItem
-                    onClick={() => {
-                      /* setPath("price");
-                      setPathSearchOrCategory("highToLow");
-                      navigate("/products/price/highToLow"); */
-                    }}
-                  >
-                    High to low
-                  </MenuItem>
-                  <MenuItem
-                    onClick={() => {
-                     /*  asd */
-                    }}
-                  >
-                    Low to high
-                  </MenuItem>
-                </MenuList>
-              </Menu>
-            </Flex>
-          
-                        
 
             <Flex
               mt={2}
@@ -319,8 +303,7 @@ export default function Products() {
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GrStackOverflow} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -344,12 +327,11 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("shirts");
+                handleFilter("shirts", "category");
               }}
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={IoShirtSharp} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -372,13 +354,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("pants");
+                handleFilter("pants", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiArmoredPants} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -400,13 +381,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("underwear");
+                handleFilter("underwear", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiUnderwear} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -429,13 +409,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("shoes");
+                handleFilter("shoes", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiRunningShoe} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -458,13 +437,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("hoodies");
+                handleFilter("hoodies", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiHoodie} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -487,13 +465,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("caps");
+                handleFilter("caps", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiBilledCap} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -516,13 +493,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("jackets");
+                handleFilter("jackets", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiMonclerJacket} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -545,13 +521,12 @@ export default function Products() {
               as={Link}
               to="/products/composeFilter"
               onClick={() => {
-                handleFilter("accesories");
+                handleFilter("accesories", "category");
               }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={GiBracer} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -564,8 +539,7 @@ export default function Products() {
               fontSize="sm"
               fontWeight="semibold"
               color={useColorModeValue("gray.600", "gray.400")}
-              mt={6}
-            >
+              mt={6}>
               Genres
             </Text>
             <Flex
@@ -575,12 +549,19 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/men"
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("men", "tag");
+              }}
               borderRadius="md"
+              bg={
+                checkExistTags("men")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={IoMan} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -596,12 +577,19 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/woman"
+              bg={
+                checkExistTags("women")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("women", "tag");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={IoWoman} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -617,12 +605,19 @@ export default function Products() {
               color={useColorModeValue("gray.600", "gray.400")}
               cursor="pointer"
               as={Link}
-              to="/products/kids"
+              bg={
+                checkExistTags("kids")
+                  ? useColorModeValue("gray.100", "gray.700")
+                  : useColorModeValue("white", "gray.800")
+              }
+              to="/products/composeFilter"
+              onClick={() => {
+                handleFilter("kids", "tag");
+              }}
               borderRadius="md"
               _hover={{
                 bg: useColorModeValue("gray.100", "gray.700"),
-              }}
-            >
+              }}>
               <Flex align="center">
                 <Icon as={FaChild} w={5} h={5} />
                 <Text ml={2} fontSize="sm">
@@ -631,31 +626,25 @@ export default function Products() {
               </Flex>
             </Flex>
           </Box>
-     {/*      <Flex
-            my={7}
-            justify="space-between"
-            align="center"
-            color={useColorModeValue("gray.600", "gray.400")}
-            cursor="pointer"
-          >
-            <RangeSlider aria-label={["min", "max"]} defaultValue={[10, 80]} colorScheme={"teal"}
-            onChangeEnd={(e) => { setRange[] }} >
-            
+          <Grid templateColumns={"repeat(1, 1fr)"} gap={6} m={6}>
+            <RangeSlider
+              min={0}
+              max={50}
+              step={1}
+              value={value}
+              onChange={setValue}
+              colorScheme="teal">
               <RangeSliderTrack>
                 <RangeSliderFilledTrack />
               </RangeSliderTrack>
-              <RangeSliderThumb index={0}
-              onChange= {(e) => { console.log(e) }}>
-                <Text
-                mt={10}
-                >a</Text>
-                </RangeSliderThumb>
+              <RangeSliderThumb index={0} />
               <RangeSliderThumb index={1} />
-
             </RangeSlider>
-          </Flex>
- */}
 
+            <Text fontSize="sm" fontWeight="semibold" w={"full"}>
+              {value[0]} - {value[1]}$
+            </Text>
+          </Grid>
         </Box>
 
         <Box
@@ -664,16 +653,14 @@ export default function Products() {
           mx="auto"
           bg={useColorModeValue("white", "gray.700")}
           overflow="hidden"
-          shadow="base"
-        >
+          shadow="base">
           <VStack align="stretch" spacing={0}>
             <Flex
               justify="space-between"
               align="center"
               px={6}
               bg={useColorModeValue("gray.50", "gray.800")}
-              borderBottomWidth="1px"
-            ></Flex>
+              borderBottomWidth="1px"></Flex>
             <Box>
               <Box
                 maxW="11xl"
@@ -683,8 +670,7 @@ export default function Products() {
                 flexDirection="column"
                 mx="auto"
                 px={{ base: "4", md: "8", lg: "12" }}
-                py={{ base: "6", md: "8", lg: "12" }}
-              >
+                py={{ base: "6", md: "8", lg: "12" }}>
                 <ProductGrid>
                   {currentProducts.length === 0 ? (
                     <Box>
@@ -711,8 +697,7 @@ export default function Products() {
                 display={"flex"}
                 flexDir="column"
                 justifyContent={"center"}
-                alignItems="center"
-              >
+                alignItems="center">
                 <Pagination
                   totalProducts={filteredProducts.length}
                   productsPerPage={productsPerPage}

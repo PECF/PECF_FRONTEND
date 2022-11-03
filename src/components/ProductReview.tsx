@@ -3,6 +3,7 @@ import { Container, Heading, Textarea, Button, Flex } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { createProductReview } from "../redux/actions/productsActions";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "../redux/rootStore";
 
 export default function ProductReview() {
   const [review, setReview] = useState("");
@@ -14,23 +15,22 @@ export default function ProductReview() {
     setReview(e.target.value);
   };
 
-  const handleSubmit = () => {
-    console.log(review);
-    console.log(rating);
-    dispatch(createProductReview(review, rating));
-  };
+  // const handleSubmit = () => {
+  //   console.log(review);
+  //   console.log(rating);
+  //   dispatch(createProductReview(review, rating));
+  // };
   React.useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Container
       maxW="2xl"
       mt={20}
       backgroundColor="whiteAlpha.900"
-      centerContent
-    >
-      <Heading as="h1" size="md">
+      centerContent>
+      {/* <Heading as="h1" size="md">
         Type here your product review
       </Heading>
 
@@ -71,7 +71,7 @@ export default function ProductReview() {
 
       <Button colorScheme="teal" mb="5" mt="5" onClick={handleSubmit}>
         Send review
-      </Button>
+      </Button> */}
     </Container>
   );
 }

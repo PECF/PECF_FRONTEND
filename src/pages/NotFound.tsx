@@ -1,7 +1,6 @@
 import React from "react";
 import { Stack, Image, Button, Center, Box, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
-import { Home } from "./Home";
 import notFound from "../types/404notFound.png";
 
 export default function NotFound() {
